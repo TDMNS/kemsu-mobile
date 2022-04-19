@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 class StudentCard {
   String? speciality;
-  Int? id;
+  int? id;
 
   StudentCard({this.speciality, this.id});
 

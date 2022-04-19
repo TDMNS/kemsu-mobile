@@ -44,11 +44,11 @@ class PRSView extends StatelessWidget {
 
 _prsView(context, PRSViewModel model) {
   dropdownItems = List.generate(
-    model.studentCard.length,
+    model.studentCardGet.length,
     (index) => DropdownMenuItem(
-      value: model.studentCard[index].id.toString(),
+      value: model.studentCardGet[index].id.toString(),
       child: Text(
-        '${model.studentCard[index].speciality}',
+        '${model.studentCardGet[index].speciality}',
       ),
     ),
   );
@@ -61,17 +61,18 @@ _prsView(context, PRSViewModel model) {
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<StudentCard>(
+                itemHeight: 70.0,
                 hint: const Text(
-                  'Выбрать группу',
+                  'Выбрать учебную карту',
                   style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
                   model.changeCard(value);
                 },
                 isExpanded: true,
-                value: model.card,
-                items:
-                    model.studentCard.map<DropdownMenuItem<StudentCard>>((e) {
+                value: model.studentCard,
+                items: model.studentCardGet
+                    .map<DropdownMenuItem<StudentCard>>((e) {
                   return DropdownMenuItem<StudentCard>(
                     child: Text(e.speciality.toString()),
                     value: e,
