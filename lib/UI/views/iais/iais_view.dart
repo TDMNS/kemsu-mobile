@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/iais/iais_viewmodel.dart';
+import './iais_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-
-final loginController = TextEditingController();
-final passwordController = TextEditingController();
 
 class IaisView extends StatelessWidget {
   const IaisView({Key? key}) : super(key: key);
@@ -29,29 +26,43 @@ class IaisView extends StatelessWidget {
               bottomNavigationBar: customBottomBar(context, model),
               body: _iaisView(context, model),
             ),
-          ));
+          );
         });
   }
 }
 
 _iaisView(BuildContext context, IaisViewModel model) {
-  return Table(
-    defaultColumnWidth: FixedColumnWidth(120.0),
-    border: TableBorder.all(
-        color: Colors.black,
-        style: BorderStyle.solid,
-        width: 2),
-    children: <TableRow>[
-      TableRow(
-        children: [
-          TableCell(child: Text('Дисциплина')),
-          TableCell(child: Text('Отчётность')),
-          TableCell(child: Text('Часы')),
-          TableCell(child: Text('Период проведения')),
-          TableCell(child: Text('Преподаватель')),
-          TableCell(child: Text('Количество баллов')),
-        ],
-      ),
+  return ListView(
+    children: <Widget>[
+      const SizedBox(height: 10),
+        Center(
+          child: Card(
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Table(
+                  defaultColumnWidth: IntrinsicColumnWidth(),
+                  border: TableBorder.all(
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                    width: 1.5),
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: <TableRow>[
+                    TableRow(
+                      children: [
+                        TableCell(child: Text('Дисциплина')),
+                        TableCell(child: Text('Отчётность')),
+                        TableCell(child: Text('Часы')),
+                        TableCell(child: Text('Период проведения')),
+                        TableCell(child: Text('Преподаватель')),
+                        TableCell(child: Text('Количество баллов')),
+                      ],
+                    ),
+                  ],
+                ),
+            ),
+          ),
+        ),
     ],
   );
 }

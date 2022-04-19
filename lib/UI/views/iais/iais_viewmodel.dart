@@ -19,7 +19,7 @@ class IaisViewModel extends BaseViewModel {
   String DISC_LAST_DATE = '';
   String DISC_MARK = '';
 
-  int selectedIndex = 4;
+  int selectedIndex = 2;
 
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
@@ -30,8 +30,7 @@ class IaisViewModel extends BaseViewModel {
       headers: {
         "x-access-token": token,
       },
-    ),
-    );
+    ),);
 
     var courseList = response.data[0];
     DISC_NAME = courseList["DISC_NAME"];

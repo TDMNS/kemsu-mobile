@@ -6,6 +6,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
+import '../iais/iais_view.dart';
 
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
@@ -64,6 +65,12 @@ class ProfileViewModel extends BaseViewModel {
   void exitButton(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AuthView()));
+    notifyListeners();
+  }
+
+  void iaisButton(context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const IaisView()));
     notifyListeners();
   }
 }

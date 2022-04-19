@@ -353,11 +353,18 @@ _profileView(BuildContext context, ProfileViewModel model) {
                         scale: 4,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'ИнфОУПро',
-                        style: TextStyle(
+                      GestureDetector( //Эту штуку поднять до кнопки. Сейчас она только на надписи.
+                        onTap: () {
+                          model.iaisButton(context);
+                          },
+                        child: const Center(
+                          child: Text(
+                            'ИнфОУПро',
+                            style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
-                      )
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
