@@ -156,6 +156,30 @@ class ScheduleViewModel extends BaseViewModel {
   List<CoupleModel> modelDay6Odd6 = [];
   List<CoupleModel> modelDay6Odd7 = [];
 
+  List<List<CoupleModel>> day1All = [];
+  List<List<CoupleModel>> day1Even = [];
+  List<List<CoupleModel>> day1Odd = [];
+
+  List<List<CoupleModel>> day2All = [];
+  List<List<CoupleModel>> day2Even = [];
+  List<List<CoupleModel>> day2Odd = [];
+
+  List<List<CoupleModel>> day3All = [];
+  List<List<CoupleModel>> day3Even = [];
+  List<List<CoupleModel>> day3Odd = [];
+
+  List<List<CoupleModel>> day4All = [];
+  List<List<CoupleModel>> day4Even = [];
+  List<List<CoupleModel>> day4Odd = [];
+
+  List<List<CoupleModel>> day5All = [];
+  List<List<CoupleModel>> day5Even = [];
+  List<List<CoupleModel>> day5Odd = [];
+
+  List<List<CoupleModel>> day6All = [];
+  List<List<CoupleModel>> day6Even = [];
+  List<List<CoupleModel>> day6Odd = [];
+
   bool circle = true;
 
   Future onReady() async {
@@ -447,6 +471,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay1Odd6 = parseCouple(day1Odd6);
     modelDay1Odd7 = parseCouple(day1Odd7);
 
+    day1All = [
+      modelDay1All1,
+      modelDay1All2,
+      modelDay1All3,
+      modelDay1All4,
+      modelDay1All5,
+      modelDay1All6,
+      modelDay1All7
+    ];
+    day1Even = [
+      modelDay1Even1,
+      modelDay1Even2,
+      modelDay1Even3,
+      modelDay1Even4,
+      modelDay1Even5,
+      modelDay1Even6,
+      modelDay1Even7
+    ];
+    day1Odd = [
+      modelDay1Odd1,
+      modelDay1Odd2,
+      modelDay1Odd3,
+      modelDay1Odd4,
+      modelDay1Odd5,
+      modelDay1Odd6,
+      modelDay1Odd7
+    ];
+
     modelDay2All1 = parseCouple(day2All1);
     modelDay2All2 = parseCouple(day2All2);
     modelDay2All3 = parseCouple(day2All3);
@@ -468,6 +520,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay2Odd5 = parseCouple(day2Odd5);
     modelDay2Odd6 = parseCouple(day2Odd6);
     modelDay2Odd7 = parseCouple(day2Odd7);
+
+    day2All = [
+      modelDay2All1,
+      modelDay2All2,
+      modelDay2All3,
+      modelDay2All4,
+      modelDay2All5,
+      modelDay2All6,
+      modelDay2All7
+    ];
+    day2Even = [
+      modelDay2Even1,
+      modelDay2Even2,
+      modelDay2Even3,
+      modelDay2Even4,
+      modelDay2Even5,
+      modelDay2Even6,
+      modelDay2Even7
+    ];
+    day2Odd = [
+      modelDay2Odd1,
+      modelDay2Odd2,
+      modelDay2Odd3,
+      modelDay2Odd4,
+      modelDay2Odd5,
+      modelDay2Odd6,
+      modelDay2Odd7
+    ];
 
     modelDay3All1 = parseCouple(day3All1);
     modelDay3All2 = parseCouple(day3All2);
@@ -491,6 +571,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay3Odd6 = parseCouple(day3Odd6);
     modelDay3Odd7 = parseCouple(day3Odd7);
 
+    day3All = [
+      modelDay3All1,
+      modelDay3All2,
+      modelDay3All3,
+      modelDay3All4,
+      modelDay3All5,
+      modelDay3All6,
+      modelDay3All7
+    ];
+    day3Even = [
+      modelDay3Even1,
+      modelDay3Even2,
+      modelDay3Even3,
+      modelDay3Even4,
+      modelDay3Even5,
+      modelDay3Even6,
+      modelDay3Even7
+    ];
+    day3Odd = [
+      modelDay3Odd1,
+      modelDay3Odd2,
+      modelDay3Odd3,
+      modelDay3Odd4,
+      modelDay3Odd5,
+      modelDay3Odd6,
+      modelDay3Odd7
+    ];
+
     modelDay4All1 = parseCouple(day4All1);
     modelDay4All2 = parseCouple(day4All2);
     modelDay4All3 = parseCouple(day4All3);
@@ -512,6 +620,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay4Odd5 = parseCouple(day4Odd5);
     modelDay4Odd6 = parseCouple(day4Odd6);
     modelDay4Odd7 = parseCouple(day4Odd7);
+
+    day4All = [
+      modelDay4All1,
+      modelDay4All2,
+      modelDay4All3,
+      modelDay4All4,
+      modelDay4All5,
+      modelDay4All6,
+      modelDay4All7
+    ];
+    day4Even = [
+      modelDay4Even1,
+      modelDay4Even2,
+      modelDay4Even3,
+      modelDay4Even4,
+      modelDay4Even5,
+      modelDay4Even6,
+      modelDay4Even7
+    ];
+    day4Odd = [
+      modelDay4Odd1,
+      modelDay4Odd2,
+      modelDay4Odd3,
+      modelDay4Odd4,
+      modelDay4Odd5,
+      modelDay4Odd6,
+      modelDay4Odd7
+    ];
 
     modelDay5All1 = parseCouple(day5All1);
     modelDay5All2 = parseCouple(day5All2);
@@ -535,6 +671,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay5Odd6 = parseCouple(day5Odd6);
     modelDay5Odd7 = parseCouple(day5Odd7);
 
+    day5All = [
+      modelDay5All1,
+      modelDay5All2,
+      modelDay5All3,
+      modelDay5All4,
+      modelDay5All5,
+      modelDay5All6,
+      modelDay5All7
+    ];
+    day5Even = [
+      modelDay5Even1,
+      modelDay5Even2,
+      modelDay5Even3,
+      modelDay5Even4,
+      modelDay5Even5,
+      modelDay5Even6,
+      modelDay5Even7
+    ];
+    day5Odd = [
+      modelDay5Odd1,
+      modelDay5Odd2,
+      modelDay5Odd3,
+      modelDay5Odd4,
+      modelDay5Odd5,
+      modelDay5Odd6,
+      modelDay5Odd7
+    ];
+
     modelDay6All1 = parseCouple(day6All1);
     modelDay6All2 = parseCouple(day6All2);
     modelDay6All3 = parseCouple(day6All3);
@@ -556,6 +720,34 @@ class ScheduleViewModel extends BaseViewModel {
     modelDay6Odd5 = parseCouple(day6Odd5);
     modelDay6Odd6 = parseCouple(day6Odd6);
     modelDay6Odd7 = parseCouple(day6Odd7);
+
+    day6All = [
+      modelDay6All1,
+      modelDay6All2,
+      modelDay6All3,
+      modelDay6All4,
+      modelDay6All5,
+      modelDay6All6,
+      modelDay6All7
+    ];
+    day6Even = [
+      modelDay6Even1,
+      modelDay6Even2,
+      modelDay6Even3,
+      modelDay6Even4,
+      modelDay6Even5,
+      modelDay6Even6,
+      modelDay6Even7
+    ];
+    day6Odd = [
+      modelDay6Odd1,
+      modelDay6Odd2,
+      modelDay6Odd3,
+      modelDay6Odd4,
+      modelDay6Odd5,
+      modelDay6Odd6,
+      modelDay6Odd7
+    ];
 
     tableOn();
 
