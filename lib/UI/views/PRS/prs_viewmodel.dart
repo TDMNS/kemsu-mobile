@@ -1,34 +1,58 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:http/http.dart' as http;
+import '../../../API/config.dart';
+import '../auth/auth_view.dart';
 
 class PRSViewModel extends BaseViewModel {
   PRSViewModel(BuildContext context);
-  int selectedIndex = 0;
+  final storage = const FlutterSecureStorage();
+  List<StudentCard> studentCard = [];
+  int selectedIndex = 2;
 
-  Future onReady() async {}
+  void onTapBottomBar(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
 
-  List<String> newsName = [
-    '23 апреля в Кемеровском государственном университете состоится день открытых дверей',
-    'Институт биологии, экологии и природных ресурсов – победитель фестиваля творчества студентов «Студвесна в КемГУ» 2022 года',
-    'В КемГУ подвели итоги конкурса с международным участием «Космическая история России»',
-    'В КемГУ стартовали курсы повышения квалификации для муниципальных служащих и работников предприятий Кузбасса по вопросам концессионных соглашений',
-    'В 2022 году институт цифры Кемеровского госуниверситета будет осуществлять набор на обучение по IT-направлениям',
-    '14 тысяч молодых ученых из России и зарубежных стран участвуют в работе XVIII Международного молодежного научного форума «Ломоносов – 2022»'
-  ];
-  List<String> newsPhoto = [
-    'images/1.jpg',
-    'images/2.jpg',
-    'images/3.jpg',
-    'images/4.jpg',
-    'images/5.jpg',
-    'images/6.jpg',
-  ];
-  List<String> newsDate = [
-    '14.04.2022',
-    '14.04.2022',
-    '13.04.2022',
-    '13.04.2022',
-    '13.04.2022',
-    '13.04.2022',
-  ];
+  Future onReady() async {
+    String? token = await storage.read(key: "tokenKey");
+    var dio = Dio();
+
+    final response = await dio.get(
+      Config.studCardHost,
+      options: Options(
+        headers: {
+          "x-access-token": token,
+        },
+      ),
+    );
+
+    studentCard = response.data;
+    print(response.data);
+
+    notifyListeners();
+  }
+
+  StudentCard? card;
+
+  List<StudentCard> parseCard(List response) {
+    return response
+        .map<StudentCard>((json) => StudentCard.fromJson(json))
+        .toList();
+  }
+
+  void changeCard(value) async {
+    card = value;
+    notifyListeners();
+    var response = await http.get(Uri.parse('${Config.studCardHost}'));
+    print(response);
+    notifyListeners();
+  }
 }

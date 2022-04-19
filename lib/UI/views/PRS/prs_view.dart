@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
+import '../schedule/schedule_model.dart';
+import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
 class PRSView extends StatelessWidget {
@@ -40,28 +43,44 @@ class PRSView extends StatelessWidget {
 }
 
 _prsView(context, PRSViewModel model) {
-  return ListView.builder(
-      padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 150, bottom: 100),
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      itemCount: 1,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.all(10),
-          height: 150,
-          width: 200,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 15)),
-              ]),
-          child: Stack(),
-        );
-      });
+  dropdownItems = List.generate(
+    model.studentCard.length,
+    (index) => DropdownMenuItem(
+      value: model.studentCard[index].id.toString(),
+      child: Text(
+        '${model.studentCard[index].speciality}',
+      ),
+    ),
+  );
+  return ListView(
+    children: <Widget>[
+      const SizedBox(height: 10),
+      Center(
+        child: Card(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<StudentCard>(
+                hint: const Text(
+                  'Выбрать группу',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (value) {
+                  model.changeCard(value);
+                },
+                isExpanded: true,
+                value: model.card,
+                items:
+                    model.studentCard.map<DropdownMenuItem<StudentCard>>((e) {
+                  return DropdownMenuItem<StudentCard>(
+                    child: Text(e.speciality.toString()),
+                    value: e,
+                  );
+                }).toList(),
+              )),
+        ),
+      ),
+      const SizedBox(height: 10),
+    ],
+  );
 }
