@@ -56,15 +56,8 @@ _iaisView(BuildContext context, IaisViewModel model) {
                       TableCell(child: Center(child: Text('Количество баллов'))),
                     ],
                   ),
-                  TableRow(
-                    children: [
-                      TableCell(child: Center(child: Text('Алгебра и геометрия ТЕСТ'))),
-                      TableCell(child: Center(child: Text('Багина О. Г.'))),
-                      TableCell(child: Center(child: Text('0'))),
-                    ],
-                  ),
-                  ...List.generate(model.CourseIais.length, (index) {
-                    var element = model.CourseIais[index];
+                  ...List.generate(model.Course.length, (index) {
+                    var element = model.Course[index];
                     return TableRow(
                       children: [
                         TableCell(child: Center(child: Text('${element.DISC_NAME}'))),
