@@ -12,6 +12,6 @@ class Config {
       'https://api-next.kemsu.ru/api/schedule/integration/weekList';
   static String scheduleTable =
       'https://api-next.kemsu.ru/api/schedule/integration/getGroupSheduleTable';
-  static String studCourceList =
+  static String studCourseList =
       'https://api-next.kemsu.ru/api/spup/integration/studentCourseList';
 }

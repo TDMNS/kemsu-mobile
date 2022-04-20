@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './iais_viewmodel.dart';
+import './iais_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -39,30 +40,50 @@ _iaisView(BuildContext context, IaisViewModel model) {
           child: Card(
             margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Table(
-                  defaultColumnWidth: IntrinsicColumnWidth(),
-                  border: TableBorder.all(
-                    color: Colors.black,
-                    style: BorderStyle.solid,
-                    width: 1.5),
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: <TableRow>[
-                    TableRow(
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                defaultColumnWidth: IntrinsicColumnWidth(),
+                border: TableBorder.all(
+                  color: Colors.black,
+                  style: BorderStyle.solid,
+                  width: 1.5),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: <TableRow>[
+                  TableRow(
+                    children: [
+                      TableCell(child: Center(child: Text('Дисциплина'))),
+                      TableCell(child: Center(child: Text('Преподаватель'))),
+                      TableCell(child: Center(child: Text('Количество баллов'))),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      TableCell(child: Center(child: Text('Алгебра и геометрия ТЕСТ'))),
+                      TableCell(child: Center(child: Text('Багина О. Г.'))),
+                      TableCell(child: Center(child: Text('0'))),
+                    ],
+                  ),
+                  ...List.generate(model.CourseIais.length, (index) {
+                    var element = model.CourseIais[index];
+                    return TableRow(
                       children: [
-                        TableCell(child: Text('Дисциплина')),
-                        TableCell(child: Text('Отчётность')),
-                        TableCell(child: Text('Часы')),
-                        TableCell(child: Text('Период проведения')),
-                        TableCell(child: Text('Преподаватель')),
-                        TableCell(child: Text('Количество баллов')),
+                        TableCell(child: Center(child: Text('${element.DISC_NAME}'))),
+                        TableCell(child: Center(child: Text('${element.FIO}'))),
+                        TableCell(child: Center(child: Text('${element.DISC_MARK}'))),
+                        /*IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PRSView()),
+                            );
+                          },
+                          icon: const Icon(Icons.saved_search))*/
                       ],
-                    ),
-                  ],
-                ),
-            ),
-          ),
-        ),
+                    );
+                  }),
+                ],
+        ))))
     ],
   );
 }
