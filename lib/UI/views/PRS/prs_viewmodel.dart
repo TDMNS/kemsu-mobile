@@ -13,10 +13,14 @@ import '../auth/auth_view.dart';
 class PRSViewModel extends BaseViewModel {
   PRSViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
-  List<StudentCard> studentCardGet = [];
-  int selectedIndex = 2;
-  StudentCard? studentCard;
 
+  /// first request
+  List<StudyCard> receivedStudyCard = [];
+  StudyCard? studyCard;
+
+  /// second request
+
+  int selectedIndex = 2;
   void onTapBottomBar(int index) {
     selectedIndex = index;
     notifyListeners();
@@ -30,18 +34,20 @@ class PRSViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response =
         await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
-    studentCardGet = parseCard(json.decode(response.body));
+    receivedStudyCard = parseCard(json.decode(response.body));
     notifyListeners();
   }
 
-  List<StudentCard> parseCard(List response) {
-    return response
-        .map<StudentCard>((json) => StudentCard.fromJson(json))
-        .toList();
+  List<StudyCard> parseCard(List response) {
+    return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
   }
 
-  void changeCard(value) {
-    studentCard = value;
+  changeCard(value) async {
+    studyCard = value;
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse(
+        '${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
+    print(response.body);
     notifyListeners();
   }
 }

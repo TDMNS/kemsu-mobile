@@ -1,10 +1,10 @@
-class StudentCard {
+class StudyCard {
   String? speciality;
   int? id;
 
-  StudentCard({this.speciality, this.id});
+  StudyCard({this.speciality, this.id});
 
-  StudentCard.fromJson(Map<String, dynamic> json) {
+  StudyCard.fromJson(Map<String, dynamic> json) {
     speciality = json["SPECIALITY"];
     id = json["ID"];
   }
