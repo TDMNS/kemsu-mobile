@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -297,33 +298,38 @@ _profileView(BuildContext context, ProfileViewModel model) {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(right: 30),
-                  height: 100,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            blurRadius: 15,
-                            offset: const Offset(0, 15))
-                      ]),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'images/icons/Invoice.png',
-                        scale: 4,
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'ПГАС',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      )
-                    ],
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(settings: RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 30),
+                    height: 100,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 15,
+                              offset: const Offset(0, 15))
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/icons/Invoice.png',
+                          scale: 4,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'ПГАС',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
