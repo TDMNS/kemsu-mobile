@@ -19,6 +19,7 @@ class PRSViewModel extends BaseViewModel {
   StudyCard? studyCard;
 
   /// second request
+  List<PrsSemesterList> prsSemesterList = [];
 
   int selectedIndex = 2;
   void onTapBottomBar(int index) {
@@ -47,7 +48,15 @@ class PRSViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse(
         '${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
-    print(response.body);
+    prsSemesterList =
+        parsePrsSemesterList(json.decode(response.body)["brsSemesterList"]);
+    print(prsSemesterList[0].semester);
     notifyListeners();
+  }
+
+  List<PrsSemesterList> parsePrsSemesterList(List response) {
+    return response
+        .map<PrsSemesterList>((json) => PrsSemesterList.fromJson(json))
+        .toList();
   }
 }

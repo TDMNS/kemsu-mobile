@@ -82,6 +82,54 @@ _prsView(context, PRSViewModel model) {
         ),
       ),
       const SizedBox(height: 10),
+      model.studyCard?.id != null
+          ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                border: TableBorder.all(),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                defaultColumnWidth: const FlexColumnWidth(),
+                children: [
+                  const TableRow(
+                    children: [
+                      Text(
+                        'Учебный год',
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Семестр',
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Рейтинг',
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  ...List.generate(model.prsSemesterList.length, (index) {
+                    var element = model.prsSemesterList[index];
+
+                    return TableRow(
+                      children: [
+                        Text(
+                          "${element.startDate}-${element.endDate}",
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          "${element.semester}",
+                          textAlign: TextAlign.center,
+                        ), //Extracting from Map element the value
+                        Text(
+                          "${element.commonScore}",
+                          textAlign: TextAlign.center,
+                        ),
+                        // DataCell(Text("${element.commonScore}"))
+                      ],
+                    );
+                  }),
+                ],
+              ))
+          : const SizedBox.shrink()
     ],
   );
 }
