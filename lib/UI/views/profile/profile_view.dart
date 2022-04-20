@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
 import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -138,107 +139,243 @@ _profileView(BuildContext context, ProfileViewModel model) {
         ),
         const SizedBox(height: 20),
         Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: ExpansionTile(
-            expandedAlignment: Alignment.center,
-            title: const Text(
-              'Данные студента',
-              style: TextStyle(
-                  fontFamily: "Ubuntu",
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold),
-            ),
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.only(left: 20, bottom: 30, right: 20),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                expandedAlignment: Alignment.center,
+                title: const Text(
+                  'Данные студента',
+                  style: TextStyle(
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
                 children: <Widget>[
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Группа: '),
-                        TextSpan(
-                            text: model.group,
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Направление: '),
-                        TextSpan(
-                            text: model.speciality,
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Группа: '),
+                              TextSpan(
+                                  text: model.group,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Форма обучения: '),
-                        TextSpan(
-                            text: model.learnForm,
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Направление: '),
+                              TextSpan(
+                                  text: model.speciality,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Форма финансирования: '),
-                        TextSpan(
-                            text: model.finForm,
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Форма обучения: '),
+                              TextSpan(
+                                  text: model.learnForm,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Email: '),
-                        TextSpan(
-                            text: model.email,
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Форма финансирования: '),
+                              TextSpan(
+                                  text: model.finForm,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      children: <TextSpan>[
-                        const TextSpan(text: 'Телефон: '),
-                        TextSpan(
-                            text: model.phone,
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Email: '),
+                              TextSpan(
+                                  text: model.email,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Телефон: '),
+                              TextSpan(
+                                  text: model.phone,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
-            ],
+            ),
           ),
+        ),
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PRSView()),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 30),
+                    height: 100,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 15,
+                              offset: const Offset(0, 15))
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/icons/Search.png',
+                          scale: 4,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'БРС',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 30),
+                  height: 100,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 15,
+                            offset: const Offset(0, 15))
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/icons/Invoice.png',
+                        scale: 4,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'ПГАС',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 30),
+                  height: 100,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 15,
+                            offset: const Offset(0, 15))
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/icons/Book.png',
+                        scale: 4,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'ИнфОУПро',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 30,
         ),
         GestureDetector(
           onTap: () {
@@ -249,8 +386,8 @@ _profileView(BuildContext context, ProfileViewModel model) {
             height: 50,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 20,
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 15,
                   offset: const Offset(0, 15))
             ]),
             child: Card(

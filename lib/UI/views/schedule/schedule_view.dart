@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -7,10 +8,16 @@ import '../../widgets.dart';
 
 final loginController = TextEditingController();
 final passwordController = TextEditingController();
+List<DropdownMenuItem<String>> dropdownItems = [];
 
-class ScheduleView extends StatelessWidget {
+class ScheduleView extends StatefulWidget {
   const ScheduleView({Key? key}) : super(key: key);
 
+  @override
+  State<ScheduleView> createState() => _ScheduleViewState();
+}
+
+class _ScheduleViewState extends State<ScheduleView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ScheduleViewModel>.reactive(
@@ -30,94 +37,868 @@ class ScheduleView extends StatelessWidget {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Расписание'),
-                  bottomNavigationBar: customBottomBar(context, model),
-                  body: _scheduleView(context, model),
-                ),
+                child: model.circle
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Scaffold(
+                        extendBody: true,
+                        extendBodyBehindAppBar: true,
+                        appBar: customAppBar(context, model, 'Расписание'),
+                        bottomNavigationBar: customBottomBar(context, model),
+                        body: _scheduleView(context, model),
+                      ),
               ));
         });
   }
 }
 
 _scheduleView(BuildContext context, ScheduleViewModel model) {
+  dropdownItems = List.generate(
+    model.facultyList.length,
+    (index) => DropdownMenuItem(
+      value: model.facultyList[index].id.toString(),
+      child: Text(
+        '${model.facultyList[index].faculty}',
+      ),
+    ),
+  );
   return ListView(
     children: <Widget>[
+      const SizedBox(height: 10),
       Center(
-        child: SizedBox(
-          width: 140,
-          child: DropdownButton<String>(
-            value: model.dropdownValue,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
-            onChanged: (newValue) {
-              model.newDropDownValue(newValue);
-            },
-            items: <String>[
-              'Выбор семестра',
-              '1',
-              '2',
-              '3',
-              '4',
-              '5',
-              '6',
-              '7',
-              '8',
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
+        child: Card(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<FacultyList>(
+                hint: const Text(
+                  'Выбрать институт',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (value) {
+                  model.changeFaculty(value);
+                },
+                isExpanded: true,
+                value: model.scheduleFaculty,
+                items:
+                    model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
+                  return DropdownMenuItem<FacultyList>(
+                    child: Text(e.faculty.toString()),
+                    value: e,
+                  );
+                }).toList(),
+              )),
+        ),
+      ),
+      const SizedBox(height: 10),
+      Center(
+        child: Card(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<GroupList>(
+                hint: const Text(
+                  'Выбрать группу',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onChanged: (value) {
+                  model.changeGroup(value);
+                },
+                isExpanded: true,
+                value: model.scheduleGroup,
+                items: model.groupList.map<DropdownMenuItem<GroupList>>((e) {
+                  return DropdownMenuItem<GroupList>(
+                    child: Text(e.groupName.toString()),
+                    value: e,
+                  );
+                }).toList(),
+              )),
         ),
       ),
       const SizedBox(height: 20),
       Center(
-        child: SizedBox(
-          width: 140,
-          child: DropdownButton<String>(
-            value: model.dropdownValue2,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
-            onChanged: (newValue) {
-              model.newDropDownValue2(newValue);
-            },
-            items: <String>[
-              'Выбор института',
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+        child: GestureDetector(
+          onTap: () async {
+            model.getScheduleTable();
+          },
+          child: Container(
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            height: 50,
+            decoration: BoxDecoration(
+                color: model.scheduleGroup == null ? Colors.grey : Colors.red,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: const Center(
+              child: Text(
+                'Показать',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+            ),
           ),
         ),
       ),
-      const SizedBox(height: 20),
-      Center(
-        child: SizedBox(
-          width: 140,
-          child: DropdownButton<String>(
-            value: model.dropdownValue3,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
-            onChanged: (newValue) {
-              model.newDropDownValue3(newValue);
-            },
-            items: <String>[
-              'Выбор группы',
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
-      )
+      model.table == true
+          ? Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                      onPressed: () {
+                        model.choiceDay('back');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 20,
+                      )),
+                  model.indexDay == 1
+                      ? const Text(
+                          'Понедельник',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 2
+                      ? const Text(
+                          'Вторник',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 3
+                      ? const Text(
+                          'Среда',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 4
+                      ? const Text(
+                          'Четверг',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 5
+                      ? const Text(
+                          'Пятница',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 6
+                      ? const Text(
+                          'Суббота',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  model.indexDay == 7
+                      ? const Text(
+                          'Воскресенье',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      : const Text(''),
+                  IconButton(
+                      onPressed: () {
+                        model.choiceDay('next');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                      )),
+                ],
+              ),
+            )
+          : const SizedBox(),
+      Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
+          child: model.table == false ? const SizedBox() : _choiceDay(model))
     ],
+  );
+}
+
+_choiceDay(model) {
+  if (model.indexDay == 1) {
+    return _tableDay1(model);
+  } else if (model.indexDay == 2) {
+    return _tableDay2(model);
+  } else if (model.indexDay == 3) {
+    return _tableDay3(model);
+  } else if (model.indexDay == 4) {
+    return _tableDay4(model);
+  } else if (model.indexDay == 5) {
+    return _tableDay5(model);
+  } else if (model.indexDay == 6) {
+    return _tableDay6(model);
+  } else if (model.indexDay == 7) {
+    return _tableDay7();
+  }
+}
+
+_tableDay1(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All1?.length > 0
+                ? Text(
+                    '${model.modelDay1All1[0].discName}, ${model.modelDay1All1[0].lessonType}, ${model.modelDay1All1[0].prepName}, ${model.modelDay1All1[0].auditoryName}',
+                  )
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All2?.length > 0
+                ? Text(
+                    '${model.modelDay1All2[0].discName}, ${model.modelDay1All2[0].lessonType}, ${model.modelDay1All2[0].prepName}, ${model.modelDay1All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All3?.length > 0
+                ? Text(
+                    '${model.modelDay1All3[0].discName}, ${model.modelDay1All3[0].lessonType}, ${model.modelDay1All3[0].prepName}, ${model.modelDay1All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All4?.length > 0
+                ? Text(
+                    '${model.modelDay1All4[0].discName}, ${model.modelDay1All4[0].lessonType}, ${model.modelDay1All4[0].prepName}, ${model.modelDay1All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All5?.length > 0
+                ? Text(
+                    '${model.modelDay1All5[0].discName}, ${model.modelDay1All5[0].lessonType}, ${model.modelDay1All5[0].prepName}, ${model.modelDay1All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All6?.length > 0
+                ? Text(
+                    '${model.modelDay1All6[0].discName}, ${model.modelDay1All6[0].lessonType}, ${model.modelDay1All6[0].prepName}, ${model.modelDay1All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All7?.length > 0
+                ? Text(
+                    '${model.modelDay1All7[0].discName}, ${model.modelDay1All7[0].lessonType}, ${model.modelDay1All7[0].prepName}, ${model.modelDay1All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay2(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All1?.length > 0
+                ? Text(
+                    '${model.modelDay2All1[0].discName}, ${model.modelDay2All1[0].lessonType}, ${model.modelDay2All1[0].prepName}, ${model.modelDay2All1[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All2?.length > 0
+                ? Text(
+                    '${model.modelDay2All2[0].discName}, ${model.modelDay2All2[0].lessonType}, ${model.modelDay2All2[0].prepName}, ${model.modelDay2All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All3?.length > 0
+                ? Text(
+                    '${model.modelDay2All3[0].discName}, ${model.modelDay2All3[0].lessonType}, ${model.modelDay2All3[0].prepName}, ${model.modelDay2All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All4?.length > 0
+                ? Text(
+                    '${model.modelDay2All4[0].discName}, ${model.modelDay2All4[0].lessonType}, ${model.modelDay2All4[0].prepName}, ${model.modelDay2All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All5?.length > 0
+                ? Text(
+                    '${model.modelDay2All5[0].discName}, ${model.modelDay2All5[0].lessonType}, ${model.modelDay2All5[0].prepName}, ${model.modelDay2All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All6?.length > 0
+                ? Text(
+                    '${model.modelDay2All6[0].discName}, ${model.modelDay2All6[0].lessonType}, ${model.modelDay2All6[0].prepName}, ${model.modelDay2All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay2All7?.length > 0
+                ? Text(
+                    '${model.modelDay2All7[0].discName}, ${model.modelDay2All7[0].lessonType}, ${model.modelDay2All7[0].prepName}, ${model.modelDay2All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay3(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All1?.length > 0
+                ? Text(
+                    '${model.modelDay3All1[0].discName}, ${model.modelDay3All1[0].lessonType}, ${model.modelDay3All1[0].prepName}, ${model.modelDay3All1[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All2?.length > 0
+                ? Text(
+                    '${model.modelDay3All2[0].discName}, ${model.modelDay3All2[0].lessonType}, ${model.modelDay3All2[0].prepName}, ${model.modelDay3All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All3?.length > 0
+                ? Text(
+                    '${model.modelDay3All3[0].discName}, ${model.modelDay3All3[0].lessonType}, ${model.modelDay3All3[0].prepName}, ${model.modelDay3All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All4?.length > 0
+                ? Text(
+                    '${model.modelDay3All4[0].discName}, ${model.modelDay3All4[0].lessonType}, ${model.modelDay3All4[0].prepName}, ${model.modelDay3All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All5?.length > 0
+                ? Text(
+                    '${model.modelDay3All5[0].discName}, ${model.modelDay3All5[0].lessonType}, ${model.modelDay3All5[0].prepName}, ${model.modelDay3All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All6?.length > 0
+                ? Text(
+                    '${model.modelDay3All6[0].discName}, ${model.modelDay3All6[0].lessonType}, ${model.modelDay3All6[0].prepName}, ${model.modelDay3All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay3All7?.length > 0
+                ? Text(
+                    '${model.modelDay3All7[0].discName}, ${model.modelDay3All7[0].lessonType}, ${model.modelDay3All7[0].prepName}, ${model.modelDay3All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay4(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All1?.length > 0
+                ? Text(
+                    '${model.modelDay4All1[0].discName}, ${model.modelDay4All1[0].lessonType}, ${model.modelDay4All1[0].prepName}, ${model.modelDay4All1[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All2?.length > 0
+                ? Text(
+                    '${model.modelDay4All2[0].discName}, ${model.modelDay4All2[0].lessonType}, ${model.modelDay4All2[0].prepName}, ${model.modelDay4All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All3?.length > 0
+                ? Text(
+                    '${model.modelDay4All3[0].discName}, ${model.modelDay4All3[0].lessonType}, ${model.modelDay4All3[0].prepName}, ${model.modelDay4All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All4?.length > 0
+                ? Text(
+                    '${model.modelDay4All4[0].discName}, ${model.modelDay4All4[0].lessonType}, ${model.modelDay4All4[0].prepName}, ${model.modelDay4All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All5?.length > 0
+                ? Text(
+                    '${model.modelDay4All5[0].discName}, ${model.modelDay4All5[0].lessonType}, ${model.modelDay4All5[0].prepName}, ${model.modelDay4All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All6?.length > 0
+                ? Text(
+                    '${model.modelDay4All6[0].discName}, ${model.modelDay4All6[0].lessonType}, ${model.modelDay4All6[0].prepName}, ${model.modelDay4All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay4All7?.length > 0
+                ? Text(
+                    '${model.modelDay4All7[0].discName}, ${model.modelDay4All7[0].lessonType}, ${model.modelDay4All7[0].prepName}, ${model.modelDay4All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay5(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All1?.length > 0
+                ? Text(
+                    '${model.modelDay5All1[0].discName}, ${model.modelDay5All1[0].lessonType}, ${model.modelDay5All1[0].prepName}, ${model.modelDay5All1[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All2?.length > 0
+                ? Text(
+                    '${model.modelDay5All2[0].discName}, ${model.modelDay5All2[0].lessonType}, ${model.modelDay5All2[0].prepName}, ${model.modelDay5All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All3?.length > 0
+                ? Text(
+                    '${model.modelDay5All3[0].discName}, ${model.modelDay5All3[0].lessonType}, ${model.modelDay5All3[0].prepName}, ${model.modelDay5All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All4?.length > 0
+                ? Text(
+                    '${model.modelDay5All4[0].discName}, ${model.modelDay5All4[0].lessonType}, ${model.modelDay5All4[0].prepName}, ${model.modelDay5All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All5?.length > 0
+                ? Text(
+                    '${model.modelDay5All5[0].discName}, ${model.modelDay5All5[0].lessonType}, ${model.modelDay5All5[0].prepName}, ${model.modelDay5All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All6?.length > 0
+                ? Text(
+                    '${model.modelDay5All6[0].discName}, ${model.modelDay5All6[0].lessonType}, ${model.modelDay5All6[0].prepName}, ${model.modelDay5All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay5All7?.length > 0
+                ? Text(
+                    '${model.modelDay5All7[0].discName}, ${model.modelDay5All7[0].lessonType}, ${model.modelDay5All7[0].prepName}, ${model.modelDay5All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay6(model) {
+  return Table(
+    border: TableBorder.all(),
+    children: [
+      const TableRow(children: [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Время',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Пары',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        )
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[0].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All1?.length > 0
+                ? Text(
+                    '${model.modelDay6All1[0].discName}, ${model.modelDay6All1[0].lessonType}, ${model.modelDay6All1[0].prepName}, ${model.modelDay6All1[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[1].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All2?.length > 0
+                ? Text(
+                    '${model.modelDay6All2[0].discName}, ${model.modelDay6All2[0].lessonType}, ${model.modelDay6All2[0].prepName}, ${model.modelDay6All2[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[2].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All3?.length > 0
+                ? Text(
+                    '${model.modelDay6All3[0].discName}, ${model.modelDay6All3[0].lessonType}, ${model.modelDay6All3[0].prepName}, ${model.modelDay6All3[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[3].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All4?.length > 0
+                ? Text(
+                    '${model.modelDay6All4[0].discName}, ${model.modelDay6All4[0].lessonType}, ${model.modelDay6All4[0].prepName}, ${model.modelDay6All4[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[4].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All5?.length > 0
+                ? Text(
+                    '${model.modelDay6All5[0].discName}, ${model.modelDay6All5[0].lessonType}, ${model.modelDay6All5[0].prepName}, ${model.modelDay6All5[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[5].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All6?.length > 0
+                ? Text(
+                    '${model.modelDay6All6[0].discName}, ${model.modelDay6All6[0].lessonType}, ${model.modelDay6All6[0].prepName}, ${model.modelDay6All6[0].auditoryName}')
+                : const Text(''))
+      ]),
+      TableRow(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${model.coupleList[6].desc}'),
+        ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay6All7?.length > 0
+                ? Text(
+                    '${model.modelDay6All7[0].discName}, ${model.modelDay6All7[0].lessonType}, ${model.modelDay6All7[0].prepName}, ${model.modelDay6All7[0].auditoryName}')
+                : const Text('')),
+      ])
+    ],
+  );
+}
+
+_tableDay7() {
+  return const Icon(
+    Icons.hotel,
+    size: 200,
+    color: Colors.grey,
   );
 }

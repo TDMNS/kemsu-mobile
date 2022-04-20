@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 
 import 'UI/views/auth/auth_view.dart';
+import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule_view.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        //'/first': (context) => ProfilePage1(),
+        '/first': (context) => const NewsView(),
         '/second': (context) => const ScheduleView(),
         '/third': (context) => const ProfileView(),
       },
