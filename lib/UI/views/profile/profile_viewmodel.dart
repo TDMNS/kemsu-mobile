@@ -58,7 +58,7 @@ class ProfileViewModel extends BaseViewModel {
     statusSTR = studentCard["STATUS_STR"];
     finForm = studentCard["FINFORM"];
     //print(response1.data);
-
+    print(studentCard["ID"]);
     notifyListeners();
   }
 
