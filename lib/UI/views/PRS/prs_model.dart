@@ -26,3 +26,29 @@ class PrsSemesterList {
     commonScore = json["COMMON_BALL_FOR_SEMESTER"];
   }
 }
+
+class ReitList {
+  String? discipline;
+  String? intermediateAttestationForm;
+  int? currentScore;
+  int? frontScore;
+  int? commonScore;
+  String? mark;
+
+  ReitList(
+      {this.discipline,
+      this.intermediateAttestationForm,
+      this.currentScore,
+      this.frontScore,
+      this.commonScore,
+      this.mark});
+
+  ReitList.fromJson(Map<String, dynamic> json) {
+    discipline = json["DEK_DISCIP_NAME"];
+    intermediateAttestationForm = json["TIP_OTCH"];
+    currentScore = json["CURRENT_BALL"];
+    frontScore = json["FRONT_BALL"];
+    commonScore = json["COMMON_BALL"];
+    mark = json["MARK"];
+  }
+}
