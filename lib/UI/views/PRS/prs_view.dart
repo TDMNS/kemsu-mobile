@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/API/config.dart';
+import 'package:kemsu_app/UI/views/PRS/prs_detail_view.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -104,6 +106,10 @@ _prsView(context, PRSViewModel model) {
                         'Рейтинг',
                         textAlign: TextAlign.center,
                       ),
+                      Text(
+                        'Просмотр',
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                   ...List.generate(model.prsSemesterList.length, (index) {
@@ -123,7 +129,22 @@ _prsView(context, PRSViewModel model) {
                           "${element.commonScore}",
                           textAlign: TextAlign.center,
                         ),
-                        // DataCell(Text("${element.commonScore}"))
+                        IconButton(
+                            onPressed: () async {
+                              await model.getReitList(element.startDate,
+                                  element.endDate, element.semester);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PRSDetailView(
+                                          reitList: model.reitList,
+                                          semester: element.semester != null
+                                              ? element.semester!
+                                              : 1,
+                                        )),
+                              );
+                            },
+                            icon: const Icon(Icons.saved_search))
                       ],
                     );
                   }),

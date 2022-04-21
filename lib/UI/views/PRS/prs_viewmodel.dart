@@ -21,6 +21,9 @@ class PRSViewModel extends BaseViewModel {
   /// second request
   List<PrsSemesterList> prsSemesterList = [];
 
+  /// third request
+  List<ReitList> reitList = [];
+
   int selectedIndex = 2;
   void onTapBottomBar(int index) {
     selectedIndex = index;
@@ -43,6 +46,16 @@ class PRSViewModel extends BaseViewModel {
     return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
   }
 
+  List<PrsSemesterList> parsePrsSemesterList(List response) {
+    return response
+        .map<PrsSemesterList>((json) => PrsSemesterList.fromJson(json))
+        .toList();
+  }
+
+  List<ReitList> parseReitList(List response) {
+    return response.map<ReitList>((json) => ReitList.fromJson(json)).toList();
+  }
+
   changeCard(value) async {
     studyCard = value;
     String? token = await storage.read(key: "tokenKey");
@@ -50,13 +63,14 @@ class PRSViewModel extends BaseViewModel {
         '${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
     prsSemesterList =
         parsePrsSemesterList(json.decode(response.body)["brsSemesterList"]);
-    print(prsSemesterList[0].semester);
     notifyListeners();
   }
 
-  List<PrsSemesterList> parsePrsSemesterList(List response) {
-    return response
-        .map<PrsSemesterList>((json) => PrsSemesterList.fromJson(json))
-        .toList();
+  getReitList(startDate, endDate, semester) async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse(
+        '${Config.reitList}?studentId=${studyCard?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
+    reitList = parseReitList(json.decode(response.body)["reitList"]);
+    notifyListeners();
   }
 }
