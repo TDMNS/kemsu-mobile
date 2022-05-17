@@ -35,34 +35,59 @@ class IaisView extends StatelessWidget {
 _iaisView(BuildContext context, IaisViewModel model) {
   return ListView(
     children: <Widget>[
-      const SizedBox(height: 10),
+      const SizedBox(height: 12),
         Center(
           child: Card(
             margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Table(
-                defaultColumnWidth: IntrinsicColumnWidth(),
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('Дисциплина')),
+                  DataColumn(label: Text('Преподаватель')),
+                ],
+                rows: model.Course.map<DataRow>((e) => DataRow(cells: [
+                  DataCell(Text(e.DISC_NAME.toString())),
+                  DataCell(Text(e.FIO.toString())),
+                ],
+                /*onSelectChanged: (boo) {
+                  if (boo==true) {() async {
+                    await model.getReitList(e.startDate,
+                    e.endDate, e.semester);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PRSDetailView(
+                          reitList: e.discName,
+                          semester: e.FIO
+                        )),
+                      );
+                    }},
+
+                  }
+                }*/
+                )).toList(),
                 border: TableBorder.all(
                   color: Colors.black,
                   style: BorderStyle.solid,
-                  width: 1.5),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: <TableRow>[
-                  TableRow(
-                    children: [
-                      TableCell(child: Center(child: Text('Дисциплина'))),
-                      TableCell(child: Center(child: Text('Преподаватель'))),
-                      TableCell(child: Center(child: Text('Количество баллов'))),
-                    ],
+                  width: 1.5,
                   ),
-                  ...List.generate(model.Course.length, (index) {
+                dataRowHeight: 100,
+                showCheckboxColumn: false,
+
+                ),
+
+                  /*...List.generate(model.Course.length, (index) {
                     var element = model.Course[index];
                     return TableRow(
-                      children: [
-                        TableCell(child: Center(child: Text('${element.DISC_NAME}'))),
-                        TableCell(child: Center(child: Text('${element.FIO}'))),
-                        TableCell(child: Center(child: Text('${element.DISC_MARK}'))),
+                          children: [
+                            TableCell(child: Center(child: Text('${element.DISC_NAME}'))),
+                            TableCell(child: Center(child: Text('${element.FIO}'))),
+                            TableCell(child: Center(child: Text('${element.DISC_MARK}'))),
+                          ],
+                    );
+                  }),*/
+
                         /*IconButton(
                           onPressed: () {
                             Navigator.push(
@@ -72,12 +97,9 @@ _iaisView(BuildContext context, IaisViewModel model) {
                             );
                           },
                           icon: const Icon(Icons.saved_search))*/
-                      ],
-                    );
-                  }),
-                ],
-        ))))
-    ],
+                    )),
+                  ),
+        ],
   );
 }
 
