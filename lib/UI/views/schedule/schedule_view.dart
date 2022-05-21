@@ -46,14 +46,16 @@ class _ScheduleViewState extends State<ScheduleView> {
                         extendBodyBehindAppBar: true,
                         appBar: customAppBar(context, model, 'Расписание'),
                         bottomNavigationBar: customBottomBar(context, model),
-                        body: _scheduleView(context, model),
+                        body: model.currentTable == false
+                            ? _scheduleViewStudent(context, model)
+                            : _scheduleViewAll(context, model),
                       ),
               ));
         });
   }
 }
 
-_scheduleView(BuildContext context, ScheduleViewModel model) {
+_scheduleViewAll(BuildContext context, ScheduleViewModel model) {
   dropdownItems = List.generate(
     model.facultyList.length,
     (index) => DropdownMenuItem(
@@ -224,6 +226,82 @@ _scheduleView(BuildContext context, ScheduleViewModel model) {
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
           child: model.table == false ? const SizedBox() : _choiceDay(model))
+    ],
+  );
+}
+
+_scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
+  return ListView(
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+                onPressed: () {
+                  model.choiceDay('back');
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  size: 20,
+                )),
+            model.indexDay == 1
+                ? const Text(
+                    'Понедельник',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 2
+                ? const Text(
+                    'Вторник',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 3
+                ? const Text(
+                    'Среда',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 4
+                ? const Text(
+                    'Четверг',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 5
+                ? const Text(
+                    'Пятница',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 6
+                ? const Text(
+                    'Суббота',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 7
+                ? const Text(
+                    'Воскресенье',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            IconButton(
+                onPressed: () {
+                  model.choiceDay('next');
+                },
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                )),
+          ],
+        ),
+      ),
+      Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
+          child: _choiceDay(model))
     ],
   );
 }

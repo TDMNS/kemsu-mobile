@@ -99,6 +99,32 @@ class CoupleList {
   }
 }
 
+class CurrentGroupList {
+  int? facultyId;
+  String? facultyName;
+  int? groupId;
+  String? groupName;
+  String? studyYear;
+  int? semesterId;
+
+  CurrentGroupList(
+      {this.facultyId,
+      this.facultyName,
+      this.groupId,
+      this.groupName,
+      this.semesterId,
+      this.studyYear});
+
+  CurrentGroupList.fromJson(Map<String, dynamic> json) {
+    facultyId = json["facultyId"];
+    facultyName = json["facultyName"];
+    groupId = json["groupId"];
+    groupName = json["groupName"];
+    studyYear = json["studyYear"];
+    semesterId = json["semesterId"];
+  }
+}
+
 class CoupleModel {
   String? discName;
   String? prepName;
