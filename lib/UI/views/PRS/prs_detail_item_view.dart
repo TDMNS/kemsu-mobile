@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_detail_item_view.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,13 +8,13 @@ import '../schedule/schedule_model.dart';
 import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
-class PRSDetailView extends StatelessWidget {
-  const PRSDetailView(
-      {Key? key, required this.reitList, required this.semester})
+class PRSDetailItemView extends StatelessWidget {
+  const PRSDetailItemView(
+      {Key? key, required this.reitItemList, required this.discipline})
       : super(key: key);
 
-  final int semester;
-  final List<ReitList> reitList;
+  final String discipline;
+  final List<ReitItemList> reitItemList;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +38,16 @@ class PRSDetailView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Семестр $semester'),
+                  appBar: customAppBar(context, model, discipline),
                   bottomNavigationBar: customBottomBar(context, model),
-                  body: _prsDetailView(context, model, reitList),
+                  body: _prsDetailItemView(context, model, reitItemList),
                 ),
               ));
         });
   }
 }
 
-_prsDetailView(context, PRSViewModel model, reitList) {
+_prsDetailItemView(context, PRSViewModel model, reitItemList) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
@@ -62,75 +61,43 @@ _prsDetailView(context, PRSViewModel model, reitList) {
               const TableRow(
                 children: [
                   Text(
-                    'Дисциплина',
+                    'Вид учебной деятельности',
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Форма промежуточной аттестации',
+                    'Количество',
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Текущий балл',
+                    'Максимальный балл',
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Аттестационный балл',
+                    'Ваш балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Общий балл',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Оценка',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Просмотр',
-                    textAlign: TextAlign.center,
-                  )
                 ],
               ),
-              ...List.generate(reitList.length, (index) {
-                var element = reitList[index];
+              ...List.generate(reitItemList.length, (index) {
+                var element = reitItemList[index];
                 return TableRow(
                   children: [
                     Text(
-                      "${element.discipline}",
+                      "${element.activityName} (${element.comment})",
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "${element.intermediateAttestationForm}",
+                      "${element.count}",
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "${element.currentScore}",
+                      "${element.maxBall}",
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "${element.frontScore}",
+                      "${element.ball}",
                       textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.commonScore}",
-                      textAlign: TextAlign.center,
-                    ), //Extracting from Map element the value
-                    Text(
-                      "${element.mark}",
-                      textAlign: TextAlign.center,
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          await model.getReitItemList(element.studyId);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PRSDetailItemView(
-                                    reitItemList: model.reitItemList,
-                                    discipline: element.discipline)),
-                          );
-                        },
-                        icon: const Icon(Icons.saved_search))
+                    )
                   ],
                 );
               }),

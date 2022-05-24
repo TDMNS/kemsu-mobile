@@ -34,6 +34,7 @@ class ReitList {
   int? frontScore;
   int? commonScore;
   String? mark;
+  int? studyId;
 
   ReitList(
       {this.discipline,
@@ -41,7 +42,8 @@ class ReitList {
       this.currentScore,
       this.frontScore,
       this.commonScore,
-      this.mark});
+      this.mark,
+      this.studyId});
 
   ReitList.fromJson(Map<String, dynamic> json) {
     discipline = json["DEK_DISCIP_NAME"];
@@ -50,5 +52,25 @@ class ReitList {
     frontScore = json["FRONT_BALL"];
     commonScore = json["COMMON_BALL"];
     mark = json["MARK_SHORT"];
+    studyId = json["STUDY_ID"];
+  }
+}
+
+class ReitItemList {
+  String? activityName;
+  String? comment;
+  int? count;
+  int? maxBall;
+  int? ball;
+
+  ReitItemList(
+      {this.activityName, this.comment, this.count, this.maxBall, this.ball});
+
+  ReitItemList.fromJson(Map<String, dynamic> json) {
+    activityName = json["ACTIVITY_NAME"];
+    comment = json["comment"];
+    count = json["COUNT"];
+    maxBall = json["MAX_BALL"];
+    ball = json["BALL"];
   }
 }
