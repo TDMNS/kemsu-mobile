@@ -69,7 +69,7 @@ _prsDetailItemView(context, PRSViewModel model, reitItemList) {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Максимальный балл',
+                    'Макс. балл',
                     textAlign: TextAlign.center,
                   ),
                   Text(

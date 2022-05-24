@@ -59,36 +59,54 @@ _prsDetailView(context, PRSViewModel model, reitList) {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             defaultColumnWidth: const FlexColumnWidth(),
             children: [
-              const TableRow(
+              TableRow(
                 children: [
-                  Text(
+                  const Text(
                     'Дисциплина',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Форма промежуточной аттестации',
+                  TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('ФПА'),
+                            content: const Text(
+                                'ФПА - форма промежуточной аттестации'),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Закрыть'))
+                            ],
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        primary: Colors.black,
+                      ),
+                      child: Text('ФПА')),
+                  const Text(
+                    'Текущ. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Текущий балл',
+                  const Text(
+                    'Аттест. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Аттестационный балл',
+                  const Text(
+                    'Общ. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Общий балл',
+                  const Text(
+                    'Оц-ка',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Оценка',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
+                  const Text(
                     'Просмотр',
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
               ...List.generate(reitList.length, (index) {
