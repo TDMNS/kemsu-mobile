@@ -6,6 +6,8 @@ class Config {
       "https://api-next.kemsu.ru/api/personal-office/integration/brsSemesterList";
   static String reitList =
       "https://api-next.kemsu.ru/api/personal-office/integration/reitList";
+  static String reitItemList =
+      "https://api-next.kemsu.ru/api/personal-office/integration/activityList";
   static String semesterList =
       'https://api-next.kemsu.ru/api/schedule/integration/semesterList';
   static String facultyList =

@@ -24,6 +24,9 @@ class PRSViewModel extends BaseViewModel {
   /// third request
   List<ReitList> reitList = [];
 
+  /// four request
+  List<ReitItemList> reitItemList = [];
+
   int selectedIndex = 2;
   void onTapBottomBar(int index) {
     selectedIndex = index;
@@ -56,6 +59,12 @@ class PRSViewModel extends BaseViewModel {
     return response.map<ReitList>((json) => ReitList.fromJson(json)).toList();
   }
 
+  List<ReitItemList> parseReitItemList(List response) {
+    return response
+        .map<ReitItemList>((json) => ReitItemList.fromJson(json))
+        .toList();
+  }
+
   changeCard(value) async {
     studyCard = value;
     String? token = await storage.read(key: "tokenKey");
@@ -71,6 +80,15 @@ class PRSViewModel extends BaseViewModel {
     var response = await http.get(Uri.parse(
         '${Config.reitList}?studentId=${studyCard?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
     reitList = parseReitList(json.decode(response.body)["reitList"]);
+    notifyListeners();
+  }
+
+  getReitItemList(studyId) async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse(
+        '${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
+    reitItemList =
+        parseReitItemList(json.decode(response.body)["brsActivityList"]);
     notifyListeners();
   }
 }
