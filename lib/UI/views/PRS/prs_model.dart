@@ -45,10 +45,10 @@ class ReitList {
 
   ReitList.fromJson(Map<String, dynamic> json) {
     discipline = json["DEK_DISCIP_NAME"];
-    intermediateAttestationForm = json["TIP_OTCH"];
+    intermediateAttestationForm = json["TIP_OTCH_SHORT"];
     currentScore = json["CURRENT_BALL"];
     frontScore = json["FRONT_BALL"];
     commonScore = json["COMMON_BALL"];
-    mark = json["MARK"];
+    mark = json["MARK_SHORT"];
   }
 }
