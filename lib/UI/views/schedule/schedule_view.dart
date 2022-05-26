@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/schedule/prepSchedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -330,7 +331,39 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
             ))),
-      ))
+      )),
+      const SizedBox(
+        height: 10,
+      ),
+      Center(
+          child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PrepScheduleView()),
+          );
+        },
+        child: Container(
+            height: 50,
+            width: 250,
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: const Center(
+                child: Text(
+              'Расписание преподавателей',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ))),
+      )),
     ],
   );
 }
