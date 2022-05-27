@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/PRS/prs_detail_item_view.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -58,32 +59,54 @@ _prsDetailView(context, PRSViewModel model, reitList) {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             defaultColumnWidth: const FlexColumnWidth(),
             children: [
-              const TableRow(
+              TableRow(
                 children: [
-                  Text(
+                  const Text(
                     'Дисциплина',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Форма промежуточной аттестации',
+                  TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('ФПА'),
+                            content: const Text(
+                                'ФПА - форма промежуточной аттестации'),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Закрыть'))
+                            ],
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        primary: Colors.black,
+                      ),
+                      child: Text('ФПА')),
+                  const Text(
+                    'Текущ. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Текущий балл',
+                  const Text(
+                    'Аттест. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Аттестационный балл',
+                  const Text(
+                    'Общ. балл',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Общий балл',
+                  const Text(
+                    'Оц-ка',
                     textAlign: TextAlign.center,
                   ),
-                  Text(
-                    'Оценка',
+                  const Text(
+                    'Просмотр',
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ],
               ),
               ...List.generate(reitList.length, (index) {
@@ -113,7 +136,19 @@ _prsDetailView(context, PRSViewModel model, reitList) {
                     Text(
                       "${element.mark}",
                       textAlign: TextAlign.center,
-                    )
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          await model.getReitItemList(element.studyId);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PRSDetailItemView(
+                                    reitItemList: model.reitItemList,
+                                    discipline: element.discipline)),
+                          );
+                        },
+                        icon: const Icon(Icons.saved_search))
                   ],
                 );
               }),

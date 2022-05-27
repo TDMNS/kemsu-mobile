@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'pgas_detail_viewmodel.dart';
 
@@ -56,6 +58,7 @@ _body(context, PgasDetailViewModel model) {
       _createAchieveButton(context, model),
       const SizedBox(height: 34,),
       _pgasAchieveTitle(),
+      _pgasAchievesSpace(context, model)
     ],
   );
 }
@@ -125,7 +128,7 @@ _createAchieveButton(context, PgasDetailViewModel model) {
         ),
         child: TextButton(
           onPressed: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewAchievePgasScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewAchievePgasScreen())).then((value) => model.onGoBack(context));
           },
           child: const Text(
             "Прикрепить достижение",
@@ -138,5 +141,233 @@ _createAchieveButton(context, PgasDetailViewModel model) {
 
         )
     ),
+  );
+}
+
+_pgasAchievesSpace(context, PgasDetailViewModel model) {
+  return Padding(
+    padding: EdgeInsets.all(8),
+    child: model.userAchievesList.isEmpty ? Center(
+        child: Text(
+            "Нет прикрепленных достижений.",
+            style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)
+        )
+    ) : ListView.builder(
+      shrinkWrap: true,
+      itemCount: model.userAchievesList.length,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          title: Text(model.userAchievesList[index].activityName.toString()),
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Ваше описание: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activityName.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Полное название достижения: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].fullActivityName.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Тип достижения: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activityType.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Год получения достижения: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activityYear.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Месяц получения достижения: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activityMonth.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Подтверждение достижения: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activitySrc.toString(),
+                            recognizer: new TapGestureRecognizer()
+                            ..onTap = () { launchUrl(Uri.parse(model.userAchievesList[index].activitySrc.toString())); },
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Баллы за достижение: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].activityBall.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Достижение утверждено: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].approveFlag == 0 ? "Нет" : "Да",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Достижение является групповым: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].groupActivityFlag == 0 ? "Нет" : "Да",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.black),
+                      children: <TextSpan>[
+                        const TextSpan(text: 'Комментарий администрации: '),
+                        TextSpan(
+                            text: model.userAchievesList[index].comment ?? "",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
+                      child: Container(
+                          width: 200,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black45,
+                                  offset: Offset(0, 6),
+                                  spreadRadius: 1,
+                                  blurRadius: 7
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.deepOrangeAccent,
+                                Colors.red
+                              ],
+                            ),
+                          ),
+                          child: TextButton(
+                            onPressed: () async {
+                              model.deleteBtnAction(context, model.userAchievesList[index].userActivityId);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => PgasDetailScreen()));
+                            },
+                            child: const Text(
+                              "Удалить достижение",
+                              style: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,),
+                            ),
+                          )
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      }
+  )
   );
 }

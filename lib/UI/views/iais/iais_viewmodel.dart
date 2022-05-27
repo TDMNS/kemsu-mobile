@@ -16,13 +16,11 @@ class IaisViewModel extends BaseViewModel {
 
   List<CourseIais> Course = [];
 
-  String DISC_NAME = '';
-  String DISC_REP = '';
-  String DISC_HOURS = '';
-  String FIO = '';
-  String DISC_FIRST_DATE = '';
-  String DISC_LAST_DATE = '';
-  String DISC_MARK = '';
+  List<ReportIais> Report = [];
+
+  List<TaskListIais> Task = [];
+
+  List<TaskOptionListIais> Option = [];
 
   int selectedIndex = 2;
 
@@ -32,22 +30,36 @@ class IaisViewModel extends BaseViewModel {
         .toList();
   }
 
+  List<ReportIais> parseReportList(List response) {
+    return response
+        .map<ReportIais>((json) => ReportIais.fromJson(json))
+        .toList();
+  }
+
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
 
     var response = await http.get(Uri.parse(
         '${Config.studCourseList}'), headers: {"x-access-token": token!,},);
-/*
-    final response = await dio
-        .get(Config.studCourseList, options: Options(
-
-    ),);*/
 
     print(response.body);
     Course =
         parseCourseList(json.decode(response.body)['studentCourseList']);
     print(Course);
+
+    notifyListeners();
+  }
+
+  getDiscReports(courseId) async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse(
+        '${Config.studRepList}/${courseId}'), headers: {"x-access-token": token!,},);
+    print(response.body);
+
+    Report =
+        parseReportList(json.decode(response.body)['studentReportList']);
+    //print(Report);
 
     notifyListeners();
   }
