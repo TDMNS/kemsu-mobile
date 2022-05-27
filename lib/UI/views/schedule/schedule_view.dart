@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/schedule/prepSchedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -39,21 +40,25 @@ class _ScheduleViewState extends State<ScheduleView> {
                 },
                 child: model.circle
                     ? const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
                       )
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
                         appBar: customAppBar(context, model, 'Расписание'),
                         bottomNavigationBar: customBottomBar(context, model),
-                        body: _scheduleView(context, model),
+                        body: model.currentTable == true
+                            ? _scheduleViewStudent(context, model)
+                            : _scheduleViewAll(context, model),
                       ),
               ));
         });
   }
 }
 
-_scheduleView(BuildContext context, ScheduleViewModel model) {
+_scheduleViewAll(BuildContext context, ScheduleViewModel model) {
   dropdownItems = List.generate(
     model.facultyList.length,
     (index) => DropdownMenuItem(
@@ -224,6 +229,141 @@ _scheduleView(BuildContext context, ScheduleViewModel model) {
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
           child: model.table == false ? const SizedBox() : _choiceDay(model))
+    ],
+  );
+}
+
+_scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
+  return ListView(
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(top: 15, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+                onPressed: () {
+                  model.choiceDay('back');
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  size: 20,
+                )),
+            model.indexDay == 1
+                ? const Text(
+                    'Понедельник',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 2
+                ? const Text(
+                    'Вторник',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 3
+                ? const Text(
+                    'Среда',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 4
+                ? const Text(
+                    'Четверг',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 5
+                ? const Text(
+                    'Пятница',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 6
+                ? const Text(
+                    'Суббота',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            model.indexDay == 7
+                ? const Text(
+                    'Воскресенье',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                : const Text(''),
+            IconButton(
+                onPressed: () {
+                  model.choiceDay('next');
+                },
+                icon: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                )),
+          ],
+        ),
+      ),
+      Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
+          child: _choiceDay(model)),
+      Center(
+          child: GestureDetector(
+        onTap: () {
+          model.choiceSchedule();
+          model.tableOff();
+        },
+        child: Container(
+            height: 50,
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: const Center(
+                child: Text(
+              'Выбрать расписание',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ))),
+      )),
+      const SizedBox(
+        height: 10,
+      ),
+      Center(
+          child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PrepScheduleView()),
+          );
+        },
+        child: Container(
+            height: 50,
+            width: 250,
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: const Center(
+                child: Text(
+              'Расписание преподавателей',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ))),
+      )),
     ],
   );
 }

@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
+import 'package:stacked/stacked_annotations.dart';
 import '../../../API/config.dart';
 
 class ScheduleViewModel extends BaseViewModel {
@@ -20,9 +22,11 @@ class ScheduleViewModel extends BaseViewModel {
   List<WeekType> weekType = [];
   List<CoupleList> coupleList = [];
   List<CoupleModel> coupleModel = [];
+  List<CurrentGroupList> currentGroupList = [];
   List<DropdownMenuItem<String>> dropdownItems = [];
   bool table = false;
   int indexDay = DateTime.now().weekday;
+  bool currentTable = true;
 
   List<CoupleModel> modelDay1All1 = [];
   List<CoupleModel> modelDay1All2 = [];
@@ -180,10 +184,12 @@ class ScheduleViewModel extends BaseViewModel {
   List<List<CoupleModel>> day6Even = [];
   List<List<CoupleModel>> day6Odd = [];
 
+  final storage = const FlutterSecureStorage();
+
   bool circle = true;
 
   Future onReady() async {
-    await getSchedule();
+    getScheduleTable();
   }
 
   ScheduleRequest? scheduleSemester;
@@ -198,10 +204,12 @@ class ScheduleViewModel extends BaseViewModel {
     print(scheduleList[0].title);
     circle = false;
     notifyListeners();
-    var response2 = await http.get(
+
+    var response3 = await http.get(
         Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
-    facultyList = parseFaculty(json.decode(response2.body)["result"]);
-    print(scheduleList[0].id);
+    facultyList = parseFaculty(json.decode(response3.body)["result"]);
+    //print(scheduleList[0].id);
+    // print(currentGroupList[0].groupId);
     notifyListeners();
   }
 
@@ -263,6 +271,12 @@ class ScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  List<CurrentGroupList> parseCurrentGroupList(List response) {
+    return response
+        .map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json))
+        .toList();
+  }
+
   List<FacultyList> parseFaculty(List response) {
     return response
         .map<FacultyList>((json) => FacultyList.fromJson(json))
@@ -307,14 +321,45 @@ class ScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void getScheduleTable() async {
+  getData() async {
+    String? token = await storage.read(key: "tokenKey");
+
+    var response2 = await http
+        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList =
+        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response = await http.get(Uri.parse(
-        '${Config.scheduleTable}?groupId=${scheduleGroup!.id}&semesterWeekId=${weekID[0].id}'));
+        '${Config.weekList}?semesterId=${currentGroupList[0].semesterId}'));
+    weekID = parseWeekID(json.decode(response.body)["result"]);
+    //print(scheduleGroup!.id);
+    notifyListeners();
+  }
+
+  getScheduleTable() async {
+    http.Response response;
+    String? token = await storage.read(key: "tokenKey");
+
+    var response2 = await http
+        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList =
+        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+    var response3 = await http.get(Uri.parse(
+        '${Config.weekList}?semesterId=${currentGroupList[0].semesterId}'));
+    weekID = parseWeekID(json.decode(response3.body)["result"]);
+    //print(scheduleGroup!.id);
+    notifyListeners();
+    print(currentGroupList[0].groupName);
+    print(currentGroupList[0].groupId);
+
+    currentTable == false
+        ? response = await http.get(Uri.parse(
+            '${Config.scheduleTable}?groupId=${scheduleGroup!.id}&semesterWeekId=${weekID[0].id}'))
+        : response = await http.get(Uri.parse(
+            '${Config.scheduleTable}?groupId=${currentGroupList[0].groupId}&semesterWeekId=${weekID[0].id}'));
     //day1 = parseDays(json.decode(response.body)['result']['Table']['weekDay1']);
 
     coupleList =
         parseCoupleList(json.decode(response.body)['result']['CoupleList']);
-    print(coupleList[0].desc);
 
     Map<String, dynamic> map = json.decode(response.body)['result'];
     List<dynamic> day1All1 = map['Table']['weekDay1']['coupleAll1'];
@@ -748,13 +793,20 @@ class ScheduleViewModel extends BaseViewModel {
       modelDay6Odd6,
       modelDay6Odd7
     ];
-
+    circle = false;
+    notifyListeners();
     tableOn();
 
     //coupleModel = parseCouple(day1);
 
     //print(modelDay3All1[0].discName);
     //print(day1[0].coupleAll1);
+    notifyListeners();
+  }
+
+  void choiceSchedule() async {
+    currentTable = false;
+    await getSchedule();
     notifyListeners();
   }
 }
