@@ -39,14 +39,18 @@ class _ScheduleViewState extends State<ScheduleView> {
                   }
                 },
                 child: model.circle
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
+                    ? Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
                         ),
                       )
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
+                        backgroundColor: Colors.white,
                         appBar: customAppBar(context, model, 'Расписание'),
                         bottomNavigationBar: customBottomBar(context, model),
                         body: model.currentTable == true
