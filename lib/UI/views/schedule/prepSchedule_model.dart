@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class TeacherList {
   int? prepId;
   String? fio;
@@ -10,7 +12,164 @@ class TeacherList {
   }
 }
 
-class PrepScheduleModel {
+// To parse this JSON data, do
+//
+//     final prepScheduleApi = prepScheduleApiFromJson(jsonString);
+
+PrepScheduleApi prepScheduleApiFromJson(String str) =>
+    PrepScheduleApi.fromJson(json.decode(str));
+
+String prepScheduleApiToJson(PrepScheduleApi data) =>
+    json.encode(data.toJson());
+
+class PrepScheduleApi {
+  PrepScheduleApi({
+    this.success,
+    this.result,
+  });
+
+  bool? success;
+  Result? result;
+
+  factory PrepScheduleApi.fromJson(Map<String, dynamic> json) =>
+      PrepScheduleApi(
+        success: json["success"],
+        result: Result.fromJson(json["result"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "result": result?.toJson(),
+      };
+}
+
+class Result {
+  Result({
+    this.weekList,
+    this.coupleList,
+    this.prepScheduleTable,
+  });
+
+  List<Week>? weekList;
+  List<Couple>? coupleList;
+  List<PrepScheduleTable>? prepScheduleTable;
+
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
+        weekList:
+            List<Week>.from(json["weekList"].map((x) => Week.fromJson(x))),
+        coupleList: List<Couple>.from(
+            json["coupleList"].map((x) => Couple.fromJson(x))),
+        prepScheduleTable: List<PrepScheduleTable>.from(
+            json["prepScheduleTable"]
+                .map((x) => PrepScheduleTable.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "weekList": List<dynamic>.from(weekList!.map((x) => x.toJson())),
+        "coupleList": List<dynamic>.from(coupleList!.map((x) => x.toJson())),
+        "prepScheduleTable":
+            List<dynamic>.from(prepScheduleTable!.map((x) => x.toJson())),
+      };
+}
+
+class Couple {
+  Couple({
+    this.id,
+    this.num,
+    this.description,
+  });
+
+  int? id;
+  int? num;
+  String? description;
+
+  factory Couple.fromJson(Map<String, dynamic> json) => Couple(
+        id: json["Id"],
+        num: json["Num"],
+        description: json["Description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Id": id,
+        "Num": num,
+        "Description": description,
+      };
+}
+
+class PrepScheduleTable {
+  PrepScheduleTable({
+    this.weekDay,
+    this.ceilList,
+  });
+
+  Week? weekDay;
+  List<CeilList>? ceilList;
+
+  factory PrepScheduleTable.fromJson(Map<String, dynamic> json) =>
+      PrepScheduleTable(
+        weekDay: Week.fromJson(json["weekDay"]),
+        ceilList: List<CeilList>.from(
+            json["ceilList"].map((x) => CeilList.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "weekDay": weekDay!.toJson(),
+        "ceilList": List<dynamic>.from(ceilList!.map((x) => x.toJson())),
+      };
+}
+
+class CeilList {
+  CeilList({
+    this.couple,
+    this.ceil,
+  });
+
+  Couple? couple;
+  Ceil? ceil;
+
+  factory CeilList.fromJson(Map<String, dynamic> json) => CeilList(
+        couple: Couple.fromJson(json["couple"]),
+        ceil: Ceil.fromJson(json["ceil"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "couple": couple!.toJson(),
+        "ceil": ceil!.toJson(),
+      };
+}
+
+class Ceil {
+  Ceil({
+    this.uneven,
+    this.even,
+  });
+
+  List<Even>? uneven;
+  List<Even>? even;
+
+  factory Ceil.fromJson(Map<String, dynamic> json) => Ceil(
+        uneven: List<Even>.from(json["uneven"].map((x) => Even.fromJson(x))),
+        even: List<Even>.from(json["even"].map((x) => Even.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "uneven": List<dynamic>.from(uneven!.map((x) => x.toJson())),
+        "even": List<dynamic>.from(even!.map((x) => x.toJson())),
+      };
+}
+
+class Even {
+  Even({
+    this.discName,
+    this.auditoryName,
+    this.lessonType,
+    this.loadDiscipId,
+    this.groupName,
+    this.startWeekNum,
+    this.endWeekNum,
+    this.selectFlag,
+  });
+
   String? discName;
   String? auditoryName;
   String? lessonType;
@@ -20,54 +179,67 @@ class PrepScheduleModel {
   int? endWeekNum;
   int? selectFlag;
 
-  PrepScheduleModel(
-      {this.groupName,
-      this.auditoryName,
-      this.discName,
-      this.endWeekNum,
-      this.lessonType,
-      this.loadDiscipId,
-      this.selectFlag,
-      this.startWeekNum});
+  factory Even.fromJson(Map<String, dynamic> json) => Even(
+        discName: json["discName"],
+        auditoryName: json["auditoryName"],
+        lessonType: json["lessonType"],
+        loadDiscipId: json["loadDiscipId"],
+        groupName: json["groupName"],
+        startWeekNum: json["startWeekNum"],
+        endWeekNum: json["endWeekNum"],
+        selectFlag: json["selectFlag"],
+      );
 
-  PrepScheduleModel.fromJson(Map<String, dynamic> json) {
-    discName = json["discName"];
-    auditoryName = json["auditoryName"];
-    lessonType = json["lessonType"];
-    loadDiscipId = json["loadDiscipId"];
-    groupName = json["groupName"];
-    startWeekNum = json["startWeekNum"];
-    endWeekNum = json["endWeekNum"];
-    selectFlag = json["selectFlag"];
-  }
+  Map<String, dynamic> toJson() => {
+        "discName": discName,
+        "auditoryName": auditoryName,
+        "lessonType": lessonType,
+        "loadDiscipId": loadDiscipId,
+        "groupName": groupName,
+        "startWeekNum": startWeekNum,
+        "endWeekNum": endWeekNum,
+        "selectFlag": selectFlag,
+      };
 }
 
-class WeekList {
-  int? Id;
-  int? DayNum;
-  String? DayName;
-  String? DayNameShort;
+class Week {
+  Week({
+    this.id,
+    this.dayNum,
+    this.dayName,
+    this.dayNameShort,
+  });
 
-  WeekList({this.DayName, this.DayNameShort, this.DayNum, this.Id});
+  int? id;
+  int? dayNum;
+  String? dayName;
+  String? dayNameShort;
 
-  WeekList.fromJson(Map<String, dynamic> json) {
-    Id = json["Id"];
-    DayNum = json["DayNum"];
-    DayName = json["DayName"];
-    DayNameShort = json["DayNameShort"];
-  }
+  factory Week.fromJson(Map<String, dynamic> json) => Week(
+        id: json["Id"],
+        dayNum: json["DayNum"],
+        dayName: json["DayName"],
+        dayNameShort: json["DayNameShort"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Id": id,
+        "DayNum": dayNum,
+        "DayName": dayName,
+        "DayNameShort": dayNameShort,
+      };
 }
 
-class CoupleList {
-  int? Id;
-  int? Num;
-  String? Description;
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap = {};
 
-  CoupleList({this.Id, this.Num, this.Description});
+  EnumValues(this.map);
 
-  CoupleList.fromJson(Map<String, dynamic> json) {
-    Id = json["Id"];
-    Num = json["Num"];
-    Description = json["Description"];
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
   }
 }
