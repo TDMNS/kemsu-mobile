@@ -28,4 +28,8 @@ class Config {
       'https://api-next.kemsu.ru/api/schedule/integration/teacherList';
   static String prepSchedule =
       'https://api-next.kemsu.ru/api/schedule/integration/prepSheduleTable';
+  static String studMoneyDebt =
+      'https://api-next.kemsu.ru/api/debt/main/moneyDebtInfo';
+  static String studDebt =
+      'https://api-next.kemsu.ru/api/debt/main/studyDebtList';
 }

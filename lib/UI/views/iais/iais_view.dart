@@ -34,29 +34,46 @@ class IaisView extends StatelessWidget {
 }
 
 _iaisView(BuildContext context, IaisViewModel model) {
-  final double width = MediaQuery.of(context).size.width;
   return ListView(
     children: <Widget>[
       const SizedBox(height: 12),
+      Row(
+        children: <Widget>[
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Показать все ',
+            style: TextStyle(fontSize: 17.0),
+          ),
+          SizedBox(width: 10), //SizedBox
+          Checkbox(
+              value: model.isChecked,
+              onChanged: (e) {
+                model.isChecked = !model.isChecked;
+                if(model.isChecked) model.getDiscs(1);
+                else model.getDiscs(0);
+              }),
+        ],
+      ),
         Center(
-          child: Card(
-            margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
+          child: Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(8.0),
               child: DataTable(
                 columns: [
                   DataColumn(label: Container(
-                    width: width * .4,
                     child: Expanded(child: Text('Дисциплина', textAlign: TextAlign.center, softWrap: true)),
                   )),
                   DataColumn(label: Container(
-                    width: width * .4,
                     child: Expanded(child: Text('Преподаватель', textAlign: TextAlign.center, softWrap: true)),
                   )),
                 ],
                 rows: model.Course.map<DataRow>((e) => DataRow(
                   onSelectChanged: (selected) async {
                     if (selected==true) {{
+                      print(e.DISC_NAME);
+                      print(e.COURSE_ID);
                       await model.getDiscReports(e.COURSE_ID);
                       Navigator.push(
                         context,
