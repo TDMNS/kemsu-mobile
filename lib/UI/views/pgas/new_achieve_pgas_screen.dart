@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/model/achieve_category.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
+import 'package:kemsu_app/UI/views/pgas/model/year.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -158,49 +159,51 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
         border: Border.all(color: const Color(0xFF00C2FF)),
         borderRadius: BorderRadius.circular(10)
     ),
-    child: DropdownButton<ActivityTreeModel>(
-        isExpanded: true,
-        value: model.chosenActivity1,
-        items: model.activityList1.map<
-            DropdownMenuItem<ActivityTreeModel>>((e) {
-           return DropdownMenuItem<ActivityTreeModel>(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(e.activityTitle.toString(), overflow: TextOverflow.ellipsis,),
-            ),
-            value: e,
-          );
-        }).toList(),
-        hint: const Center(
-            child: Text(
-              "Категория достижения",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal
+    child: DropdownButtonHideUnderline(
+      child: DropdownButton<ActivityTreeModel>(
+          isExpanded: true,
+          value: model.chosenActivity1,
+          items: model.activityList1.map<
+              DropdownMenuItem<ActivityTreeModel>>((e) {
+             return DropdownMenuItem<ActivityTreeModel>(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(e.activityTitle.toString(), overflow: TextOverflow.ellipsis,),
               ),
-            )
-        ),
-        onChanged: (value) {
-          model.chosenActivity1 = value!;
-          model.showOtherInputData = false;
-          model.showAchieve2 = false;
-          model.showAchieve3 = false;
-          model.showAchieve4 = false;
-          model.chosenActivity2 = null;
-          model.chosenActivity3 = null;
-          model.chosenActivity4 = null;
-          if (value.nodeCnt != 0) {
-            model.fetchAchieves(model.chosenActivity1!.activityId, model.chosenCategory!.activityTypeId).then((value) {
-              model.activityList2 = value;
-              model.showAchieve2 = true;
-              model.notifyListeners();
-            });
-          } else {
-            model.showOtherInputData = true;
+              value: e,
+            );
+          }).toList(),
+          hint: const Center(
+              child: Text(
+                "Категория достижения",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    fontStyle: FontStyle.normal
+                ),
+              )
+          ),
+          onChanged: (value) {
+            model.chosenActivity1 = value!;
+            model.showOtherInputData = false;
+            model.showAchieve2 = false;
+            model.showAchieve3 = false;
+            model.showAchieve4 = false;
+            model.chosenActivity2 = null;
+            model.chosenActivity3 = null;
+            model.chosenActivity4 = null;
+            if (value.nodeCnt != 0) {
+              model.fetchAchieves(model.chosenActivity1!.activityId, model.chosenCategory!.activityTypeId).then((value) {
+                model.activityList2 = value;
+                model.showAchieve2 = true;
+                model.notifyListeners();
+              });
+            } else {
+              model.showOtherInputData = true;
+            }
+            model.notifyListeners();
           }
-          model.notifyListeners();
-        }
+      ),
     ),
   );
 }
@@ -374,27 +377,35 @@ _otherInputData(context, NewAchievePgasViewModel model) {
           )
       ),
       SizedBox(height: 10,),
-      TextField(
-          maxLines: 2,
-          textCapitalization: TextCapitalization.words,
-          autofocus: false,
-          keyboardType: TextInputType.number,
-          controller: model.yearController,
-          decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(8),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              hintText: "Год получения достижения (не требуется для достижения 'Отличная учеба')",
-              hintStyle: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                  fontSize: 14
-              )
-          )
+      DropdownButtonHideUnderline(
+        child: DropdownButton<YearModel>(
+            isExpanded: true,
+            value: model.chosenYear,
+            items: model.years.map<
+                DropdownMenuItem<YearModel>>((e) {
+              return DropdownMenuItem<YearModel>(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(e.year.toString()),
+                ),
+                value: e,
+              );
+            }).toList(),
+            hint: const Center(
+                child: Text(
+                  "Год получения",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal
+                  ),
+                )
+            ),
+            onChanged: (value) {
+              model.chosenYear = value!;
+              model.notifyListeners();
+            }
+        ),
       ),
       SizedBox(height: 10,),
       Container(
@@ -456,6 +467,8 @@ _otherInputData(context, NewAchievePgasViewModel model) {
           )
       ),
       SizedBox(height: 10,),
+      _fileContainer(context, model),
+      SizedBox(height: 10,),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
         child: Container(
@@ -497,5 +510,47 @@ _otherInputData(context, NewAchievePgasViewModel model) {
         ),
       )
     ],
+  );
+}
+
+_fileContainer(context, NewAchievePgasViewModel model) {
+  return model.chooseFile == null ? InkWell(
+    onTap: () => model.pickFileBtnAction(context),
+    child: Container(
+      width: 100,
+      height: 150,
+      decoration: BoxDecoration(
+          color: Colors.transparent,
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("+", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 28),),
+            Text("Выберите файл-подтверждение (до 10 МБ)", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))
+          ],
+        ),
+    ),
+  ) :
+  InkWell(
+    onTap: () => model.pickFileBtnAction(context),
+    child: Container(
+      width: 100,
+      height: 150,
+      decoration: BoxDecoration(
+          color: Colors.lightBlueAccent,
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(model.chooseFile!.name, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+          Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
+        ],
+      ),
+    ),
   );
 }

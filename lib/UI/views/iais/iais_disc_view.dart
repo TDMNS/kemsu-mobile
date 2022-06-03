@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './iais_viewmodel.dart';
+import './iais_taskblock_view.dart';
 import './iais_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -149,7 +150,6 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                           ],
                         ),
                       ),
@@ -157,36 +157,105 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                   ),
       )))),
       const SizedBox(height: 20),
-      DataTable(
+      Expanded(
+          child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8.0),
+      child: DataTable(
         columns: [
           DataColumn(label: Container(
             child: Expanded(child: Text('Название', textAlign: TextAlign.center, softWrap: true)),
               )),
           DataColumn(label: Container(
-            child: Expanded(child: Text('Контр. дата', textAlign: TextAlign.center, softWrap: true)),
+            child: Expanded(child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Контрольная дата'),
+                      content: const Text(
+                          'Контрольная дата блока заданий'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Закрыть'))
+                      ],
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                child: Text('Контр. дата', textAlign: TextAlign.center, softWrap: true)),),
               )),
           DataColumn(label: Container(
-            child: Expanded(child: Text('Макс. балл', textAlign: TextAlign.center, softWrap: true)),
-              )),
+            child: Expanded(child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Максимальный балл'),
+                      content: const Text(
+                          'Максимальный балл, который можно получить за выполнение всех заданий в блоке'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Закрыть'))
+                      ],
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                child: Text('Макс. балл', textAlign: TextAlign.center, softWrap: true)),),
+          )),
           DataColumn(label: Container(
-            child: Expanded(child: Text('Рез.', textAlign: TextAlign.center, softWrap: true)),
-              )),
-          DataColumn(label: Container(
-            child: Expanded(child: Text('Сост.', textAlign: TextAlign.center, softWrap: true)),
-              )),
+            child: Expanded(child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Текущий балл'),
+                      content: const Text(
+                          'Текущий балл, полученный за выполнение заданий в блоке'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Закрыть'))
+                      ],
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                child: Text('Рез.', textAlign: TextAlign.center, softWrap: true)),),
+          )),
         ],
         rows: repList.map<DataRow>((e) => DataRow(
-          onSelectChanged: (selected) {
-            if (selected==true) {
-              print(e.STUDENT_TASK_LIST.toString());
-            }
+          onSelectChanged: (selected) async {
+            if (selected==true) {{
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => IaisTaskBlockView(
+                        repData: e.STUDENT_TASK_LIST,
+                        blockName: e.NAME,
+                    )),
+              );
+            };}
           },
           cells: [
             DataCell(Text(e.NAME.toString(), textAlign: TextAlign.center, softWrap: true)),
             DataCell(Text(e.REP_CONTROL_DATE.toString(), textAlign: TextAlign.center, softWrap: true)),
             DataCell(Text(e.MAX_BALL.toString(), textAlign: TextAlign.center, softWrap: true)),
             DataCell(Text(e.SUM_BALL.toString(), textAlign: TextAlign.center, softWrap: true)),
-            DataCell(Text("", textAlign: TextAlign.center, softWrap: true)),
           ],
         )).toList(),
         border: TableBorder.all(
@@ -196,8 +265,8 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
         ),
         dataRowHeight: 70,
         showCheckboxColumn: false,
-        columnSpacing: 3,
+        columnSpacing: 1,
       ),
-  ]);
+  ))]);
 }
 

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -6,7 +5,6 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../iais/iais_view.dart';
 import '../iais/iais_model.dart';
 import 'dart:convert';
 
@@ -20,9 +18,8 @@ class IaisViewModel extends BaseViewModel {
 
   List<TaskListIais> Task = [];
 
-  List<TaskOptionListIais> Option = [];
-
   int selectedIndex = 2;
+  bool isChecked = false;
 
   List<CourseIais> parseCourseList(List response) {
     return response
@@ -37,11 +34,20 @@ class IaisViewModel extends BaseViewModel {
   }
 
   Future onReady() async {
-    String? token = await storage.read(key: "tokenKey");
-    var dio = Dio();
+    getDiscs(0);
+  }
 
-    var response = await http.get(Uri.parse(
-        '${Config.studCourseList}'), headers: {"x-access-token": token!,},);
+  getDiscs(allFlag) async {
+    String? token = await storage.read(key: "tokenKey");
+    var response;
+    if(allFlag==1) {
+      response = await http.get(Uri.parse(
+          '${Config.studCourseList}?allCourseFlag=1'), headers: {"x-access-token": token!,},);
+    }
+    else {
+      response = await http.get(Uri.parse(
+          '${Config.studCourseList}?allCourseFlag=0'), headers: {"x-access-token": token!,},);
+    }
 
     print(response.body);
     Course =
@@ -59,7 +65,7 @@ class IaisViewModel extends BaseViewModel {
 
     Report =
         parseReportList(json.decode(response.body)['studentReportList']);
-    //print(Report);
+    print(Report[0]);
 
     notifyListeners();
   }
