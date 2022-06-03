@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/pgas/model/user_achieve.dart';
+import 'package:open_file/open_file.dart';
 import 'package:stacked/stacked.dart';
 
 import 'pgas_request_info_screen.dart';
@@ -63,6 +67,22 @@ class PgasDetailViewModel extends BaseViewModel {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
       print(response.body);
+    }
+  }
+
+  deletePgasFile(context, String? fileName) async {
+    String? eiosAccessToken = await storage.read(key: "tokenKey");
+
+    Map<String, String> header = {
+      "X-Access-Token": "$eiosAccessToken"
+    };
+
+    var response = await http.delete(Uri.parse("https://api-next.kemsu.ru/api/storage/pgas-mobile/$fileName"), headers: header);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Файл удален успешно.")));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
     }
   }
 

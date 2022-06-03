@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
@@ -121,8 +122,8 @@ _createAchieveButton(context, PgasDetailViewModel model) {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF00C2FF),
-              Colors.blueAccent
+              Color(0xFFFFBC89),
+              Color(0xFFFF9A67)
             ],
           ),
         ),
@@ -153,6 +154,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
             style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)
         )
     ) : ListView.builder(
+      physics: ScrollPhysics(),
       shrinkWrap: true,
       itemCount: model.userAchievesList.length,
       itemBuilder: (context, index) {
@@ -344,19 +346,24 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              model.deleteBtnAction(context, model.userAchievesList[index].userActivityId);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) => PgasDetailScreen()));
+                              await model.deletePgasFile(context, model.userAchievesList[index].activityFile);
+                              await model.deleteBtnAction(context, model.userAchievesList[index].userActivityId);
+                              model.userAchievesList.removeAt(index);
+                              model.notifyListeners();
                             },
-                            child: const Text(
-                              "Удалить достижение",
-                              style: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.delete, color: Colors.white,),
+                                Text(
+                                  "Удалить достижение",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,),
+                                ),
+                              ],
                             ),
                           )
                       ),

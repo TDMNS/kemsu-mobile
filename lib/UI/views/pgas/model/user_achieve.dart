@@ -10,6 +10,7 @@ class UserAchieveModel {
   int? approveFlag;
   int? groupActivityFlag;
   String? comment;
+  String? activityFile;
 
   UserAchieveModel({
   this.activityName,
@@ -22,7 +23,8 @@ class UserAchieveModel {
   this.activityBall,
   this.approveFlag,
   this.groupActivityFlag,
-  this.comment
+  this.comment,
+    this.activityFile
 });
 
   UserAchieveModel.fromJson(Map<String, dynamic> json) {
@@ -37,5 +39,6 @@ class UserAchieveModel {
     approveFlag = json["approveFlag"];
     groupActivityFlag = json["groupActivityFlag"];
     comment = json["comment"];
+    activityFile = json["activityFile"];
   }
 }
