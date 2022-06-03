@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
 import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
+import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
@@ -258,6 +259,21 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Задолженность за обучение: '),
+                              TextSpan(
+                                  text: model.debtData,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -353,7 +369,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const IaisView()));
+                            builder: (context) => IaisView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),
@@ -379,6 +395,45 @@ _profileView(BuildContext context, ProfileViewModel model) {
                         const Center(
                           child: Text(
                             'ИнфОУПро',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DebtsView()));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 30),
+                    height: 100,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 15,
+                              offset: const Offset(0, 15))
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/icons/Alert.png',
+                          scale: 4,
+                        ),
+                        const SizedBox(height: 10),
+                        const Center(
+                          child: Text(
+                            'Долги',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),

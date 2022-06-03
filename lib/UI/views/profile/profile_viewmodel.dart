@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
+import '../debts/debts_view.dart';
 
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
@@ -25,6 +26,8 @@ class ProfileViewModel extends BaseViewModel {
   String statusSTR = '';
   String finForm = '';
   String startYear = '';
+
+  String debtData = '';
 
   int selectedIndex = 2;
 
@@ -59,6 +62,14 @@ class ProfileViewModel extends BaseViewModel {
     finForm = studentCard["FINFORM"];
     //print(response1.data);
     print(studentCard["ID"]);
+
+    final responseMoneyDebt = await dio
+        .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
+    var MoneyDebt = responseMoneyDebt.data["debtInfo"];
+    if(MoneyDebt["DEBT_AMOUNT"]==null) debtData = "Отсутствует";
+    else {
+      debtData = MoneyDebt["DEBT_AMOUNT"].toString() + " (на дату: " + MoneyDebt["DEBT_DATE"] + ")";
+    }
     notifyListeners();
   }
 
@@ -70,7 +81,14 @@ class ProfileViewModel extends BaseViewModel {
 
   void iaisButton(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const IaisView()));
+        context, MaterialPageRoute(builder: (context) => IaisView()));
     notifyListeners();
   }
+
+  void debtsButton(context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DebtsView()));
+    notifyListeners();
+  }
+
 }
