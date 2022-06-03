@@ -260,7 +260,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        RichText(
+                        if(model.finForm!="бюджетная") RichText(
                           text: TextSpan(
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
