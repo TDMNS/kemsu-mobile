@@ -260,20 +260,22 @@ _profileView(BuildContext context, ProfileViewModel model) {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        if(model.finForm!="бюджетная") RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Задолженность за обучение: '),
-                              TextSpan(
-                                  text: model.debtData,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
+                        if (model.finForm != "бюджетная")
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: 'Задолженность за обучение: '),
+                                TextSpan(
+                                    text: model.debtData,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -326,7 +328,11 @@ _profileView(BuildContext context, ProfileViewModel model) {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(settings: RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            settings: RouteSettings(name: "PgasList"),
+                            builder: (context) => const PgasScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 30),
@@ -366,10 +372,8 @@ _profileView(BuildContext context, ProfileViewModel model) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => IaisView()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => IaisView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),
@@ -405,10 +409,8 @@ _profileView(BuildContext context, ProfileViewModel model) {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DebtsView()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => DebtsView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 30),
