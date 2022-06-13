@@ -68,21 +68,29 @@ _debtsView(BuildContext context, DebtsViewModel model) {
               )),
             ],
             rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
-                  DataCell(Text(e.COURSE.toString(),
-                      textAlign: TextAlign.center, softWrap: true)),
-                  DataCell(Text(e.SEMESTER.toString(),
-                      textAlign: TextAlign.center, softWrap: true)),
-                  DataCell(Text(e.DISCIPLINE.toString(),
-                      textAlign: TextAlign.center, softWrap: true)),
-                  DataCell(Text(e.OCENKA.toString(),
-                      textAlign: TextAlign.center, softWrap: true)),
+                  DataCell(Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(e.COURSE.toString(),
+                      textAlign: TextAlign.center, softWrap: true))),
+                  DataCell(Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(e.SEMESTER.toString(),
+                      textAlign: TextAlign.center, softWrap: true))),
+                  DataCell(Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(e.DISCIPLINE.toString(),
+                      textAlign: TextAlign.center, softWrap: true))),
+                  DataCell(Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e.OCENKA_SHORT.toString(),
+                      textAlign: TextAlign.center, softWrap: true))),
                 ])).toList(),
             border: TableBorder.all(
               color: Colors.black,
               style: BorderStyle.solid,
               width: 1.5,
             ),
-            dataRowHeight: 60,
+            dataRowHeight: 80,
             showCheckboxColumn: false,
           ),
         )),
