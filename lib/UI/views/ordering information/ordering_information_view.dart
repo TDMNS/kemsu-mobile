@@ -131,7 +131,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                   "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}")))),
             )
           : const SizedBox.shrink(),
-      model.lastParagraph == model.selectedPeriod
+      model.startDate != DateTime(0, 0, 0)
           ? Center(
               child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -152,7 +152,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                   "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}")))),
             )
           : const SizedBox.shrink(),
-      model.lastParagraph == model.selectedPeriod
+      model.endDate != DateTime(0, 0, 0)
           ? Center(
               child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
