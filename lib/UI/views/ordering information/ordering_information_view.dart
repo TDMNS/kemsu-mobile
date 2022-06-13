@@ -12,9 +12,15 @@ import '../PRS/prs_viewmodel.dart';
 import '../schedule/schedule_model.dart';
 import '../schedule/schedule_view.dart';
 
-class OrderingInformationView extends StatelessWidget {
+class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
 
+  @override
+  State<OrderingInformationView> createState() =>
+      _OrderingInformationViewState();
+}
+
+class _OrderingInformationViewState extends State<OrderingInformationView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrderingInformationViewModel>.reactive(
@@ -107,21 +113,79 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       model.lastParagraph == model.selectedPeriod
           ? Center(
               child: Card(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
-                        onPressed: () async {
-                          DateTime? newDate = await showDatePicker(
-                              context: context,
-                              initialDate: model.date,
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100));
+                          onPressed: () async {
+                            DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100));
+                            model.startDate = newDate;
+                          },
+                          child: model.startDate == DateTime(0, 0, 0)
+                              ? const Text("Выбрать начальную дату")
+                              : Text(
+                                  "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}")))),
+            )
+          : const SizedBox.shrink(),
+      model.lastParagraph == model.selectedPeriod
+          ? Center(
+              child: Card(
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100));
+                            model.endDate = newDate;
+                          },
+                          child: model.endDate == DateTime(0, 0, 0)
+                              ? const Text("Выбрать конечную дату")
+                              : Text(
+                                  "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}")))),
+            )
+          : const SizedBox.shrink(),
+      model.lastParagraph == model.selectedPeriod
+          ? Center(
+              child: Card(
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
                         },
-                        child: const Text("Выбрать начальную дату"),
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 20,
+                                offset: const Offset(0, 15))
+                          ]),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: const Center(
+                                child: Text(
+                              'Подать заявку',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            )),
+                          ),
+                        ),
                       ))),
             )
-          : const SizedBox.shrink()
+          : const SizedBox.shrink(),
     ],
   );
 }

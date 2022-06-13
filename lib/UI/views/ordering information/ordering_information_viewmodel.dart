@@ -24,7 +24,8 @@ class OrderingInformationViewModel extends BaseViewModel {
   List<PeriodListModel> periodList = [];
   PeriodListModel? selectedPeriod;
   PeriodListModel lastParagraph = PeriodListModel();
-  DateTime date = DateTime(2022, 12, 24);
+  DateTime? startDate = DateTime(0, 0, 0);
+  DateTime? endDate = DateTime(0, 0, 0);
 
   /// third request
   List<ReitList> reitList = [];
