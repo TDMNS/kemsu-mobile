@@ -24,7 +24,7 @@ class PgasScreen extends StatelessWidget {
   }
 }
 
-_body(context, model) {
+_body(context, PgasViewModel model) {
   return ListView(
     physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
     children: [

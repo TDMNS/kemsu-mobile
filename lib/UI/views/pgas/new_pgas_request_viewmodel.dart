@@ -23,14 +23,25 @@ class NewPgasRequestViewModel extends BaseViewModel {
   TextEditingController middleNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController groupController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
   String? chosenYear;
   String? chosenCourse;
   TextEditingController courseController = TextEditingController();
 
-  Future onReady() async {
+  onReady() async {
     await fetchInstitutesList();
     await fetchSemesterTypeList();
+    String? firstName = await storage.read(key: "firstName");
+    String? lastName = await storage.read(key: "lastName");
+    String? middleName = await storage.read(key: "middleName");
+    String? phone = await storage.read(key: "phone");
+    String? group = await storage.read(key: "group");
+
+    firstNameController.text = firstName!;
+    surnameController.text = lastName!;
+    middleNameController.text = middleName!;
+    phone != null ? phoneController.text = phone : phoneController.text = '';
+    groupController.text = group!;
+    notifyListeners();
   }
 
   fetchInstitutesList() async {

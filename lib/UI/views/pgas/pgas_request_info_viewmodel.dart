@@ -19,18 +19,21 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   Future onReady(context) async {
     await fetchDetailPgasRequest(context);
     circle = false;
+    notifyListeners();
   }
 
   goToEditPgasRequestScreen(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditPgasRequestScreen())).then((value) => onGoBack(context));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditPgasRequestScreen())).then((value) async {
+      circle = true;
+      notifyListeners();
+      await onGoBack(context);
+    });
   }
 
-  void refreshData(context) async {
+  FutureOr onGoBack(context) async {
     await fetchDetailPgasRequest(context);
-  }
-
-  FutureOr onGoBack(context) {
-    refreshData(context);
+    circle = false;
+    notifyListeners();
   }
 
   fetchDetailPgasRequest(context) async {
@@ -64,7 +67,7 @@ class PgasRequestInfoViewModel extends BaseViewModel {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заявка успешно удалена.")));
       notifyListeners();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ошибка при удалении заявки.")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
       print(response.statusCode);
       print(response.body);
     }
