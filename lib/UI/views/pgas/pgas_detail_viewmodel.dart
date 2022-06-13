@@ -48,25 +48,30 @@ class PgasDetailViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  deleteBtnAction(context, int? userActivityId) async {
+  deleteBtnAction(context, UserAchieveModel achieveModel) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
 
     Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
+      "X-Access-Token": eiosAccessToken.toString()
     };
 
     Map<String, dynamic> body = {
-      "userActivityId": userActivityId.toString()
+      "userActivityId": achieveModel.userActivityId.toString()
     };
+
+    if (achieveModel.activityFile != null) {
+      print(achieveModel.activityFile!.isNotEmpty);
+      await deletePgasFile(context, achieveModel.activityFile);
+    }
 
     var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteUserActivity"), headers: header, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.body);
+      userAchievesList.remove(achieveModel);
+      notifyListeners();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-      print(response.body);
     }
   }
 
@@ -77,13 +82,7 @@ class PgasDetailViewModel extends BaseViewModel {
       "X-Access-Token": "$eiosAccessToken"
     };
 
-    var response = await http.delete(Uri.parse("https://api-next.kemsu.ru/api/storage/pgas-mobile/$fileName"), headers: header);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Файл удален успешно.")));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-    }
+    var response = await http.delete(Uri.parse("https://api-next.kemsu.ru/api/storage/pgas-mobile/${fileName.toString()}"), headers: header);
   }
 
   List<UserAchieveModel> parseUserAchieves(List response) {
