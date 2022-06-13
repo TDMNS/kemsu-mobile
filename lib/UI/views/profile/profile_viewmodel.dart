@@ -8,6 +8,8 @@ import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
+import '../checkList/checkList_view.dart';
+import 'dart:convert';
 
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
@@ -70,6 +72,9 @@ class ProfileViewModel extends BaseViewModel {
     else {
       debtData = MoneyDebt["DEBT_AMOUNT"].toString() + " (на дату: " + MoneyDebt["DEBT_DATE"] + ")";
     }
+
+
+
     notifyListeners();
   }
 
@@ -88,6 +93,12 @@ class ProfileViewModel extends BaseViewModel {
   void debtsButton(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => DebtsView()));
+    notifyListeners();
+  }
+
+  void checklistButton(context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => CheckListView()));
     notifyListeners();
   }
 

@@ -39,69 +39,70 @@ _iaisView(BuildContext context, IaisViewModel model) {
       const SizedBox(height: 12),
       Row(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
-          Text(
+          const Text(
             'Показать все ',
             style: TextStyle(fontSize: 17.0),
           ),
-          SizedBox(width: 10), //SizedBox
+          const SizedBox(width: 10), //SizedBox
           Checkbox(
               value: model.isChecked,
               onChanged: (e) {
                 model.isChecked = !model.isChecked;
-                if(model.isChecked) model.getDiscs(1);
-                else model.getDiscs(0);
+                if (model.isChecked) {
+                  model.getDiscs(1);
+                } else {
+                  model.getDiscs(0);
+                }
               }),
         ],
       ),
-        Center(
-          child: Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(8.0),
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Container(
-                    child: Expanded(child: Text('Дисциплина', textAlign: TextAlign.center, softWrap: true)),
-                  )),
-                  DataColumn(label: Container(
-                    child: Expanded(child: Text('Преподаватель', textAlign: TextAlign.center, softWrap: true)),
-                  )),
-                ],
-                rows: model.Course.map<DataRow>((e) => DataRow(
-                  onSelectChanged: (selected) async {
-                    if (selected==true) {{
-                      print(e.DISC_NAME);
-                      print(e.COURSE_ID);
-                      await model.getDiscReports(e.COURSE_ID);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => IaisRepView(
-                            discData: e,
-                            repList: model.Report
-                        )),
-                      );
-                    };}
-                  },
+      Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8.0),
+          child: DataTable(
+            columns: const [
+              DataColumn(
+                  label: Expanded(
+                      child: Text('Дисциплина', textAlign: TextAlign.center))),
+              DataColumn(
+                  label: Expanded(
+                      child:
+                          Text('Преподаватель', textAlign: TextAlign.center))),
+            ],
+            rows: model.Course.map<DataRow>((e) => DataRow(
+                    onSelectChanged: (selected) async {
+                      if (selected == true) {
+                        {
+                          print(e.DISC_NAME);
+                          print(e.COURSE_ID);
+                          await model.getDiscReports(e.COURSE_ID);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => IaisRepView(
+                                    discData: e, repList: model.Report)),
+                          );
+                        }
+                        ;
+                      }
+                    },
                     cells: [
-                        DataCell(Text(e.DISC_NAME.toString(), textAlign: TextAlign.center, softWrap: true)),
-                        DataCell(Text(e.FIO.toString(), textAlign: TextAlign.center, softWrap: true)),
-                ]
-                )).toList(),
-                border: TableBorder.all(
-                  color: Colors.black,
-                  style: BorderStyle.solid,
-                  width: 1.5,
-                  ),
-                dataRowHeight: 100,
-                showCheckboxColumn: false,
-
-                ),
-                    )),
-                  ),
-        ],
+                      DataCell(Text(e.DISC_NAME.toString())),
+                      DataCell(Text(e.FIO.toString())),
+                    ])).toList(),
+            border: TableBorder.all(
+              color: Colors.black,
+              style: BorderStyle.solid,
+              width: 1.5,
+            ),
+            dataRowHeight: 100,
+            showCheckboxColumn: false,
+          ),
+        ),
+      ),
+    ],
   );
 }
-

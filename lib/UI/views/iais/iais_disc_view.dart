@@ -8,7 +8,8 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 
 class IaisRepView extends StatelessWidget {
-  const IaisRepView({Key? key, required this.discData, required this.repList}) : super(key: key);
+  const IaisRepView({Key? key, required this.discData, required this.repList})
+      : super(key: key);
   final CourseIais discData;
   final List<ReportIais> repList;
 
@@ -36,23 +37,22 @@ class IaisRepView extends StatelessWidget {
 }
 
 _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
-  return ListView(
-    children: <Widget>[
-      const SizedBox(height: 12),
-      Center(
+  return ListView(children: <Widget>[
+    const SizedBox(height: 12),
+    Center(
         child: Card(
             margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
             child: Padding(
-              padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(2.0),
                 child: Container(
                   child: ExpansionTile(
                     expandedAlignment: Alignment.center,
                     title: const Text(
-                    'Данные о дисциплине',
-                    style: TextStyle(
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                      'Данные о дисциплине',
+                      style: TextStyle(
+                          fontFamily: "Ubuntu",
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
                     ),
                     children: <Widget>[
                       Padding(
@@ -63,14 +63,14 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                             RichText(
                               text: TextSpan(
                                 style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                                    fontSize: 16, color: Colors.black),
                                 children: <TextSpan>[
                                   const TextSpan(text: 'Дисциплина: '),
                                   TextSpan(
-                                    text: discData.DISC_NAME,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
+                                      text: discData.DISC_NAME,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
@@ -112,7 +112,9 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                                 children: <TextSpan>[
                                   const TextSpan(text: 'Период проведения: '),
                                   TextSpan(
-                                      text: discData.DISC_FIRST_DATE + " - " + discData.DISC_LAST_DATE,
+                                      text: discData.DISC_FIRST_DATE +
+                                          " - " +
+                                          discData.DISC_LAST_DATE,
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
@@ -155,25 +157,26 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                       ),
                     ],
                   ),
-      )))),
-      const SizedBox(height: 20),
-      Expanded(
-          child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
+                )))),
+    const SizedBox(height: 20),
+    Expanded(
+        child: SingleChildScrollView(
+      padding: const EdgeInsets.all(8.0),
       child: DataTable(
         columns: [
-          DataColumn(label: Container(
-            child: Expanded(child: Text('Название', textAlign: TextAlign.center, softWrap: true)),
-              )),
-          DataColumn(label: Container(
-            child: Expanded(child: TextButton(
+          const DataColumn(
+              label: Text(
+            'Название',
+          )),
+          DataColumn(
+              label: Expanded(
+            child: TextButton(
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Контрольная дата'),
-                      content: const Text(
-                          'Контрольная дата блока заданий'),
+                      content: const Text('Контрольная дата блока заданий'),
                       actions: [
                         ElevatedButton(
                             onPressed: () {
@@ -187,10 +190,12 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                 style: TextButton.styleFrom(
                   primary: Colors.black,
                 ),
-                child: Text('Контр. дата', textAlign: TextAlign.center, softWrap: true)),),
-              )),
-          DataColumn(label: Container(
-            child: Expanded(child: TextButton(
+                child: const Text('Контр. дата',
+                    textAlign: TextAlign.center, softWrap: true)),
+          )),
+          DataColumn(
+              label: Expanded(
+            child: TextButton(
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -211,10 +216,12 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                 style: TextButton.styleFrom(
                   primary: Colors.black,
                 ),
-                child: Text('Макс. балл', textAlign: TextAlign.center, softWrap: true)),),
+                child: const Text('Макс. балл',
+                    textAlign: TextAlign.center, softWrap: true)),
           )),
-          DataColumn(label: Container(
-            child: Expanded(child: TextButton(
+          DataColumn(
+              label: Expanded(
+            child: TextButton(
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -235,29 +242,52 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                 style: TextButton.styleFrom(
                   primary: Colors.black,
                 ),
-                child: Text('Рез.', textAlign: TextAlign.center, softWrap: true)),),
+                child: const Text('Рез.',
+                    textAlign: TextAlign.center, softWrap: true)),
           )),
         ],
-        rows: repList.map<DataRow>((e) => DataRow(
-          onSelectChanged: (selected) async {
-            if (selected==true) {{
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => IaisTaskBlockView(
-                        repData: e.STUDENT_TASK_LIST,
-                        blockName: e.NAME,
+        rows: repList
+            .map<DataRow>((e) => DataRow(
+                  onSelectChanged: (selected) async {
+                    if (selected == true) {
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IaisTaskBlockView(
+                                    repData: e.STUDENT_TASK_LIST,
+                                    blockName: e.NAME,
+                                  )),
+                        );
+                      }
+                    }
+                  },
+                  cells: [
+                    DataCell(Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        e.NAME.toString(),
+                      ),
                     )),
-              );
-            };}
-          },
-          cells: [
-            DataCell(Text(e.NAME.toString(), textAlign: TextAlign.center, softWrap: true)),
-            DataCell(Text(e.REP_CONTROL_DATE.toString(), textAlign: TextAlign.center, softWrap: true)),
-            DataCell(Text(e.MAX_BALL.toString(), textAlign: TextAlign.center, softWrap: true)),
-            DataCell(Text(e.SUM_BALL.toString(), textAlign: TextAlign.center, softWrap: true)),
-          ],
-        )).toList(),
+                    DataCell(Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        e.REP_CONTROL_DATE.toString(),
+                      ),
+                    )),
+                    DataCell(Center(
+                      child: Text(
+                        e.MAX_BALL.toString(),
+                      ),
+                    )),
+                    DataCell(Center(
+                      child: Text(
+                        e.SUM_BALL.toString(),
+                      ),
+                    )),
+                  ],
+                ))
+            .toList(),
         border: TableBorder.all(
           color: Colors.black,
           style: BorderStyle.solid,
@@ -267,6 +297,6 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
         showCheckboxColumn: false,
         columnSpacing: 1,
       ),
-  ))]);
+    ))
+  ]);
 }
-
