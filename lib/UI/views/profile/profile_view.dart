@@ -7,6 +7,7 @@ import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
+import 'package:kemsu_app/UI/views/checkList/checkList_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -445,7 +446,52 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   ),
                 ),
               ],
-            )
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CheckListView()));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 30),
+                    height: 100,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 15,
+                              offset: const Offset(0, 15))
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/icons/Book.png',
+                          scale: 4,
+                        ),
+                        const SizedBox(height: 10),
+                        const Center(
+                          child: Text(
+                            'Обходной лист',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         const SizedBox(

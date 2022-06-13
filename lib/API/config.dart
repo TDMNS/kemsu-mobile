@@ -32,4 +32,6 @@ class Config {
       'https://api-next.kemsu.ru/api/debt/main/moneyDebtInfo';
   static String studDebt =
       'https://api-next.kemsu.ru/api/debt/main/studyDebtList';
+  static String studCheckList =
+      'https://api-next.kemsu.ru/api/debt/main/checkList';
 }
