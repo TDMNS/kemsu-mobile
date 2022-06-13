@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_viewmodel.dart';
 
@@ -59,29 +60,43 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
   );
   return ListView(
     children: <Widget>[
-      Center(
-        child: Card(
-          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<TeacherList>(
-                hint: const Text(
-                  'Выбрать преподавателя',
-                  style: TextStyle(color: Colors.black),
-                ),
-                onChanged: (value) {
-                  model.changeTeacher(value);
-                },
-                isExpanded: true,
-                value: model.choiceTeacher,
-                items:
-                    model.teacherList.map<DropdownMenuItem<TeacherList>>((e) {
-                  return DropdownMenuItem<TeacherList>(
-                    child: Text(e.fio.toString()),
-                    value: e,
-                  );
-                }).toList(),
-              )),
+      Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+        child: TypeAheadField<Teacher?>(
+          hideSuggestionsOnKeyboardHide: false,
+          textFieldConfiguration: const TextFieldConfiguration(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+              hintText: 'Выбрать преподавателя',
+            ),
+          ),
+          suggestionsCallback: TeacherApi.getTeacherData,
+          itemBuilder: (context, Teacher? suggestion) {
+            final user = suggestion!;
+
+            return ListTile(
+              title: Text(user.fio),
+            );
+          },
+          noItemsFoundBuilder: (context) => Container(
+            height: 100,
+            child: const Center(
+              child: Text(
+                'Нет результатов',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+          onSuggestionSelected: (Teacher? suggestion) {
+            final user = suggestion!;
+            model.changeTeacher(user.prepId);
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text('Выбран преподаватель: ${user.fio}'),
+              ));
+          },
         ),
       ),
       const SizedBox(
@@ -89,7 +104,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
       ),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
-          child: model.choiceTeacher == null
+          child: model.teacherId == null
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 10),
@@ -166,8 +181,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                 )),
       Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
-        child:
-            model.choiceTeacher == null ? const SizedBox() : _choiceDay(model),
+        child: model.teacherId == null ? const SizedBox() : _choiceDay(model),
       ),
       const SizedBox(
         height: 50,
