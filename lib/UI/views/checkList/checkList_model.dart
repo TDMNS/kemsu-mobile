@@ -14,6 +14,6 @@ class CheckList {
     else COMMENTARY = "";
     DEBT="";
     if(json["noDebtFlag"]==1) DEBT="Нет";
-    if(json["DebtFlag"]==1) DEBT="Есть";
+    if(json["debtFlag"]==1) DEBT="Есть";
   }
 }

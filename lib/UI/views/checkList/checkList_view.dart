@@ -22,7 +22,7 @@ class CheckListView extends StatelessWidget {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, 'Долги'),
+              appBar: customAppBar(context, model, 'Обходной лист'),
               bottomNavigationBar: customBottomBar(context, model),
               body: _checkListView(context, model),
             ),
@@ -114,30 +114,6 @@ _checkListView(BuildContext context, CheckListViewModel model) {
                         ),
                         child: Text('Задол.', textAlign: TextAlign.left)),),
                   )),
-                  DataColumn(label: Container(
-                    child: Expanded(child: TextButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Комментарий'),
-                              content: const Text(
-                                  'Комментарий ответственного лица в подразделении для обучающегося.'),
-                              actions: [
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('Закрыть'))
-                              ],
-                            ),
-                          );
-                        },
-                        style: TextButton.styleFrom(
-                          primary: Colors.black,
-                        ),
-                        child: Text('Комм.', textAlign: TextAlign.left)),),
-                  )),
                 ],
                 rows: model.checkList.map<DataRow>((e) => DataRow(cells: [
                   DataCell(Padding(
@@ -150,15 +126,31 @@ _checkListView(BuildContext context, CheckListViewModel model) {
                       textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(e.DEBT.toString(),
-                      textAlign: TextAlign.center, softWrap: true,
-                      style: TextStyle(color: e.DEBT.toString()=="Есть"? Colors.red : Colors.green)),
+                    child: Container(
+                      child: Expanded(child: TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Комментарий'),
+                              content: Text(e.COMMENTARY.toString()),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                child: const Text('Закрыть'))
+                              ],
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          primary: Colors.black,
+                        ),
+                        child: Text(e.DEBT.toString(), textAlign: TextAlign.left,
+                          style: TextStyle(color: e.DEBT.toString()=="Есть"? Colors.red : Colors.green)),
+                  )),)
                   )),
-                  DataCell(Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(e.COMMENTARY.toString(),
-                      textAlign: TextAlign.center, softWrap: true,
-                  ))),
                 ])).toList(),
                 border: TableBorder.all(
                   color: Colors.black,
