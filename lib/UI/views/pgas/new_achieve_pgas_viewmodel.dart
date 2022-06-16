@@ -44,6 +44,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
   TextEditingController yearController = TextEditingController();
   TextEditingController resourceController = TextEditingController();
 
+  bool circle = false;
+
   final months = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль",
   "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
 
@@ -93,6 +95,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
   }
 
   sendButtonAction(context) async {
+    circle = true;
+    notifyListeners();
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? requestId = await storage.read(key: "pgas_id");
     Map<String, String> header = {
@@ -126,6 +130,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
     var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity"), headers: header, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+      circle = false;
+      notifyListeners();
       Navigator.of(context).pop();
       print(response.body);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
@@ -156,6 +162,9 @@ class NewAchievePgasViewModel extends BaseViewModel {
     Dio dio = Dio();
 
     dio.options.headers["X-Access-Token"] = "$eiosAccessToken";
+
+    print(chooseFile!.size);
+    print(fd.fields);
 
     var response = await dio.put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
 
