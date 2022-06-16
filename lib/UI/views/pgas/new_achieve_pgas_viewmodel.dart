@@ -153,7 +153,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
 
     FormData fd = FormData.fromMap({
-      chooseFile!.name: await MultipartFile.fromFile(chooseFile!.path.toString()),
+      "file.${chooseFile!.extension}": await MultipartFile.fromFile(chooseFile!.path.toString()),
       "uniqueNames": true,
       "overwrite": true,
       "totalSizeLimit": (10 * 1024 * 1024),
@@ -163,7 +163,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
     dio.options.headers["X-Access-Token"] = "$eiosAccessToken";
 
-    print(chooseFile!.size);
+    print(chooseFile!.extension);
     print(fd.fields);
 
     var response = await dio.put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
