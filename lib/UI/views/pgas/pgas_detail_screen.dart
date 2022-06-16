@@ -44,7 +44,7 @@ _appBar(context, PgasDetailViewModel model) {
           onPressed: () {
             model.goToPgasRequestInfoScreen(context);
           },
-          icon: _gradientIcon(Icons.info, const Color(0xFF00C2FF), Colors.blueAccent)
+          icon: _gradientIcon(Icons.more_horiz, const Color(0xFF00C2FF), Colors.blueAccent)
       )
     ],
     backgroundColor: Colors.transparent,
