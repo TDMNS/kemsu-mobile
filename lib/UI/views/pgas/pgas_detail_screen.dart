@@ -44,7 +44,7 @@ _appBar(context, PgasDetailViewModel model) {
           onPressed: () {
             model.goToPgasRequestInfoScreen(context);
           },
-          icon: _gradientIcon(Icons.info, const Color(0xFF00C2FF), Colors.blueAccent)
+          icon: _gradientIcon(Icons.more_horiz, const Color(0xFF00C2FF), Colors.blueAccent)
       )
     ],
     backgroundColor: Colors.transparent,
@@ -122,8 +122,8 @@ _createAchieveButton(context, PgasDetailViewModel model) {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFBC89),
-              Color(0xFFFF9A67)
+              Color(0xFF00C2FF),
+              Colors.blueAccent
             ],
           ),
         ),
@@ -346,10 +346,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           child: TextButton(
                             onPressed: () async {
-                              await model.deletePgasFile(context, model.userAchievesList[index].activityFile);
-                              await model.deleteBtnAction(context, model.userAchievesList[index].userActivityId);
-                              model.userAchievesList.removeAt(index);
-                              model.notifyListeners();
+                              await model.deleteBtnAction(context, model.userAchievesList[index]);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

@@ -6,6 +6,7 @@ import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:html/parser.dart' as parser;
 
 import '../../../API/config.dart';
 
@@ -17,6 +18,10 @@ class PrepScheduleViewModel extends BaseViewModel {
   int indexDay = DateTime.now().weekday;
   PrepScheduleTable? prepScheduleTable;
   List<PrepScheduleTable>? scheduleList = [];
+  int? teacherId;
+  String? currentDate;
+  String? currentWeek;
+  int? weekId;
 
   List<CurrentGroupList> currentGroupList = [];
 
@@ -36,10 +41,52 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getTeacher();
+    getWeekData();
+  }
+
+  void changeWeek(value) {
+    weekId = value;
+    notifyListeners();
+  }
+
+  Future<List<String>> getWeekData() async {
+//Getting the response from the targeted url
+    final response = await http.Client()
+        .get(Uri.parse('https://kemsu.ru/education/schedule/'));
+    circle = false;
+
+    //Status Code 200 means response has been received successfully
+    if (response.statusCode == 200) {
+      //Getting the html document from the response
+      var document = parser.parse(response.body);
+      try {
+        //Scraping the first article title
+        var responseString1 =
+            document.getElementsByClassName('calendar-week')[0].children[0];
+        var responseString2 =
+            document.getElementsByClassName('calendar-week')[0].children[1];
+
+        currentDate = responseString1.text.trim();
+        currentWeek = responseString2.text.trim();
+        if (currentWeek!.substring(10, currentWeek!.length) == 'четная') {
+          weekId = 1;
+        } else {
+          weekId = 0;
+        }
+
+        return [responseString1.text.trim(), responseString2.text.trim()];
+      } catch (e) {
+        return ['', '', 'Error!'];
+      }
+    } else {
+      return ['', '', 'Error: ${response.statusCode}.'];
+    }
   }
 
   changeTeacher(value) async {
-    choiceTeacher = value;
+    //choiceTeacher = value;
+    teacherId = value;
+    print('Func work, id: $teacherId}');
     notifyListeners();
     String? token = await storage.read(key: "tokenKey");
     var response2 = await http
@@ -47,7 +94,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=${choiceTeacher!.prepId}&accessToken=$token'));
+        '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=$teacherId&accessToken=$token'));
     var jsonResponse = json.decode(response.body)['result'];
     result = Result.fromJson(jsonResponse);
 
@@ -61,7 +108,6 @@ class PrepScheduleViewModel extends BaseViewModel {
     for (int i = 0; i < evenList.length; i++) {
       print(evenList[i].discName);
     }
-
     circle = false;
 
     notifyListeners();
@@ -85,7 +131,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     print(indexDay);
   }
 
-  void getTeacher() async {
+  getTeacher() async {
     String? token = await storage.read(key: "tokenKey");
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
@@ -107,5 +153,49 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   List<Even> parseEvenList(List response) {
     return response.map<Even>((json) => Even.fromJson(json)).toList();
+  }
+}
+
+class Teacher {
+  final String fio;
+  final int prepId;
+
+  const Teacher({required this.fio, required this.prepId});
+
+  static Teacher fromJson(Map<String, dynamic> json) =>
+      Teacher(fio: json['fio'], prepId: json['prepId']);
+}
+
+class TeacherApi {
+  static Future<List<Teacher>> getTeacherData(String querry) async {
+    List<CurrentGroupList> currentGroupList = [];
+
+    final storage = const FlutterSecureStorage();
+    List<CurrentGroupList> parseCurrentGroupList(List response) {
+      return response
+          .map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json))
+          .toList();
+    }
+
+    String? token = await storage.read(key: "tokenKey");
+    var response2 = await http
+        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList =
+        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+
+    var response = await http.get(Uri.parse(
+        '${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
+    if (response.statusCode == 200) {
+      final List teachers = json.decode(response.body)['teacherList'];
+
+      return teachers.map((json) => Teacher.fromJson(json)).where((teacher) {
+        final fioLower = teacher.fio.toLowerCase();
+        final querryLower = querry.toLowerCase();
+
+        return fioLower.contains(querryLower);
+      }).toList();
+    } else {
+      throw Exception();
+    }
   }
 }

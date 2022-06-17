@@ -64,6 +64,13 @@ class ProfileViewModel extends BaseViewModel {
     finForm = studentCard["FINFORM"];
     //print(response1.data);
     print(studentCard["ID"]);
+    print(group);
+    print(phone);
+    await storage.write(key: "firstName", value: firstName);
+    await storage.write(key: "lastName", value: lastName);
+    await storage.write(key: "middleName", value: middleName);
+    await storage.write(key: "group", value: group);
+    await storage.write(key: "phone", value: phone);
 
     final responseMoneyDebt = await dio
         .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});

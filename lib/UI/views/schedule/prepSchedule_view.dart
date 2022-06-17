@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_viewmodel.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
 
 import 'package:stacked/stacked.dart';
 
@@ -36,12 +38,21 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                    extendBody: true,
-                    extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, 'Расписание'),
-                    bottomNavigationBar: customBottomBar(context, model),
-                    body: _prepSchedule(context, model)),
+                child: model.circle
+                    ? Container(
+                        color: Colors.white,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      )
+                    : Scaffold(
+                        extendBody: true,
+                        extendBodyBehindAppBar: true,
+                        appBar: customAppBar(context, model, 'Расписание'),
+                        bottomNavigationBar: customBottomBar(context, model),
+                        body: _prepSchedule(context, model)),
               ));
         });
   }
@@ -59,37 +70,56 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
   );
   return ListView(
     children: <Widget>[
-      Center(
-        child: Card(
-          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<TeacherList>(
-                hint: const Text(
-                  'Выбрать преподавателя',
-                  style: TextStyle(color: Colors.black),
-                ),
-                onChanged: (value) {
-                  model.changeTeacher(value);
-                },
-                isExpanded: true,
-                value: model.choiceTeacher,
-                items:
-                    model.teacherList.map<DropdownMenuItem<TeacherList>>((e) {
-                  return DropdownMenuItem<TeacherList>(
-                    child: Text(e.fio.toString()),
-                    value: e,
-                  );
-                }).toList(),
-              )),
+      Padding(
+        padding: const EdgeInsets.only(top: 10, left: 30),
+        child: Text(
+          '${model.currentDate}, ${model.currentWeek}',
+          style: const TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
       ),
-      const SizedBox(
-        height: 30,
+      Padding(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+        child: TypeAheadField<Teacher?>(
+          hideSuggestionsOnKeyboardHide: false,
+          textFieldConfiguration: const TextFieldConfiguration(
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+              hintText: 'Выбрать преподавателя',
+            ),
+          ),
+          suggestionsCallback: TeacherApi.getTeacherData,
+          itemBuilder: (context, Teacher? suggestion) {
+            final user = suggestion!;
+
+            return ListTile(
+              title: Text(user.fio),
+            );
+          },
+          noItemsFoundBuilder: (context) => Container(
+            height: 100,
+            child: const Center(
+              child: Text(
+                'Нет результатов',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+          onSuggestionSelected: (Teacher? suggestion) {
+            final user = suggestion!;
+            model.changeTeacher(user.prepId);
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(SnackBar(
+                content: Text('Выбран преподаватель: ${user.fio}'),
+              ));
+          },
+        ),
       ),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
-          child: model.choiceTeacher == null
+          child: model.teacherId == null
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 10),
@@ -164,10 +194,41 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                     ],
                   ),
                 )),
+      model.teacherId == null
+          ? const SizedBox()
+          : Stack(
+              children: [
+                ListTile(
+                  title: const Text('четная'),
+                  leading: Radio(
+                    value: 1,
+                    groupValue: model.weekId,
+                    onChanged: (value) {
+                      model.changeWeek(value);
+                      print(model.weekId);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width / 2),
+                  child: ListTile(
+                    title: const Text('нечетная'),
+                    leading: Radio(
+                      value: 0,
+                      groupValue: model.weekId,
+                      onChanged: (value) {
+                        model.changeWeek(value);
+                        print(model.weekId);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
       Padding(
-        padding: EdgeInsets.only(left: 20, right: 20),
-        child:
-            model.choiceTeacher == null ? const SizedBox() : _choiceDay(model),
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        child: model.teacherId == null ? const SizedBox() : _choiceDay(model),
       ),
       const SizedBox(
         height: 50,
@@ -246,13 +307,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -283,13 +342,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId! == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -320,13 +377,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -357,13 +412,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -394,13 +447,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -431,13 +482,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -468,13 +517,11 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -538,13 +585,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -575,13 +620,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -612,13 +655,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -649,13 +690,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -686,13 +725,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -723,13 +760,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -760,13 +795,11 @@ _tuesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![1].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -830,13 +863,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -867,13 +898,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -904,13 +933,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -941,13 +968,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -978,13 +1003,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1015,13 +1038,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1052,13 +1073,11 @@ _wednesdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![2].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1122,13 +1141,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1159,13 +1176,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1196,13 +1211,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1233,13 +1246,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1270,13 +1281,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1307,13 +1316,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1344,13 +1351,11 @@ _thursdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![3].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1414,13 +1419,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1451,13 +1454,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1488,13 +1489,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1525,13 +1524,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1562,13 +1559,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1599,13 +1594,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1636,13 +1629,11 @@ _fridayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![4].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1706,13 +1697,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1743,13 +1732,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1780,13 +1767,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1817,13 +1802,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1854,13 +1837,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1891,13 +1872,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),
@@ -1928,13 +1907,11 @@ _saturdayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                            'чёт. ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                            'нечёт. ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                        model.weekId == 1
+                            ? Text(
+                                'чёт. ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                            : Text(
+                                'нечёт. ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![5].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
                         const SizedBox(
                           height: 10,
                         ),

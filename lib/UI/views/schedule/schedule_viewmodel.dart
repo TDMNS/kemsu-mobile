@@ -7,7 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
-import 'package:stacked/stacked_annotations.dart';
+import 'package:html/parser.dart' as parser;
+
 import '../../../API/config.dart';
 
 class ScheduleViewModel extends BaseViewModel {
@@ -27,6 +28,9 @@ class ScheduleViewModel extends BaseViewModel {
   bool table = false;
   int indexDay = DateTime.now().weekday;
   bool currentTable = true;
+  String? currentDate;
+  String? currentWeek;
+  int? weekId;
 
   List<CoupleModel> modelDay1All1 = [];
   List<CoupleModel> modelDay1All2 = [];
@@ -186,10 +190,16 @@ class ScheduleViewModel extends BaseViewModel {
 
   final storage = const FlutterSecureStorage();
 
+  void changeWeek(value) {
+    weekId = value;
+    notifyListeners();
+  }
+
   bool circle = true;
 
   Future onReady() async {
     getScheduleTable();
+    getWeekData();
   }
 
   ScheduleRequest? scheduleSemester;
@@ -224,6 +234,38 @@ class ScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<List<String>> getWeekData() async {
+//Getting the response from the targeted url
+    final response = await http.Client()
+        .get(Uri.parse('https://kemsu.ru/education/schedule/'));
+    //Status Code 200 means response has been received successfully
+    if (response.statusCode == 200) {
+      //Getting the html document from the response
+      var document = parser.parse(response.body);
+      try {
+        //Scraping the first article title
+        var responseString1 =
+            document.getElementsByClassName('calendar-week')[0].children[0];
+        var responseString2 =
+            document.getElementsByClassName('calendar-week')[0].children[1];
+
+        currentDate = responseString1.text.trim();
+        currentWeek = responseString2.text.trim();
+        if (currentWeek!.substring(10, currentWeek!.length) == 'четная') {
+          weekId = 1;
+        } else {
+          weekId = 0;
+        }
+
+        return [responseString1.text.trim(), responseString2.text.trim()];
+      } catch (e) {
+        return ['', '', 'Error!'];
+      }
+    } else {
+      return ['', '', 'Error: ${response.statusCode}.'];
+    }
+  }
+
   void choiceDay(action) {
     if (action == 'next') {
       indexDay++;
@@ -243,7 +285,7 @@ class ScheduleViewModel extends BaseViewModel {
     scheduleSemester = value;
     notifyListeners();
     var response = await http.get(
-        Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
+        Uri.parse('${Config.facultyList}?semesterId=${scheduleList[1].id}'));
     facultyList = parseFaculty(json.decode(response.body)["result"]);
     print(scheduleList[0].id);
     notifyListeners();
@@ -255,7 +297,7 @@ class ScheduleViewModel extends BaseViewModel {
     scheduleFaculty = value;
     notifyListeners();
     var response = await http.get(Uri.parse(
-        '${Config.groupList}?facultyId=${scheduleFaculty!.id}&semesterId=${scheduleList[0].id}'));
+        '${Config.groupList}?facultyId=${scheduleFaculty!.id}&semesterId=${scheduleList[1].id}'));
     groupList = parseGroup(json.decode(response.body)["result"]);
     notifyListeners();
   }
@@ -265,7 +307,7 @@ class ScheduleViewModel extends BaseViewModel {
     tableOff();
     notifyListeners();
     var response = await http
-        .get(Uri.parse('${Config.weekList}?semesterId=${scheduleList[0].id}'));
+        .get(Uri.parse('${Config.weekList}?semesterId=${scheduleList[1].id}'));
     weekID = parseWeekID(json.decode(response.body)["result"]);
     print(weekID[0].id);
     notifyListeners();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
 
 errorDialog1(context) {
   return showDialog<String>(
@@ -40,6 +41,19 @@ customAppBar(context, model, name) {
       style: TextStyle(color: Colors.blueGrey.shade800),
     ),
     centerTitle: true,
+    actions:
+      name == "Сообщения об ошибках" ? null : <Widget> [
+        IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
+            },
+            icon: Icon(
+              Icons.report,
+              color: Colors.indigo.shade700,
+              size: 32,
+            )
+        ),
+      ],
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: const SystemUiOverlayStyle(

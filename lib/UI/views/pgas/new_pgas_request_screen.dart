@@ -83,7 +83,7 @@ _body(context, NewPgasRequestViewModel model) {
                         child: FittedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(e.facultyTitle.toString()),
+                            child: Text(e.facultyShortTitle.toString()),
                           ),
                         ),
                         value: e,
