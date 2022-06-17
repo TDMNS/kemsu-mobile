@@ -34,6 +34,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   List<ReitItemList> reitItemList = [];
 
   int selectedIndex = 2;
+  bool isSelected = false;
 
   void onTapBottomBar(int index) {
     selectedIndex = index;
@@ -64,17 +65,6 @@ class OrderingInformationViewModel extends BaseViewModel {
         .toList();
   }
 
-  //
-  // List<ReitList> parseReitList(List response) {
-  //   return response.map<ReitList>((json) => ReitList.fromJson(json)).toList();
-  // }
-  //
-  // List<ReitItemList> parseReitItemList(List response) {
-  //   return response
-  //       .map<ReitItemList>((json) => ReitItemList.fromJson(json))
-  //       .toList();
-  // }
-  //
   changeBasic(value) async {
     selectedBasic = value;
     String? token = await storage.read(key: "tokenKey");
@@ -89,6 +79,7 @@ class OrderingInformationViewModel extends BaseViewModel {
 
   changePeriod(value) async {
     selectedPeriod = value;
+    isSelected = true;
     // String? token = await storage.read(key: "tokenKey");
     // var response =
     // await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));
