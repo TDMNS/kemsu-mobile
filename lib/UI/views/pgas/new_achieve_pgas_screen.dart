@@ -513,7 +513,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               onPressed: () async {
                 model.sendButtonAction(context);
               },
-              child: const Text(
+              child: model.circle ? SizedBox(
+                  child: CircularProgressIndicator(color: Colors.white, ),
+                height: 14,
+                width: 14,
+              ) : Text(
                 "Отправить",
                 style: TextStyle(
                   fontStyle: FontStyle.normal,
@@ -552,21 +556,41 @@ _fileContainer(context, NewAchievePgasViewModel model) {
   ) :
   InkWell(
     onTap: () => model.pickFileBtnAction(context),
-    child: Container(
-      width: 100,
-      height: 150,
-      decoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
-          borderRadius: BorderRadius.all(Radius.circular(15))
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(model.chooseFile!.name, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
-          Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
-        ],
-      ),
+    child: Stack(
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        Container(
+          width: 100,
+          height: 150,
+          decoration: BoxDecoration(
+              color: Colors.lightBlueAccent,
+              borderRadius: BorderRadius.all(Radius.circular(15))
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(model.chooseFile!.name, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+              Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
+            ],
+          ),
+        ),
+        Positioned(
+            child: ElevatedButton(
+              onPressed: () {
+                model.chooseFile = null;
+                model.notifyListeners();
+              },
+              child: Icon(Icons.close, color: Colors.black,),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+                primary: Colors.white, // <-- Button color
+              ),
+            ),
+          bottom: 110,
+          left: 60
+        )
+      ],
     ),
   );
 }
