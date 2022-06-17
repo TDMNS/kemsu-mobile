@@ -110,7 +110,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               ),
             )
           : const SizedBox.shrink(),
-      model.lastParagraph == model.selectedPeriod
+      model.lastParagraph == model.selectedPeriod && model.isSelected == true
           ? Center(
               child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -124,6 +124,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime(2100));
                             model.startDate = newDate;
+                            print(model.startDate);
                           },
                           child: model.startDate == DateTime(0, 0, 0)
                               ? const Text("Выбрать начальную дату")
@@ -131,7 +132,42 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                   "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}")))),
             )
           : const SizedBox.shrink(),
-      model.startDate != DateTime(0, 0, 0)
+      model.isSelected == true && model.lastParagraph != model.selectedPeriod
+          ? Center(
+              child: Card(
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 20,
+                                offset: const Offset(0, 15))
+                          ]),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: const Center(
+                                child: Text(
+                              'Подать заявку',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            )),
+                          ),
+                        ),
+                      ))),
+            )
+          : const SizedBox.shrink(),
+      model.startDate != DateTime(0, 0, 0) &&
+              model.selectedPeriod == model.lastParagraph
           ? Center(
               child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -152,7 +188,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                   "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}")))),
             )
           : const SizedBox.shrink(),
-      model.endDate != DateTime(0, 0, 0)
+      model.endDate != DateTime(0, 0, 0) &&
+              model.selectedPeriod == model.lastParagraph
           ? Center(
               child: Card(
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 10),

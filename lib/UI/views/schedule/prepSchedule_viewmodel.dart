@@ -6,6 +6,7 @@ import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:html/parser.dart' as parser;
 
 import '../../../API/config.dart';
 
@@ -18,6 +19,9 @@ class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleTable? prepScheduleTable;
   List<PrepScheduleTable>? scheduleList = [];
   int? teacherId;
+  String? currentDate;
+  String? currentWeek;
+  int? weekId;
 
   List<CurrentGroupList> currentGroupList = [];
 
@@ -37,6 +41,46 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getTeacher();
+    getWeekData();
+  }
+
+  void changeWeek(value) {
+    weekId = value;
+    notifyListeners();
+  }
+
+  Future<List<String>> getWeekData() async {
+//Getting the response from the targeted url
+    final response = await http.Client()
+        .get(Uri.parse('https://kemsu.ru/education/schedule/'));
+    circle = false;
+
+    //Status Code 200 means response has been received successfully
+    if (response.statusCode == 200) {
+      //Getting the html document from the response
+      var document = parser.parse(response.body);
+      try {
+        //Scraping the first article title
+        var responseString1 =
+            document.getElementsByClassName('calendar-week')[0].children[0];
+        var responseString2 =
+            document.getElementsByClassName('calendar-week')[0].children[1];
+
+        currentDate = responseString1.text.trim();
+        currentWeek = responseString2.text.trim();
+        if (currentWeek!.substring(10, currentWeek!.length) == 'четная') {
+          weekId = 1;
+        } else {
+          weekId = 0;
+        }
+
+        return [responseString1.text.trim(), responseString2.text.trim()];
+      } catch (e) {
+        return ['', '', 'Error!'];
+      }
+    } else {
+      return ['', '', 'Error: ${response.statusCode}.'];
+    }
   }
 
   changeTeacher(value) async {
