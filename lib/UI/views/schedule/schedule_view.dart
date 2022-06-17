@@ -75,6 +75,14 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.only(top: 10, left: 30),
+        child: Text(
+          '${model.currentDate}, ${model.currentWeek}',
+          style: const TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+        ),
+      ),
       Center(
         child: Card(
           margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -230,6 +238,38 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
               ),
             )
           : const SizedBox(),
+      model.table == false
+          ? const SizedBox()
+          : Stack(
+              children: [
+                ListTile(
+                  title: const Text('четная'),
+                  leading: Radio(
+                    value: 1,
+                    groupValue: model.weekId,
+                    onChanged: (value) {
+                      model.changeWeek(value);
+                      print(model.weekId);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width / 2),
+                  child: ListTile(
+                    title: const Text('нечетная'),
+                    leading: Radio(
+                      value: 0,
+                      groupValue: model.weekId,
+                      onChanged: (value) {
+                        model.changeWeek(value);
+                        print(model.weekId);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
           child: model.table == false ? const SizedBox() : _choiceDay(model))
@@ -241,7 +281,15 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
   return ListView(
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(top: 15, bottom: 10),
+        padding: const EdgeInsets.only(top: 10, left: 30),
+        child: Text(
+          '${model.currentDate}, ${model.currentWeek}',
+          style: const TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -306,8 +354,38 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
           ],
         ),
       ),
+      Stack(
+        children: [
+          ListTile(
+            title: const Text('четная'),
+            leading: Radio(
+              value: 1,
+              groupValue: model.weekId,
+              onChanged: (value) {
+                model.changeWeek(value);
+                print(model.weekId);
+              },
+            ),
+          ),
+          Padding(
+            padding:
+                EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
+            child: ListTile(
+              title: const Text('нечетная'),
+              leading: Radio(
+                value: 0,
+                groupValue: model.weekId,
+                onChanged: (value) {
+                  model.changeWeek(value);
+                  print(model.weekId);
+                },
+              ),
+            ),
+          )
+        ],
+      ),
       Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
+          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
           child: _choiceDay(model)),
       Center(
           child: GestureDetector(
@@ -425,26 +503,16 @@ _tableDay1(model) {
                         model.modelDay1Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even1[0].discName}, ${model.modelDay1Even1[0].lessonType}, ${model.modelDay1Even1[0].prepName}, ${model.modelDay1Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd1[0].discName}, ${model.modelDay1Odd1[0].lessonType}, ${model.modelDay1Odd1[0].prepName}, ${model.modelDay1Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even1[0].discName}, ${model.modelDay1Even1[0].lessonType}, ${model.modelDay1Even1[0].prepName}, ${model.modelDay1Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd1[0].discName}, ${model.modelDay1Odd1[0].lessonType}, ${model.modelDay1Odd1[0].prepName}, ${model.modelDay1Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay1Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay1Even1[0].discName}, ${model.modelDay1Even1[0].lessonType}, ${model.modelDay1Even1[0].prepName}, ${model.modelDay1Even1[0].auditoryName}',
-                          )
-                        : model.modelDay1Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd1[0].discName}, ${model.modelDay1Odd1[0].lessonType}, ${model.modelDay1Odd1[0].prepName}, ${model.modelDay1Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -461,26 +529,16 @@ _tableDay1(model) {
                         model.modelDay1Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even2[0].discName}, ${model.modelDay1Even2[0].lessonType}, ${model.modelDay1Even2[0].prepName}, ${model.modelDay1Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd2[0].discName}, ${model.modelDay1Odd2[0].lessonType}, ${model.modelDay1Odd2[0].prepName}, ${model.modelDay1Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even2[0].discName}, ${model.modelDay1Even2[0].lessonType}, ${model.modelDay1Even2[0].prepName}, ${model.modelDay1Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd2[0].discName}, ${model.modelDay1Odd2[0].lessonType}, ${model.modelDay1Odd2[0].prepName}, ${model.modelDay1Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay1Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay1Even2[0].discName}, ${model.modelDay1Even2[0].lessonType}, ${model.modelDay1Even2[0].prepName}, ${model.modelDay1Even2[0].auditoryName}',
-                          )
-                        : model.modelDay1Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd2[0].discName}, ${model.modelDay1Odd2[0].lessonType}, ${model.modelDay1Odd2[0].prepName}, ${model.modelDay1Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -488,36 +546,25 @@ _tableDay1(model) {
           child: Text('${model.coupleList[2].desc}'),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: model.modelDay1All3?.length > 0
-              ? Text(
-                  '${model.modelDay1All3[0].discName}, ${model.modelDay1All3[0].lessonType}, ${model.modelDay1All3[0].prepName}, ${model.modelDay1All3[0].auditoryName}',
-                )
-              : model.modelDay1Even3?.length > 0 &&
-                      model.modelDay1Odd3?.length > 0
-                  ? Column(
-                      children: [
-                        Text(
-                          'чет. ${model.modelDay1Even3[0].discName}, ${model.modelDay1Even3[0].lessonType}, ${model.modelDay1Even3[0].prepName}, ${model.modelDay1Even3[0].auditoryName}',
-                        ),
-                        const Divider(
-                          color: Colors.black,
-                        ),
-                        Text(
-                          'неч. ${model.modelDay1Odd3[0].discName}, ${model.modelDay1Odd3[0].lessonType}, ${model.modelDay1Odd3[0].prepName}, ${model.modelDay1Odd3[0].auditoryName}',
-                        )
-                      ],
-                    )
-                  : model.modelDay1Even3?.length > 0
-                      ? Text(
-                          'чет. ${model.modelDay1Even3[0].discName}, ${model.modelDay1Even3[0].lessonType}, ${model.modelDay1Even3[0].prepName}, ${model.modelDay1Even3[0].auditoryName}',
-                        )
-                      : model.modelDay1Odd3?.length > 0
-                          ? Text(
-                              'неч. ${model.modelDay1Odd3[0].discName}, ${model.modelDay1Odd3[0].lessonType}, ${model.modelDay1Odd3[0].prepName}, ${model.modelDay1Odd3[0].auditoryName}',
-                            )
-                          : const SizedBox(),
-        )
+            padding: const EdgeInsets.all(8.0),
+            child: model.modelDay1All3?.length > 0
+                ? Text(
+                    '${model.modelDay1All3[0].discName}, ${model.modelDay1All3[0].lessonType}, ${model.modelDay1All3[0].prepName}, ${model.modelDay1All3[0].auditoryName}',
+                  )
+                : model.modelDay1Even3?.length > 0 &&
+                        model.modelDay1Odd3?.length > 0
+                    ? Column(
+                        children: [
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even3[0].discName}, ${model.modelDay1Even3[0].lessonType}, ${model.modelDay1Even3[0].prepName}, ${model.modelDay1Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd3[0].discName}, ${model.modelDay1Odd3[0].lessonType}, ${model.modelDay1Odd3[0].prepName}, ${model.modelDay1Odd3[0].auditoryName}',
+                                )
+                        ],
+                      )
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -534,26 +581,20 @@ _tableDay1(model) {
                         model.modelDay1Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even4[0].discName}, ${model.modelDay1Even4[0].lessonType}, ${model.modelDay1Even4[0].prepName}, ${model.modelDay1Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd4[0].discName}, ${model.modelDay1Odd4[0].lessonType}, ${model.modelDay1Odd4[0].prepName}, ${model.modelDay1Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even4[0].discName}, ${model.modelDay1Even4[0].lessonType}, ${model.modelDay1Even4[0].prepName}, ${model.modelDay1Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd4[0].discName}, ${model.modelDay1Odd4[0].lessonType}, ${model.modelDay1Odd4[0].prepName}, ${model.modelDay1Odd4[0].auditoryName}',
+                                )
                         ],
                       )
                     : model.modelDay1Even4?.length > 0
                         ? Text(
-                            'чет. ${model.modelDay1Even4[0].discName}, ${model.modelDay1Even4[0].lessonType}, ${model.modelDay1Even4[0].prepName}, ${model.modelDay1Even4[0].auditoryName}',
+                            ' ${model.modelDay1Even4[0].discName}, ${model.modelDay1Even4[0].lessonType}, ${model.modelDay1Even4[0].prepName}, ${model.modelDay1Even4[0].auditoryName}',
                           )
-                        : model.modelDay1Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd4[0].discName}, ${model.modelDay1Odd4[0].lessonType}, ${model.modelDay1Odd4[0].prepName}, ${model.modelDay1Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                        : null)
       ]),
       TableRow(children: [
         Padding(
@@ -570,26 +611,16 @@ _tableDay1(model) {
                         model.modelDay1Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even5[0].discName}, ${model.modelDay1Even5[0].lessonType}, ${model.modelDay1Even5[0].prepName}, ${model.modelDay1Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd5[0].discName}, ${model.modelDay1Odd5[0].lessonType}, ${model.modelDay1Odd5[0].prepName}, ${model.modelDay1Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even5[0].discName}, ${model.modelDay1Even5[0].lessonType}, ${model.modelDay1Even5[0].prepName}, ${model.modelDay1Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd5[0].discName}, ${model.modelDay1Odd5[0].lessonType}, ${model.modelDay1Odd5[0].prepName}, ${model.modelDay1Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay1Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay1Even5[0].discName}, ${model.modelDay1Even5[0].lessonType}, ${model.modelDay1Even5[0].prepName}, ${model.modelDay1Even5[0].auditoryName}',
-                          )
-                        : model.modelDay1Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd5[0].discName}, ${model.modelDay1Odd5[0].lessonType}, ${model.modelDay1Odd5[0].prepName}, ${model.modelDay1Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -606,26 +637,16 @@ _tableDay1(model) {
                         model.modelDay1Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even6[0].discName}, ${model.modelDay1Even6[0].lessonType}, ${model.modelDay1Even6[0].prepName}, ${model.modelDay1Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd6[0].discName}, ${model.modelDay1Odd6[0].lessonType}, ${model.modelDay1Odd6[0].prepName}, ${model.modelDay1Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even6[0].discName}, ${model.modelDay1Even6[0].lessonType}, ${model.modelDay1Even6[0].prepName}, ${model.modelDay1Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd6[0].discName}, ${model.modelDay1Odd6[0].lessonType}, ${model.modelDay1Odd6[0].prepName}, ${model.modelDay1Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay1Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay1Even6[0].discName}, ${model.modelDay1Even6[0].lessonType}, ${model.modelDay1Even6[0].prepName}, ${model.modelDay1Even6[0].auditoryName}',
-                          )
-                        : model.modelDay1Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd6[0].discName}, ${model.modelDay1Odd6[0].lessonType}, ${model.modelDay1Odd6[0].prepName}, ${model.modelDay1Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -642,26 +663,16 @@ _tableDay1(model) {
                         model.modelDay1Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay1Even7[0].discName}, ${model.modelDay1Even7[0].lessonType}, ${model.modelDay1Even7[0].prepName}, ${model.modelDay1Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay1Odd7[0].discName}, ${model.modelDay1Odd7[0].lessonType}, ${model.modelDay1Odd7[0].prepName}, ${model.modelDay1Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay1Even7[0].discName}, ${model.modelDay1Even7[0].lessonType}, ${model.modelDay1Even7[0].prepName}, ${model.modelDay1Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay1Odd7[0].discName}, ${model.modelDay1Odd7[0].lessonType}, ${model.modelDay1Odd7[0].prepName}, ${model.modelDay1Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay1Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay1Even7[0].discName}, ${model.modelDay1Even7[0].lessonType}, ${model.modelDay1Even7[0].prepName}, ${model.modelDay1Even7[0].auditoryName}',
-                          )
-                        : model.modelDay1Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay1Odd7[0].discName}, ${model.modelDay1Odd7[0].lessonType}, ${model.modelDay1Odd7[0].prepName}, ${model.modelDay1Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
@@ -702,26 +713,16 @@ _tableDay2(model) {
                         model.modelDay2Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even1[0].discName}, ${model.modelDay2Even1[0].lessonType}, ${model.modelDay2Even1[0].prepName}, ${model.modelDay2Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd1[0].discName}, ${model.modelDay2Odd1[0].lessonType}, ${model.modelDay2Odd1[0].prepName}, ${model.modelDay2Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even1[0].discName}, ${model.modelDay2Even1[0].lessonType}, ${model.modelDay2Even1[0].prepName}, ${model.modelDay2Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd1[0].discName}, ${model.modelDay2Odd1[0].lessonType}, ${model.modelDay2Odd1[0].prepName}, ${model.modelDay2Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even1[0].discName}, ${model.modelDay2Even1[0].lessonType}, ${model.modelDay2Even1[0].prepName}, ${model.modelDay2Even1[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd1[0].discName}, ${model.modelDay2Odd1[0].lessonType}, ${model.modelDay2Odd1[0].prepName}, ${model.modelDay2Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -738,26 +739,16 @@ _tableDay2(model) {
                         model.modelDay2Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even2[0].discName}, ${model.modelDay2Even2[0].lessonType}, ${model.modelDay2Even2[0].prepName}, ${model.modelDay2Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd2[0].discName}, ${model.modelDay2Odd2[0].lessonType}, ${model.modelDay2Odd2[0].prepName}, ${model.modelDay2Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even2[0].discName}, ${model.modelDay2Even2[0].lessonType}, ${model.modelDay2Even2[0].prepName}, ${model.modelDay2Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd2[0].discName}, ${model.modelDay2Odd2[0].lessonType}, ${model.modelDay2Odd2[0].prepName}, ${model.modelDay2Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even2[0].discName}, ${model.modelDay2Even2[0].lessonType}, ${model.modelDay2Even2[0].prepName}, ${model.modelDay2Even2[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd2[0].discName}, ${model.modelDay2Odd2[0].lessonType}, ${model.modelDay2Odd2[0].prepName}, ${model.modelDay2Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -774,26 +765,16 @@ _tableDay2(model) {
                         model.modelDay2Odd3?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even3[0].discName}, ${model.modelDay2Even3[0].lessonType}, ${model.modelDay2Even3[0].prepName}, ${model.modelDay2Even3[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd3[0].discName}, ${model.modelDay2Odd3[0].lessonType}, ${model.modelDay2Odd3[0].prepName}, ${model.modelDay2Odd3[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even3[0].discName}, ${model.modelDay2Even3[0].lessonType}, ${model.modelDay2Even3[0].prepName}, ${model.modelDay2Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd3[0].discName}, ${model.modelDay2Odd3[0].lessonType}, ${model.modelDay2Odd3[0].prepName}, ${model.modelDay2Odd3[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even3?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even3[0].discName}, ${model.modelDay2Even3[0].lessonType}, ${model.modelDay2Even3[0].prepName}, ${model.modelDay2Even3[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd3?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd3[0].discName}, ${model.modelDay2Odd3[0].lessonType}, ${model.modelDay2Odd3[0].prepName}, ${model.modelDay2Odd3[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -810,26 +791,16 @@ _tableDay2(model) {
                         model.modelDay2Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even4[0].discName}, ${model.modelDay2Even4[0].lessonType}, ${model.modelDay2Even4[0].prepName}, ${model.modelDay2Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd4[0].discName}, ${model.modelDay2Odd4[0].lessonType}, ${model.modelDay2Odd4[0].prepName}, ${model.modelDay2Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even4[0].discName}, ${model.modelDay2Even4[0].lessonType}, ${model.modelDay2Even4[0].prepName}, ${model.modelDay2Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd4[0].discName}, ${model.modelDay2Odd4[0].lessonType}, ${model.modelDay2Odd4[0].prepName}, ${model.modelDay2Odd4[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even4?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even4[0].discName}, ${model.modelDay2Even4[0].lessonType}, ${model.modelDay2Even4[0].prepName}, ${model.modelDay2Even4[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd4[0].discName}, ${model.modelDay2Odd4[0].lessonType}, ${model.modelDay2Odd4[0].prepName}, ${model.modelDay2Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -846,26 +817,16 @@ _tableDay2(model) {
                         model.modelDay2Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even5[0].discName}, ${model.modelDay2Even5[0].lessonType}, ${model.modelDay2Even5[0].prepName}, ${model.modelDay2Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd5[0].discName}, ${model.modelDay2Odd5[0].lessonType}, ${model.modelDay2Odd5[0].prepName}, ${model.modelDay2Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even5[0].discName}, ${model.modelDay2Even5[0].lessonType}, ${model.modelDay2Even5[0].prepName}, ${model.modelDay2Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd5[0].discName}, ${model.modelDay2Odd5[0].lessonType}, ${model.modelDay2Odd5[0].prepName}, ${model.modelDay2Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even5[0].discName}, ${model.modelDay2Even5[0].lessonType}, ${model.modelDay2Even5[0].prepName}, ${model.modelDay2Even5[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd5[0].discName}, ${model.modelDay2Odd5[0].lessonType}, ${model.modelDay2Odd5[0].prepName}, ${model.modelDay2Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -882,26 +843,16 @@ _tableDay2(model) {
                         model.modelDay2Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even6[0].discName}, ${model.modelDay2Even6[0].lessonType}, ${model.modelDay2Even6[0].prepName}, ${model.modelDay2Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd6[0].discName}, ${model.modelDay2Odd6[0].lessonType}, ${model.modelDay2Odd6[0].prepName}, ${model.modelDay2Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even6[0].discName}, ${model.modelDay2Even6[0].lessonType}, ${model.modelDay2Even6[0].prepName}, ${model.modelDay2Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd6[0].discName}, ${model.modelDay2Odd6[0].lessonType}, ${model.modelDay2Odd6[0].prepName}, ${model.modelDay2Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even6[0].discName}, ${model.modelDay2Even6[0].lessonType}, ${model.modelDay2Even6[0].prepName}, ${model.modelDay2Even6[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd6[0].discName}, ${model.modelDay2Odd6[0].lessonType}, ${model.modelDay2Odd6[0].prepName}, ${model.modelDay2Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -918,26 +869,16 @@ _tableDay2(model) {
                         model.modelDay2Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay2Even7[0].discName}, ${model.modelDay2Even7[0].lessonType}, ${model.modelDay2Even7[0].prepName}, ${model.modelDay2Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay2Odd7[0].discName}, ${model.modelDay2Odd7[0].lessonType}, ${model.modelDay2Odd7[0].prepName}, ${model.modelDay2Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay2Even7[0].discName}, ${model.modelDay2Even7[0].lessonType}, ${model.modelDay2Even7[0].prepName}, ${model.modelDay2Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay2Odd7[0].discName}, ${model.modelDay2Odd7[0].lessonType}, ${model.modelDay2Odd7[0].prepName}, ${model.modelDay2Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay2Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay2Even7[0].discName}, ${model.modelDay2Even7[0].lessonType}, ${model.modelDay2Even7[0].prepName}, ${model.modelDay2Even7[0].auditoryName}',
-                          )
-                        : model.modelDay2Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay2Odd7[0].discName}, ${model.modelDay2Odd7[0].lessonType}, ${model.modelDay2Odd7[0].prepName}, ${model.modelDay2Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
@@ -978,26 +919,16 @@ _tableDay3(model) {
                         model.modelDay3Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even1[0].discName}, ${model.modelDay3Even1[0].lessonType}, ${model.modelDay3Even1[0].prepName}, ${model.modelDay3Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd1[0].discName}, ${model.modelDay3Odd1[0].lessonType}, ${model.modelDay3Odd1[0].prepName}, ${model.modelDay3Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even1[0].discName}, ${model.modelDay3Even1[0].lessonType}, ${model.modelDay3Even1[0].prepName}, ${model.modelDay3Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd1[0].discName}, ${model.modelDay3Odd1[0].lessonType}, ${model.modelDay3Odd1[0].prepName}, ${model.modelDay3Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even1[0].discName}, ${model.modelDay3Even1[0].lessonType}, ${model.modelDay3Even1[0].prepName}, ${model.modelDay3Even1[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd1[0].discName}, ${model.modelDay3Odd1[0].lessonType}, ${model.modelDay3Odd1[0].prepName}, ${model.modelDay3Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1014,26 +945,16 @@ _tableDay3(model) {
                         model.modelDay3Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even2[0].discName}, ${model.modelDay3Even2[0].lessonType}, ${model.modelDay3Even2[0].prepName}, ${model.modelDay3Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd2[0].discName}, ${model.modelDay3Odd2[0].lessonType}, ${model.modelDay3Odd2[0].prepName}, ${model.modelDay3Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even2[0].discName}, ${model.modelDay3Even2[0].lessonType}, ${model.modelDay3Even2[0].prepName}, ${model.modelDay3Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd2[0].discName}, ${model.modelDay3Odd2[0].lessonType}, ${model.modelDay3Odd2[0].prepName}, ${model.modelDay3Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even2[0].discName}, ${model.modelDay3Even2[0].lessonType}, ${model.modelDay3Even2[0].prepName}, ${model.modelDay3Even2[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd2[0].discName}, ${model.modelDay3Odd2[0].lessonType}, ${model.modelDay3Odd2[0].prepName}, ${model.modelDay3Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1050,26 +971,16 @@ _tableDay3(model) {
                         model.modelDay3Odd3?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even3[0].discName}, ${model.modelDay3Even3[0].lessonType}, ${model.modelDay3Even3[0].prepName}, ${model.modelDay3Even3[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd3[0].discName}, ${model.modelDay3Odd3[0].lessonType}, ${model.modelDay3Odd3[0].prepName}, ${model.modelDay3Odd3[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even3[0].discName}, ${model.modelDay3Even3[0].lessonType}, ${model.modelDay3Even3[0].prepName}, ${model.modelDay3Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd3[0].discName}, ${model.modelDay3Odd3[0].lessonType}, ${model.modelDay3Odd3[0].prepName}, ${model.modelDay3Odd3[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even3?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even3[0].discName}, ${model.modelDay3Even3[0].lessonType}, ${model.modelDay3Even3[0].prepName}, ${model.modelDay3Even3[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd3?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd3[0].discName}, ${model.modelDay3Odd3[0].lessonType}, ${model.modelDay3Odd3[0].prepName}, ${model.modelDay3Odd3[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1086,26 +997,16 @@ _tableDay3(model) {
                         model.modelDay3Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even4[0].discName}, ${model.modelDay3Even4[0].lessonType}, ${model.modelDay3Even4[0].prepName}, ${model.modelDay3Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd4[0].discName}, ${model.modelDay3Odd4[0].lessonType}, ${model.modelDay3Odd4[0].prepName}, ${model.modelDay3Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even4[0].discName}, ${model.modelDay3Even4[0].lessonType}, ${model.modelDay3Even4[0].prepName}, ${model.modelDay3Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd4[0].discName}, ${model.modelDay3Odd4[0].lessonType}, ${model.modelDay3Odd4[0].prepName}, ${model.modelDay3Odd4[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even4?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even4[0].discName}, ${model.modelDay3Even4[0].lessonType}, ${model.modelDay3Even4[0].prepName}, ${model.modelDay3Even4[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd4[0].discName}, ${model.modelDay3Odd4[0].lessonType}, ${model.modelDay3Odd4[0].prepName}, ${model.modelDay3Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1122,26 +1023,16 @@ _tableDay3(model) {
                         model.modelDay3Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even5[0].discName}, ${model.modelDay3Even5[0].lessonType}, ${model.modelDay3Even5[0].prepName}, ${model.modelDay3Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd5[0].discName}, ${model.modelDay3Odd5[0].lessonType}, ${model.modelDay3Odd5[0].prepName}, ${model.modelDay3Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even5[0].discName}, ${model.modelDay3Even5[0].lessonType}, ${model.modelDay3Even5[0].prepName}, ${model.modelDay3Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd5[0].discName}, ${model.modelDay3Odd5[0].lessonType}, ${model.modelDay3Odd5[0].prepName}, ${model.modelDay3Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even5[0].discName}, ${model.modelDay3Even5[0].lessonType}, ${model.modelDay3Even5[0].prepName}, ${model.modelDay3Even5[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd5[0].discName}, ${model.modelDay3Odd5[0].lessonType}, ${model.modelDay3Odd5[0].prepName}, ${model.modelDay3Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1158,26 +1049,16 @@ _tableDay3(model) {
                         model.modelDay3Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even6[0].discName}, ${model.modelDay3Even6[0].lessonType}, ${model.modelDay3Even6[0].prepName}, ${model.modelDay3Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd6[0].discName}, ${model.modelDay3Odd6[0].lessonType}, ${model.modelDay3Odd6[0].prepName}, ${model.modelDay3Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even6[0].discName}, ${model.modelDay3Even6[0].lessonType}, ${model.modelDay3Even6[0].prepName}, ${model.modelDay3Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd6[0].discName}, ${model.modelDay3Odd6[0].lessonType}, ${model.modelDay3Odd6[0].prepName}, ${model.modelDay3Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even6[0].discName}, ${model.modelDay3Even6[0].lessonType}, ${model.modelDay3Even6[0].prepName}, ${model.modelDay3Even6[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd6[0].discName}, ${model.modelDay3Odd6[0].lessonType}, ${model.modelDay3Odd6[0].prepName}, ${model.modelDay3Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1194,26 +1075,16 @@ _tableDay3(model) {
                         model.modelDay3Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay3Even7[0].discName}, ${model.modelDay3Even7[0].lessonType}, ${model.modelDay3Even7[0].prepName}, ${model.modelDay3Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay3Odd7[0].discName}, ${model.modelDay3Odd7[0].lessonType}, ${model.modelDay3Odd7[0].prepName}, ${model.modelDay3Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay3Even7[0].discName}, ${model.modelDay3Even7[0].lessonType}, ${model.modelDay3Even7[0].prepName}, ${model.modelDay3Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay3Odd7[0].discName}, ${model.modelDay3Odd7[0].lessonType}, ${model.modelDay3Odd7[0].prepName}, ${model.modelDay3Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay3Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay3Even7[0].discName}, ${model.modelDay3Even7[0].lessonType}, ${model.modelDay3Even7[0].prepName}, ${model.modelDay3Even7[0].auditoryName}',
-                          )
-                        : model.modelDay3Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay3Odd7[0].discName}, ${model.modelDay3Odd7[0].lessonType}, ${model.modelDay3Odd7[0].prepName}, ${model.modelDay3Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
@@ -1254,26 +1125,16 @@ _tableDay4(model) {
                         model.modelDay4Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even1[0].discName}, ${model.modelDay4Even1[0].lessonType}, ${model.modelDay4Even1[0].prepName}, ${model.modelDay4Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd1[0].discName}, ${model.modelDay4Odd1[0].lessonType}, ${model.modelDay4Odd1[0].prepName}, ${model.modelDay4Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even1[0].discName}, ${model.modelDay4Even1[0].lessonType}, ${model.modelDay4Even1[0].prepName}, ${model.modelDay4Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd1[0].discName}, ${model.modelDay4Odd1[0].lessonType}, ${model.modelDay4Odd1[0].prepName}, ${model.modelDay4Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even1[0].discName}, ${model.modelDay4Even1[0].lessonType}, ${model.modelDay4Even1[0].prepName}, ${model.modelDay4Even1[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd1[0].discName}, ${model.modelDay4Odd1[0].lessonType}, ${model.modelDay4Odd1[0].prepName}, ${model.modelDay4Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1290,26 +1151,16 @@ _tableDay4(model) {
                         model.modelDay4Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even2[0].discName}, ${model.modelDay4Even2[0].lessonType}, ${model.modelDay4Even2[0].prepName}, ${model.modelDay4Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd2[0].discName}, ${model.modelDay4Odd2[0].lessonType}, ${model.modelDay4Odd2[0].prepName}, ${model.modelDay4Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even2[0].discName}, ${model.modelDay4Even2[0].lessonType}, ${model.modelDay4Even2[0].prepName}, ${model.modelDay4Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd2[0].discName}, ${model.modelDay4Odd2[0].lessonType}, ${model.modelDay4Odd2[0].prepName}, ${model.modelDay4Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even2[0].discName}, ${model.modelDay4Even2[0].lessonType}, ${model.modelDay4Even2[0].prepName}, ${model.modelDay4Even2[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd2[0].discName}, ${model.modelDay4Odd2[0].lessonType}, ${model.modelDay4Odd2[0].prepName}, ${model.modelDay4Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1326,26 +1177,16 @@ _tableDay4(model) {
                         model.modelDay4Odd3?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even3[0].discName}, ${model.modelDay4Even3[0].lessonType}, ${model.modelDay4Even3[0].prepName}, ${model.modelDay4Even3[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd3[0].discName}, ${model.modelDay4Odd3[0].lessonType}, ${model.modelDay4Odd3[0].prepName}, ${model.modelDay4Odd3[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even3[0].discName}, ${model.modelDay4Even3[0].lessonType}, ${model.modelDay4Even3[0].prepName}, ${model.modelDay4Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd3[0].discName}, ${model.modelDay4Odd3[0].lessonType}, ${model.modelDay4Odd3[0].prepName}, ${model.modelDay4Odd3[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even3?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even3[0].discName}, ${model.modelDay4Even3[0].lessonType}, ${model.modelDay4Even3[0].prepName}, ${model.modelDay4Even3[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd3?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd3[0].discName}, ${model.modelDay4Odd3[0].lessonType}, ${model.modelDay4Odd3[0].prepName}, ${model.modelDay4Odd3[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1362,26 +1203,16 @@ _tableDay4(model) {
                         model.modelDay4Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even4[0].discName}, ${model.modelDay4Even4[0].lessonType}, ${model.modelDay4Even4[0].prepName}, ${model.modelDay4Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd4[0].discName}, ${model.modelDay4Odd4[0].lessonType}, ${model.modelDay4Odd4[0].prepName}, ${model.modelDay4Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even4[0].discName}, ${model.modelDay4Even4[0].lessonType}, ${model.modelDay4Even4[0].prepName}, ${model.modelDay4Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd4[0].discName}, ${model.modelDay4Odd4[0].lessonType}, ${model.modelDay4Odd4[0].prepName}, ${model.modelDay4Odd4[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even4?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even4[0].discName}, ${model.modelDay4Even4[0].lessonType}, ${model.modelDay4Even4[0].prepName}, ${model.modelDay4Even4[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd4[0].discName}, ${model.modelDay4Odd4[0].lessonType}, ${model.modelDay4Odd4[0].prepName}, ${model.modelDay4Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1398,26 +1229,16 @@ _tableDay4(model) {
                         model.modelDay4Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even5[0].discName}, ${model.modelDay4Even5[0].lessonType}, ${model.modelDay4Even5[0].prepName}, ${model.modelDay4Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd5[0].discName}, ${model.modelDay4Odd5[0].lessonType}, ${model.modelDay4Odd5[0].prepName}, ${model.modelDay4Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even5[0].discName}, ${model.modelDay4Even5[0].lessonType}, ${model.modelDay4Even5[0].prepName}, ${model.modelDay4Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd5[0].discName}, ${model.modelDay4Odd5[0].lessonType}, ${model.modelDay4Odd5[0].prepName}, ${model.modelDay4Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even5[0].discName}, ${model.modelDay4Even5[0].lessonType}, ${model.modelDay4Even5[0].prepName}, ${model.modelDay4Even5[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd5[0].discName}, ${model.modelDay4Odd5[0].lessonType}, ${model.modelDay4Odd5[0].prepName}, ${model.modelDay4Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1434,26 +1255,16 @@ _tableDay4(model) {
                         model.modelDay4Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even6[0].discName}, ${model.modelDay4Even6[0].lessonType}, ${model.modelDay4Even6[0].prepName}, ${model.modelDay4Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd6[0].discName}, ${model.modelDay4Odd6[0].lessonType}, ${model.modelDay4Odd6[0].prepName}, ${model.modelDay4Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even6[0].discName}, ${model.modelDay4Even6[0].lessonType}, ${model.modelDay4Even6[0].prepName}, ${model.modelDay4Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd6[0].discName}, ${model.modelDay4Odd6[0].lessonType}, ${model.modelDay4Odd6[0].prepName}, ${model.modelDay4Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even6[0].discName}, ${model.modelDay4Even6[0].lessonType}, ${model.modelDay4Even6[0].prepName}, ${model.modelDay4Even6[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd6[0].discName}, ${model.modelDay4Odd6[0].lessonType}, ${model.modelDay4Odd6[0].prepName}, ${model.modelDay4Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1470,26 +1281,16 @@ _tableDay4(model) {
                         model.modelDay4Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay4Even7[0].discName}, ${model.modelDay4Even7[0].lessonType}, ${model.modelDay4Even7[0].prepName}, ${model.modelDay4Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay4Odd7[0].discName}, ${model.modelDay4Odd7[0].lessonType}, ${model.modelDay4Odd7[0].prepName}, ${model.modelDay4Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay4Even7[0].discName}, ${model.modelDay4Even7[0].lessonType}, ${model.modelDay4Even7[0].prepName}, ${model.modelDay4Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay4Odd7[0].discName}, ${model.modelDay4Odd7[0].lessonType}, ${model.modelDay4Odd7[0].prepName}, ${model.modelDay4Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay4Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay4Even7[0].discName}, ${model.modelDay4Even7[0].lessonType}, ${model.modelDay4Even7[0].prepName}, ${model.modelDay4Even7[0].auditoryName}',
-                          )
-                        : model.modelDay4Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay4Odd7[0].discName}, ${model.modelDay4Odd7[0].lessonType}, ${model.modelDay4Odd7[0].prepName}, ${model.modelDay4Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
@@ -1530,26 +1331,16 @@ _tableDay5(model) {
                         model.modelDay5Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even1[0].discName}, ${model.modelDay5Even1[0].lessonType}, ${model.modelDay5Even1[0].prepName}, ${model.modelDay5Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd1[0].discName}, ${model.modelDay5Odd1[0].lessonType}, ${model.modelDay5Odd1[0].prepName}, ${model.modelDay5Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even1[0].discName}, ${model.modelDay5Even1[0].lessonType}, ${model.modelDay5Even1[0].prepName}, ${model.modelDay5Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd1[0].discName}, ${model.modelDay5Odd1[0].lessonType}, ${model.modelDay5Odd1[0].prepName}, ${model.modelDay5Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even1[0].discName}, ${model.modelDay5Even1[0].lessonType}, ${model.modelDay5Even1[0].prepName}, ${model.modelDay5Even1[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd1[0].discName}, ${model.modelDay5Odd1[0].lessonType}, ${model.modelDay5Odd1[0].prepName}, ${model.modelDay5Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1566,26 +1357,16 @@ _tableDay5(model) {
                         model.modelDay5Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even2[0].discName}, ${model.modelDay5Even2[0].lessonType}, ${model.modelDay5Even2[0].prepName}, ${model.modelDay5Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd2[0].discName}, ${model.modelDay5Odd2[0].lessonType}, ${model.modelDay5Odd2[0].prepName}, ${model.modelDay5Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even2[0].discName}, ${model.modelDay5Even2[0].lessonType}, ${model.modelDay5Even2[0].prepName}, ${model.modelDay5Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd2[0].discName}, ${model.modelDay5Odd2[0].lessonType}, ${model.modelDay5Odd2[0].prepName}, ${model.modelDay5Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even2[0].discName}, ${model.modelDay5Even2[0].lessonType}, ${model.modelDay5Even2[0].prepName}, ${model.modelDay5Even2[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd2[0].discName}, ${model.modelDay5Odd2[0].lessonType}, ${model.modelDay5Odd2[0].prepName}, ${model.modelDay5Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1602,26 +1383,16 @@ _tableDay5(model) {
                         model.modelDay5Odd3?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even3[0].discName}, ${model.modelDay5Even3[0].lessonType}, ${model.modelDay5Even3[0].prepName}, ${model.modelDay5Even3[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd3[0].discName}, ${model.modelDay5Odd3[0].lessonType}, ${model.modelDay5Odd3[0].prepName}, ${model.modelDay5Odd3[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even3[0].discName}, ${model.modelDay5Even3[0].lessonType}, ${model.modelDay5Even3[0].prepName}, ${model.modelDay5Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd3[0].discName}, ${model.modelDay5Odd3[0].lessonType}, ${model.modelDay5Odd3[0].prepName}, ${model.modelDay5Odd3[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even3?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even3[0].discName}, ${model.modelDay5Even3[0].lessonType}, ${model.modelDay5Even3[0].prepName}, ${model.modelDay5Even3[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd3?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd3[0].discName}, ${model.modelDay5Odd3[0].lessonType}, ${model.modelDay5Odd3[0].prepName}, ${model.modelDay5Odd3[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1638,26 +1409,16 @@ _tableDay5(model) {
                         model.modelDay5Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even4[0].discName}, ${model.modelDay5Even4[0].lessonType}, ${model.modelDay5Even4[0].prepName}, ${model.modelDay5Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd4[0].discName}, ${model.modelDay5Odd4[0].lessonType}, ${model.modelDay5Odd4[0].prepName}, ${model.modelDay5Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even4[0].discName}, ${model.modelDay5Even4[0].lessonType}, ${model.modelDay5Even4[0].prepName}, ${model.modelDay5Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd4[0].discName}, ${model.modelDay5Odd4[0].lessonType}, ${model.modelDay5Odd4[0].prepName}, ${model.modelDay5Odd4[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even4?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even4[0].discName}, ${model.modelDay5Even4[0].lessonType}, ${model.modelDay5Even4[0].prepName}, ${model.modelDay5Even4[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd4[0].discName}, ${model.modelDay5Odd4[0].lessonType}, ${model.modelDay5Odd4[0].prepName}, ${model.modelDay5Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1674,26 +1435,16 @@ _tableDay5(model) {
                         model.modelDay5Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even5[0].discName}, ${model.modelDay5Even5[0].lessonType}, ${model.modelDay5Even5[0].prepName}, ${model.modelDay5Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd5[0].discName}, ${model.modelDay5Odd5[0].lessonType}, ${model.modelDay5Odd5[0].prepName}, ${model.modelDay5Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even5[0].discName}, ${model.modelDay5Even5[0].lessonType}, ${model.modelDay5Even5[0].prepName}, ${model.modelDay5Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd5[0].discName}, ${model.modelDay5Odd5[0].lessonType}, ${model.modelDay5Odd5[0].prepName}, ${model.modelDay5Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even5[0].discName}, ${model.modelDay5Even5[0].lessonType}, ${model.modelDay5Even5[0].prepName}, ${model.modelDay5Even5[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd5[0].discName}, ${model.modelDay5Odd5[0].lessonType}, ${model.modelDay5Odd5[0].prepName}, ${model.modelDay5Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1710,26 +1461,16 @@ _tableDay5(model) {
                         model.modelDay5Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even6[0].discName}, ${model.modelDay5Even6[0].lessonType}, ${model.modelDay5Even6[0].prepName}, ${model.modelDay5Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd6[0].discName}, ${model.modelDay5Odd6[0].lessonType}, ${model.modelDay5Odd6[0].prepName}, ${model.modelDay5Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even6[0].discName}, ${model.modelDay5Even6[0].lessonType}, ${model.modelDay5Even6[0].prepName}, ${model.modelDay5Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd6[0].discName}, ${model.modelDay5Odd6[0].lessonType}, ${model.modelDay5Odd6[0].prepName}, ${model.modelDay5Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even6[0].discName}, ${model.modelDay5Even6[0].lessonType}, ${model.modelDay5Even6[0].prepName}, ${model.modelDay5Even6[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd6[0].discName}, ${model.modelDay5Odd6[0].lessonType}, ${model.modelDay5Odd6[0].prepName}, ${model.modelDay5Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1746,26 +1487,16 @@ _tableDay5(model) {
                         model.modelDay5Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay5Even7[0].discName}, ${model.modelDay5Even7[0].lessonType}, ${model.modelDay5Even7[0].prepName}, ${model.modelDay5Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay5Odd7[0].discName}, ${model.modelDay5Odd7[0].lessonType}, ${model.modelDay5Odd7[0].prepName}, ${model.modelDay5Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay5Even7[0].discName}, ${model.modelDay5Even7[0].lessonType}, ${model.modelDay5Even7[0].prepName}, ${model.modelDay5Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay5Odd7[0].discName}, ${model.modelDay5Odd7[0].lessonType}, ${model.modelDay5Odd7[0].prepName}, ${model.modelDay5Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay5Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay5Even7[0].discName}, ${model.modelDay5Even7[0].lessonType}, ${model.modelDay5Even7[0].prepName}, ${model.modelDay5Even7[0].auditoryName}',
-                          )
-                        : model.modelDay5Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay5Odd7[0].discName}, ${model.modelDay5Odd7[0].lessonType}, ${model.modelDay5Odd7[0].prepName}, ${model.modelDay5Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
@@ -1806,26 +1537,16 @@ _tableDay6(model) {
                         model.modelDay6Odd1?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even1[0].discName}, ${model.modelDay6Even1[0].lessonType}, ${model.modelDay6Even1[0].prepName}, ${model.modelDay6Even1[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd1[0].discName}, ${model.modelDay6Odd1[0].lessonType}, ${model.modelDay6Odd1[0].prepName}, ${model.modelDay6Odd1[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even1[0].discName}, ${model.modelDay6Even1[0].lessonType}, ${model.modelDay6Even1[0].prepName}, ${model.modelDay6Even1[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd1[0].discName}, ${model.modelDay6Odd1[0].lessonType}, ${model.modelDay6Odd1[0].prepName}, ${model.modelDay6Odd1[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even1?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even1[0].discName}, ${model.modelDay6Even1[0].lessonType}, ${model.modelDay6Even1[0].prepName}, ${model.modelDay6Even1[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd1?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd1[0].discName}, ${model.modelDay6Odd1[0].lessonType}, ${model.modelDay6Odd1[0].prepName}, ${model.modelDay6Odd1[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1842,26 +1563,16 @@ _tableDay6(model) {
                         model.modelDay6Odd2?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even2[0].discName}, ${model.modelDay6Even2[0].lessonType}, ${model.modelDay6Even2[0].prepName}, ${model.modelDay6Even2[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd2[0].discName}, ${model.modelDay6Odd2[0].lessonType}, ${model.modelDay6Odd2[0].prepName}, ${model.modelDay6Odd2[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even2[0].discName}, ${model.modelDay6Even2[0].lessonType}, ${model.modelDay6Even2[0].prepName}, ${model.modelDay6Even2[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd2[0].discName}, ${model.modelDay6Odd2[0].lessonType}, ${model.modelDay6Odd2[0].prepName}, ${model.modelDay6Odd2[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even2?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even2[0].discName}, ${model.modelDay6Even2[0].lessonType}, ${model.modelDay6Even2[0].prepName}, ${model.modelDay6Even2[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd2?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd2[0].discName}, ${model.modelDay6Odd2[0].lessonType}, ${model.modelDay6Odd2[0].prepName}, ${model.modelDay6Odd2[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1878,26 +1589,16 @@ _tableDay6(model) {
                         model.modelDay6Odd3?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even3[0].discName}, ${model.modelDay6Even3[0].lessonType}, ${model.modelDay6Even3[0].prepName}, ${model.modelDay6Even3[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd3[0].discName}, ${model.modelDay6Odd3[0].lessonType}, ${model.modelDay6Odd3[0].prepName}, ${model.modelDay6Odd3[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even3[0].discName}, ${model.modelDay6Even3[0].lessonType}, ${model.modelDay6Even3[0].prepName}, ${model.modelDay6Even3[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd3[0].discName}, ${model.modelDay6Odd3[0].lessonType}, ${model.modelDay6Odd3[0].prepName}, ${model.modelDay6Odd3[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even3?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even3[0].discName}, ${model.modelDay6Even3[0].lessonType}, ${model.modelDay6Even3[0].prepName}, ${model.modelDay6Even3[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd3?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd3[0].discName}, ${model.modelDay6Odd3[0].lessonType}, ${model.modelDay6Odd3[0].prepName}, ${model.modelDay6Odd3[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1914,26 +1615,16 @@ _tableDay6(model) {
                         model.modelDay6Odd4?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even4[0].discName}, ${model.modelDay6Even4[0].lessonType}, ${model.modelDay6Even4[0].prepName}, ${model.modelDay6Even4[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd4[0].discName}, ${model.modelDay6Odd4[0].lessonType}, ${model.modelDay6Odd4[0].prepName}, ${model.modelDay6Odd4[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even4[0].discName}, ${model.modelDay6Even4[0].lessonType}, ${model.modelDay6Even4[0].prepName}, ${model.modelDay6Even4[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd4[0].discName}, ${model.modelDay6Odd4[0].lessonType}, ${model.modelDay6Odd4[0].prepName}, ${model.modelDay6Odd4[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even4?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even4[0].discName}, ${model.modelDay6Even4[0].lessonType}, ${model.modelDay6Even4[0].prepName}, ${model.modelDay6Even4[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd4?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd4[0].discName}, ${model.modelDay6Odd4[0].lessonType}, ${model.modelDay6Odd4[0].prepName}, ${model.modelDay6Odd4[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1950,26 +1641,16 @@ _tableDay6(model) {
                         model.modelDay6Odd5?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even5[0].discName}, ${model.modelDay6Even5[0].lessonType}, ${model.modelDay6Even5[0].prepName}, ${model.modelDay6Even5[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd5[0].discName}, ${model.modelDay6Odd5[0].lessonType}, ${model.modelDay6Odd5[0].prepName}, ${model.modelDay6Odd5[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even5[0].discName}, ${model.modelDay6Even5[0].lessonType}, ${model.modelDay6Even5[0].prepName}, ${model.modelDay6Even5[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd5[0].discName}, ${model.modelDay6Odd5[0].lessonType}, ${model.modelDay6Odd5[0].prepName}, ${model.modelDay6Odd5[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even5?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even5[0].discName}, ${model.modelDay6Even5[0].lessonType}, ${model.modelDay6Even5[0].prepName}, ${model.modelDay6Even5[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd5?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd5[0].discName}, ${model.modelDay6Odd5[0].lessonType}, ${model.modelDay6Odd5[0].prepName}, ${model.modelDay6Odd5[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -1986,26 +1667,16 @@ _tableDay6(model) {
                         model.modelDay6Odd6?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even6[0].discName}, ${model.modelDay6Even6[0].lessonType}, ${model.modelDay6Even6[0].prepName}, ${model.modelDay6Even6[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd6[0].discName}, ${model.modelDay6Odd6[0].lessonType}, ${model.modelDay6Odd6[0].prepName}, ${model.modelDay6Odd6[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even6[0].discName}, ${model.modelDay6Even6[0].lessonType}, ${model.modelDay6Even6[0].prepName}, ${model.modelDay6Even6[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd6[0].discName}, ${model.modelDay6Odd6[0].lessonType}, ${model.modelDay6Odd6[0].prepName}, ${model.modelDay6Odd6[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even6?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even6[0].discName}, ${model.modelDay6Even6[0].lessonType}, ${model.modelDay6Even6[0].prepName}, ${model.modelDay6Even6[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd6?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd6[0].discName}, ${model.modelDay6Odd6[0].lessonType}, ${model.modelDay6Odd6[0].prepName}, ${model.modelDay6Odd6[0].auditoryName}',
-                              )
-                            : const SizedBox())
+                    : null)
       ]),
       TableRow(children: [
         Padding(
@@ -2022,26 +1693,16 @@ _tableDay6(model) {
                         model.modelDay6Odd7?.length > 0
                     ? Column(
                         children: [
-                          Text(
-                            'чет. ${model.modelDay6Even7[0].discName}, ${model.modelDay6Even7[0].lessonType}, ${model.modelDay6Even7[0].prepName}, ${model.modelDay6Even7[0].auditoryName}',
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Text(
-                            'неч. ${model.modelDay6Odd7[0].discName}, ${model.modelDay6Odd7[0].lessonType}, ${model.modelDay6Odd7[0].prepName}, ${model.modelDay6Odd7[0].auditoryName}',
-                          )
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.modelDay6Even7[0].discName}, ${model.modelDay6Even7[0].lessonType}, ${model.modelDay6Even7[0].prepName}, ${model.modelDay6Even7[0].auditoryName}',
+                                )
+                              : Text(
+                                  '${model.modelDay6Odd7[0].discName}, ${model.modelDay6Odd7[0].lessonType}, ${model.modelDay6Odd7[0].prepName}, ${model.modelDay6Odd7[0].auditoryName}',
+                                )
                         ],
                       )
-                    : model.modelDay6Even7?.length > 0
-                        ? Text(
-                            'чет. ${model.modelDay6Even7[0].discName}, ${model.modelDay6Even7[0].lessonType}, ${model.modelDay6Even7[0].prepName}, ${model.modelDay6Even7[0].auditoryName}',
-                          )
-                        : model.modelDay6Odd7?.length > 0
-                            ? Text(
-                                'неч. ${model.modelDay6Odd7[0].discName}, ${model.modelDay6Odd7[0].lessonType}, ${model.modelDay6Odd7[0].prepName}, ${model.modelDay6Odd7[0].auditoryName}',
-                              )
-                            : const SizedBox()),
+                    : null),
       ])
     ],
   );
