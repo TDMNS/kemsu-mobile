@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/API/config.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_detail_view.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import '../PRS/prs_viewmodel.dart';
-import '../schedule/schedule_model.dart';
-import '../schedule/schedule_view.dart';
 
 class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
@@ -31,11 +25,11 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                      .dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                      context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -112,11 +106,9 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           : const SizedBox.shrink(),
       model.lastParagraph == model.selectedPeriod && model.isSelected == true
           ? Center(
-              child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
+        child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: ElevatedButton(
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
                                 context: context,
@@ -124,20 +116,17 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime(2100));
                             model.startDate = newDate;
-                            print(model.startDate);
                           },
                           child: model.startDate == DateTime(0, 0, 0)
                               ? const Text("Выбрать начальную дату")
                               : Text(
-                                  "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}")))),
+                                  "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? Center(
-              child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -163,7 +152,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                             )),
                           ),
                         ),
-                      ))),
+                      )),
             )
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) &&
