@@ -1,15 +1,12 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../auth/auth_view.dart';
 
 class OrderingInformationViewModel extends BaseViewModel {
   OrderingInformationViewModel(BuildContext context);
@@ -80,28 +77,6 @@ class OrderingInformationViewModel extends BaseViewModel {
   changePeriod(value) async {
     selectedPeriod = value;
     isSelected = true;
-    // String? token = await storage.read(key: "tokenKey");
-    // var response =
-    // await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));
-    // periodList = parsePeriodList(json.decode(response.body)["periodList"]);
     notifyListeners();
   }
-  //
-  // getReitList(startDate, endDate, semester) async {
-  //   String? token = await storage.read(key: "tokenKey");
-  //   var response = await http.get(Uri.parse(
-  //       '${Config.reitList}?studentId=${studyCard
-  //           ?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
-  //   reitList = parseReitList(json.decode(response.body)["reitList"]);
-  //   notifyListeners();
-  // }
-  //
-  // getReitItemList(studyId) async {
-  //   String? token = await storage.read(key: "tokenKey");
-  //   var response = await http.get(Uri.parse(
-  //       '${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
-  //   reitItemList =
-  //       parseReitItemList(json.decode(response.body)["brsActivityList"]);
-  //   notifyListeners();
-  // }
 }

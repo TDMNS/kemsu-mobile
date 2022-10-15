@@ -38,11 +38,9 @@ class BugReportViewModel extends BaseViewModel {
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchReports(context);
         Navigator.pop(context);
-        print(response.body);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено.")));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-        print(response.body);
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля обращения!")));
@@ -57,7 +55,6 @@ class BugReportViewModel extends BaseViewModel {
     var response = await http.get(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"), headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       reportList = parseReports(json.decode(response.body)["result"]);
-      print(response.body);
       notifyListeners();
     } else if (response.statusCode == 401) {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const AuthView()), (Route<dynamic> route) => false);

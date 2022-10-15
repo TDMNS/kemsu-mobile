@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/model/achieve_category.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
@@ -65,23 +64,23 @@ _body(context, NewAchievePgasViewModel model) {
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve1 ? _activity1DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve1 ? _activity1DropDown(context, model) : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve2 ? _activity2DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve2 ? _activity2DropDown(context, model) : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve3 ? _activity3DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve3 ? _activity3DropDown(context, model) : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve4 ? _activity4DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve4 ? _activity4DropDown(context, model) : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showOtherInputData ? _otherInputData(context, model) : SizedBox.shrink(),
+          child: model.showOtherInputData ? _otherInputData(context, model) : const SizedBox.shrink(),
         ),
       ],
     ),
@@ -392,7 +391,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               )
           )
       ),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
       DropdownButtonHideUnderline(
         child: DropdownButton<YearModel>(
             isExpanded: true,
@@ -423,7 +422,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
             }
         ),
       ),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
       Container(
         decoration: BoxDecoration(
             border: Border.all(color: const Color(0xFFC4C4C4)),
@@ -442,7 +441,6 @@ _otherInputData(context, NewAchievePgasViewModel model) {
                   )))
               ).toList(),
               onChanged: (value) {
-                print(value);
                 model.chosenMonth = model.months.indexOf(value!);
                 model.notifyListeners();
               },
@@ -460,7 +458,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
           ),
         ),
       ),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
       TextField(
           maxLines: 2,
           textCapitalization: TextCapitalization.words,
@@ -482,9 +480,9 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               )
           )
       ),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
       _fileContainer(context, model),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
         child: Container(
@@ -513,11 +511,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               onPressed: () async {
                 model.sendButtonAction(context);
               },
-              child: model.circle ? SizedBox(
+              child: model.circle ? const SizedBox(
                   child: CircularProgressIndicator(color: Colors.white, ),
                 height: 14,
                 width: 14,
-              ) : Text(
+              ) : const Text(
                 "Отправить",
                 style: TextStyle(
                   fontStyle: FontStyle.normal,
@@ -542,12 +540,12 @@ _fileContainer(context, NewAchievePgasViewModel model) {
       decoration: BoxDecoration(
           color: Colors.transparent,
         border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.all(Radius.circular(15))
+        borderRadius: const BorderRadius.all(Radius.circular(15))
       ),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: const [
             Text("+", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 28),),
             Text("Выберите файл-подтверждение (до 10 МБ)", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))
           ],
@@ -562,7 +560,7 @@ _fileContainer(context, NewAchievePgasViewModel model) {
         Container(
           width: 100,
           height: 150,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: Colors.lightBlueAccent,
               borderRadius: BorderRadius.all(Radius.circular(15))
           ),
@@ -570,8 +568,8 @@ _fileContainer(context, NewAchievePgasViewModel model) {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(model.chooseFile!.name, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
-              Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
+              Text(model.chooseFile!.name, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
+              Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white))
             ],
           ),
         ),
@@ -581,10 +579,10 @@ _fileContainer(context, NewAchievePgasViewModel model) {
                 model.chooseFile = null;
                 model.notifyListeners();
               },
-              child: Icon(Icons.close, color: Colors.black,),
+              child: const Icon(Icons.close, color: Colors.black,),
               style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                primary: Colors.white, // <-- Button color
+                shape: const CircleBorder(),
+                backgroundColor: Colors.white, // <-- Button color
               ),
             ),
           bottom: 110,

@@ -24,12 +24,9 @@ class CheckListViewModel extends BaseViewModel {
 
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.studCheckList}'), headers: {"x-access-token": token!,},);
-    print(json.decode(response.body)['checkList']);
+    var response = await http.get(Uri.parse(Config.studCheckList), headers: {"x-access-token": token!,},);
     checkList =
         parseCheckList(json.decode(response.body)['checkList']);
-    //print(checkList);
 
     notifyListeners();
   }

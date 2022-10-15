@@ -22,8 +22,7 @@ class IaisTaskBlockView extends StatelessWidget {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Brightness
-                    .dark), //прозрачность statusbar и установка тёмных иконок
+                statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
@@ -106,13 +105,6 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
             ],
             rows: repData
                 .map<DataRow>((e) => DataRow(
-                      onSelectChanged: (selected) async {
-                        if (selected == true) {
-                          {
-                            print(e.NAME);
-                          }
-                        }
-                      },
                       cells: [
                         DataCell(Padding(
                           padding: const EdgeInsets.only(right: 4),

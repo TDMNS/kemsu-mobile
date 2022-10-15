@@ -1,18 +1,18 @@
 class AcademyDebts {
-  int? COURSE;
-  int? SEMESTER;
-  String? DISCIPLINE;
-  String? OCENKA;
-  String? OCENKA_SHORT;
+  int? course;
+  int? semester;
+  String? discipline;
+  String? mark;
+  String? markShort;
 
   AcademyDebts(
-      {this.COURSE, this.SEMESTER, this.DISCIPLINE, this.OCENKA, this.OCENKA_SHORT});
+      {this.course, this.semester, this.discipline, this.mark, this.markShort});
 
   AcademyDebts.fromJson(Map<String, dynamic> json) {
-    COURSE = json["COURSE"];
-    SEMESTER = json["SEMESTER"];
-    DISCIPLINE = json["DISCIPLINE"];
-    OCENKA = json["OCENKA"];
-    OCENKA_SHORT = json["OCENKA_SHORT"];
+    course = json["COURSE"];
+    semester = json["SEMESTER"];
+    discipline = json["DISCIPLINE"];
+    mark = json["OCENKA"];
+    markShort = json["OCENKA_SHORT"];
   }
 }

@@ -4,8 +4,6 @@ import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import '../schedule/schedule_model.dart';
-import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
 class PRSDetailItemView extends StatelessWidget {
@@ -25,12 +23,10 @@ class PRSDetailItemView extends StatelessWidget {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }

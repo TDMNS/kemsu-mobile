@@ -72,7 +72,7 @@ _iaisView(BuildContext context, IaisViewModel model) {
                       child:
                           Text('Преподаватель', textAlign: TextAlign.center))),
             ],
-            rows: model.Course.map<DataRow>((e) => DataRow(
+            rows: model.course.map<DataRow>((e) => DataRow(
                     onSelectChanged: (selected) async {
                       if (selected == true) {
                         {
@@ -83,7 +83,7 @@ _iaisView(BuildContext context, IaisViewModel model) {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => IaisRepView(
-                                    discData: e, repList: model.Report)),
+                                    discData: e, repList: model.report)),
                           );
                         }
                         ;

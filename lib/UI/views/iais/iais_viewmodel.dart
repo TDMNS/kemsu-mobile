@@ -12,11 +12,11 @@ class IaisViewModel extends BaseViewModel {
   IaisViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
-  List<CourseIais> Course = [];
+  List<CourseIais> course = [];
 
-  List<ReportIais> Report = [];
+  List<ReportIais> report = [];
 
-  List<TaskListIais> Task = [];
+  List<TaskListIais> task = [];
 
   int selectedIndex = 2;
   bool isChecked = false;
@@ -39,7 +39,7 @@ class IaisViewModel extends BaseViewModel {
 
   getDiscs(allFlag) async {
     String? token = await storage.read(key: "tokenKey");
-    var response;
+    http.Response response;
     if(allFlag==1) {
       response = await http.get(Uri.parse(
           '${Config.studCourseList}?allCourseFlag=1'), headers: {"x-access-token": token!,},);
@@ -49,10 +49,7 @@ class IaisViewModel extends BaseViewModel {
           '${Config.studCourseList}?allCourseFlag=0'), headers: {"x-access-token": token!,},);
     }
 
-    print(response.body);
-    Course =
-        parseCourseList(json.decode(response.body)['studentCourseList']);
-    print(Course);
+    course = parseCourseList(json.decode(response.body)['studentCourseList']);
 
     notifyListeners();
   }
@@ -60,12 +57,9 @@ class IaisViewModel extends BaseViewModel {
   getDiscReports(courseId) async {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse(
-        '${Config.studRepList}/${courseId}'), headers: {"x-access-token": token!,},);
-    print(response.body);
+        '${Config.studRepList}/$courseId'), headers: {"x-access-token": token!,},);
 
-    Report =
-        parseReportList(json.decode(response.body)['studentReportList']);
-    print(Report[0]);
+    report = parseReportList(json.decode(response.body)['studentReportList']);
 
     notifyListeners();
   }

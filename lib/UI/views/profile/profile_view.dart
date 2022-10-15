@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
-import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
@@ -31,12 +30,11 @@ class _ProfileViewState extends State<ProfileView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                      context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -295,7 +293,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PRSView()),
+                      MaterialPageRoute(builder: (context) => const PRSView()),
                     );
                   },
                   child: Container(
@@ -333,7 +331,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            settings: RouteSettings(name: "PgasList"),
+                            settings: const RouteSettings(name: "PgasList"),
                             builder: (context) => const PgasScreen()));
                   },
                   child: Container(
@@ -375,7 +373,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => IaisView()));
+                        MaterialPageRoute(builder: (context) => const IaisView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),
@@ -412,7 +410,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DebtsView()));
+                        MaterialPageRoute(builder: (context) => const DebtsView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 30),
@@ -455,7 +453,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OrderingInformationView()));
+                          builder: (context) => const OrderingInformationView()));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 30),
@@ -492,7 +490,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CheckListView()));
+                      MaterialPageRoute(builder: (context) => const CheckListView()));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 30),
@@ -580,7 +578,7 @@ class _MyHomePageState extends State<LoadingScreen>
     super.initState();
 
     Timer _timer = Timer(const Duration(seconds: 3), () => {});
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
   }

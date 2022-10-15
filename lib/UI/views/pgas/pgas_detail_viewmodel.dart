@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/pgas/model/user_achieve.dart';
-import 'package:open_file/open_file.dart';
 import 'package:stacked/stacked.dart';
 
 import 'pgas_request_info_screen.dart';
@@ -60,7 +56,6 @@ class PgasDetailViewModel extends BaseViewModel {
     };
 
     if (achieveModel.activityFile != null) {
-      print(achieveModel.activityFile!.isNotEmpty);
       await deletePgasFile(context, achieveModel.activityFile);
     }
 
@@ -83,6 +78,7 @@ class PgasDetailViewModel extends BaseViewModel {
     };
 
     var response = await http.delete(Uri.parse("https://api-next.kemsu.ru/api/storage/pgas-mobile/${fileName.toString()}"), headers: header);
+    //TODO: это нужно доделать!
   }
 
   List<UserAchieveModel> parseUserAchieves(List response) {

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/API/config.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_detail_view.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import '../schedule/schedule_model.dart';
 import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
@@ -23,11 +21,10 @@ class PRSView extends StatelessWidget {
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                      .dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -133,8 +130,7 @@ _prsView(context, PRSViewModel model) {
                             onPressed: () async {
                               await model.getReitList(element.startDate,
                                   element.endDate, element.semester);
-                              Navigator.push(
-                                context,
+                              Navigator.push(context,
                                 MaterialPageRoute(
                                     builder: (context) => PRSDetailView(
                                           reitList: model.reitList,

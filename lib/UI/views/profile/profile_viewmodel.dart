@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
@@ -9,7 +8,6 @@ import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
 import '../checkList/checkList_view.dart';
-import 'dart:convert';
 
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
@@ -62,10 +60,6 @@ class ProfileViewModel extends BaseViewModel {
     learnForm = studentCard["LEARN_FORM"];
     statusSTR = studentCard["STATUS_STR"];
     finForm = studentCard["FINFORM"];
-    //print(response1.data);
-    print(studentCard["ID"]);
-    print(group);
-    print(phone);
     await storage.write(key: "firstName", value: firstName);
     await storage.write(key: "lastName", value: lastName);
     await storage.write(key: "middleName", value: middleName);
@@ -74,10 +68,11 @@ class ProfileViewModel extends BaseViewModel {
 
     final responseMoneyDebt = await dio
         .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
-    var MoneyDebt = responseMoneyDebt.data["debtInfo"];
-    if(MoneyDebt["DEBT_AMOUNT"]==null) debtData = "Отсутствует";
-    else {
-      debtData = MoneyDebt["DEBT_AMOUNT"].toString() + " (на дату: " + MoneyDebt["DEBT_DATE"] + ")";
+    var moneyDebt = responseMoneyDebt.data["debtInfo"];
+    if(moneyDebt["DEBT_AMOUNT"]==null) {
+      debtData = "Отсутствует";
+    } else {
+      debtData = moneyDebt["DEBT_AMOUNT"].toString() + " (на дату: " + moneyDebt["DEBT_DATE"] + ")";
     }
 
 
@@ -93,19 +88,19 @@ class ProfileViewModel extends BaseViewModel {
 
   void iaisButton(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => IaisView()));
+        context, MaterialPageRoute(builder: (context) => const IaisView()));
     notifyListeners();
   }
 
   void debtsButton(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DebtsView()));
+        context, MaterialPageRoute(builder: (context) => const DebtsView()));
     notifyListeners();
   }
 
   void checklistButton(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => CheckListView()));
+        context, MaterialPageRoute(builder: (context) => const CheckListView()));
     notifyListeners();
   }
 

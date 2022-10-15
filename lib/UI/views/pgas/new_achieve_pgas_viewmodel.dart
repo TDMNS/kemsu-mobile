@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
@@ -90,7 +88,6 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "activityTypeId": activityId.toString()
     };
     var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityList"), headers: header, body: body);
-    print(json.decode(response.body)["result"]);
     return parseActivities(json.decode(response.body)["result"]);
   }
 
@@ -125,19 +122,15 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "activityFile": eiosFileName
     };
 
-    print(body);
-
     var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity"), headers: header, body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       circle = false;
       notifyListeners();
       Navigator.of(context).pop();
-      print(response.body);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-      print(response.body);
     }
   }
 
@@ -163,20 +156,14 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
     dio.options.headers["X-Access-Token"] = "$eiosAccessToken";
 
-    print(chooseFile!.extension);
-    print(fd.fields);
-
     var response = await dio.put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.data["fileNames"]);
       eiosFileName = json.decode(json.encode(response.data["fileNames"].first));
       notifyListeners();
-      print(response.data);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Файл загружен успешно.")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Файл загружен успешно.")));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.data)["message"])));
-      print(response.data);
     }
   }
 

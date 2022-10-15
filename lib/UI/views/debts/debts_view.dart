@@ -67,22 +67,22 @@ _debtsView(BuildContext context, DebtsViewModel model) {
                         textAlign: TextAlign.center, softWrap: true)),
               )),
             ],
-            rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
+            rows: model.debtsCourse.map<DataRow>((e) => DataRow(cells: [
                   DataCell(Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(e.COURSE.toString(),
+                    child: Text(e.course.toString(),
                       textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(e.SEMESTER.toString(),
+                    child: Text(e.semester.toString(),
                       textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(e.DISCIPLINE.toString(),
+                    child: Text(e.discipline.toString(),
                       textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(e.OCENKA_SHORT.toString(),
+                      child: Text(e.markShort.toString(),
                       textAlign: TextAlign.center, softWrap: true))),
                 ])).toList(),
             border: TableBorder.all(

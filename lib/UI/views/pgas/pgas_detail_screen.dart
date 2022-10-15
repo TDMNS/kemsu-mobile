@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
@@ -147,14 +146,14 @@ _createAchieveButton(context, PgasDetailViewModel model) {
 
 _pgasAchievesSpace(context, PgasDetailViewModel model) {
   return Padding(
-    padding: EdgeInsets.all(8),
-    child: model.userAchievesList.isEmpty ? Center(
+    padding: const EdgeInsets.all(8),
+    child: model.userAchievesList.isEmpty ? const Center(
         child: Text(
             "Нет прикрепленных достижений.",
             style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)
         )
     ) : ListView.builder(
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       shrinkWrap: true,
       itemCount: model.userAchievesList.length,
       itemBuilder: (context, index) {
@@ -180,7 +179,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -195,7 +194,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -210,7 +209,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -225,7 +224,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -240,7 +239,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -249,7 +248,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                         const TextSpan(text: 'Подтверждение достижения: '),
                         TextSpan(
                             text: model.userAchievesList[index].activitySrc.toString(),
-                            recognizer: new TapGestureRecognizer()
+                            recognizer: TapGestureRecognizer()
                             ..onTap = () { launchUrl(Uri.parse(model.userAchievesList[index].activitySrc.toString())); },
                             style: const TextStyle(
                                 color: Colors.black,
@@ -258,7 +257,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -273,7 +272,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -288,7 +287,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -303,7 +302,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
@@ -318,7 +317,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),

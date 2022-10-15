@@ -17,12 +17,10 @@ class NewsView extends StatelessWidget {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }

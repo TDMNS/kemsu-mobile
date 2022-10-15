@@ -1,19 +1,22 @@
 class CheckList {
-  String? GROUPNAME;
-  String? DEPARTMENTTITLE;
-  String? DEBT;
-  String? COMMENTARY;
+  String? groupName;
+  String? departmentTitle;
+  String? debt;
+  String? comment;
 
   CheckList(
-      {this.GROUPNAME, this.DEPARTMENTTITLE, this.DEBT, this.COMMENTARY});
+      {this.groupName, this.departmentTitle, this.debt, this.comment});
 
   CheckList.fromJson(Map<String, dynamic> json) {
-    GROUPNAME = json["groupName"];
-    DEPARTMENTTITLE = json["departmentTitle"];
-    if(json["commentary"]!=null) COMMENTARY = json["commentary"];
-    else COMMENTARY = "";
-    DEBT="";
-    if(json["noDebtFlag"]==1) DEBT="Нет";
-    if(json["debtFlag"]==1) DEBT="Есть";
+    groupName = json["groupName"];
+    departmentTitle = json["departmentTitle"];
+    if(json["commentary"]!=null) {
+      comment = json["commentary"];
+    } else {
+      comment = "";
+    }
+    debt="";
+    if(json["noDebtFlag"]==1) debt="Нет";
+    if(json["debtFlag"]==1) debt="Есть";
   }
 }

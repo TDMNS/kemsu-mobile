@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
-import 'pgas_screen.dart';
 
 class NewPgasRequestViewModel extends BaseViewModel {
   NewPgasRequestViewModel(BuildContext context);
@@ -101,11 +100,9 @@ class NewPgasRequestViewModel extends BaseViewModel {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pop(context);
-        print(response.body);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваша заявка успешно отправлена.")));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ошибка при отправке заявки! Код ошибки: ${response.statusCode}")));
-        print(response.body);
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля заявки!")));

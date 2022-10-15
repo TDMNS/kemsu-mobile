@@ -5,8 +5,6 @@ import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import '../schedule/schedule_model.dart';
-import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
 class PRSDetailView extends StatelessWidget {
@@ -27,11 +25,10 @@ class PRSDetailView extends StatelessWidget {
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                      .dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -84,9 +81,9 @@ _prsDetailView(context, PRSViewModel model, reitList) {
                         );
                       },
                       style: TextButton.styleFrom(
-                        primary: Colors.black,
+                        foregroundColor: Colors.black,
                       ),
-                      child: Text('ФПА')),
+                      child: const Text('ФПА')),
                   const Text(
                     'Текущ. балл',
                     textAlign: TextAlign.center,

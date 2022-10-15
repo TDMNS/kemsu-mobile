@@ -68,8 +68,6 @@ class PgasRequestInfoViewModel extends BaseViewModel {
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-      print(response.statusCode);
-      print(response.body);
     }
   }
 }

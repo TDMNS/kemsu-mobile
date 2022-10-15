@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'model/faculty.dart';
 import 'model/pgas_detail.dart';
 import 'model/semester_type.dart';
-import 'pgas_request_info_screen.dart';
 
 class EditPgasRequestViewModel extends BaseViewModel {
   EditPgasRequestViewModel(BuildContext context);
@@ -62,8 +61,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
       chosenCourse = detailPgasRequest!.courseNum.toString();
       notifyListeners();
     } else {
-      print(response.statusCode);
-      print(response.body);
+      throw ("${response.statusCode} ${response.body}");
     }
   }
 
@@ -131,7 +129,6 @@ class EditPgasRequestViewModel extends BaseViewModel {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Данные успешно сохранены.")));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ошибка при сохранении данных! Код ошибки: ${response.statusCode}")));
-        print(response.body);
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля!")));
