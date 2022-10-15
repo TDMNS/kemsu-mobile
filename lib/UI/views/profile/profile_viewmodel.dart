@@ -31,7 +31,7 @@ class ProfileViewModel extends BaseViewModel {
 
   String debtData = '';
 
-  int selectedIndex = 2;
+  int selectedIndex = 1;
 
   void onTapBottomBar(int index) {
     selectedIndex = index;

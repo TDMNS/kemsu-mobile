@@ -20,8 +20,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/first': (context) => const NewsView(),
-        '/second': (context) => const ScheduleView(),
-        '/third': (context) => const ProfileView(),
+        '/second': (context) => const ProfileView(),
+        '/third': (context) => const ScheduleView(),
       },
       debugShowCheckedModeBanner: false,
       home: const AuthView(),

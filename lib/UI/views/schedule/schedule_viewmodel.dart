@@ -206,7 +206,7 @@ class ScheduleViewModel extends BaseViewModel {
   FacultyList? scheduleFaculty;
   GroupList? scheduleGroup;
 
-  int selectedIndex = 1;
+  int selectedIndex = 2;
 
   getSchedule() async {
     var response = await http.get(Uri.parse(Config.semesterList));

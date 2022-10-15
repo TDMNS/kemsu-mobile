@@ -136,10 +136,10 @@ customBottomBar(BuildContext context, model) {
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
-              child: const Icon(Icons.schedule),
+              child: const Icon(Icons.person),
             ),
-            icon: const Icon(Icons.schedule),
-            label: 'Расписание',
+            icon: const Icon(Icons.person),
+            label: 'Профиль',
           ),
           BottomNavigationBarItem(
             activeIcon: ShaderMask(
@@ -152,10 +152,10 @@ customBottomBar(BuildContext context, model) {
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
-              child: const Icon(Icons.person),
+              child: const Icon(Icons.schedule),
             ),
-            icon: const Icon(Icons.person),
-            label: 'Профиль',
+            icon: const Icon(Icons.schedule),
+            label: 'Расписание',
           ),
         ],
       ),
