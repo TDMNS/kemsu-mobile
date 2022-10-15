@@ -158,10 +158,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       model.startDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
           ? Center(
-              child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: ElevatedButton(
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
@@ -174,16 +172,14 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                           child: model.endDate == DateTime(0, 0, 0)
                               ? const Text("Выбрать конечную дату")
                               : Text(
-                                  "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}")))),
+                                  "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
           ? Center(
-              child: Card(
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -209,7 +205,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                             )),
                           ),
                         ),
-                      ))),
+                      )),
             )
           : const SizedBox.shrink(),
     ],
