@@ -81,7 +81,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: AssetImage(
                               'images/avatar.jpeg',
                             ),
@@ -279,6 +279,27 @@ _profileView(BuildContext context, ProfileViewModel model) {
                               ],
                             ),
                           ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10),
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Colors.blue,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.4),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 9))
+                                ]),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
