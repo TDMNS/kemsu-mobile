@@ -19,6 +19,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleTable? prepScheduleTable;
   List<PrepScheduleTable>? scheduleList = [];
   int? teacherId;
+  String? teacherFIO;
   String? currentDate;
   String? currentWeek;
   int? weekId;
@@ -48,9 +49,10 @@ class PrepScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  changeTeacher(value) async {
+  changeTeacher(value, data) async {
     //choiceTeacher = value;
     teacherId = value;
+    teacherFIO = data;
     print('Func work, id: $teacherId}');
     circle = true;
 

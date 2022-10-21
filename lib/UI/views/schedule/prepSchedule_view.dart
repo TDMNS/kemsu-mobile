@@ -100,7 +100,8 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           ),
           onSuggestionSelected: (Teacher? suggestion) {
             final user = suggestion!;
-            model.changeTeacher(user.prepId);
+            model.changeTeacher(user.prepId, user.fio);
+            print(user.fio);
             ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(SnackBar(
@@ -109,6 +110,14 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           },
         ),
       ),
+      model.teacherId != null
+          ? Center(
+              child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text('${model.teacherFIO}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            ))
+          : const SizedBox(),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: model.teacherId == null
