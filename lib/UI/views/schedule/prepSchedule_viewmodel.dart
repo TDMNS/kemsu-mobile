@@ -41,7 +41,6 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getTeacher();
-    getWeekData();
   }
 
   void changeWeek(value) {
@@ -49,44 +48,12 @@ class PrepScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<List<String>> getWeekData() async {
-//Getting the response from the targeted url
-    final response = await http.Client()
-        .get(Uri.parse('https://kemsu.ru/education/schedule/'));
-    circle = false;
-
-    //Status Code 200 means response has been received successfully
-    if (response.statusCode == 200) {
-      //Getting the html document from the response
-      var document = parser.parse(response.body);
-      try {
-        //Scraping the first article title
-        var responseString1 =
-            document.getElementsByClassName('calendar-week')[0].children[0];
-        var responseString2 =
-            document.getElementsByClassName('calendar-week')[0].children[1];
-
-        currentDate = responseString1.text.trim();
-        currentWeek = responseString2.text.trim();
-        if (currentWeek!.substring(10, currentWeek!.length) == 'четная') {
-          weekId = 1;
-        } else {
-          weekId = 0;
-        }
-
-        return [responseString1.text.trim(), responseString2.text.trim()];
-      } catch (e) {
-        return ['', '', 'Error!'];
-      }
-    } else {
-      return ['', '', 'Error: ${response.statusCode}.'];
-    }
-  }
-
   changeTeacher(value) async {
     //choiceTeacher = value;
     teacherId = value;
     print('Func work, id: $teacherId}');
+    circle = true;
+
     notifyListeners();
     String? token = await storage.read(key: "tokenKey");
     var response2 = await http
@@ -141,6 +108,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     var response = await http.get(Uri.parse(
         '${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
+    circle = false;
     notifyListeners();
     print(teacherList[0].fio);
   }

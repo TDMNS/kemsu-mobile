@@ -51,7 +51,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                         extendBody: true,
                         extendBodyBehindAppBar: true,
                         appBar: customAppBar(context, model, 'Расписание'),
-                        bottomNavigationBar: customBottomBar(context, model),
+                        //bottomNavigationBar: customBottomBar(context, model),
                         body: _prepSchedule(context, model)),
               ));
         });
@@ -71,15 +71,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
   return ListView(
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(top: 10, left: 30),
-        child: Text(
-          '${model.currentDate}, ${model.currentWeek}',
-          style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         child: TypeAheadField<Teacher?>(
           hideSuggestionsOnKeyboardHide: false,
           textFieldConfiguration: const TextFieldConfiguration(
@@ -228,7 +220,18 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
             ),
       Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
-        child: model.teacherId == null ? const SizedBox() : _choiceDay(model),
+        child: model.teacherId == null
+            ? const SizedBox()
+            : model.circle
+                ? Container(
+                    color: Colors.white,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                : _choiceDay(model),
       ),
       const SizedBox(
         height: 50,
