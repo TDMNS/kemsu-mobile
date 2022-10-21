@@ -9,6 +9,7 @@ import '../../../API/api_provider.dart';
 import '../../../API/config.dart';
 import '../../../API/network_response.dart';
 import '../../../API/routes/auth_route.dart';
+import '../../menu.dart';
 import '../../widgets.dart';
 import '../profile/profile_view.dart';
 import 'auth_view.dart';
@@ -36,7 +37,7 @@ class AuthViewModel extends BaseViewModel {
       errorDialog2(context);
     } else if (response.statusCode == 200) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ProfileView()));
+          context, MaterialPageRoute(builder: (context) => MainMenu()));
     }
 
     notifyListeners();

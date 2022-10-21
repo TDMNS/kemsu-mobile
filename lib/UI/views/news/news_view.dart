@@ -31,7 +31,7 @@ class NewsView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Новости'),
-                  bottomNavigationBar: customBottomBar(context, model),
+                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _newsView(context, model),
                 ),
               ));

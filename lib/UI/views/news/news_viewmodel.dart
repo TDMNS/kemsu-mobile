@@ -3,12 +3,6 @@ import 'package:stacked/stacked.dart';
 
 class NewsViewModel extends BaseViewModel {
   NewsViewModel(BuildContext context);
-  int selectedIndex = 0;
-
-  void onTapBottomBar(int index) {
-    selectedIndex = index;
-    notifyListeners();
-  }
 
   Future onReady() async {}
 

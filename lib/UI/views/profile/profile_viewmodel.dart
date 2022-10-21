@@ -31,13 +31,6 @@ class ProfileViewModel extends BaseViewModel {
 
   String debtData = '';
 
-  int selectedIndex = 1;
-
-  void onTapBottomBar(int index) {
-    selectedIndex = index;
-    notifyListeners();
-  }
-
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
@@ -75,12 +68,14 @@ class ProfileViewModel extends BaseViewModel {
     final responseMoneyDebt = await dio
         .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
     var MoneyDebt = responseMoneyDebt.data["debtInfo"];
-    if(MoneyDebt["DEBT_AMOUNT"]==null) debtData = "Отсутствует";
+    if (MoneyDebt["DEBT_AMOUNT"] == null)
+      debtData = "Отсутствует";
     else {
-      debtData = MoneyDebt["DEBT_AMOUNT"].toString() + " (на дату: " + MoneyDebt["DEBT_DATE"] + ")";
+      debtData = MoneyDebt["DEBT_AMOUNT"].toString() +
+          " (на дату: " +
+          MoneyDebt["DEBT_DATE"] +
+          ")";
     }
-
-
 
     notifyListeners();
   }
@@ -108,5 +103,4 @@ class ProfileViewModel extends BaseViewModel {
         context, MaterialPageRoute(builder: (context) => CheckListView()));
     notifyListeners();
   }
-
 }

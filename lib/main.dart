@@ -5,6 +5,7 @@ import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 
 import 'UI/views/auth/auth_view.dart';
 import 'UI/views/news/news_view.dart';
+import 'UI/views/schedule/schedule2.0_view.dart';
 import 'UI/views/schedule/schedule_view.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class App extends StatelessWidget {
       routes: {
         '/first': (context) => const NewsView(),
         '/second': (context) => const ProfileView(),
-        '/third': (context) => const ScheduleView(),
+        '/third': (context) => const NewScheduleView(),
       },
       debugShowCheckedModeBanner: false,
       home: const AuthView(),

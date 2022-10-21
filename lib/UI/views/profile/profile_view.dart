@@ -45,7 +45,7 @@ class _ProfileViewState extends State<ProfileView> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Профиль'),
-                  bottomNavigationBar: customBottomBar(context, model),
+                  // bottomNavigationBar: customBottomBar(context, model),
                   body: _profileView(context, model),
                 ),
               ));
@@ -81,10 +81,11 @@ _profileView(BuildContext context, ProfileViewModel model) {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: NetworkImage(
-                                  'https://www.ixbt.com/img/n1/news/2021/1/0/%D0%91%D0%B5%D0%B7%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F_2.png'),
-                              fit: BoxFit.cover),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'images/avatar.jpeg',
+                            ),
+                          ),
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(50)),
                     ),
