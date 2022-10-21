@@ -156,33 +156,6 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
           child: _choiceDay(model)),
-      Center(
-          child: GestureDetector(
-        onTap: () {
-          model.choiceSchedule();
-          model.tableViewOnOff(false);
-        },
-        child: Container(
-            height: 50,
-            width: 200,
-            decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
-                ]),
-            child: const Center(
-                child: Text(
-              'Выбрать расписание',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-            ))),
-      )),
       const SizedBox(
         height: 10,
       ),
@@ -195,6 +168,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
           );
         },
         child: Container(
+            margin: EdgeInsets.only(bottom: 20),
             height: 50,
             width: 250,
             decoration: BoxDecoration(
