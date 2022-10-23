@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
-import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
@@ -110,9 +109,15 @@ _profileView(BuildContext context, ProfileViewModel model) {
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(text: 'Группа: '),
+                                TextSpan(text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: '),
+                                model.userType == EnumUserType.student ?
                                 TextSpan(
                                     text: model.group,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)) :
+                                TextSpan(
+                                    text: model.jobTitle,
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold)),
@@ -161,7 +166,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
               child: ExpansionTile(
                 expandedAlignment: Alignment.center,
                 title: const Text(
-                  'Данные студента',
+                  'Данные пользователя',
                   style: TextStyle(
                       fontFamily: "Ubuntu",
                       fontSize: 17,
@@ -178,9 +183,15 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
                             children: <TextSpan>[
-                              const TextSpan(text: 'Группа: '),
+                              TextSpan(text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: '),
+                              model.userType == EnumUserType.student ?
                               TextSpan(
                                   text: model.group,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)) :
+                              TextSpan(
+                                  text: model.jobTitle,
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
@@ -193,16 +204,23 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
                             children: <TextSpan>[
-                              const TextSpan(text: 'Направление: '),
+                              TextSpan(text: model.userType == EnumUserType.student ? 'Направление: ' : 'Отдел: '),
+                              model.userType == EnumUserType.student ?
                               TextSpan(
                                   text: model.speciality,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)) :
+                              TextSpan(
+                                  text: model.department,
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student ?
                         RichText(
                           text: TextSpan(
                             style: const TextStyle(
@@ -216,8 +234,9 @@ _profileView(BuildContext context, ProfileViewModel model) {
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 10),
+                        ) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student ?
                         RichText(
                           text: TextSpan(
                             style: const TextStyle(
@@ -231,7 +250,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
-                        ),
+                        ) : const SizedBox.shrink(),
                         const SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
@@ -262,8 +281,8 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        if (model.finForm != "бюджетная")
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student && model.finForm != "бюджетная" ?
                           RichText(
                             text: TextSpan(
                               style: const TextStyle(
@@ -278,7 +297,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                                         fontWeight: FontWeight.bold)),
                               ],
                             ),
-                          ),
+                          ): const SizedBox.shrink(),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
