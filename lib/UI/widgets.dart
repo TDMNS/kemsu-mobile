@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
 
+class EnumScreensWithoutPopArrow {
+  static String get profile => "Профиль";
+  static String get news => "Новости";
+  static String get schedule => "Расписание";
+}
+
 errorDialog1(context) {
   return showDialog<String>(
     context: context,
@@ -62,14 +68,14 @@ customAppBar(context, model, name) {
     ),
     backgroundColor: Colors.white,
     shadowColor: Colors.black.withOpacity(0.2),
-    leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: Icon(
-          Icons.arrow_back_outlined,
-          color: Colors.indigo.shade700,
-        )),
+    leading: name == EnumScreensWithoutPopArrow.news || name == EnumScreensWithoutPopArrow.profile || name == EnumScreensWithoutPopArrow.schedule ? Container() : IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: Icon(
+        Icons.arrow_back_outlined,
+        color: Colors.indigo.shade700,
+      )),
   );
 }
 
