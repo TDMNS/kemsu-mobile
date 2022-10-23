@@ -160,7 +160,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
               child: ExpansionTile(
                 expandedAlignment: Alignment.center,
                 title: const Text(
-                  'Данные студента',
+                  'Данные пользователя',
                   style: TextStyle(
                       fontFamily: "Ubuntu",
                       fontSize: 17,

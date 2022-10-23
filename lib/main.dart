@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 
 import 'UI/views/auth/auth_view.dart';
@@ -17,6 +19,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarBrightness: Brightness.light)
+    );
     return MaterialApp(
       routes: {
         '/first': (context) => const NewsView(),

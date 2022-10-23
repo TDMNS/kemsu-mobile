@@ -15,6 +15,36 @@
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_secure_storage_windows/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_secure_storage_windows/build" />
       <excludeFolder url="file://$MODULE_DIR$/windows/flutter/ephemeral/.plugin_symlinks/flutter_secure_storage_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/url_launcher_ios/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/open_file/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_secure_storage/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/file_picker/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_keyboard_visibility/example/.dart_tool" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />
