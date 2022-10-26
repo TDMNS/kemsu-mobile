@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 
+import 'UI/splash_screen.dart';
 import 'UI/views/auth/auth_view.dart';
 import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule2.0_view.dart';
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
         '/third': (context) => const NewScheduleView(),
       },
       debugShowCheckedModeBanner: false,
-      home: const AuthView(),
+      home: const LoadingView(),
     );
   }
 }
