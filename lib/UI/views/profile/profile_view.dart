@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/checkList/checkList_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets.dart';
 import '../ordering information/ordering_information_view.dart';
@@ -595,9 +597,59 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   ),
                 ),
               ),
+            ]),
+            model.userType == EnumUserType.student
+                ? const SizedBox(height: 30)
+                : const SizedBox.shrink(),
+            model.userType == EnumUserType.student
+                ?
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => _paymentWebView(context, model)));
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(left: 30),
+                  height: 100,
+                  width: 130,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 15,
+                            offset: const Offset(0, 15))
+                      ]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/icons/money.png',
+                        scale: 4,
+                      ),
+                      const SizedBox(height: 10),
+                      const Center(
+                        child: Text(
+                          'Оплата за обучение',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ])
+                :
+            const SizedBox.shrink(),
           ],
         ),
+
         const SizedBox(
           height: 30,
         ),
@@ -649,7 +701,7 @@ class _MyHomePageState extends State<LoadingScreen>
     super.initState();
 
     Timer _timer = Timer(const Duration(seconds: 3), () => {});
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
   }
@@ -716,4 +768,15 @@ class _MyHomePageState extends State<LoadingScreen>
       ),
     );
   }
+}
+
+_paymentWebView(BuildContext context, ProfileViewModel model) {
+  return Scaffold(
+    extendBody: false,
+    extendBodyBehindAppBar: false,
+    appBar: customAppBar(context, model, 'Оплата за обучение'),
+    body: WebView(
+      initialUrl: Uri.encodeFull('https://kemsu.ru/payment/?student_fio=${model.fio}&payer_fio=${model.fio}&phone=${model.phone?.replaceFirst('+7 ', '')}&email=${model.email}'.replaceAll(' ', '+'))
+    ),
+  );
 }
