@@ -24,6 +24,8 @@ dependencies:
   html: ^0.15.0
   cupertino_icons: ^1.0.2
   freezed_annotation: ^2.2.0
+  webview_flutter: ^3.0.4
+  translit: ^2.0.0
 
 dev_dependencies:
   flutter_test:

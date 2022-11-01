@@ -59,7 +59,6 @@ class ProfileViewModel extends BaseViewModel {
       firstName = userData["firstName"];
       lastName = userData["lastName"];
       middleName = userData["middleName"];
-
       final responseStudent = await dio
           .get(Config.studCardHost, queryParameters: {"accessToken": token});
 
@@ -77,7 +76,6 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "group", value: group);
 
-      print(fio);
       final responseMoneyDebt = await dio
           .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
       var moneyDebt = responseMoneyDebt.data["debtInfo"];
@@ -99,15 +97,17 @@ class ProfileViewModel extends BaseViewModel {
       middleName = employeeCard["MIDDLE_NAME"];
       jobTitle = employeeCard["POST_NAME"];
       department = employeeCard["DEP"];
-      fio = ('$lastName $firstName $middleName');
 
       await storage.write(key: "firstName", value: firstName);
       await storage.write(key: "lastName", value: lastName);
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "jobTitle", value: jobTitle);
       await storage.write(key: "department", value: department);
-    }
 
+    }
+    fio = ('$lastName $firstName $middleName');
+
+    await storage.write(key: "fio", value: fio);
     await storage.write(key: "email", value: phone);
     await storage.write(key: "phone", value: phone);
 
