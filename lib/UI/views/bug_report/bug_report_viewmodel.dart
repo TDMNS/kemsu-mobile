@@ -25,44 +25,49 @@ class BugReportViewModel extends BaseViewModel {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     if (errorMsgController.text.isNotEmpty) {
       notifyListeners();
-      Map<String, String> header = {
-        "X-Access-Token": "$eiosAccessToken"
-      };
+      Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
 
       Map<String, dynamic> body = {
         "message": errorMsgController.text,
       };
 
-      var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"), headers: header, body: body);
+      var response = await http.post(
+          Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"),
+          headers: header,
+          body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchReports(context);
         Navigator.pop(context);
-        print(response.body);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено.")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Ваше обращение успешно отправлено.")));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-        print(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(json.decode(response.body)["message"])));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля обращения!")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Заполните все поля обращения!")));
     }
   }
 
   fetchReports(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    var response = await http.get(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"), headers: header);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    var response = await http.get(
+        Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"),
+        headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       reportList = parseReports(json.decode(response.body)["result"]);
-      print(response.body);
       notifyListeners();
     } else if (response.statusCode == 401) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const AuthView()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const AuthView()),
+          (Route<dynamic> route) => false);
       await storage.delete(key: "tokenKey");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content:
+              Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
     }
   }
 

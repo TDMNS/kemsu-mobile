@@ -28,7 +28,7 @@ class IaisRepView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, discData.DISC_NAME),
-              bottomNavigationBar: customBottomBar(context, model),
+              //bottomNavigationBar: customBottomBar(context, model),
               body: _iaisRepView(context, model, repList, discData),
             ),
           );
@@ -44,119 +44,117 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
             margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
             child: Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: Container(
-                  child: ExpansionTile(
-                    expandedAlignment: Alignment.center,
-                    title: const Text(
-                      'Данные о дисциплине',
-                      style: TextStyle(
-                          fontFamily: "Ubuntu",
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Дисциплина: '),
-                                  TextSpan(
-                                      text: discData.DISC_NAME,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Отчётность: '),
-                                  TextSpan(
-                                      text: discData.DISC_REP,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Часы: '),
-                                  TextSpan(
-                                      text: discData.DISC_HOURS.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Период проведения: '),
-                                  TextSpan(
-                                      text: discData.DISC_FIRST_DATE +
-                                          " - " +
-                                          discData.DISC_LAST_DATE,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Преподаватель: '),
-                                  TextSpan(
-                                      text: discData.FIO,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                children: <TextSpan>[
-                                  const TextSpan(text: 'Количество баллов: '),
-                                  TextSpan(
-                                      text: discData.DISC_MARK.toString(),
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-                    ],
+                child: ExpansionTile(
+                  expandedAlignment: Alignment.center,
+                  title: const Text(
+                    'Данные о дисциплине',
+                    style: TextStyle(
+                        fontFamily: "Ubuntu",
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold),
                   ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Дисциплина: '),
+                                TextSpan(
+                                    text: discData.DISC_NAME,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Отчётность: '),
+                                TextSpan(
+                                    text: discData.DISC_REP,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Часы: '),
+                                TextSpan(
+                                    text: discData.DISC_HOURS.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Период проведения: '),
+                                TextSpan(
+                                    text: discData.DISC_FIRST_DATE +
+                                        " - " +
+                                        discData.DISC_LAST_DATE,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Преподаватель: '),
+                                TextSpan(
+                                    text: discData.FIO,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Количество баллов: '),
+                                TextSpan(
+                                    text: discData.DISC_MARK.toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ],
                 )))),
     const SizedBox(height: 20),
     Expanded(
@@ -188,7 +186,7 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                   );
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.black,
+                  foregroundColor: Colors.black,
                 ),
                 child: const Text('Контр. дата',
                     textAlign: TextAlign.center, softWrap: true)),
@@ -214,7 +212,7 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                   );
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.black,
+                  foregroundColor: Colors.black,
                 ),
                 child: const Text('Макс. балл',
                     textAlign: TextAlign.center, softWrap: true)),
@@ -240,7 +238,7 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
                   );
                 },
                 style: TextButton.styleFrom(
-                  primary: Colors.black,
+                  foregroundColor: Colors.black,
                 ),
                 child: const Text('Рез.',
                     textAlign: TextAlign.center, softWrap: true)),

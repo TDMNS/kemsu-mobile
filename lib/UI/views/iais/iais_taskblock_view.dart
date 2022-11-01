@@ -28,7 +28,7 @@ class IaisTaskBlockView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, blockName),
-              bottomNavigationBar: customBottomBar(context, model),
+              //bottomNavigationBar: customBottomBar(context, model),
               body: _iaisTaskBlockView(context, model, repData),
             ),
           );
@@ -108,9 +108,7 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
                 .map<DataRow>((e) => DataRow(
                       onSelectChanged: (selected) async {
                         if (selected == true) {
-                          {
-                            print(e.NAME);
-                          }
+                          {}
                         }
                       },
                       cells: [

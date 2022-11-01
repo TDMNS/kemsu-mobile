@@ -20,8 +20,8 @@ class MainBugReportScreen extends StatelessWidget {
           return model.circle
               ? Container(
                   color: Colors.white,
-                  child: Center(
-                    child: const CircularProgressIndicator(
+                  child: const Center(
+                    child: CircularProgressIndicator(
                       backgroundColor: Colors.white,
                     ),
                   ),
@@ -30,7 +30,7 @@ class MainBugReportScreen extends StatelessWidget {
                   appBar: customAppBar(context, model, "Сообщения об ошибках"),
                   body: _body(context, model),
                   floatingActionButton: FloatingActionButton(
-                    child: Icon(Icons.edit),
+                    child: const Icon(Icons.edit),
                     onPressed: () {
                       showDialog(
                           context: context,
@@ -80,16 +80,16 @@ _errorMessagesTitle() {
 
 _reportSpace(context, BugReportViewModel model) {
   return Padding(
-    padding: EdgeInsets.all(8),
+    padding: const EdgeInsets.all(8),
     child: model.reportList.isEmpty
-        ? Center(
+        ? const Center(
             child: Text("Нет отправленных обращений.",
                 style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF757575),
                     fontWeight: FontWeight.w500)))
         : ListView.builder(
-            physics: ScrollPhysics(),
+            physics: const ScrollPhysics(),
             shrinkWrap: true,
             itemCount: model.reportList.length,
             itemBuilder: (context, index) {
@@ -97,7 +97,7 @@ _reportSpace(context, BugReportViewModel model) {
                 title: Text(model.reportList[index].message.toString()),
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -127,17 +127,18 @@ _reportSpace(context, BugReportViewModel model) {
 
 newMessageDialog(context, BugReportViewModel model) {
   return AlertDialog(
-    title: Text("Создать обращение"),
+    title: const Text("Создать обращение"),
     content: TextField(
       controller: model.errorMsgController,
-      decoration: InputDecoration.collapsed(hintText: 'Введите сообщение'),
+      decoration:
+          const InputDecoration.collapsed(hintText: 'Введите сообщение'),
     ),
     actions: [
       TextButton(
           onPressed: () async {
             model.sendAction(context);
           },
-          child: Text("Отправить"))
+          child: const Text("Отправить"))
     ],
   );
 }

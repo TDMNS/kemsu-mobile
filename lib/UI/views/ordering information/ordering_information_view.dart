@@ -24,12 +24,10 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark),
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context);
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -38,7 +36,7 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Заказ справок'),
-                  bottomNavigationBar: customBottomBar(context, model),
+                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _orderingInformationView(context, model),
                 ),
               ));
@@ -106,106 +104,106 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           : const SizedBox.shrink(),
       model.lastParagraph == model.selectedPeriod && model.isSelected == true
           ? Center(
-        child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: ElevatedButton(
-                          onPressed: () async {
-                            DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime(2100));
-                            model.startDate = newDate;
-                          },
-                          child: model.startDate == DateTime(0, 0, 0)
-                              ? const Text("Выбрать начальную дату")
-                              : Text(
-                                  "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100));
+                        model.startDate = newDate;
+                      },
+                      child: model.startDate == DateTime(0, 0, 0)
+                          ? const Text("Выбрать начальную дату")
+                          : Text(
+                              "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? Center(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                blurRadius: 20,
-                                offset: const Offset(0, 15))
-                          ]),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: const Center(
-                                child: Text(
-                              'Подать заявку',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            )),
-                          ),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 200,
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 20,
+                            offset: const Offset(0, 15))
+                      ]),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                      )),
+                        child: const Center(
+                            child: Text(
+                          'Подать заявку',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )),
+                      ),
+                    ),
+                  )),
             )
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
           ? Center(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime(2100));
-                            model.endDate = newDate;
-                          },
-                          child: model.endDate == DateTime(0, 0, 0)
-                              ? const Text("Выбрать конечную дату")
-                              : Text(
-                                  "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100));
+                        model.endDate = newDate;
+                      },
+                      child: model.endDate == DateTime(0, 0, 0)
+                          ? const Text("Выбрать конечную дату")
+                          : Text(
+                              "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
           ? Center(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                blurRadius: 20,
-                                offset: const Offset(0, 15))
-                          ]),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: const Center(
-                                child: Text(
-                              'Подать заявку',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            )),
-                          ),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 200,
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 20,
+                            offset: const Offset(0, 15))
+                      ]),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                      )),
+                        child: const Center(
+                            child: Text(
+                          'Подать заявку',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )),
+                      ),
+                    ),
+                  )),
             )
           : const SizedBox.shrink(),
     ],

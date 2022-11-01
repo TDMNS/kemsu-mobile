@@ -1,15 +1,11 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../auth/auth_view.dart';
 
 class OrderingInformationViewModel extends BaseViewModel {
   OrderingInformationViewModel(BuildContext context);

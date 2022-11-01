@@ -2,7 +2,8 @@ class Config {
   static String apiHost = 'https://api-next.kemsu.ru/api/auth';
   static String studCardHost =
       'https://api.kemsu.ru/api/dekanat/students/study-cards';
-  static String empCardHost = "https://api-next.kemsu.ru/api/personal-office/integration/empInfo";
+  static String empCardHost =
+      "https://api-next.kemsu.ru/api/personal-office/integration/empInfo";
   static String brsSemesterList =
       "https://api-next.kemsu.ru/api/personal-office/integration/brsSemesterList";
   static String reitList =
@@ -39,4 +40,6 @@ class Config {
       "https://api-next.kemsu.ru/api/orders/main/periodList";
   static String studCheckList =
       'https://api-next.kemsu.ru/api/debt/main/checkList';
+  static String proLongToken =
+      'https://api-next.kemsu.ru/api/security/auth/prolong';
 }

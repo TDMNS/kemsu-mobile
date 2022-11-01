@@ -1,15 +1,13 @@
 import 'dart:convert';
 
 class TeacherList {
-  int? prepId;
-  String? fio;
+  final int prepId;
+  final String fio;
 
-  TeacherList({this.fio, this.prepId});
+  TeacherList({required this.fio, required this.prepId});
 
-  TeacherList.fromJson(Map<String, dynamic> json) {
-    prepId = json["prepId"];
-    fio = json["fio"];
-  }
+  static TeacherList fromJson(Map<String, dynamic> json) =>
+      TeacherList(fio: json['fio'], prepId: json['prepId']);
 }
 
 // To parse this JSON data, do
@@ -238,7 +236,7 @@ class EnumValues<T> {
 
   Map<T, String> get reverse {
     if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
+      reverseMap = map.map((k, v) => MapEntry(v, k));
     }
     return reverseMap;
   }

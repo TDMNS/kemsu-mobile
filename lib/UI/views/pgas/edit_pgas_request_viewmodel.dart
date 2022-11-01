@@ -19,7 +19,13 @@ class EditPgasRequestViewModel extends BaseViewModel {
   FacultyModel? chooseFaculty;
   SemesterTypeModel? chooseSemester;
   final studyYears = ["2021-2022"];
-  final courses = ["1", "2", "3", "4", "5",];
+  final courses = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+  ];
   TextEditingController surnameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController middleNameController = TextEditingController();
@@ -43,15 +49,16 @@ class EditPgasRequestViewModel extends BaseViewModel {
   fetchDetailPgasRequest() async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    Map<String, dynamic> body = {
-      "requestId": pgasRequestId
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"), headers: header, body: body);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, dynamic> body = {"requestId": pgasRequestId};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"),
+        headers: header,
+        body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      detailPgasRequest = PgasDetailModel.fromJson(json.decode(response.body)["result"]);
+      detailPgasRequest =
+          PgasDetailModel.fromJson(json.decode(response.body)["result"]);
       notifyListeners();
       surnameController.text = detailPgasRequest!.surname!;
       firstNameController.text = detailPgasRequest!.name!;
@@ -61,31 +68,35 @@ class EditPgasRequestViewModel extends BaseViewModel {
       chosenYear = detailPgasRequest!.studyYear;
       chosenCourse = detailPgasRequest!.courseNum.toString();
       notifyListeners();
-    } else {
-      print(response.statusCode);
-      print(response.body);
-    }
+    } else {}
   }
 
   fetchInstitutesList() async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"), headers: header);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"),
+        headers: header);
     facultiesList = parseFaculties(json.decode(response.body)["result"]);
-    chooseFaculty = facultiesList.where((element) => element.id == detailPgasRequest!.facultyId).single;
+    chooseFaculty = facultiesList
+        .where((element) => element.id == detailPgasRequest!.facultyId)
+        .single;
     notifyListeners();
   }
 
   fetchSemesterTypeList() async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"), headers: header);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"),
+        headers: header);
     semestersList = parseSemesterTypes(json.decode(response.body)["result"]);
-    chooseSemester = semestersList.where((element) => element.semesterTypeId == detailPgasRequest!.semesterTypeId).single;
+    chooseSemester = semestersList
+        .where((element) =>
+            element.semesterTypeId == detailPgasRequest!.semesterTypeId)
+        .single;
     notifyListeners();
   }
 
@@ -104,12 +115,16 @@ class EditPgasRequestViewModel extends BaseViewModel {
   saveButtonAction(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    if (surnameController.text.isNotEmpty && firstNameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty && middleNameController.text.isNotEmpty && groupController.text.isNotEmpty &&
-        chosenYear!.isNotEmpty && chosenCourse!.isNotEmpty && chooseSemester != null && chooseFaculty != null) {
-      Map<String, String> header = {
-        "X-Access-Token": "$eiosAccessToken"
-      };
+    if (surnameController.text.isNotEmpty &&
+        firstNameController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        middleNameController.text.isNotEmpty &&
+        groupController.text.isNotEmpty &&
+        chosenYear!.isNotEmpty &&
+        chosenCourse!.isNotEmpty &&
+        chooseSemester != null &&
+        chooseFaculty != null) {
+      Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
 
       Map<String, dynamic> body = {
         "surname": surnameController.text,
@@ -124,17 +139,24 @@ class EditPgasRequestViewModel extends BaseViewModel {
         "requestId": pgasRequestId
       };
 
-      var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest"), headers: header, body: body);
+      var response = await http.post(
+          Uri.parse(
+              "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest"),
+          headers: header,
+          body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Данные успешно сохранены.")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Данные успешно сохранены.")));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ошибка при сохранении данных! Код ошибки: ${response.statusCode}")));
-        print(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                "Ошибка при сохранении данных! Код ошибки: ${response.statusCode}")));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля!")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Заполните все поля!")));
     }
   }
 }

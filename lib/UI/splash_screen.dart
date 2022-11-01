@@ -14,7 +14,7 @@ class _MyHomePageState extends State<LoadingView>
   @override
   void initState() {
     Timer(
-        const Duration(milliseconds: 2700),
+        const Duration(milliseconds: 2800),
         () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AuthView()),
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<LoadingView>
       color: const Color.fromRGBO(239, 239, 239, 1),
       child: Image.asset(
         'images/1.gif',
-        scale: 4,
+        scale: 2.5,
       ),
     );
   }

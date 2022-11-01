@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,8 +44,20 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
   bool circle = false;
 
-  final months = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль",
-  "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
+  final months = [
+    "январь",
+    "февраль",
+    "март",
+    "апрель",
+    "май",
+    "июнь",
+    "июль",
+    "август",
+    "сентябрь",
+    "октябрь",
+    "ноябрь",
+    "декабрь"
+  ];
 
   List<YearModel> years = [];
   YearModel? chosenYear;
@@ -59,38 +69,43 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
   fetchAchieveCategories() async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList"), headers: header);
-    achieveCategories = parseAchieveCategories(json.decode(response.body)["result"]);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList"),
+        headers: header);
+    achieveCategories =
+        parseAchieveCategories(json.decode(response.body)["result"]);
     notifyListeners();
   }
 
   fetchYears() async {
     String? requestId = await storage.read(key: "pgas_id");
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    
-    var response = await http.get(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/activityYearList?requestId=$requestId"), headers: header);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+
+    var response = await http.get(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/activityYearList?requestId=$requestId"),
+        headers: header);
 
     years = parseYears(json.decode(response.body)["result"]);
     notifyListeners();
   }
 
-  Future<List<ActivityTreeModel>> fetchAchieves(int? parentId, int? activityId) async {
+  Future<List<ActivityTreeModel>> fetchAchieves(
+      int? parentId, int? activityId) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
     Map<String, dynamic> body = {
       "parentId": parentId.toString(),
       "activityTypeId": activityId.toString()
     };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityList"), headers: header, body: body);
-    print(json.decode(response.body)["result"]);
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityList"),
+        headers: header,
+        body: body);
     return parseActivities(json.decode(response.body)["result"]);
   }
 
@@ -99,9 +114,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     notifyListeners();
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? requestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
 
     if (chosenActivity4 != null) {
       resultActivity = chosenActivity4;
@@ -125,19 +138,21 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "activityFile": eiosFileName
     };
 
-    print(body);
-
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity"), headers: header, body: body);
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity"),
+        headers: header,
+        body: body);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       circle = false;
       notifyListeners();
       Navigator.of(context).pop();
-      print(response.body);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(json.decode(response.body)["message"])));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-      print(response.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(json.decode(response.body)["message"])));
     }
   }
 
@@ -153,7 +168,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
 
     FormData fd = FormData.fromMap({
-      "file.${chooseFile!.extension}": await MultipartFile.fromFile(chooseFile!.path.toString()),
+      "file.${chooseFile!.extension}":
+          await MultipartFile.fromFile(chooseFile!.path.toString()),
       "uniqueNames": true,
       "overwrite": true,
       "totalSizeLimit": (10 * 1024 * 1024),
@@ -163,26 +179,24 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
     dio.options.headers["X-Access-Token"] = "$eiosAccessToken";
 
-    print(chooseFile!.extension);
-    print(fd.fields);
-
-    var response = await dio.put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
+    var response = await dio
+        .put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.data["fileNames"]);
       eiosFileName = json.decode(json.encode(response.data["fileNames"].first));
       notifyListeners();
-      print(response.data);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Файл загружен успешно.")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Файл загружен успешно.")));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.data)["message"])));
-      print(response.data);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(json.decode(response.data)["message"])));
     }
   }
 
   List<AchieveCategoryModel> parseAchieveCategories(List response) {
     return response
-        .map<AchieveCategoryModel>((json) => AchieveCategoryModel.fromJson(json))
+        .map<AchieveCategoryModel>(
+            (json) => AchieveCategoryModel.fromJson(json))
         .toList();
   }
 

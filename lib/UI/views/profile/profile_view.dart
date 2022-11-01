@@ -109,18 +109,21 @@ _profileView(BuildContext context, ProfileViewModel model) {
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.black),
                               children: <TextSpan>[
-                                TextSpan(text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: '),
-                                model.userType == EnumUserType.student ?
                                 TextSpan(
-                                    text: model.group,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)) :
-                                TextSpan(
-                                    text: model.jobTitle,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userType == EnumUserType.student
+                                        ? 'Группа: '
+                                        : 'Должность: \n'),
+                                model.userType == EnumUserType.student
+                                    ? TextSpan(
+                                        text: model.group,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold))
+                                    : TextSpan(
+                                        text: model.jobTitle,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -183,18 +186,21 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
                             children: <TextSpan>[
-                              TextSpan(text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: '),
-                              model.userType == EnumUserType.student ?
                               TextSpan(
-                                  text: model.group,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)) :
-                              TextSpan(
-                                  text: model.jobTitle,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
+                                  text: model.userType == EnumUserType.student
+                                      ? 'Группа: '
+                                      : 'Должность: '),
+                              model.userType == EnumUserType.student
+                                  ? TextSpan(
+                                      text: model.group,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))
+                                  : TextSpan(
+                                      text: model.jobTitle,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -204,53 +210,63 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
                             children: <TextSpan>[
-                              TextSpan(text: model.userType == EnumUserType.student ? 'Направление: ' : 'Отдел: '),
-                              model.userType == EnumUserType.student ?
                               TextSpan(
-                                  text: model.speciality,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)) :
-                              TextSpan(
-                                  text: model.department,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
+                                  text: model.userType == EnumUserType.student
+                                      ? 'Направление: '
+                                      : 'Отдел: '),
+                              model.userType == EnumUserType.student
+                                  ? TextSpan(
+                                      text: model.speciality,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold))
+                                  : TextSpan(
+                                      text: model.department,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
-                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student ?
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Форма обучения: '),
-                              TextSpan(
-                                  text: model.learnForm,
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? RichText(
+                                text: TextSpan(
                                   style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ) : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student ?
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Форма финансирования: '),
-                              TextSpan(
-                                  text: model.finForm,
+                                      fontSize: 16, color: Colors.black),
+                                  children: <TextSpan>[
+                                    const TextSpan(text: 'Форма обучения: '),
+                                    TextSpan(
+                                        text: model.learnForm,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? RichText(
+                                text: TextSpan(
                                   style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ) : const SizedBox.shrink(),
+                                      fontSize: 16, color: Colors.black),
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: 'Форма финансирования: '),
+                                    TextSpan(
+                                        text: model.finForm,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                         const SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
@@ -281,27 +297,31 @@ _profileView(BuildContext context, ProfileViewModel model) {
                             ],
                           ),
                         ),
-                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student && model.finForm != "бюджетная" ?
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Задолженность за обучение: '),
-                                TextSpan(
-                                    text: model.debtData,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ): const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student &&
+                                model.finForm != "бюджетная"
+                            ? RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: 'Задолженность за обучение: '),
+                                    TextSpan(
+                                        text: model.debtData,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            margin: EdgeInsets.only(right: 10),
+                            margin: const EdgeInsets.only(right: 10),
                             height: 35,
                             width: 35,
                             decoration: BoxDecoration(
@@ -313,7 +333,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                                       blurRadius: 10,
                                       offset: const Offset(0, 9))
                                 ]),
-                            child: Icon(
+                            child: const Icon(
                               Icons.edit,
                               color: Colors.white,
                             ),
@@ -328,6 +348,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
           ),
         ),
         Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -336,13 +357,13 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PRSView()),
+                      MaterialPageRoute(builder: (context) => const PRSView()),
                     );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -369,18 +390,18 @@ _profileView(BuildContext context, ProfileViewModel model) {
                     ),
                   ),
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            settings: RouteSettings(name: "PgasList"),
+                            settings: const RouteSettings(name: "PgasList"),
                             builder: (context) => const PgasScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -415,13 +436,15 @@ _profileView(BuildContext context, ProfileViewModel model) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => IaisView()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const IaisView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -452,13 +475,15 @@ _profileView(BuildContext context, ProfileViewModel model) {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DebtsView()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DebtsView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -496,12 +521,13 @@ _profileView(BuildContext context, ProfileViewModel model) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OrderingInformationView()));
+                          builder: (context) =>
+                              const OrderingInformationView()));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 30),
                   height: 100,
-                  width: 150,
+                  width: 130,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: Colors.white,
@@ -532,13 +558,15 @@ _profileView(BuildContext context, ProfileViewModel model) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CheckListView()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CheckListView()));
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 30),
                   height: 100,
-                  width: 150,
+                  width: 130,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: Colors.white,

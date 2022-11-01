@@ -19,10 +19,32 @@ class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleTable? prepScheduleTable;
   List<PrepScheduleTable>? scheduleList = [];
   int? teacherId;
+  int? currentTeacherID;
   String? teacherFIO;
   String? currentDate;
   String? currentWeek;
-  int? weekId;
+  int weekId = 0;
+  bool tableView = false;
+  bool currentTable = false;
+  bool weekType = true;
+  int? groupId;
+  int? groupIdChoice;
+  int? currentSemester;
+  ScheduleRequest? scheduleSemester;
+  FacultyList? scheduleFaculty;
+  GroupList? scheduleGroup;
+  List<WeekGetId> weekID = [];
+  List<GroupList> groupList = [];
+  List<FacultyList> facultyList = [];
+  List<String> coupleTime = [
+    '8:00 - 9:35',
+    '9:45 - 11:20',
+    '11:45 - 13:20',
+    '13:30 - 15:05',
+    '15:30 - 17:05',
+    '17:15 - 18:50',
+    '19:00 - 20:35'
+  ];
 
   List<CurrentGroupList> currentGroupList = [];
 
@@ -58,25 +80,38 @@ class PrepScheduleViewModel extends BaseViewModel {
 
     notifyListeners();
     String? token = await storage.read(key: "tokenKey");
-    var response2 = await http
-        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
-    currentGroupList =
-        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
-    var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=$teacherId&accessToken=$token'));
-    var jsonResponse = json.decode(response.body)['result'];
-    result = Result.fromJson(jsonResponse);
+    if (currentTeacherID != null) {
+      var response = await http.get(Uri.parse(
+          '${Config.prepSchedule}?semesterId=9&prepId=$teacherId&accessToken=$token'));
+      var jsonResponse = json.decode(response.body)['result'];
+      result = Result.fromJson(jsonResponse);
+      evenList = parseEvenList(
+          jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
+      for (int i = 0; i < evenList.length; i++) {
+        print(evenList[i].discName);
+      }
+    } else {
+      var response2 = await http
+          .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+      currentGroupList = parseCurrentGroupList(
+          json.decode(response2.body)['currentGroupList']);
+      var response = await http.get(Uri.parse(
+          '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=$teacherId&accessToken=$token'));
+      var jsonResponse = json.decode(response.body)['result'];
+      result = Result.fromJson(jsonResponse);
+      evenList = parseEvenList(
+          jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
+      for (int i = 0; i < evenList.length; i++) {
+        print(evenList[i].discName);
+      }
+    }
 
     int days = result!.prepScheduleTable!.length;
     int ceilLength = result!.prepScheduleTable![0].ceilList!.length;
 
     //evenList = parseEvenList(
     //    jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
-    evenList = parseEvenList(
-        jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
-    for (int i = 0; i < evenList.length; i++) {
-      print(evenList[i].discName);
-    }
+
     circle = false;
 
     notifyListeners();
@@ -102,16 +137,32 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   getTeacher() async {
     String? token = await storage.read(key: "tokenKey");
+    String? fio = await storage.read(key: "FIO");
+
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
-    var response = await http.get(Uri.parse(
-        '${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
+    var response = await http.get(
+        Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=9'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
+    for (int i = 0; i < teacherList.length; i++) {
+      if (teacherList[i].fio == fio) {
+        print('Find is ${teacherList[i].fio}');
+        teacherFIO = teacherList[i].fio;
+        currentTeacherID = teacherList[i].prepId;
+        print("Old ID is: ${teacherList[i].prepId}");
+        print("New ID is: $currentTeacherID");
+      }
+    }
+    if (currentTeacherID != null) {
+      changeTeacher(currentTeacherID, fio);
+      notifyListeners();
+    }
     circle = false;
     notifyListeners();
+    print(fio);
     print(teacherList[0].fio);
   }
 

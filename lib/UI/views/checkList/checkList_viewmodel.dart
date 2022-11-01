@@ -17,19 +17,18 @@ class CheckListViewModel extends BaseViewModel {
   int selectedIndex = 2;
 
   List<CheckList> parseCheckList(List response) {
-    return response
-        .map<CheckList>((json) => CheckList.fromJson(json))
-        .toList();
+    return response.map<CheckList>((json) => CheckList.fromJson(json)).toList();
   }
 
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.studCheckList}'), headers: {"x-access-token": token!,},);
-    print(json.decode(response.body)['checkList']);
-    checkList =
-        parseCheckList(json.decode(response.body)['checkList']);
-    //print(checkList);
+    var response = await http.get(
+      Uri.parse('${Config.studCheckList}'),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
+    checkList = parseCheckList(json.decode(response.body)['checkList']);
 
     notifyListeners();
   }

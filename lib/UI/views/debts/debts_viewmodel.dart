@@ -5,7 +5,6 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../debts/debts_view.dart';
 import '../debts/debts_model.dart';
 import 'dart:convert';
 
@@ -29,13 +28,14 @@ class DebtsViewModel extends BaseViewModel {
 
   getAcademyDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-          '${Config.studDebt}'), headers: {"x-access-token": token!,},);
+    var response = await http.get(
+      Uri.parse('${Config.studDebt}'),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
 
-    print(response.body);
-    DebtsCourse =
-        parseCourseList(json.decode(response.body)['studyDebtList']);
-    print(DebtsCourse);
+    DebtsCourse = parseCourseList(json.decode(response.body)['studyDebtList']);
 
     notifyListeners();
   }

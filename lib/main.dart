@@ -1,13 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-
 import 'UI/splash_screen.dart';
-import 'UI/views/auth/auth_view.dart';
 import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule2.0_view.dart';
-import 'UI/views/schedule/schedule_view.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();

@@ -15,7 +15,6 @@ class EnumUserType {
 }
 
 class ProfileViewModel extends BaseViewModel {
-
   ProfileViewModel(BuildContext context);
 
   final storage = const FlutterSecureStorage();
@@ -36,11 +35,12 @@ class ProfileViewModel extends BaseViewModel {
   String startYear = '';
   String debtData = '';
   String userType = '';
+  int? userTypeInt;
   String jobTitle = '';
   String department = '';
+  String fio = '';
 
   Future onReady() async {
-
     String? token = await storage.read(key: "tokenKey");
 
     var dio = Dio();
@@ -56,7 +56,6 @@ class ProfileViewModel extends BaseViewModel {
     phone = userData["phone"];
 
     if (userType == EnumUserType.student) {
-
       firstName = userData["firstName"];
       lastName = userData["lastName"];
       middleName = userData["middleName"];
@@ -78,6 +77,7 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "group", value: group);
 
+      print(fio);
       final responseMoneyDebt = await dio
           .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
       var moneyDebt = responseMoneyDebt.data["debtInfo"];
@@ -99,6 +99,7 @@ class ProfileViewModel extends BaseViewModel {
       middleName = employeeCard["MIDDLE_NAME"];
       jobTitle = employeeCard["POST_NAME"];
       department = employeeCard["DEP"];
+      fio = ('$lastName $firstName $middleName');
 
       await storage.write(key: "firstName", value: firstName);
       await storage.write(key: "lastName", value: lastName);
@@ -132,8 +133,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void checklistButton(context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const CheckListView()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CheckListView()));
     notifyListeners();
   }
 }
