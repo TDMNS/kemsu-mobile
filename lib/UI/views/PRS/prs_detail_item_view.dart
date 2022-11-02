@@ -80,7 +80,11 @@ _prsDetailItemView(context, PRSViewModel model, reitItemList) {
                 return TableRow(
                   children: [
                     Text(
-                      "${element.activityName} (${element.comment})",
+                      element.comment != null
+                          ?
+                      "${element.activityName} (${element.comment})"
+                          :
+                      "${element.activityName}",
                       textAlign: TextAlign.center,
                     ),
                     Text(
