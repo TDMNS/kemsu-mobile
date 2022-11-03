@@ -1,18 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
-import 'dart:io' as Io;
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
 import '../checkList/checkList_view.dart';
+import 'package:intl/intl.dart';
 
 class EnumUserType {
   static String get student => "обучающийся";
@@ -64,11 +62,9 @@ class ProfileViewModel extends BaseViewModel {
         .post(Config.proLongToken, queryParameters: {"accessToken": token});
     var newToken = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
-
-    print('Response: $newToken');
   }
 
-  Future onReady() async {
+  Future onReady(BuildContext context) async {
     readImage();
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
@@ -86,7 +82,7 @@ class ProfileViewModel extends BaseViewModel {
     userType = userData["userType"];
     email = userData["email"];
     phone = userData["phone"];
-
+    print(userData);
     if (userType == EnumUserType.student) {
       firstName = userData["firstName"];
       lastName = userData["lastName"];
@@ -142,6 +138,12 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "email", value: phone);
     await storage.write(key: "phone", value: phone);
 
+    final now = DateTime.now();
+    final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
+    final currentDate = now.toString().split(' ');
+    if (currentDate[0] == newYearDate[0]) {
+      _showAlertDialog(context);
+    }
     notifyListeners();
   }
 
@@ -188,5 +190,31 @@ class ProfileViewModel extends BaseViewModel {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const CheckListView()));
     notifyListeners();
+  }
+
+  _showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("Спасибо"),
+      onPressed: () { Navigator.pop(context); },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("С новым годом!"),
+      content: const Text("Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

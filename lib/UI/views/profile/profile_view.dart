@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -28,18 +27,17 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProfileViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onModelReady: (viewModel) => viewModel.onReady(context),
         viewModelBuilder: () => ProfileViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                      context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -870,7 +868,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
 
   String fio = model.fio;
   String phone = model.phone?.replaceFirst('+7 ', '') ?? '';
-  String email = model.email ?? '';
+  String email = model.email;
 
   return Scaffold(
     extendBody: false,
@@ -881,5 +879,4 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
             'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
                 .replaceAll(' ', '+'))),
   );
-  
 }
