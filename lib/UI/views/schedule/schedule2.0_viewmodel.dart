@@ -10,6 +10,13 @@ import '../../../API/config.dart';
 class NewScheduleViewModel extends BaseViewModel {
   NewScheduleViewModel(BuildContext context);
 
+  int selectedIndex = 2;
+
+  void onTapBottomBar(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+
   static const storage = FlutterSecureStorage();
   bool circle = true;
   bool tableView = false;

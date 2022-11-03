@@ -12,13 +12,19 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  int currentIndex = 1;
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: IndexedStack(
-          index: currentIndex,
+          index: _selectedIndex,
           children: [
             const NewsView(),
             const ProfileView(),
@@ -28,9 +34,11 @@ class _MainMenuState extends State<MainMenu> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Colors.grey.shade600,
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.grey.shade600, //<-- Unselected text
             type: BottomNavigationBarType.fixed,
-            onTap: (index) => setState(() => currentIndex = index),
+            onTap: _onItemTapped,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.newspaper),

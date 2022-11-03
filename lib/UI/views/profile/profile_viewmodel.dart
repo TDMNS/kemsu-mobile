@@ -17,6 +17,13 @@ class EnumUserType {
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
 
+  int selectedIndex = 1;
+
+  void onTapBottomBar(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
+
   final storage = const FlutterSecureStorage();
 
   String firstName = '';
