@@ -77,7 +77,7 @@ class NewScheduleViewModel extends BaseViewModel {
     var response = await dio
         .get(Config.currentGroupList, queryParameters: {"accessToken": token});
     groupId = response.data['currentGroupList'][0]['groupId'];
-    currentSemester = semesterResponse.data['result'][0]['Id'];
+    currentSemester = semesterResponse.data['result'][1]['Id'];
     var weekResponse =
         await dio.get('${Config.weekList}?semesterId=$currentSemester');
     currentWeek = weekResponse.data['result'][0]['Id'];
@@ -88,11 +88,12 @@ class NewScheduleViewModel extends BaseViewModel {
         '${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
     var mainTable = getScheduleTable.body;
     final jsonResponse = json.decode(mainTable)['result']['Table'];
-    //final jsonResponseCoupleList =
-    //  json.decode(mainTable)['result']['CoupleList'];
+    // final jsonResponseCoupleList =
+    // json.decode(mainTable)['result']['CoupleList'];
     scheduleTable = FinalTable.fromJson(jsonResponse);
     circle = false;
     tableView = true;
+    print(currentSemester);
     notifyListeners();
   }
 

@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
-
+import 'dart:io' as Io;
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
@@ -39,16 +44,36 @@ class ProfileViewModel extends BaseViewModel {
   String jobTitle = '';
   String department = '';
   String fio = '';
+  File? imageFile;
+  String? img64;
 
-  Future onReady() async {
-    String? token = await storage.read(key: "tokenKey");
+  String? avatar;
 
+  prolongToken() async {
     var dio = Dio();
 
-    final responseAuth = await dio.post(Config.apiHost, data: {
-      "login": loginController.text,
-      "password": passwordController.text
-    });
+    String? token = await storage.read(key: 'tokenKey');
+    final responseProlongToken = await dio
+        .post(Config.proLongToken, queryParameters: {"accessToken": token});
+    var newToken = responseProlongToken.data['accessToken'];
+    await storage.write(key: "tokenKey", value: newToken);
+
+    print('Response: $newToken');
+  }
+
+  Future onReady() async {
+    readImage();
+    String? token = await storage.read(key: "tokenKey");
+    String? login = await storage.read(key: "login");
+    String? password = await storage.read(key: "password");
+    String? userTypeTemp = await storage.read(key: "userType");
+    var dio = Dio();
+    final responseProlongToken = await dio
+        .post(Config.proLongToken, queryParameters: {"accessToken": token});
+    token = responseProlongToken.data['accessToken'];
+    await storage.write(key: "tokenKey", value: token);
+    final responseAuth = await dio
+        .post(Config.apiHost, data: {"login": login, "password": password});
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
@@ -103,7 +128,6 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "jobTitle", value: jobTitle);
       await storage.write(key: "department", value: department);
-
     }
     fio = ('$lastName $firstName $middleName');
 
@@ -111,6 +135,27 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "email", value: phone);
     await storage.write(key: "phone", value: phone);
 
+    notifyListeners();
+  }
+
+  readImage() async {
+    avatar = await storage.read(key: 'avatar');
+    final decodedBytes = base64Decode(avatar!);
+
+    notifyListeners();
+  }
+
+  void saveImage(image) async {
+    // await storage.write(key: "avatar", value: '$image');
+    //avatar = await storage.read(key: 'avatar');
+    //final File newImage = await image.copy('images/avatar.png');
+    //image = avatar;
+    //print('Image: $image, Save Image: $avatar');
+    Uint8List imageBytes = await image!.readAsBytes();
+    String _base64String = base64.encode(imageBytes);
+    print(_base64String);
+    await storage.write(key: "avatar", value: _base64String);
+    //print(img64);
     notifyListeners();
   }
 
