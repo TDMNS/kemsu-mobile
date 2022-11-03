@@ -4,6 +4,7 @@ import './checkList_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
+import 'checkList_model.dart';
 
 class CheckListView extends StatelessWidget {
   const CheckListView({Key? key}) : super(key: key);
@@ -18,12 +19,11 @@ class CheckListView extends StatelessWidget {
             value: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness
-                    .dark), //прозрачность statusbar и установка тёмных иконок
+                    .dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'Обходной лист'),
-              // bottomNavigationBar: customBottomBar(context, model),
               body: _checkListView(context, model),
             ),
           );
@@ -32,142 +32,36 @@ class CheckListView extends StatelessWidget {
 }
 
 _checkListView(BuildContext context, CheckListViewModel model) {
-  return ListView(
-    children: <Widget>[
-      const SizedBox(height: 12),
-      Center(
-        child: Expanded(
-            child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
-          child: DataTable(
-            columnSpacing: 0,
-            columns: [
-              DataColumn(
-                  label: Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Группа'),
-                          content: const Text('Название учебной группы.'),
-                          actions: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Закрыть'))
-                          ],
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.black,
-                    ),
-                    child: const Text('Гр.', textAlign: TextAlign.left)),
-              )),
-              DataColumn(
-                  label: Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Подразделение'),
-                          content: const Text('Название подразделения.'),
-                          actions: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Закрыть'))
-                          ],
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.black,
-                    ),
-                    child: const Text('Подр.', textAlign: TextAlign.left)),
-              )),
-              DataColumn(
-                  label: Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Задолженность'),
-                          content: const Text(
-                              'Информация о наличии задолженности. Если ячейка пуста, значит, информаиця ещё не заполнена ответственным лицом в подразделении.'),
-                          actions: [
-                            ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Закрыть'))
-                          ],
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.black,
-                    ),
-                    child: const Text('Задол.', textAlign: TextAlign.left)),
-              )),
-            ],
-            rows: model.checkList
-                .map<DataRow>((e) => DataRow(cells: [
-                      DataCell(Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(e.GROUPNAME.toString(),
-                              textAlign: TextAlign.left, softWrap: true))),
-                      DataCell(Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(e.DEPARTMENTTITLE.toString(),
-                              textAlign: TextAlign.center, softWrap: true))),
-                      DataCell(Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Expanded(
-                              child: TextButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Комментарий'),
-                                  content: Text(e.COMMENTARY.toString()),
-                                  actions: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Закрыть'))
-                                  ],
-                                ),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.black,
-                            ),
-                            child: Text(e.DEBT.toString(),
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: e.DEBT.toString() == "Есть"
-                                        ? Colors.red
-                                        : Colors.green)),
-                          )))),
-                    ]))
-                .toList(),
-            border: TableBorder.all(
-              color: Colors.black,
-              style: BorderStyle.solid,
-              width: 1.5,
-            ),
-            dataRowHeight: 90,
-            showCheckboxColumn: false,
-          ),
-        )),
-      ),
-    ],
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ListView(
+      shrinkWrap: true,
+      children: [
+        const SizedBox(height: 12),
+        Wrap(children: [
+          Text("Список подразделений", style: Theme.of(context).textTheme.headline5),
+          const SizedBox(height: 38),
+          getListView(model.checkList)
+        ]),
+      ]
+    ),
+  );
+}
+
+Widget getListView(List<CheckList> items) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      final item = items[index];
+      final departmentTitle = item.DEPARTMENTTITLE ?? '';
+      final groupName = item.GROUPNAME ?? '';
+      return ListTile(
+          title: Text(departmentTitle),
+          subtitle: Text(groupName),
+          trailing: item.DEBT == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red)
+      );
+    },
   );
 }
