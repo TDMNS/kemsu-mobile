@@ -8,7 +8,7 @@ import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
-import 'package:kemsu_app/UI/views/checkList/checkList_view.dart';
+import 'package:kemsu_app/UI/views/checkList/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';

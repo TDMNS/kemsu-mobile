@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../checkList/checkList_model.dart';
+import '../checkList/check_list_model.dart';
 import 'dart:convert';
 
 class CheckListViewModel extends BaseViewModel {

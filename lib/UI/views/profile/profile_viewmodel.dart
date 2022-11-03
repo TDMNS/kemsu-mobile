@@ -9,7 +9,7 @@ import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
-import '../checkList/checkList_view.dart';
+import '../checkList/check_list_view.dart';
 import 'package:intl/intl.dart';
 
 class EnumUserType {

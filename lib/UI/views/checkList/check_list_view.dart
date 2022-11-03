@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './checkList_viewmodel.dart';
+import './check_list_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import 'checkList_model.dart';
+import 'check_list_model.dart';
 
 class CheckListView extends StatelessWidget {
   const CheckListView({Key? key}) : super(key: key);
@@ -55,12 +55,12 @@ Widget getListView(List<CheckList> items) {
     itemCount: items.length,
     itemBuilder: (context, index) {
       final item = items[index];
-      final departmentTitle = item.DEPARTMENTTITLE ?? '';
-      final groupName = item.GROUPNAME ?? '';
+      final departmentTitle = item.departmentTitle ?? '';
+      final groupName = item.groupName ?? '';
       return ListTile(
           title: Text(departmentTitle),
           subtitle: Text(groupName),
-          trailing: item.DEBT == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red)
+          trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red)
       );
     },
   );
