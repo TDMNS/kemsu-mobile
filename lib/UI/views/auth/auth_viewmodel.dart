@@ -40,6 +40,10 @@ class AuthViewModel extends BaseViewModel {
     userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
     print('Type: $userProfile');
     await storage.write(key: "tokenKey", value: response.data['accessToken']);
+    await storage.write(key: "login", value: loginController.text);
+    await storage.write(key: "password", value: passwordController.text);
+    await storage.write(key: "userType", value: userType);
+
     lastName = userData['lastName'];
     firstName = userData['firstName'];
     middleName = userData['middleName'];

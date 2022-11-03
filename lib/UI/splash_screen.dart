@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 
 class LoadingView extends StatefulWidget {
@@ -13,12 +15,7 @@ class _MyHomePageState extends State<LoadingView>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    Timer(
-        const Duration(milliseconds: 2800),
-        () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AuthView()),
-            ));
+    getUserType(context);
   }
 
   @override
@@ -31,4 +28,26 @@ class _MyHomePageState extends State<LoadingView>
       ),
     );
   }
+}
+
+const storage = FlutterSecureStorage();
+
+getUserType(context) async {
+  String? token = await storage.read(key: "tokenKey");
+  String? userTypeTemp = await storage.read(key: "userType");
+  int? type;
+  userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
+  token == null
+      ? Timer(
+          const Duration(milliseconds: 2800),
+          () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AuthView()),
+              ))
+      : Timer(
+          const Duration(milliseconds: 2800),
+          () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MainMenu(type: type!)),
+              ));
 }
