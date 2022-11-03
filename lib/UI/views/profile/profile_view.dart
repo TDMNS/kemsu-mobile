@@ -867,13 +867,19 @@ class _MyHomePageState extends State<LoadingScreen>
 }
 
 _paymentWebView(BuildContext context, ProfileViewModel model) {
+
+  String fio = model.fio;
+  String phone = model.phone?.replaceFirst('+7 ', '') ?? '';
+  String email = model.email ?? '';
+
   return Scaffold(
     extendBody: false,
     extendBodyBehindAppBar: false,
     appBar: customAppBar(context, model, 'Оплата услуг'),
     body: WebView(
         initialUrl: Uri.encodeFull(
-            'https://kemsu.ru/payment/?student_fio=${model.fio}&payer_fio=${model.fio}&phone=${model.phone?.replaceFirst('+7 ', '')}&email=${model.email}'
+            'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
                 .replaceAll(' ', '+'))),
   );
+  
 }

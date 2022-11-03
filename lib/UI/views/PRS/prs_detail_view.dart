@@ -131,7 +131,7 @@ _prsDetailView(context, PRSViewModel model, reitList) {
                       textAlign: TextAlign.center,
                     ), //Extracting from Map element the value
                     Text(
-                      "${element.mark}",
+                      element.mark != null ? "${element.mark}" : "нет оценки",
                       textAlign: TextAlign.center,
                     ),
                     IconButton(
