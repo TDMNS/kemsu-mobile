@@ -47,7 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Профиль'),
+                  appBar: customAppBar(context, model, 'Главная'),
                   // bottomNavigationBar: customBottomBar(context, model),
                   body: _profileView(context, model),
                 ),
@@ -726,7 +726,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   const SizedBox(height: 10),
                                   const Center(
                                     child: Text(
-                                      'Оплата за обучение',
+                                      'Оплата услуг',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16),
@@ -866,7 +866,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
   return Scaffold(
     extendBody: false,
     extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, 'Оплата за обучение'),
+    appBar: customAppBar(context, model, 'Оплата услуг'),
     body: WebView(
         initialUrl: Uri.encodeFull(
             'https://kemsu.ru/payment/?student_fio=${model.fio}&payer_fio=${model.fio}&phone=${model.phone?.replaceFirst('+7 ', '')}&email=${model.email}'

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
 
 class EnumScreensWithoutPopArrow {
-  static String get profile => "Профиль";
+  static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
 }
@@ -140,10 +140,10 @@ customBottomBar(BuildContext context, model) {
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
-              child: const Icon(Icons.person),
+              child: const Icon(Icons.home),
             ),
-            icon: const Icon(Icons.person),
-            label: 'Профиль',
+            icon: const Icon(Icons.home),
+            label: 'Главная',
           ),
           BottomNavigationBarItem(
             activeIcon: ShaderMask(

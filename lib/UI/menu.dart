@@ -45,8 +45,8 @@ class _MainMenuState extends State<MainMenu> {
                 label: 'Новости',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Профиль',
+                icon: Icon(Icons.home),
+                label: 'Главная',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.schedule),
