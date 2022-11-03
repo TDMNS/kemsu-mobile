@@ -138,7 +138,7 @@ class _ProfileViewState extends State<ProfileView> {
       children: [
         ListView(children: <Widget>[
           Container(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                   color: Colors.grey.withOpacity(0.25),
@@ -153,8 +153,8 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Stack(
+                    alignment: Alignment.centerLeft,
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
@@ -179,7 +179,10 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 15),
+                        padding: EdgeInsets.only(
+                            top: 15,
+                            left: MediaQuery.of(context).size.width / 3,
+                            bottom: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -211,7 +214,9 @@ class _ProfileViewState extends State<ProfileView> {
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold))
                                       : TextSpan(
-                                          text: model.jobTitle,
+                                          //text: model.jobTitle,
+                                          text:
+                                              'adnfjsndjfnskdf llsd sdlfkns kldfn lksfdlk sndlf',
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold)),
@@ -237,7 +242,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -768,8 +773,9 @@ class _ProfileViewState extends State<ProfileView> {
                 )),
               ),
             ),
-          )
+          ),
         ]),
+
         //const LoadingScreen()
       ],
     );
