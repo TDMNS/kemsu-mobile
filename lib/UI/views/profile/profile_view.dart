@@ -214,9 +214,7 @@ class _ProfileViewState extends State<ProfileView> {
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold))
                                       : TextSpan(
-                                          //text: model.jobTitle,
-                                          text:
-                                              'adnfjsndjfnskdf llsd sdlfkns kldfn lksfdlk sndlf',
+                                          text: model.jobTitle,
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold)),
