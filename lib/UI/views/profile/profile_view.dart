@@ -14,6 +14,7 @@ import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets.dart';
+import '../bug_report/main_bug_report_screen.dart';
 import '../ordering information/ordering_information_view.dart';
 
 class ProfileView extends StatefulWidget {
@@ -745,30 +746,68 @@ class _ProfileViewState extends State<ProfileView> {
           const SizedBox(
             height: 30,
           ),
-          GestureDetector(
-            onTap: () {
-              model.exitButton(context);
-            },
-            child: Container(
-              margin: const EdgeInsets.only(left: 100, right: 100, top: 20),
-              height: 50,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 15,
-                    offset: const Offset(0, 15))
-              ]),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainBugReportScreen()));
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 30),
+                  width: 160,
+                  height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15))
+                  ]),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Center(
+                        child: Text(
+                          'Поддержка',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )),
+                  ),
                 ),
-                child: const Center(
-                    child: Text(
-                  'Выйти',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )),
               ),
-            ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainBugReportScreen()));
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(right: 30),
+                  width: 160,
+                  height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15))
+                  ]),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Center(
+                        child: Text(
+                          'Выйти',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        )),
+                  ),
+                ),
+              ),
+            ],
           ),
         ]),
 
