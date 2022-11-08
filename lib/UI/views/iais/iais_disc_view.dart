@@ -144,134 +144,133 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
         )
     ),
     const SizedBox(height: 20),
-    Expanded(
-        child: SingleChildScrollView(
+    Padding(
       padding: const EdgeInsets.all(8.0),
       child: DataTable(
         columns: [
           const DataColumn(
               label: Text(
-            'Название',
-          )),
+                'Название',
+              )),
           DataColumn(
               label: Expanded(
-            child: TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Контрольная дата'),
-                      content: const Text('Контрольная дата блока заданий'),
-                      actions: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Закрыть'))
-                      ],
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Контрольная дата'),
+                          content: const Text('Контрольная дата блока заданий'),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Закрыть'))
+                          ],
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black,
                     ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-                ),
-                child: const Text('Контр. дата',
-                    textAlign: TextAlign.center, softWrap: true)),
-          )),
+                    child: const Text('Контр. дата',
+                        textAlign: TextAlign.center, softWrap: true)),
+              )),
           DataColumn(
               label: Expanded(
-            child: TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Максимальный балл'),
-                      content: const Text(
-                          'Максимальный балл, который можно получить за выполнение всех заданий в блоке'),
-                      actions: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Закрыть'))
-                      ],
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Максимальный балл'),
+                          content: const Text(
+                              'Максимальный балл, который можно получить за выполнение всех заданий в блоке'),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Закрыть'))
+                          ],
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black,
                     ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-                ),
-                child: const Text('Макс. балл',
-                    textAlign: TextAlign.center, softWrap: true)),
-          )),
+                    child: const Text('Макс. балл',
+                        textAlign: TextAlign.center, softWrap: true)),
+              )),
           DataColumn(
               label: Expanded(
-            child: TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Текущий балл'),
-                      content: const Text(
-                          'Текущий балл, полученный за выполнение заданий в блоке'),
-                      actions: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Закрыть'))
-                      ],
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Текущий балл'),
+                          content: const Text(
+                              'Текущий балл, полученный за выполнение заданий в блоке'),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Закрыть'))
+                          ],
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black,
                     ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-                ),
-                child: const Text('Рез.',
-                    textAlign: TextAlign.center, softWrap: true)),
-          )),
+                    child: const Text('Рез.',
+                        textAlign: TextAlign.center, softWrap: true)),
+              )),
         ],
         rows: repList
             .map<DataRow>((e) => DataRow(
-                  onSelectChanged: (selected) async {
-                    if (selected == true) {
-                      {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => IaisTaskBlockView(
-                                    repData: e.STUDENT_TASK_LIST,
-                                    blockName: e.NAME,
-                                  )),
-                        );
-                      }
-                    }
-                  },
-                  cells: [
-                    DataCell(Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        e.NAME.toString(),
-                      ),
-                    )),
-                    DataCell(Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        e.REP_CONTROL_DATE.toString(),
-                      ),
-                    )),
-                    DataCell(Center(
-                      child: Text(
-                        e.MAX_BALL.toString(),
-                      ),
-                    )),
-                    DataCell(Center(
-                      child: Text(
-                        e.SUM_BALL.toString(),
-                      ),
-                    )),
-                  ],
-                ))
+          onSelectChanged: (selected) async {
+            if (selected == true) {
+              {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => IaisTaskBlockView(
+                        repData: e.STUDENT_TASK_LIST,
+                        blockName: e.NAME,
+                      )),
+                );
+              }
+            }
+          },
+          cells: [
+            DataCell(Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Text(
+                e.NAME.toString(),
+              ),
+            )),
+            DataCell(Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                e.REP_CONTROL_DATE.toString(),
+              ),
+            )),
+            DataCell(Center(
+              child: Text(
+                e.MAX_BALL.toString(),
+              ),
+            )),
+            DataCell(Center(
+              child: Text(
+                e.SUM_BALL.toString(),
+              ),
+            )),
+          ],
+        ))
             .toList(),
         border: TableBorder.all(
           color: Colors.black,
@@ -282,6 +281,6 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
         showCheckboxColumn: false,
         columnSpacing: 1,
       ),
-    ))
+    ),
   ]);
 }
