@@ -145,7 +145,7 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
     ),
     const SizedBox(height: 20),
     Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
       child: DataTable(
         columns: [
           const DataColumn(
@@ -247,17 +247,11 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
             }
           },
           cells: [
-            DataCell(Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Text(
-                e.NAME.toString(),
-              ),
+            DataCell(Text(
+              e.NAME.toString(),
             )),
-            DataCell(Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                e.REP_CONTROL_DATE.toString(),
-              ),
+            DataCell(Text(
+              e.REP_CONTROL_DATE.toString(),
             )),
             DataCell(Center(
               child: Text(

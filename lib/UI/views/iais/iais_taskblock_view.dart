@@ -48,10 +48,7 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
             columns: [
               const DataColumn(label: Text('Название')),
               const DataColumn(
-                  label: Padding(
-                padding: EdgeInsets.only(left: 4),
-                child: Text('Реш.'),
-              )),
+                  label: Text('Реш.')),
               const DataColumn(
                   label: Expanded(
                       child: Text(
@@ -61,18 +58,12 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
               ))),
               const DataColumn(
                   label: Expanded(
-                      child: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text(
-                  'Макс. балл',
-                  softWrap: true,
-                ),
-              ))),
+                      child: Text(
+                        'Макс. балл',
+                        softWrap: true,
+                      ))),
               const DataColumn(
-                  label: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text('Рез.'),
-              )),
+                  label: Text('Рез.')),
               DataColumn(
                   label: GestureDetector(
                 onTap: () {
@@ -95,12 +86,9 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
                     ),
                   );
                 },
-                child: const Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Text(
-                    'Сост.',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                child: const Text(
+                  'Сост.',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               )),
             ],
@@ -112,20 +100,14 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
                         }
                       },
                       cells: [
-                        DataCell(Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: Text(e.NAME.toString()),
-                        )),
+                        DataCell(Text(e.NAME.toString())),
                         DataCell(Center(
                           child: Text(
                             e.SOLVE_FLAG.toString(),
                           ),
                         )),
-                        DataCell(Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(e.TASK_CONTROL_DATE.toString(),
-                              textAlign: TextAlign.center),
-                        )),
+                        DataCell(Text(e.TASK_CONTROL_DATE.toString(),
+                            textAlign: TextAlign.center)),
                         DataCell(Center(
                           child: Text(
                             e.MAX_BALL.toString(),
@@ -136,11 +118,8 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
                             e.SUM_BALL.toString(),
                           ),
                         )),
-                        DataCell(Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Text(
-                            e.SOLUTION_STATUS_SHORT.toString(),
-                          ),
+                        DataCell(Text(
+                          e.SOLUTION_STATUS_SHORT.toString(),
                         )),
                       ],
                     ))
