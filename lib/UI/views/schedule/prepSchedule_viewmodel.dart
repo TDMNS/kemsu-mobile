@@ -75,24 +75,22 @@ class PrepScheduleViewModel extends BaseViewModel {
   changeTeacher(data) async {
     //choiceTeacher = value;
     var dio = Dio();
-    int? temp;
     teacherFIO = data;
     //print('Data FIO: ${teacherList[0].prepId}');
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherFIO == teacherList[i].fio) {
-        temp = teacherList[i].prepId;
+        teacherId = teacherList[i].prepId;
       }
     }
     circle = true;
     print('WTF: $currentTeacherID');
     String? token = await storage.read(key: "tokenKey");
-    teacherId = temp!;
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=9&prepId=$temp&accessToken=$token'));
+        '${Config.prepSchedule}?semesterId=9&prepId=$teacherId&accessToken=$token'));
 
     var jsonResponse = json.decode(response.body)['result'];
 
