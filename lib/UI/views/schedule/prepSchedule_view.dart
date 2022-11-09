@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -64,69 +65,40 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
     (index) => DropdownMenuItem(
       value: model.teacherList[index].prepId.toString(),
       child: Text(
-        '${model.teacherList[index].fio}',
+        model.teacherList[index].fio,
       ),
     ),
   );
   return ListView(
     children: <Widget>[
-      model.currentTeacherID != null
-          ? SizedBox()
-          : Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: TypeAheadField<Teacher?>(
-                hideSuggestionsOnKeyboardHide: false,
-                textFieldConfiguration: const TextFieldConfiguration(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                    hintText: 'Выбрать преподавателя',
-                  ),
-                ),
-                suggestionsCallback: TeacherApi.getTeacherData,
-                itemBuilder: (context, Teacher? suggestion) {
-                  final user = suggestion!;
-
-                  return ListTile(
-                    title: Text(user.fio),
-                  );
-                },
-                noItemsFoundBuilder: (context) => Container(
-                  height: 100,
-                  child: const Center(
-                    child: Text(
-                      'Нет результатов',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-                onSuggestionSelected: (Teacher? suggestion) {
-                  final user = suggestion!;
-                  model.changeTeacher(user.prepId, user.fio);
-                  print(user.fio);
-                  ScaffoldMessenger.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                      content: Text('Выбран преподаватель: ${user.fio}'),
-                    ));
-                },
-              ),
-            ),
-      model.teacherId != null
+      Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+        child: DropdownSearch<dynamic>(
+          popupProps: const PopupProps.menu(showSearchBox: true),
+          dropdownDecoratorProps: const DropDownDecoratorProps(
+              dropdownSearchDecoration:
+                  InputDecoration(labelText: 'Выбор преподавателя')),
+          //asyncItems: (String filter) => getData(filter),
+          items: model.teacherList.map((e) => e.fio).toList(),
+          //itemAsString: (Teacher t) => t.fio,
+          onChanged: (value) => {print(value), model.changeTeacher(value)},
+        ),
+      ),
+      model.teacherId != 0
           ? Center(
               child: Padding(
               padding: const EdgeInsets.only(top: 10),
               child: GestureDetector(
                 onTap: () {},
                 child: Text('${model.teacherFIO}',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18)),
               ),
             ))
           : const SizedBox(),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
-          child: model.teacherId == null
+          child: model.teacherId == 0
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 10),
@@ -201,7 +173,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                     ],
                   ),
                 )),
-      model.teacherId == null
+      model.teacherId == 0
           ? const SizedBox()
           : Stack(
               children: [
@@ -235,7 +207,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
             ),
       Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
-        child: model.teacherId == null
+        child: model.teacherId == 0
             ? const SizedBox()
             : model.circle
                 ? Container(
@@ -360,7 +332,7 @@ _mondayTable(PrepScheduleViewModel model) {
                         const SizedBox(
                           height: 10,
                         ),
-                        model.weekId! == 1
+                        model.weekId == 1
                             ? Text(
                                 '${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![0].ceilList![1].ceil!.even![index].endWeekNum} нед.')
                             : Text(

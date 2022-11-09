@@ -65,8 +65,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future onReady(BuildContext context) async {
-    readImage();
     String? token = await storage.read(key: "tokenKey");
+    print('Old token:' + token!);
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
     String? userTypeTemp = await storage.read(key: "userType");
@@ -75,6 +75,8 @@ class ProfileViewModel extends BaseViewModel {
         .post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
+    String? token2 = await storage.read(key: "tokenKey");
+    print('New token: ' + token2!);
     final responseAuth = await dio
         .post(Config.apiHost, data: {"login": login, "password": password});
 
@@ -88,7 +90,7 @@ class ProfileViewModel extends BaseViewModel {
       lastName = userData["lastName"];
       middleName = userData["middleName"];
       final responseStudent = await dio
-          .get(Config.studCardHost, queryParameters: {"accessToken": token});
+          .get(Config.studCardHost, queryParameters: {"accessToken": token2});
 
       var studentCard = responseStudent.data[0];
       group = studentCard["GROUP_NAME"];
@@ -105,7 +107,7 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "group", value: group);
 
       final responseMoneyDebt = await dio
-          .get(Config.studMoneyDebt, queryParameters: {"accessToken": token});
+          .get(Config.studMoneyDebt, queryParameters: {"accessToken": token2});
       var moneyDebt = responseMoneyDebt.data["debtInfo"];
       if (moneyDebt["DEBT_AMOUNT"] == null) {
         debtData = "Отсутствует";
@@ -117,7 +119,7 @@ class ProfileViewModel extends BaseViewModel {
       }
     } else if (userType == EnumUserType.employee) {
       final responseEmployee = await dio
-          .get(Config.empCardHost, queryParameters: {"accessToken": token});
+          .get(Config.empCardHost, queryParameters: {"accessToken": token2});
 
       var employeeCard = responseEmployee.data["empList"][0];
       firstName = employeeCard["FIRST_NAME"];
@@ -139,18 +141,12 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "phone", value: phone);
 
     final now = DateTime.now();
-    final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
+    final newYearDate =
+        DateTime(now.year, DateTime.january, 3).toString().split(' ');
     final currentDate = now.toString().split(' ');
     if (currentDate[0] == newYearDate[0]) {
       _showAlertDialog(context);
     }
-    notifyListeners();
-  }
-
-  readImage() async {
-    avatar = await storage.read(key: 'avatar');
-    final decodedBytes = base64Decode(avatar!);
-
     notifyListeners();
   }
 
@@ -193,17 +189,19 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   _showAlertDialog(BuildContext context) {
-
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Спасибо"),
-      onPressed: () { Navigator.pop(context); },
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("С новым годом!"),
-      content: const Text("Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них."),
+      content: const Text(
+          "Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них."),
       actions: [
         okButton,
       ],

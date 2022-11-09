@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
@@ -71,46 +72,37 @@ class PrepScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  changeTeacher(value, data) async {
+  changeTeacher(data) async {
     //choiceTeacher = value;
-    teacherId = value;
+    var dio = Dio();
+    int? temp;
     teacherFIO = data;
-    print('Func work, id: $teacherId}');
-    circle = true;
-
-    notifyListeners();
-    String? token = await storage.read(key: "tokenKey");
-    if (currentTeacherID != null) {
-      var response = await http.get(Uri.parse(
-          '${Config.prepSchedule}?semesterId=9&prepId=$teacherId&accessToken=$token'));
-      var jsonResponse = json.decode(response.body)['result'];
-      result = Result.fromJson(jsonResponse);
-      evenList = parseEvenList(
-          jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
-      for (int i = 0; i < evenList.length; i++) {
-        print(evenList[i].discName);
-      }
-    } else {
-      var response2 = await http
-          .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
-      currentGroupList = parseCurrentGroupList(
-          json.decode(response2.body)['currentGroupList']);
-      var response = await http.get(Uri.parse(
-          '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=$teacherId&accessToken=$token'));
-      var jsonResponse = json.decode(response.body)['result'];
-      result = Result.fromJson(jsonResponse);
-      evenList = parseEvenList(
-          jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
-      for (int i = 0; i < evenList.length; i++) {
-        print(evenList[i].discName);
+    //print('Data FIO: ${teacherList[0].prepId}');
+    for (int i = 0; i < teacherList.length; i++) {
+      if (teacherFIO == teacherList[i].fio) {
+        temp = teacherList[i].prepId;
       }
     }
+    circle = true;
+    print('WTF: $currentTeacherID');
+    String? token = await storage.read(key: "tokenKey");
+    teacherId = temp!;
+    var response2 = await http
+        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList =
+        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+    var response = await http.get(Uri.parse(
+        '${Config.prepSchedule}?semesterId=9&prepId=$temp&accessToken=$token'));
 
-    int days = result!.prepScheduleTable!.length;
-    int ceilLength = result!.prepScheduleTable![0].ceilList!.length;
+    var jsonResponse = json.decode(response.body)['result'];
 
-    //evenList = parseEvenList(
-    //    jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
+    result = Result.fromJson(jsonResponse);
+
+    evenList = parseEvenList(
+        jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
+    for (int i = 0; i < evenList.length; i++) {
+      print(evenList[i].discName);
+    }
 
     circle = false;
 
@@ -132,7 +124,6 @@ class PrepScheduleViewModel extends BaseViewModel {
       indexDay == 0 ? indexDay = 7 : indexDay == 7;
     }
     notifyListeners();
-    print(indexDay);
   }
 
   getTeacher() async {
@@ -149,21 +140,17 @@ class PrepScheduleViewModel extends BaseViewModel {
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherList[i].fio == fio) {
-        print('Find is ${teacherList[i].fio}');
         teacherFIO = teacherList[i].fio;
         currentTeacherID = teacherList[i].prepId;
         print("Old ID is: ${teacherList[i].prepId}");
         print("New ID is: $currentTeacherID");
       }
     }
-    if (currentTeacherID != null) {
-      changeTeacher(currentTeacherID, fio);
-      notifyListeners();
-    }
+    print('FIO: $fio');
+    changeTeacher(fio);
+
     circle = false;
     notifyListeners();
-    print(fio);
-    print(teacherList[0].fio);
   }
 
   List<TeacherList> parseTeacherList(List response) {

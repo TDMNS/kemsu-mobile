@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
+import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
@@ -37,8 +38,7 @@ class _ProfileViewState extends State<ProfileView> {
                   statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context);
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -160,7 +160,7 @@ class _ProfileViewState extends State<ProfileView> {
                           avatarChoice(context, model);
                         },
                         child: Container(
-                          margin: const EdgeInsets.all(15),
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
                           width: 100,
                           height: 100,
                           child: model.imageFile != null
@@ -771,9 +771,10 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     child: const Center(
                         child: Text(
-                          'Поддержка',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        )),
+                      'Поддержка',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
@@ -783,7 +784,7 @@ class _ProfileViewState extends State<ProfileView> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MainBugReportScreen()));
+                          builder: (context) => const AuthView()));
                 },
                 child: Container(
                   padding: const EdgeInsets.only(right: 30),
@@ -801,9 +802,10 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                     child: const Center(
                         child: Text(
-                          'Выйти',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        )),
+                      'Выйти',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
@@ -904,7 +906,6 @@ class _MyHomePageState extends State<LoadingScreen>
 }
 
 _paymentWebView(BuildContext context, ProfileViewModel model) {
-
   String fio = model.fio;
   String phone = model.phone?.replaceFirst('+7 ', '') ?? '';
   String email = model.email;
