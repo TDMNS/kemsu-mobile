@@ -797,7 +797,8 @@ class _ProfileViewState extends State<ProfileView> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Предупреждение'),
-                      content: const Text('Вы действительно хотите выйти из мобильного приложения?'),
+                      content: const Text(
+                          'Вы действительно хотите выйти из мобильного приложения?'),
                       actions: [
                         ElevatedButton(
                             onPressed: () {
@@ -815,7 +816,6 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                   );
-
                 },
                 child: Container(
                   padding: const EdgeInsets.only(right: 30),
@@ -940,15 +940,28 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
   String fio = model.fio;
   String phone = model.phone?.replaceFirst('+7 ', '') ?? '';
   String email = model.email;
-
+  bool isLoading = true;
   return Scaffold(
     extendBody: false,
     extendBodyBehindAppBar: false,
     appBar: customAppBar(context, model, 'Оплата услуг'),
-    body: WebView(
-        initialUrl: Uri.encodeFull(
-            'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
-                .replaceAll(' ', '+')),
-      javascriptMode: JavascriptMode.unrestricted),
+    body: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Stack(children: [
+          WebView(
+              initialUrl: Uri.encodeFull(
+                  'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
+                      .replaceAll(' ', '+')),
+              javascriptMode: JavascriptMode.unrestricted,
+              onPageFinished: (finish) {
+                setState(() {
+                  isLoading = false;
+                });
+              }),
+          isLoading ? const Center( child: CircularProgressIndicator(),)
+              : Stack(),
+        ]);
+      },
+    ),
   );
 }
