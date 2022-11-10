@@ -929,6 +929,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
     body: WebView(
         initialUrl: Uri.encodeFull(
             'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
-                .replaceAll(' ', '+'))),
+                .replaceAll(' ', '+')),
+      javascriptMode: JavascriptMode.unrestricted),
   );
 }
