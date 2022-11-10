@@ -68,14 +68,6 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "avatar", value: file!.path);
 
     print('NewFile22: $file');
-    /*Directory? appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    tempFile.copy(appDocPath);
-    localImage = await File(pickedFile.path).copy('$appDocPath/avatar.jpg');
-    //file = await tempFile.copy('$appDocPath/images/img.jpg');
-    print('SISKA ${localImage!.path}');
-    await storage.write(key: "localImage", value: localImage!.path);*/
-
     notifyListeners();
   }
 
