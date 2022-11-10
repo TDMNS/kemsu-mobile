@@ -26,32 +26,35 @@ class _ScheduleViewState extends State<NewScheduleView> {
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
                       .dark), //прозрачность statusbar и установка тёмных иконок
-              child: GestureDetector(
-                onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
-                  }
-                },
-                child: model.circle
-                    ? Container(
-                        color: Colors.white,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
+              child: WillPopScope(
+                onWillPop: () async => false,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScopeNode currentFocus = FocusScope.of(
+                        context); //расфокус textfield при нажатии на экран
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                  },
+                  child: model.circle
+                      ? Container(
+                          color: Colors.white,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                            ),
                           ),
-                        ),
-                      )
-                    : Scaffold(
-                        extendBody: true,
-                        extendBodyBehindAppBar: true,
-                        backgroundColor: Colors.white,
-                        appBar: customAppBar(context, model, 'Расписание'),
-                        //bottomNavigationBar: customBottomBar(context, model),
-                        body: model.currentTable == true
-                            ? _scheduleViewAll(context, model)
-                            : _scheduleViewStudent(context, model)),
+                        )
+                      : Scaffold(
+                          extendBody: true,
+                          extendBodyBehindAppBar: true,
+                          backgroundColor: Colors.white,
+                          appBar: customAppBar(context, model, 'Расписание'),
+                          //bottomNavigationBar: customBottomBar(context, model),
+                          body: model.currentTable == true
+                              ? _scheduleViewAll(context, model)
+                              : _scheduleViewStudent(context, model)),
+                ),
               ));
         });
   }

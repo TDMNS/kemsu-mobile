@@ -27,12 +27,15 @@ class NewsView extends StatelessWidget {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Новости'),
-                  //bottomNavigationBar: customBottomBar(context, model),
-                  body: _newsView(context, model),
+                child: WillPopScope(
+                  onWillPop: () async => false,
+                  child: Scaffold(
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, 'Новости'),
+                    //bottomNavigationBar: customBottomBar(context, model),
+                    body: _newsView(context, model),
+                  ),
                 ),
               ));
         });

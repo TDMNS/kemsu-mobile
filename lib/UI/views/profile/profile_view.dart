@@ -44,12 +44,15 @@ class _ProfileViewState extends State<ProfileView> {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Главная'),
-                  // bottomNavigationBar: customBottomBar(context, model),
-                  body: _profileView(context, model),
+                child: WillPopScope(
+                  onWillPop: () async => false,
+                  child: Scaffold(
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, 'Главная'),
+                    // bottomNavigationBar: customBottomBar(context, model),
+                    body: _profileView(context, model),
+                  ),
                 ),
               ));
         });
