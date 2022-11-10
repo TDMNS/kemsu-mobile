@@ -793,10 +793,29 @@ class _ProfileViewState extends State<ProfileView> {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AuthView()));
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Предупреждение'),
+                      content: const Text('Вы действительно хотите выйти из мобильного приложения?'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Отмена')),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AuthView()));
+                            },
+                            child: const Text('Да'))
+                      ],
+                    ),
+                  );
+
                 },
                 child: Container(
                   padding: const EdgeInsets.only(right: 30),
