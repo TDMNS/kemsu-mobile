@@ -183,6 +183,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 )
                               : const SizedBox(),
                           decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                  image: AssetImage('images/avatar.jpeg')),
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(50)),
                         ),

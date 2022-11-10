@@ -91,7 +91,7 @@ class ProfileViewModel extends BaseViewModel {
 
   Future onReady(BuildContext context) async {
     String? img = await storage.read(key: "avatar");
-    file = File(img!);
+    img != null ? file = File(img) : file;
 
     print('NewFile22: $file');
     String? token = await storage.read(key: "tokenKey");
