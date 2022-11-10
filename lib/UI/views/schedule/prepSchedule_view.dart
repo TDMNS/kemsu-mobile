@@ -51,7 +51,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
-                        appBar: customAppBar(context, model, 'Расписание'),
+                        appBar: customAppBar(context, model, 'Расписание преподавателя'),
                         //bottomNavigationBar: customBottomBar(context, model),
                         body: _prepSchedule(context, model)),
               ));
