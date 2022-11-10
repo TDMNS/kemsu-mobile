@@ -48,22 +48,22 @@ customAppBar(context, model, name) {
       style: TextStyle(color: Colors.blueGrey.shade800),
     ),
     centerTitle: true,
-    actions: name == "Сообщения об ошибках"
-        ? null
-        : <Widget>[
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NotificationView()));
-                },
-                icon: Icon(
-                  Icons.notifications,
-                  color: Colors.indigo.shade700,
-                  size: 32,
-                )),
-          ],
+    // actions: name == "Сообщения об ошибках"
+    //     ? null
+    //     : <Widget>[
+    //         IconButton(
+    //             onPressed: () {
+    //               Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                       builder: (context) => const NotificationView()));
+    //             },
+    //             icon: Icon(
+    //               Icons.notifications,
+    //               color: Colors.indigo.shade700,
+    //               size: 32,
+    //             )),
+    //       ],
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: const SystemUiOverlayStyle(
@@ -83,7 +83,8 @@ customAppBar(context, model, name) {
             icon: Icon(
               Icons.arrow_back_outlined,
               color: Colors.indigo.shade700,
-            )),
+            )
+    ),
   );
 }
 

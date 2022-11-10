@@ -12,11 +12,8 @@ import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/checkList/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:path/path.dart';
 
 import '../../widgets.dart';
 import '../bug_report/main_bug_report_screen.dart';
@@ -423,27 +420,27 @@ class _ProfileViewState extends State<ProfileView> {
                                   ),
                                 )
                               : const SizedBox.shrink(),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              height: 35,
-                              width: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.blue,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.4),
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 9))
-                                  ]),
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: Container(
+                          //     margin: const EdgeInsets.only(right: 10),
+                          //     height: 35,
+                          //     width: 35,
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(30),
+                          //         color: Colors.blue,
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //               color: Colors.grey.withOpacity(0.4),
+                          //               blurRadius: 10,
+                          //               offset: const Offset(0, 9))
+                          //         ]),
+                          //     child: const Icon(
+                          //       Icons.edit,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
