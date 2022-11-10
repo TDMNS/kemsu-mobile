@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
@@ -11,6 +12,7 @@ import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
 import '../checkList/check_list_view.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 
 class EnumUserType {
   static String get student => "обучающийся";
@@ -51,8 +53,31 @@ class ProfileViewModel extends BaseViewModel {
   String fio = '';
   File? imageFile;
   String? img64;
+  File? file;
+  File? localImage;
 
   String? avatar;
+
+  saveImage() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+
+    final fileName = basename(imageFile!.path);
+    await imageFile!.copy('$appDocPath/$fileName');
+    file = File('$appDocPath/$fileName');
+    await storage.write(key: "avatar", value: file!.path);
+
+    print('NewFile22: $file');
+    /*Directory? appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    tempFile.copy(appDocPath);
+    localImage = await File(pickedFile.path).copy('$appDocPath/avatar.jpg');
+    //file = await tempFile.copy('$appDocPath/images/img.jpg');
+    print('SISKA ${localImage!.path}');
+    await storage.write(key: "localImage", value: localImage!.path);*/
+
+    notifyListeners();
+  }
 
   prolongToken() async {
     var dio = Dio();
@@ -65,6 +90,10 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future onReady(BuildContext context) async {
+    String? img = await storage.read(key: "avatar");
+    file = File(img!);
+
+    print('NewFile22: $file');
     String? token = await storage.read(key: "tokenKey");
     print('Old token:' + token!);
     String? login = await storage.read(key: "login");
@@ -150,7 +179,7 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void saveImage(image) async {
+  void old_saveImage(image) async {
     // await storage.write(key: "avatar", value: '$image');
     //avatar = await storage.read(key: 'avatar');
     //final File newImage = await image.copy('images/avatar.png');

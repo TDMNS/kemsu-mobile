@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +12,11 @@ import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/checkList/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:path/path.dart';
 
 import '../../widgets.dart';
 import '../bug_report/main_bug_report_screen.dart';
@@ -67,8 +71,8 @@ class _ProfileViewState extends State<ProfileView> {
                 GestureDetector(
                   onTap: () {
                     _getFromGallery(model);
+
                     Navigator.pop(context, 'OK');
-                    model.saveImage(model.imageFile);
                   },
                   child: const Text(
                     'Галерея',
@@ -85,7 +89,6 @@ class _ProfileViewState extends State<ProfileView> {
                   onTap: () {
                     _getFromCamera(model);
                     Navigator.pop(context, 'OK');
-                    model.saveImage(model.imageFile);
                   },
                   child: const Text(
                     'Камера',
@@ -117,6 +120,7 @@ class _ProfileViewState extends State<ProfileView> {
         model.imageFile = File(pickedFile.path);
       });
     }
+    model.saveImage();
   }
 
   _getFromCamera(ProfileViewModel model) async {
@@ -130,6 +134,12 @@ class _ProfileViewState extends State<ProfileView> {
         model.imageFile = File(pickedFile.path);
       });
     }
+    model.saveImage();
+
+    print('NewFile: $pickedFile');
+
+    //var temp = await pickedFile.saveTo('$appDocPath/images/avatar.png');
+    //print('ЫЫЫ: $newFile');
   }
 
   _profileView(BuildContext context, ProfileViewModel model) {
@@ -163,11 +173,11 @@ class _ProfileViewState extends State<ProfileView> {
                           margin: const EdgeInsets.only(top: 10, bottom: 10),
                           width: 100,
                           height: 100,
-                          child: model.imageFile != null
+                          child: model.file != null
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.file(
-                                    model.imageFile!,
+                                    model.file!,
                                     fit: BoxFit.cover,
                                   ),
                                 )

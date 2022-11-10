@@ -147,7 +147,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     print('FIO: $fio');
     changeTeacher(fio);
 
-    circle = false;
+    //circle = false;
     notifyListeners();
   }
 
