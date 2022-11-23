@@ -38,6 +38,7 @@ class Config {
       "https://api-next.kemsu.ru/api/orders/main/basicList";
   static String periodList =
       "https://api-next.kemsu.ru/api/orders/main/periodList";
+  static String addRequest = "https://api-next.kemsu.ru/api/orders/main/addRequest";
   static String studCheckList =
       'https://api-next.kemsu.ru/api/debt/main/checkList';
   static String proLongToken =

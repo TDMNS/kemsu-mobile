@@ -5,6 +5,7 @@ import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_v
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
+import '../PRS/prs_model.dart';
 
 class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
 }
 
 _orderingInformationView(context, OrderingInformationViewModel model) {
+  final textController = TextEditingController();
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
@@ -52,27 +54,55 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
           child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<BasisOfEducation>(
+              child: DropdownButton<StudyCard>(
                 itemHeight: 70.0,
                 hint: const Text(
-                  '- Выбрать основу обучения -',
+                  '- Выбрать учебную карту -',
                   style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
-                  model.changeBasic(value);
+                  model.changeCard(value);
                 },
                 isExpanded: true,
-                value: model.selectedBasic,
-                items: model.receivedBasicList
-                    .map<DropdownMenuItem<BasisOfEducation>>((e) {
-                  return DropdownMenuItem<BasisOfEducation>(
-                    child: Text(e.basic.toString()),
+                value: model.studyCard,
+                items: model.receivedStudyCard
+                    .map<DropdownMenuItem<StudyCard>>((e) {
+                  return DropdownMenuItem<StudyCard>(
+                    child: Text(e.speciality.toString()),
                     value: e,
                   );
                 }).toList(),
               )),
         ),
       ),
+      model.studyCard != null
+          ? Center(
+              child: Card(
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButton<BasisOfEducation>(
+                      itemHeight: 70.0,
+                      hint: const Text(
+                        '- Выбрать основу обучения -',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      onChanged: (value) {
+                        model.changeBasic(value);
+                      },
+                      isExpanded: true,
+                      value: model.selectedBasic,
+                      items: model.receivedBasicList
+                          .map<DropdownMenuItem<BasisOfEducation>>((e) {
+                        return DropdownMenuItem<BasisOfEducation>(
+                          child: Text(e.basic.toString()),
+                          value: e,
+                        );
+                      }).toList(),
+                    )),
+              ),
+            )
+          : const SizedBox.shrink(),
       model.selectedBasic != null
           ? Center(
               child: Card(
@@ -122,20 +152,24 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
-          ? const Center(
+          ? Center(
               child: Card(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Количество справок (по умолчанию 1)",
-                          fillColor: Colors.white,
-                          filled: true)),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Количество справок (по умолчанию 1)",
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
-            )
+            ))
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? Center(
@@ -143,6 +177,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: GestureDetector(
                     onTap: () {
+                      model.sendReferences(textController.text);
                       Navigator.pop(context);
                     },
                     child: Container(
@@ -192,20 +227,24 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
-          ? const Center(
+          ? Center(
               child: Card(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Количество справок (по умолчанию 1)",
-                          fillColor: Colors.white,
-                          filled: true)),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Количество справок (по умолчанию 1)",
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
-            )
+            ))
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
@@ -214,6 +253,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: GestureDetector(
                     onTap: () {
+                      model.sendReferences(textController.text);
                       Navigator.pop(context);
                     },
                     child: Container(
