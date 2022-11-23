@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
@@ -45,6 +46,7 @@ class OrderingInformationViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response =
         await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
+    print("response: $response");
     receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
     notifyListeners();
   }
@@ -76,6 +78,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   changePeriod(value) async {
     selectedPeriod = value;
     isSelected = true;
+    print(selectedPeriod);
     // String? token = await storage.read(key: "tokenKey");
     // var response =
     // await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));

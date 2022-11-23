@@ -36,7 +36,6 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Заказ справок'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _orderingInformationView(context, model),
                 ),
               ));
@@ -114,11 +113,11 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                             firstDate: DateTime(1900),
                             lastDate: DateTime(2100));
                         model.startDate = newDate;
+                        model.notifyListeners();
                       },
                       child: model.startDate == DateTime(0, 0, 0)
                           ? const Text("Выбрать начальную дату")
-                          : Text(
-                              "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+                          : Text("Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
@@ -166,6 +165,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                             firstDate: DateTime(1900),
                             lastDate: DateTime(2100));
                         model.endDate = newDate;
+                        model.notifyListeners();
                       },
                       child: model.endDate == DateTime(0, 0, 0)
                           ? const Text("Выбрать конечную дату")
