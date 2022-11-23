@@ -23,6 +23,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   PeriodListModel lastParagraph = PeriodListModel();
   DateTime? startDate = DateTime(0, 0, 0);
   DateTime? endDate = DateTime(0, 0, 0);
+  int numberReferences = 1;
 
   /// third request
   List<ReitList> reitList = [];
@@ -78,7 +79,6 @@ class OrderingInformationViewModel extends BaseViewModel {
   changePeriod(value) async {
     selectedPeriod = value;
     isSelected = true;
-    print(selectedPeriod);
     // String? token = await storage.read(key: "tokenKey");
     // var response =
     // await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));

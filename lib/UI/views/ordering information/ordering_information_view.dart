@@ -117,7 +117,24 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                       },
                       child: model.startDate == DateTime(0, 0, 0)
                           ? const Text("Выбрать начальную дату")
-                          : Text("Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+                          : Text(
+                              "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+            )
+          : const SizedBox.shrink(),
+      model.isSelected == true && model.lastParagraph != model.selectedPeriod
+          ? const Center(
+              child: Card(
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Количество справок (по умолчанию 1)",
+                          fillColor: Colors.white,
+                          filled: true)),
+                ),
+              ),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
@@ -171,6 +188,23 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                           ? const Text("Выбрать конечную дату")
                           : Text(
                               "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
+            )
+          : const SizedBox.shrink(),
+      model.endDate != DateTime(0, 0, 0) &&
+              model.selectedPeriod == model.lastParagraph
+          ? const Center(
+              child: Card(
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Количество справок (по умолчанию 1)",
+                          fillColor: Colors.white,
+                          filled: true)),
+                ),
+              ),
             )
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
