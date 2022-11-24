@@ -95,22 +95,16 @@ class OrderingInformationViewModel extends BaseViewModel {
   }
 
   void sendReferences(countReferences) async {
-    isNumeric(string) => num.tryParse(string) != null;
-
     String? token = await storage.read(key: "tokenKey");
     String? safeToken = token ?? "Error";
 
     int basicId = selectedBasic?.basicId ?? 0;
-    String periodIdString = selectedPeriod?.period?[0] ?? "Error";
-    if (!isNumeric(periodIdString)) {
-      periodIdString = "-1";
-    }
-    int periodId = int.parse(periodIdString);
+    int periodId = selectedPeriod?.periodId ?? -1;
     if (countReferences == "") {
       countReferences = "1";
     }
     int numberReferences = int.parse(countReferences);
-
+    int studentId = studyCard?.id ?? 0;
     final response = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -119,7 +113,7 @@ class OrderingInformationViewModel extends BaseViewModel {
             "basicId": basicId,
             "periodId": periodId,
             "cnt": numberReferences,
-            "studentId": studyCard?.id
+            "studentId": studentId
         }));
 
     // print("basicId = $basicId");
@@ -130,7 +124,7 @@ class OrderingInformationViewModel extends BaseViewModel {
     // print("response.statusCode = ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      // print("References was created");
+      print("References was created");
     } else {
       throw Exception('Failed to create references.');
     }

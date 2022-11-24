@@ -13,11 +13,18 @@ class BasisOfEducation {
 }
 
 class PeriodListModel {
+  int? periodId;
   String? period;
+  int? selectedPeriod;
 
-  PeriodListModel({this.period});
+  PeriodListModel({
+    this.periodId,
+    this.period,
+    this.selectedPeriod});
 
   PeriodListModel.fromJson(Map<String, dynamic> json) {
+    periodId = json["GL_PERIOD_ID"];
     period = json["PERIOD"];
+    selectedPeriod = json["DEF_SELECT"];
   }
 }
