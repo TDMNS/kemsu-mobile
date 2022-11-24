@@ -30,9 +30,6 @@ class OrderingInformationViewModel extends BaseViewModel {
   int selectedIndex = 2;
   bool isSelected = false;
 
-  List<RequestReference> receivedReferences = [];
-  RequestReference? references;
-
   void onTapBottomBar(int index) {
     selectedIndex = index;
     notifyListeners();
@@ -41,15 +38,10 @@ class OrderingInformationViewModel extends BaseViewModel {
   Future onReady() async {
     await getStudCard();
     await getBasicList();
-    await getRequestList();
   }
 
   List<StudyCard> parseCard(List response) {
     return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
-  }
-
-  List<RequestReference> parseReferences(List response) {
-    return response.map<RequestReference>((json) => RequestReference.fromJson(json)).toList();
   }
 
   List<BasisOfEducation> parseBasicList(List response) {
@@ -77,14 +69,6 @@ class OrderingInformationViewModel extends BaseViewModel {
     var response =
     await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
     receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
-    notifyListeners();
-  }
-
-  getRequestList() async {
-    String? token = await storage.read(key: "tokenKey");
-    var response =
-    await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
-    receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
     notifyListeners();
   }
 

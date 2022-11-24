@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_view.dart';
-import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
+import 'ordering_information_main_viewmodel.dart';
 import 'ordering_information_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
@@ -18,9 +18,9 @@ class _OrderingInformationMainViewState
     extends State<OrderingInformationMainView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<OrderingInformationViewModel>.reactive(
+    return ViewModelBuilder<OrderingInformationMainViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => OrderingInformationViewModel(context),
+        viewModelBuilder: () => OrderingInformationMainViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
@@ -44,7 +44,7 @@ class _OrderingInformationMainViewState
   }
 }
 
-_orderingInformationView(context, OrderingInformationViewModel model) {
+_orderingInformationView(context, OrderingInformationMainViewModel model) {
   return ListView(
     shrinkWrap: true,
     children: <Widget>[
@@ -69,7 +69,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
   );
 }
 
-_checkListView(BuildContext context, OrderingInformationViewModel model) {
+_checkListView(BuildContext context, OrderingInformationMainViewModel model) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: ListView(
