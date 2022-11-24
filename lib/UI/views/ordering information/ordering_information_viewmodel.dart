@@ -17,9 +17,9 @@ class OrderingInformationViewModel extends BaseViewModel {
   List<BasisOfEducation> receivedBasicList = [];
   BasisOfEducation? selectedBasic;
 
-  List<PeriodListModel> periodList = [];
-  PeriodListModel? selectedPeriod;
-  PeriodListModel lastParagraph = PeriodListModel();
+  List<PeriodList> periodList = [];
+  PeriodList? selectedPeriod;
+  PeriodList lastParagraph = PeriodList();
 
   DateTime? startDate = DateTime(0, 0, 0);
   DateTime? endDate = DateTime(0, 0, 0);
@@ -30,6 +30,9 @@ class OrderingInformationViewModel extends BaseViewModel {
   int selectedIndex = 2;
   bool isSelected = false;
 
+  List<RequestReference> receivedReferences = [];
+  RequestReference? references;
+
   void onTapBottomBar(int index) {
     selectedIndex = index;
     notifyListeners();
@@ -38,31 +41,15 @@ class OrderingInformationViewModel extends BaseViewModel {
   Future onReady() async {
     await getStudCard();
     await getBasicList();
-  }
-
-  getStudCard() async {
-    String? token = await storage.read(key: "tokenKey");
-    var response =
-        await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
-    receivedStudyCard = parseCard(json.decode(response.body));
-    notifyListeners();
+    await getRequestList();
   }
 
   List<StudyCard> parseCard(List response) {
     return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
   }
 
-  changeCard(value) async {
-    studyCard = value;
-    notifyListeners();
-  }
-
-  getBasicList() async {
-    String? token = await storage.read(key: "tokenKey");
-    var response =
-        await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
-    receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
-    notifyListeners();
+  List<RequestReference> parseReferences(List response) {
+    return response.map<RequestReference>((json) => RequestReference.fromJson(json)).toList();
   }
 
   List<BasisOfEducation> parseBasicList(List response) {
@@ -71,10 +58,39 @@ class OrderingInformationViewModel extends BaseViewModel {
         .toList();
   }
 
-  List<PeriodListModel> parsePeriodList(List response) {
+  List<PeriodList> parsePeriodList(List response) {
     return response
-        .map<PeriodListModel>((json) => PeriodListModel.fromJson(json))
+        .map<PeriodList>((json) => PeriodList.fromJson(json))
         .toList();
+  }
+
+  getStudCard() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response =
+    await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
+    receivedStudyCard = parseCard(json.decode(response.body));
+    notifyListeners();
+  }
+
+  getBasicList() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response =
+    await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
+    receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
+    notifyListeners();
+  }
+
+  getRequestList() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response =
+    await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
+    receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
+    notifyListeners();
+  }
+
+  changeCard(value) async {
+    studyCard = value;
+    notifyListeners();
   }
 
   changeBasic(value) async {
@@ -101,22 +117,19 @@ class OrderingInformationViewModel extends BaseViewModel {
 
     int basicId = selectedBasic?.basicId ?? 0;
     int periodId = selectedPeriod?.periodId ?? -1;
+
     if (countReferences == "") {
       countReferences = "1";
     }
+
     int numberReferences = int.parse(countReferences);
     DateTime safeStartDate = startDate ?? DateTime.now();
     DateTime safeEndDate = endDate ?? DateTime.now();
     String formattedStartDate = DateFormat('dd.MM.yyyy').format(safeStartDate);
     String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
     int studentId = studyCard?.id ?? 0;
-    print(periodId);
-    print(countReferences);
-    print(formattedStartDate);
-    print(formattedEndDate);
-    print("condition = ${periodId == -1 ? formattedStartDate : null}");
-    print("condition 2 = ${periodId == -1 ? formattedEndDate : null}");
-    final response = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
+
+    final _ = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -128,19 +141,6 @@ class OrderingInformationViewModel extends BaseViewModel {
             "endPeriodDate": periodId == -1 ? formattedEndDate : null,
             "studentId": studentId
         }));
-
-    // print("basicId = $basicId");
-    // print("periodId = $periodId");
-    // print("numberReferences = $numberReferences");
-    // print("studyCard?.id = ${studyCard?.id}");
-    // print("request = $response");
-    // print("response.statusCode = ${response.statusCode}");
-
-    if (response.statusCode == 200) {
-      print("References was created");
-    } else {
-      throw Exception('Failed to create references.');
-    }
 
     notifyListeners();
   }

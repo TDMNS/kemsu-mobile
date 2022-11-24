@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
+import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/checkList/check_list_view.dart';
@@ -633,7 +634,7 @@ class _ProfileViewState extends State<ProfileView> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const OrderingInformationView()));
+                                const OrderingInformationMainView()));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 30),

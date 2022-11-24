@@ -109,7 +109,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DropdownButton<PeriodListModel>(
+                    child: DropdownButton<PeriodList>(
                       itemHeight: 70.0,
                       hint: const Text(
                         '- Период за который требуется справка -',
@@ -121,8 +121,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                       isExpanded: true,
                       value: model.selectedPeriod,
                       items: model.periodList
-                          .map<DropdownMenuItem<PeriodListModel>>((e) {
-                        return DropdownMenuItem<PeriodListModel>(
+                          .map<DropdownMenuItem<PeriodList>>((e) {
+                        return DropdownMenuItem<PeriodList>(
                           child: Text(e.period.toString()),
                           value: e,
                         );
