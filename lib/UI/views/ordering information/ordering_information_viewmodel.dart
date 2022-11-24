@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
@@ -104,7 +105,17 @@ class OrderingInformationViewModel extends BaseViewModel {
       countReferences = "1";
     }
     int numberReferences = int.parse(countReferences);
+    DateTime safeStartDate = startDate ?? DateTime.now();
+    DateTime safeEndDate = endDate ?? DateTime.now();
+    String formattedStartDate = DateFormat('dd.MM.yyyy').format(safeStartDate);
+    String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
     int studentId = studyCard?.id ?? 0;
+    print(periodId);
+    print(countReferences);
+    print(formattedStartDate);
+    print(formattedEndDate);
+    print("condition = ${periodId == -1 ? formattedStartDate : null}");
+    print("condition 2 = ${periodId == -1 ? formattedEndDate : null}");
     final response = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -113,6 +124,8 @@ class OrderingInformationViewModel extends BaseViewModel {
             "basicId": basicId,
             "periodId": periodId,
             "cnt": numberReferences,
+            "startPeriodDate": periodId == -1 ? formattedStartDate : null,
+            "endPeriodDate": periodId == -1 ? formattedEndDate : null,
             "studentId": studentId
         }));
 
