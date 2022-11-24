@@ -97,6 +97,7 @@ Widget getListView(List<RequestReference> items) {
       return Column(
         children: <Widget>[
           ExpansionTile(
+            initiallyExpanded: true,
             expandedAlignment: Alignment.center,
             title: Text(
               'Справка №${index + 1}',
@@ -158,15 +159,3 @@ RichText richText(String title, String item) {
     ),
   );
 }
-
-// Text("Фамилия: ${item.lastName}"),
-// Text("Имя: ${item.firstName}"),
-// Text("Отчество: ${item.patronymic}"),
-// Text("Название института: ${item.instituteName}"),
-// Text("Курс: ${item.courseNumber}"),
-// Text("Уровень образования: ${item.educationLevel}"),
-// Text("Группа: ${item.groupName}"),
-// Text("Форма обучения: ${item.basic}"),
-// Text("Период: ${item.period}"),
-// Text("Количество справок: ${item.countReferences}"),
-// Text("Дата запроса: ${item.requestDate}"),
