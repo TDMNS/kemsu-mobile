@@ -30,12 +30,14 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   final storage = const FlutterSecureStorage();
+  TextEditingController? emailController = TextEditingController();
+  TextEditingController? phoneController = TextEditingController();
 
   String firstName = '';
   String lastName = '';
   String middleName = '';
   String email = '';
-  String? phone = '';
+  String phone = '';
   String group = '';
   String speciality = '';
   String faculty = '';
@@ -105,6 +107,12 @@ class ProfileViewModel extends BaseViewModel {
     userType = userData["userType"];
     email = userData["email"];
     phone = userData["phone"];
+    String emailTemp = email;
+    String phoneTemp = phone;
+    emailController?.text = emailTemp;
+    phoneController?.text = phoneTemp;
+    notifyListeners();
+
     print(userData);
     if (userType == EnumUserType.student) {
       firstName = userData["firstName"];
@@ -183,6 +191,21 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "avatar", value: _base64String);
     //print(img64);
     notifyListeners();
+  }
+
+  void updateProfile() async {
+    var dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    final updateEmail = await dio.post(Config.updateEmail,
+        queryParameters: {"accessToken": token},
+        data: {"email": emailController?.text});
+    final phoneEmail = await dio.post(Config.updatePhone,
+        queryParameters: {"accessToken": token},
+        data: {"phone": phoneController?.text});
+    email = emailController!.text;
+    phone = phoneController!.text;
+    notifyListeners();
+    print(updateEmail.data);
   }
 
   void exitButton(context) {

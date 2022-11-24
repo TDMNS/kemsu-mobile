@@ -423,27 +423,32 @@ class _ProfileViewState extends State<ProfileView> {
                                   ),
                                 )
                               : const SizedBox.shrink(),
-                          // Align(
-                          //   alignment: Alignment.centerRight,
-                          //   child: Container(
-                          //     margin: const EdgeInsets.only(right: 10),
-                          //     height: 35,
-                          //     width: 35,
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(30),
-                          //         color: Colors.blue,
-                          //         boxShadow: [
-                          //           BoxShadow(
-                          //               color: Colors.grey.withOpacity(0.4),
-                          //               blurRadius: 10,
-                          //               offset: const Offset(0, 9))
-                          //         ]),
-                          //     child: const Icon(
-                          //       Icons.edit,
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          // )
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                _updateProfile(context, model);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 9))
+                                    ]),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -958,10 +963,73 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
                   isLoading = false;
                 });
               }),
-          isLoading ? const Center( child: CircularProgressIndicator(),)
+          isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
               : Stack(),
         ]);
       },
+    ),
+  );
+}
+
+_updateProfile(BuildContext context, ProfileViewModel model) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Обновление данных'),
+      actions: [
+        TextFormField(
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(left: 15, top: 15),
+              suffixIcon: Icon(Icons.email),
+              focusColor: Colors.black,
+              hintText: 'E-Mail',
+              hintStyle: TextStyle(
+                  fontFamily: "Ubuntu",
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold)),
+          style: const TextStyle(
+              fontFamily: "Ubuntu",
+              color: Color.fromRGBO(91, 91, 126, 1),
+              fontWeight: FontWeight.bold),
+          controller: model.emailController,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(left: 15, top: 15),
+              suffixIcon: Icon(Icons.phone),
+              focusColor: Colors.black,
+              hintText: 'Телефон',
+              hintStyle: TextStyle(
+                  fontFamily: "Ubuntu",
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold)),
+          style: const TextStyle(
+              fontFamily: "Ubuntu",
+              color: Color.fromRGBO(91, 91, 126, 1),
+              fontWeight: FontWeight.bold),
+          controller: model.phoneController,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Отмена')),
+            const SizedBox(width: 10),
+            ElevatedButton(
+                onPressed: () {
+                  model.updateProfile();
+                  Navigator.pop(context);
+                },
+                child: const Text('Изменить'))
+          ],
+        ),
+      ],
     ),
   );
 }

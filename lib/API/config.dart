@@ -38,9 +38,14 @@ class Config {
       "https://api-next.kemsu.ru/api/orders/main/basicList";
   static String periodList =
       "https://api-next.kemsu.ru/api/orders/main/periodList";
-  static String addRequest = "https://api-next.kemsu.ru/api/orders/main/addRequest";
+  static String addRequest =
+      "https://api-next.kemsu.ru/api/orders/main/addRequest";
   static String studCheckList =
       'https://api-next.kemsu.ru/api/debt/main/checkList';
   static String proLongToken =
       'https://api-next.kemsu.ru/api/security/auth/prolong';
+  static String updateEmail =
+      'https://api-next.kemsu.ru/api/personal-office/integration/updateUserEmail';
+  static String updatePhone =
+      'https://api-next.kemsu.ru/api/personal-office/integration/updateUserPhone';
 }
