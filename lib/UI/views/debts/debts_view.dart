@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './debts_viewmodel.dart';
@@ -39,7 +40,7 @@ _debtsView(BuildContext context, DebtsViewModel model) {
         child: Expanded(
             child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
-          child: DataTable(
+          child: model.DebtsCourse.isNotEmpty ? DataTable(
             columnSpacing: 0,
             columns: const [
               DataColumn(
@@ -88,7 +89,7 @@ _debtsView(BuildContext context, DebtsViewModel model) {
             ),
             dataRowHeight: 80,
             showCheckboxColumn: false,
-          ),
+          ) : const Text("Долги отсутствуют"),
         )),
       ),
     ],
