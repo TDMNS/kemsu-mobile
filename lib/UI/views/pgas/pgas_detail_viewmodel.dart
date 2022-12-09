@@ -78,7 +78,7 @@ class PgasDetailViewModel extends BaseViewModel {
 
     Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
 
-    var response = await http.delete(
+    var _ = await http.delete(
         Uri.parse(
             "https://api-next.kemsu.ru/api/storage/pgas-mobile/${fileName.toString()}"),
         headers: header);

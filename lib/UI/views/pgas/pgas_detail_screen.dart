@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
@@ -278,7 +277,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                                   text: model
                                       .userAchievesList[index].activitySrc
                                       .toString(),
-                                  recognizer: new TapGestureRecognizer()
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       launchUrl(Uri.parse(model
                                           .userAchievesList[index].activitySrc

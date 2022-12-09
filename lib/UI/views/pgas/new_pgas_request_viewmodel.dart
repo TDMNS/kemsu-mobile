@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
-import 'pgas_screen.dart';
 
 class NewPgasRequestViewModel extends BaseViewModel {
   NewPgasRequestViewModel(BuildContext context);

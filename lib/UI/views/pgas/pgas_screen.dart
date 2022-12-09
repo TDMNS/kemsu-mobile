@@ -16,7 +16,7 @@ class PgasScreen extends StatelessWidget {
         viewModelBuilder: () => PgasViewModel(context),
         onModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle ? const Center(child: CircularProgressIndicator(),) : Scaffold(
+          return Scaffold(
             appBar: customAppBar(context, model, "ПГАС"),
             body: _body(context, model),
           );
