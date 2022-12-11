@@ -6,6 +6,8 @@ import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
 import '../PRS/prs_model.dart';
+import 'ordering_information_main_view.dart';
+import 'ordering_information_main_viewmodel.dart';
 
 class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
@@ -158,15 +160,15 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: textController,
+                  controller: model.count,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "Количество справок (по умолчанию 1)",
                     fillColor: Colors.white,
-                    filled: true,
+                    //filled: true,
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ))
@@ -177,8 +179,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      model.sendReferences(textController.text);
-                      Navigator.pop(context);
+                      orderInfo(context, model);
                     },
                     child: Container(
                       height: 50,
@@ -233,15 +234,15 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: textController,
+                  controller: model.count,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "Количество справок (по умолчанию 1)",
                     fillColor: Colors.white,
-                    filled: true,
+                    //filled: true,
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ))
@@ -253,8 +254,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      model.sendReferences(textController.text);
-                      Navigator.pop(context);
+                      orderInfo(context, model);
                     },
                     child: Container(
                       height: 50,
@@ -281,5 +281,27 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
             )
           : const SizedBox.shrink(),
     ],
+  );
+}
+
+orderInfo(context, OrderingInformationViewModel model) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Готово'),
+      content: const Text('Справку можно забрать:'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            model.sendReferences();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const OrderingInformationMainView()));
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
   );
 }

@@ -26,6 +26,10 @@ class OrderingInformationViewModel extends BaseViewModel {
 
   List<StudyCard> receivedStudyCard = [];
   StudyCard? studyCard;
+  TextEditingController count = TextEditingController();
+
+  List<RequestReference> receivedReferences = [];
+  RequestReference? references;
 
   int selectedIndex = 2;
   bool isSelected = false;
@@ -59,7 +63,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   getStudCard() async {
     String? token = await storage.read(key: "tokenKey");
     var response =
-    await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
+        await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
     receivedStudyCard = parseCard(json.decode(response.body));
     notifyListeners();
   }
@@ -67,7 +71,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   getBasicList() async {
     String? token = await storage.read(key: "tokenKey");
     var response =
-    await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
+        await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
     receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
     notifyListeners();
   }
@@ -95,37 +99,56 @@ class OrderingInformationViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void sendReferences(countReferences) async {
+  List<RequestReference> parseReferences(List response) {
+    return response
+        .map<RequestReference>((json) => RequestReference.fromJson(json))
+        .toList();
+  }
+
+  void sendReferences() async {
     String? token = await storage.read(key: "tokenKey");
     String? safeToken = token ?? "Error";
 
     int basicId = selectedBasic?.basicId ?? 0;
     int periodId = selectedPeriod?.periodId ?? -1;
 
-    if (countReferences == "") {
-      countReferences = "1";
+    if (count.text == "") {
+      count.text = "1";
     }
 
-    int numberReferences = int.parse(countReferences);
+    int numberReferences = int.parse(count.text);
     DateTime safeStartDate = startDate ?? DateTime.now();
     DateTime safeEndDate = endDate ?? DateTime.now();
     String formattedStartDate = DateFormat('dd.MM.yyyy').format(safeStartDate);
     String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
     int studentId = studyCard?.id ?? 0;
 
-    final _ = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
-        headers: <String, String> {
+    final _ = await http.post(
+        Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
+        headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-            "basicId": basicId,
-            "periodId": periodId,
-            "cnt": numberReferences,
-            "startPeriodDate": periodId == -1 ? formattedStartDate : null,
-            "endPeriodDate": periodId == -1 ? formattedEndDate : null,
-            "studentId": studentId
+          "basicId": basicId,
+          "periodId": periodId,
+          "cnt": numberReferences,
+          "startPeriodDate": periodId == -1 ? formattedStartDate : null,
+          "endPeriodDate": periodId == -1 ? formattedEndDate : null,
+          "studentId": studentId
         }));
 
+    print(_.body);
+
+    getRequestList();
+    notifyListeners();
+  }
+
+  getRequestList() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http
+        .get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
+    receivedReferences =
+        parseReferences(json.decode(response.body)["requestList"]);
     notifyListeners();
   }
 }

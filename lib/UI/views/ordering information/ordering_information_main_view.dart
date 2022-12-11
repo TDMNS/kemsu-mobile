@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
+import '../../menu.dart';
 import '../../widgets.dart';
 import 'ordering_information_main_viewmodel.dart';
 import 'ordering_information_model.dart';
@@ -36,7 +37,35 @@ class _OrderingInformationMainViewState
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Заказ справок'),
+                  appBar: AppBar(
+                    title: Text(
+                      'Заказ справок',
+                      style: TextStyle(color: Colors.blueGrey.shade800),
+                    ),
+                    centerTitle: true,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(bottom: Radius.circular(20))),
+                    systemOverlayStyle: const SystemUiOverlayStyle(
+                      statusBarColor: Colors.transparent,
+                      statusBarIconBrightness: Brightness.dark,
+                    ),
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.black.withOpacity(0.2),
+                    leading: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MainMenu(type: model.type!)),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_outlined,
+                          color: Colors.indigo.shade700,
+                        )),
+                  ),
                   body: _orderingInformationView(context, model),
                 ),
               ));
@@ -96,48 +125,66 @@ Widget getListView(List<RequestReference> items) {
       final item = items[index];
       return Column(
         children: <Widget>[
-          ExpansionTile(
-            initiallyExpanded: true,
-            expandedAlignment: Alignment.center,
-            title: Text(
-              'Справка №${index + 1}',
-              style: const TextStyle(
-                  fontFamily: "Ubuntu",
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold),
-            ),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    richText("Фамилия: ", "${item.lastName}"),
-                    const SizedBox(height: 10),
-                    richText("Имя: ", "${item.firstName}"),
-                    const SizedBox(height: 10),
-                    richText("Отчество: ", "${item.patronymic}"),
-                    const SizedBox(height: 10),
-                    richText("Название института: ", "${item.instituteName}"),
-                    const SizedBox(height: 10),
-                    richText("Курс: ", "${item.courseNumber}"),
-                    const SizedBox(height: 10),
-                    richText("Уровень образования: ", "${item.educationLevel}"),
-                    const SizedBox(height: 10),
-                    richText("Группа: ", "${item.groupName}"),
-                    const SizedBox(height: 10),
-                    richText("Форма обучения: ", "${item.basic}"),
-                    const SizedBox(height: 10),
-                    richText("Период: ", "${item.period}"),
-                    const SizedBox(height: 10),
-                    richText("Количество справок: ", "${item.countReferences}"),
-                    const SizedBox(height: 10),
-                    richText("Дата запроса: ", "${item.requestDate}"),
-                    const SizedBox(height: 10),
-                  ],
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 15))
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                initiallyExpanded: true,
+                expandedAlignment: Alignment.center,
+                title: Text(
+                  'Справка №${index + 1}',
+                  style: const TextStyle(
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
                 ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        richText("Фамилия: ", "${item.lastName}"),
+                        const SizedBox(height: 10),
+                        richText("Имя: ", "${item.firstName}"),
+                        const SizedBox(height: 10),
+                        richText("Отчество: ", "${item.patronymic}"),
+                        const SizedBox(height: 10),
+                        richText(
+                            "Название института: ", "${item.instituteName}"),
+                        const SizedBox(height: 10),
+                        richText("Курс: ", "${item.courseNumber}"),
+                        const SizedBox(height: 10),
+                        richText(
+                            "Уровень образования: ", "${item.educationLevel}"),
+                        const SizedBox(height: 10),
+                        richText("Группа: ", "${item.groupName}"),
+                        const SizedBox(height: 10),
+                        richText("Форма обучения: ", "${item.basic}"),
+                        const SizedBox(height: 10),
+                        richText("Период: ", "${item.period}"),
+                        const SizedBox(height: 10),
+                        richText(
+                            "Количество справок: ", "${item.countReferences}"),
+                        const SizedBox(height: 10),
+                        richText("Дата запроса: ", "${item.requestDate}"),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       );

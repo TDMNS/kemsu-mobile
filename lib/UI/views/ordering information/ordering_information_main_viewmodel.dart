@@ -14,23 +14,28 @@ class OrderingInformationMainViewModel extends BaseViewModel {
 
   final storage = const FlutterSecureStorage();
 
+  int? type;
   List<RequestReference> receivedReferences = [];
   RequestReference? references;
 
   Future onReady() async {
+    String? userTypeTemp = await storage.read(key: "userType");
+    userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
     await getRequestList();
   }
 
   List<RequestReference> parseReferences(List response) {
-    return response.map<RequestReference>((json) =>
-        RequestReference.fromJson(json)).toList();
+    return response
+        .map<RequestReference>((json) => RequestReference.fromJson(json))
+        .toList();
   }
 
   getRequestList() async {
     String? token = await storage.read(key: "tokenKey");
-    var response =
-    await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
-    receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
+    var response = await http
+        .get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
+    receivedReferences =
+        parseReferences(json.decode(response.body)["requestList"]);
     notifyListeners();
   }
 }

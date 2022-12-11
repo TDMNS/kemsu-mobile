@@ -83,8 +83,7 @@ customAppBar(context, model, name) {
             icon: Icon(
               Icons.arrow_back_outlined,
               color: Colors.indigo.shade700,
-            )
-    ),
+            )),
   );
 }
 
