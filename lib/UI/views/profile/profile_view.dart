@@ -185,8 +185,8 @@ class _ProfileViewState extends State<ProfileView> {
                               : const SizedBox(),
                           decoration: BoxDecoration(
                               image: const DecorationImage(
-                                  image: AssetImage('images/avatar.jpeg')),
-                              color: Colors.grey,
+                                  image: AssetImage('images/avatar1.png')),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(50)),
                         ),
                       ),
@@ -212,7 +212,9 @@ class _ProfileViewState extends State<ProfileView> {
                             RichText(
                               text: TextSpan(
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.black),
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
                                 children: <TextSpan>[
                                   TextSpan(
                                       text:
@@ -237,7 +239,9 @@ class _ProfileViewState extends State<ProfileView> {
                             RichText(
                               text: TextSpan(
                                 style: const TextStyle(
-                                    fontSize: 14, color: Colors.black),
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
                                 children: <TextSpan>[
                                   const TextSpan(text: 'Телефон: '),
                                   TextSpan(
@@ -757,6 +761,56 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              // model.darkTheme == false
+                              //     ? model.changeTheme(true)
+                              //     : model.changeTheme(false);
+                              setState(() {
+                                model.darkTheme == false
+                                    ? model.darkTheme = true
+                                    : model.darkTheme = false;
+                              });
+                              print('VALUE: ${model.darkTheme}');
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 30),
+                              height: 100,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(0.4),
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 15))
+                                  ]),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                                  // Image.asset(
+                                  //   'images/icons/money.png',
+                                  //   scale: 4,
+                                  // ),
+                                  Icon(
+                                    Icons.dark_mode,
+                                    size: 35,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Center(
+                                    child: Text(
+                                      'Темная тема (beta)',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ])
                   : const SizedBox.shrink(),
             ],
@@ -944,7 +998,7 @@ class _MyHomePageState extends State<LoadingScreen>
 
 _paymentWebView(BuildContext context, ProfileViewModel model) {
   String fio = model.fio;
-  String phone = model.phone?.replaceFirst('+7 ', '') ?? '';
+  String phone = model.phone.replaceFirst('+7 ', '') ?? '';
   String email = model.email;
   bool isLoading = true;
   return Scaffold(

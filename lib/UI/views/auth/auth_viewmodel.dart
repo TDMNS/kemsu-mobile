@@ -20,10 +20,27 @@ class AuthViewModel extends BaseViewModel {
   String lastName = '';
   String firstName = '';
   String middleName = '';
+  bool rememberMe = false;
   final storage = const FlutterSecureStorage();
   final ApiProvider _apiProvider = ApiProvider();
 
-  Future onReady() async {}
+  Future onReady() async {
+    String? login = await storage.read(key: "login");
+    String? password = await storage.read(key: "password");
+    String? check = await storage.read(key: "rememberCheck");
+    check == 'true' ? rememberMe = true : rememberMe = false;
+    rememberMe ? loginController.text = login! : loginController.text = '';
+    rememberMe
+        ? passwordController.text = password!
+        : passwordController.text = '';
+    notifyListeners();
+  }
+
+  rememberFunc(value) async {
+    rememberMe = value;
+    await storage.write(key: "rememberCheck", value: "$rememberMe");
+    notifyListeners();
+  }
 
   void authButton(context) async {
     AuthRoute route = AuthRoute(

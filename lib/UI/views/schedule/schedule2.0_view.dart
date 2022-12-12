@@ -48,7 +48,7 @@ class _ScheduleViewState extends State<NewScheduleView> {
                       : Scaffold(
                           extendBody: true,
                           extendBodyBehindAppBar: true,
-                          backgroundColor: Colors.white,
+                          //backgroundColor: Colors.white,
                           appBar: customAppBar(context, model, 'Расписание'),
                           //bottomNavigationBar: customBottomBar(context, model),
                           body: model.currentTable == true

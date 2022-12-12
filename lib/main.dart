@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
+import 'UI/DarkTheme.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
+import 'UI/views/profile/profile_viewmodel.dart';
 import 'UI/views/schedule/schedule2.0_view.dart';
 
 void main() {
@@ -16,6 +18,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: !ProfileViewModel(context).darkTheme == true
+          ? lightThemeProperties
+          : darkThemeProperties,
       routes: {
         '/first': (context) => const NewsView(),
         '/second': (context) => const ProfileView(),

@@ -11,7 +11,7 @@ import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
 import '../checkList/check_list_view.dart';
-import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 class EnumUserType {
@@ -57,7 +57,7 @@ class ProfileViewModel extends BaseViewModel {
   String? img64;
   File? file;
   File? localImage;
-
+  bool darkTheme = false;
   String? avatar;
 
   saveImage() async {
@@ -73,13 +73,31 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  prolongToken() async {
-    var dio = Dio();
+  changeTheme(value) {
+    darkTheme = value;
+    print('Value is: $value');
+    notifyListeners();
+  }
 
+  getThemeToMain() {
+    notifyListeners();
+    return darkTheme;
+  }
+
+  prolongToken() async {
+    // var dio = Dio();
+    //
     String? token = await storage.read(key: 'tokenKey');
-    final responseProlongToken = await dio
-        .post(Config.proLongToken, queryParameters: {"accessToken": token});
-    var newToken = responseProlongToken.data['accessToken'];
+    // final responseProlongToken = await dio
+    //     .post(Config.proLongToken, queryParameters: {"accessToken": token});
+    // var newToken = responseProlongToken.data['accessToken'];
+    // await storage.write(key: "tokenKey", value: newToken);
+    Map data = {"accessToken": token};
+    var body = json.encode(data);
+    final responseToken =
+        await http.post(Uri.parse(Config.proLongToken), body: body);
+    print(responseToken.body);
+    var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
 
