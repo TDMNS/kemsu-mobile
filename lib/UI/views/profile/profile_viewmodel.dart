@@ -84,7 +84,7 @@ class ProfileViewModel extends BaseViewModel {
     return darkTheme;
   }
 
-  prolongToken() async {
+  prolongToken(context) async {
     // var dio = Dio();
     //
     String? token = await storage.read(key: 'tokenKey');
@@ -92,16 +92,21 @@ class ProfileViewModel extends BaseViewModel {
     //     .post(Config.proLongToken, queryParameters: {"accessToken": token});
     // var newToken = responseProlongToken.data['accessToken'];
     // await storage.write(key: "tokenKey", value: newToken);
-    Map data = {"accessToken": token};
-    var body = json.encode(data);
-    final responseToken =
-        await http.post(Uri.parse(Config.proLongToken), body: body);
-    print(responseToken.body);
+    // Map data = {"accessToken": token};
+    //var body = json.encode(data);
+    final responseToken = await http
+        .post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
+    responseToken.statusCode == 401
+        ? Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const AuthView()))
+        : null;
+    print(responseToken.statusCode);
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
 
   Future onReady(BuildContext context) async {
+    prolongToken(context);
     String? img = await storage.read(key: "avatar");
     img != null ? file = File(img) : file;
 
@@ -115,11 +120,13 @@ class ProfileViewModel extends BaseViewModel {
     final responseProlongToken = await dio
         .post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
+    print('Code: ${responseProlongToken.statusCode}');
     await storage.write(key: "tokenKey", value: token);
     String? token2 = await storage.read(key: "tokenKey");
     print('New token: ' + token2!);
     final responseAuth = await dio
         .post(Config.apiHost, data: {"login": login, "password": password});
+    print('Code: ${responseAuth.statusCode}');
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];

@@ -761,56 +761,56 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              // model.darkTheme == false
-                              //     ? model.changeTheme(true)
-                              //     : model.changeTheme(false);
-                              setState(() {
-                                model.darkTheme == false
-                                    ? model.darkTheme = true
-                                    : model.darkTheme = false;
-                              });
-                              print('VALUE: ${model.darkTheme}');
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 30),
-                              height: 100,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.4),
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 15))
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const <Widget>[
-                                  // Image.asset(
-                                  //   'images/icons/money.png',
-                                  //   scale: 4,
-                                  // ),
-                                  Icon(
-                                    Icons.dark_mode,
-                                    size: 35,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Center(
-                                    child: Text(
-                                      'Темная тема (beta)',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     // model.darkTheme == false
+                          //     //     ? model.changeTheme(true)
+                          //     //     : model.changeTheme(false);
+                          //     setState(() {
+                          //       model.darkTheme == false
+                          //           ? model.darkTheme = true
+                          //           : model.darkTheme = false;
+                          //     });
+                          //     print('VALUE: ${model.darkTheme}');
+                          //   },
+                          //   child: Container(
+                          //     margin: const EdgeInsets.only(right: 30),
+                          //     height: 100,
+                          //     width: 130,
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(30),
+                          //         color: Colors.white,
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //               color: Colors.grey.withOpacity(0.4),
+                          //               blurRadius: 15,
+                          //               offset: const Offset(0, 15))
+                          //         ]),
+                          //     child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.center,
+                          //       children: const <Widget>[
+                          //         // Image.asset(
+                          //         //   'images/icons/money.png',
+                          //         //   scale: 4,
+                          //         // ),
+                          //         Icon(
+                          //           Icons.dark_mode,
+                          //           size: 35,
+                          //         ),
+                          //         SizedBox(height: 10),
+                          //         Center(
+                          //           child: Text(
+                          //             'Темная тема (beta)',
+                          //             style: TextStyle(
+                          //                 fontWeight: FontWeight.bold,
+                          //                 fontSize: 16),
+                          //             textAlign: TextAlign.center,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ])
                   : const SizedBox.shrink(),
             ],
