@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../loadingScreen.dart';
 import 'pgas_request_info_viewmodel.dart';
 
 class PgasRequestInfoScreenRoute extends MaterialPageRoute {
@@ -16,7 +17,7 @@ class PgasRequestInfoScreen extends StatelessWidget {
         viewModelBuilder: () => PgasRequestInfoViewModel(context),
         onModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle ? const Center(child: CircularProgressIndicator(),) : Scaffold(
+          return model.circle ? const Center(child: LoadingScreen()) : Scaffold(
             appBar: _appBar(context, model),
             body: _body(context, model),
           );

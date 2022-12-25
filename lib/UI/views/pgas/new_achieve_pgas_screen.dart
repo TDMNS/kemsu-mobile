@@ -17,14 +17,11 @@ class NewAchievePgasScreen extends StatelessWidget {
         builder: (context, model, child) {
           return Scaffold(
               body: NestedScrollView(
-                floatHeaderSlivers: true,
-                headerSliverBuilder: (context, innerBoxIsScrolled) =>
-                [
-                  _appBar(context, model)
-                ],
-                body: _body(context, model),
-              )
-          );
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, innerBoxIsScrolled) =>
+                [_appBar(context, model)],
+            body: _body(context, model),
+          ));
         });
   }
 }
@@ -60,28 +57,38 @@ _body(context, NewAchievePgasViewModel model) {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.all(8),
-            child: _achieveCategoryDropDown(context, model),
+          padding: const EdgeInsets.all(8),
+          child: _achieveCategoryDropDown(context, model),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve1 ? _activity1DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve1
+              ? _activity1DropDown(context, model)
+              : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve2 ? _activity2DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve2
+              ? _activity2DropDown(context, model)
+              : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve3 ? _activity3DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve3
+              ? _activity3DropDown(context, model)
+              : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showAchieve4 ? _activity4DropDown(context, model) : SizedBox.shrink(),
+          child: model.showAchieve4
+              ? _activity4DropDown(context, model)
+              : const SizedBox.shrink(),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: model.showOtherInputData ? _otherInputData(context, model) : SizedBox.shrink(),
+          child: model.showOtherInputData
+              ? _otherInputData(context, model)
+              : const SizedBox.shrink(),
         ),
       ],
     ),
@@ -91,25 +98,20 @@ _body(context, NewAchievePgasViewModel model) {
 _title(context) {
   return const Text("Прикрепление достижения",
       style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w800,
-          color: Colors.blueAccent
-      )
-  );
+          fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blueAccent));
 }
 
 _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)
-    ),
+        borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<AchieveCategoryModel>(
           isExpanded: true,
           value: model.chosenCategory,
-          items: model.achieveCategories.map<
-              DropdownMenuItem<AchieveCategoryModel>>((e) {
+          items: model.achieveCategories
+              .map<DropdownMenuItem<AchieveCategoryModel>>((e) {
             return DropdownMenuItem<AchieveCategoryModel>(
               child: FittedBox(
                 child: Padding(
@@ -122,14 +124,12 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
           }).toList(),
           hint: const Center(
               child: Text(
-                "Категория достижения",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal
-                ),
-              )
-          ),
+            "Категория достижения",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                fontStyle: FontStyle.normal),
+          )),
           onChanged: (value) {
             model.chosenCategory = value!;
             model.showOtherInputData = false;
@@ -147,8 +147,7 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
             });
             model.showAchieve1 = true;
             model.notifyListeners();
-          }
-      ),
+          }),
     ),
   );
 }
@@ -157,8 +156,7 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)
-    ),
+        borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: ButtonTheme(
         alignedDropdown: true,
@@ -166,26 +164,24 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
             isExpanded: true,
             itemHeight: null,
             value: model.chosenActivity1,
-            items: model.activityList1.map<
-                DropdownMenuItem<ActivityTreeModel>>((e) {
-               return DropdownMenuItem<ActivityTreeModel>(
+            items: model.activityList1
+                .map<DropdownMenuItem<ActivityTreeModel>>((e) {
+              return DropdownMenuItem<ActivityTreeModel>(
                 child: Container(
-                    child: Text(e.activityTitle.toString()),
-                    padding: const EdgeInsets.fromLTRB(0,8.0,0,6.0),
+                  child: Text(e.activityTitle.toString()),
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
                 ),
                 value: e,
               );
             }).toList(),
             hint: const Center(
                 child: Text(
-                  "Категория достижения",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal
-                  ),
-                )
-            ),
+              "Категория достижения",
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  fontStyle: FontStyle.normal),
+            )),
             onChanged: (value) {
               model.chosenActivity1 = value!;
               model.showOtherInputData = false;
@@ -196,7 +192,10 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
               model.chosenActivity3 = null;
               model.chosenActivity4 = null;
               if (value.nodeCnt != 0) {
-                model.fetchAchieves(model.chosenActivity1!.activityId, model.chosenCategory!.activityTypeId).then((value) {
+                model
+                    .fetchAchieves(model.chosenActivity1!.activityId,
+                        model.chosenCategory!.activityTypeId)
+                    .then((value) {
                   model.activityList2 = value;
                   model.showAchieve2 = true;
                   model.notifyListeners();
@@ -205,8 +204,7 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
                 model.showOtherInputData = true;
               }
               model.notifyListeners();
-            }
-        ),
+            }),
       ),
     ),
   );
@@ -216,21 +214,20 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)
-    ),
+        borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           itemHeight: null,
           isExpanded: true,
           value: model.chosenActivity2,
-          items: model.activityList2.map<
-              DropdownMenuItem<ActivityTreeModel>>((e) {
+          items:
+              model.activityList2.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                    child: Text(e.activityTitle.toString()),
-                    padding: const EdgeInsets.fromLTRB(0,8.0,0,6.0),
+                  child: Text(e.activityTitle.toString()),
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
                 ),
               ),
               value: e,
@@ -238,14 +235,12 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
           }).toList(),
           hint: const Center(
               child: Text(
-                "Достижение",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal
-                ),
-              )
-          ),
+            "Достижение",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                fontStyle: FontStyle.normal),
+          )),
           onChanged: (value) {
             model.chosenActivity2 = value!;
             model.showOtherInputData = false;
@@ -254,7 +249,10 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
             model.chosenActivity3 = null;
             model.chosenActivity4 = null;
             if (value.nodeCnt != 0) {
-              model.fetchAchieves(model.chosenActivity2!.activityId, model.chosenCategory!.activityTypeId).then((value) {
+              model
+                  .fetchAchieves(model.chosenActivity2!.activityId,
+                      model.chosenCategory!.activityTypeId)
+                  .then((value) {
                 model.activityList3 = value;
                 model.showAchieve3 = true;
                 model.notifyListeners();
@@ -263,8 +261,7 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
               model.showOtherInputData = true;
             }
             model.notifyListeners();
-          }
-      ),
+          }),
     ),
   );
 }
@@ -273,21 +270,20 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)
-    ),
+        borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           isExpanded: true,
           itemHeight: null,
           value: model.chosenActivity3,
-          items: model.activityList3.map<
-              DropdownMenuItem<ActivityTreeModel>>((e) {
+          items:
+              model.activityList3.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                    child: Text(e.activityTitle.toString()),
-                    padding: const EdgeInsets.fromLTRB(0,8.0,0,6.0),
+                  child: Text(e.activityTitle.toString()),
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
                 ),
               ),
               value: e,
@@ -295,21 +291,22 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
           }).toList(),
           hint: const Center(
               child: Text(
-                "Достижение",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal
-                ),
-              )
-          ),
+            "Достижение",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                fontStyle: FontStyle.normal),
+          )),
           onChanged: (value) {
             model.chosenActivity3 = value!;
             model.showOtherInputData = false;
             model.showAchieve4 = false;
             model.chosenActivity4 = null;
             if (value.nodeCnt != 0) {
-              model.fetchAchieves(model.chosenActivity3!.activityId, model.chosenCategory!.activityTypeId).then((value) {
+              model
+                  .fetchAchieves(model.chosenActivity3!.activityId,
+                      model.chosenCategory!.activityTypeId)
+                  .then((value) {
                 model.activityList4 = value;
                 model.showAchieve4 = true;
                 model.notifyListeners();
@@ -318,8 +315,7 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
               model.showOtherInputData = true;
             }
             model.notifyListeners();
-          }
-      ),
+          }),
     ),
   );
 }
@@ -328,21 +324,20 @@ _activity4DropDown(context, NewAchievePgasViewModel model) {
   return Container(
     decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)
-    ),
+        borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           isExpanded: true,
           itemHeight: null,
           value: model.chosenActivity4,
-          items: model.activityList4.map<
-              DropdownMenuItem<ActivityTreeModel>>((e) {
+          items:
+              model.activityList4.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                    child: Text(e.activityTitle.toString()),
-                    padding: const EdgeInsets.fromLTRB(0,8.0,0,6.0),
+                  child: Text(e.activityTitle.toString()),
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
                 ),
               ),
               value: e,
@@ -350,20 +345,17 @@ _activity4DropDown(context, NewAchievePgasViewModel model) {
           }).toList(),
           hint: const Center(
               child: Text(
-                "Достижение",
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontStyle: FontStyle.normal
-                ),
-              )
-          ),
+            "Достижение",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                fontStyle: FontStyle.normal),
+          )),
           onChanged: (value) {
             model.chosenActivity4 = value!;
             model.showOtherInputData = true;
             model.notifyListeners();
-          }
-      ),
+          }),
     ),
   );
 }
@@ -380,25 +372,26 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               contentPadding: const EdgeInsets.all(8),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                  borderSide:
+                      const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              hintText: "Описание достижения (не требуется для достижения 'Отличная учеба')",
+                  borderSide:
+                      const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              hintText:
+                  "Описание достижения (не требуется для достижения 'Отличная учеба')",
               hintStyle: const TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
-                  fontSize: 14
-              )
-          )
+                  fontSize: 14))),
+      const SizedBox(
+        height: 10,
       ),
-      SizedBox(height: 10,),
       DropdownButtonHideUnderline(
         child: DropdownButton<YearModel>(
             isExpanded: true,
             value: model.chosenYear,
-            items: model.years.map<
-                DropdownMenuItem<YearModel>>((e) {
+            items: model.years.map<DropdownMenuItem<YearModel>>((e) {
               return DropdownMenuItem<YearModel>(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -409,40 +402,42 @@ _otherInputData(context, NewAchievePgasViewModel model) {
             }).toList(),
             hint: const Center(
                 child: Text(
-                  "Год получения",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal
-                  ),
-                )
-            ),
+              "Год получения",
+              style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  fontStyle: FontStyle.normal),
+            )),
             onChanged: (value) {
               model.chosenYear = value!;
               model.notifyListeners();
-            }
-        ),
+            }),
       ),
-      SizedBox(height: 10,),
+      const SizedBox(
+        height: 10,
+      ),
       Container(
         decoration: BoxDecoration(
             border: Border.all(color: const Color(0xFFC4C4C4)),
-            borderRadius: BorderRadius.circular(10)
-        ),
+            borderRadius: BorderRadius.circular(10)),
         height: 60,
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
               isExpanded: true,
-              value: model.chosenMonth == null ? null : model.months[model.chosenMonth!],
-              items: model.months.map<DropdownMenuItem<String>>((e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: FittedBox(child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(e.toString()),
-                  )))
-              ).toList(),
+              value: model.chosenMonth == null
+                  ? null
+                  : model.months[model.chosenMonth!],
+              items: model.months
+                  .map<DropdownMenuItem<String>>(
+                      (e) => DropdownMenuItem<String>(
+                          value: e,
+                          child: FittedBox(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.toString()),
+                          ))))
+                  .toList(),
               onChanged: (value) {
-                print(value);
                 model.chosenMonth = model.months.indexOf(value!);
                 model.notifyListeners();
               },
@@ -453,14 +448,14 @@ _otherInputData(context, NewAchievePgasViewModel model) {
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,
-                      fontSize: 14
-                  ),
+                      fontSize: 14),
                 ),
-              )
-          ),
+              )),
         ),
       ),
-      SizedBox(height: 10,),
+      const SizedBox(
+        height: 10,
+      ),
       TextField(
           maxLines: 2,
           textCapitalization: TextCapitalization.words,
@@ -470,21 +465,25 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               contentPadding: const EdgeInsets.all(8),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                  borderSide:
+                      const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              hintText: "Ссылка на внешний ресурс, подтверждающий выполнение достижения",
+                  borderSide:
+                      const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              hintText:
+                  "Ссылка на внешний ресурс, подтверждающий выполнение достижения",
               hintStyle: const TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
-                  fontSize: 14
-              )
-          )
+                  fontSize: 14))),
+      const SizedBox(
+        height: 10,
       ),
-      SizedBox(height: 10,),
       _fileContainer(context, model),
-      SizedBox(height: 10,),
+      const SizedBox(
+        height: 10,
+      ),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
         child: Container(
@@ -496,101 +495,112 @@ _otherInputData(context, NewAchievePgasViewModel model) {
                     color: Colors.black45,
                     offset: Offset(0, 6),
                     spreadRadius: 1,
-                    blurRadius: 7
-                )
+                    blurRadius: 7)
               ],
               borderRadius: BorderRadius.circular(10),
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF00C2FF),
-                  Colors.blueAccent
-                ],
+                colors: [Color(0xFF00C2FF), Colors.blueAccent],
               ),
             ),
             child: TextButton(
               onPressed: () async {
                 model.sendButtonAction(context);
               },
-              child: model.circle ? SizedBox(
-                  child: CircularProgressIndicator(color: Colors.white, ),
-                height: 14,
-                width: 14,
-              ) : Text(
-                "Отправить",
-                style: TextStyle(
-                  fontStyle: FontStyle.normal,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,),
-              ),
-
-            )
-        ),
+              child: model.circle
+                  ? const SizedBox(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                      height: 14,
+                      width: 14,
+                    )
+                  : const Text(
+                      "Отправить",
+                      style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+            )),
       )
     ],
   );
 }
 
 _fileContainer(context, NewAchievePgasViewModel model) {
-  return model.chooseFile == null ? InkWell(
-    onTap: () => model.pickFileBtnAction(context),
-    child: Container(
-      width: 100,
-      height: 150,
-      decoration: BoxDecoration(
-          color: Colors.transparent,
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.all(Radius.circular(15))
-      ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("+", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey, fontSize: 28),),
-            Text("Выберите файл-подтверждение (до 10 МБ)", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))
-          ],
-        ),
-    ),
-  ) :
-  InkWell(
-    onTap: () => model.pickFileBtnAction(context),
-    child: Stack(
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        Container(
-          width: 100,
-          height: 150,
-          decoration: BoxDecoration(
-              color: Colors.lightBlueAccent,
-              borderRadius: BorderRadius.all(Radius.circular(15))
+  return model.chooseFile == null
+      ? InkWell(
+          onTap: () => model.pickFileBtnAction(context),
+          child: Container(
+            width: 100,
+            height: 150,
+            decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: Colors.grey),
+                borderRadius: const BorderRadius.all(Radius.circular(15))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "+",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 28),
+                ),
+                const Text("Выберите файл-подтверждение (до 10 МБ)",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey))
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(model.chooseFile!.name, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
-              Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))
+        )
+      : InkWell(
+          onTap: () => model.pickFileBtnAction(context),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 150,
+                decoration: const BoxDecoration(
+                    color: Colors.lightBlueAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(model.chooseFile!.name,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white)),
+                    Text(
+                        "Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white))
+                  ],
+                ),
+              ),
+              Positioned(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      model.chooseFile = null;
+                      model.notifyListeners();
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.white, // <-- Button color
+                    ),
+                  ),
+                  bottom: 110,
+                  left: 60)
             ],
           ),
-        ),
-        Positioned(
-            child: ElevatedButton(
-              onPressed: () {
-                model.chooseFile = null;
-                model.notifyListeners();
-              },
-              child: Icon(Icons.close, color: Colors.black,),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                primary: Colors.white, // <-- Button color
-              ),
-            ),
-          bottom: 110,
-          left: 60
-        )
-      ],
-    ),
-  );
+        );
 }

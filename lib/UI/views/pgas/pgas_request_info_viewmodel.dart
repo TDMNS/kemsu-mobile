@@ -23,7 +23,11 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   }
 
   goToEditPgasRequestScreen(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditPgasRequestScreen())).then((value) async {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const EditPgasRequestScreen()))
+        .then((value) async {
       circle = true;
       notifyListeners();
       await onGoBack(context);
@@ -39,15 +43,16 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   fetchDetailPgasRequest(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    Map<String, dynamic> body = {
-      "requestId": pgasRequestId
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"), headers: header, body: body);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, dynamic> body = {"requestId": pgasRequestId};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"),
+        headers: header,
+        body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      pgasRequest = PgasDetailModel.fromJson(json.decode(response.body)["result"]);
+      pgasRequest =
+          PgasDetailModel.fromJson(json.decode(response.body)["result"]);
       notifyListeners();
     }
   }
@@ -55,21 +60,21 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   deletePgasAction(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    Map<String, dynamic> body = {
-      "requestId": pgasRequestId
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteRequest"), headers: header, body: body);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, dynamic> body = {"requestId": pgasRequestId};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteRequest"),
+        headers: header,
+        body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       Navigator.popUntil(context, ModalRoute.withName("PgasList"));
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заявка успешно удалена.")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Заявка успешно удалена.")));
       notifyListeners();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
-      print(response.statusCode);
-      print(response.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(json.decode(response.body)["message"])));
     }
   }
 }

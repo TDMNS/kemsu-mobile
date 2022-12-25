@@ -211,7 +211,6 @@ class ScheduleViewModel extends BaseViewModel {
   getSchedule() async {
     var response = await http.get(Uri.parse(Config.semesterList));
     scheduleList = parseSchedule(json.decode(response.body)['result']);
-    print(scheduleList[0].title);
     circle = false;
     notifyListeners();
 
@@ -275,7 +274,6 @@ class ScheduleViewModel extends BaseViewModel {
       indexDay == 0 ? indexDay = 7 : indexDay == 7;
     }
     notifyListeners();
-    print(indexDay);
   }
 
   void changeSemester(value) async {
@@ -287,7 +285,6 @@ class ScheduleViewModel extends BaseViewModel {
     var response = await http.get(
         Uri.parse('${Config.facultyList}?semesterId=${scheduleList[1].id}'));
     facultyList = parseFaculty(json.decode(response.body)["result"]);
-    print(scheduleList[0].id);
     notifyListeners();
   }
 
@@ -309,7 +306,6 @@ class ScheduleViewModel extends BaseViewModel {
     var response = await http
         .get(Uri.parse('${Config.weekList}?semesterId=${scheduleList[1].id}'));
     weekID = parseWeekID(json.decode(response.body)["result"]);
-    print(weekID[0].id);
     notifyListeners();
   }
 
@@ -390,8 +386,6 @@ class ScheduleViewModel extends BaseViewModel {
     weekID = parseWeekID(json.decode(response3.body)["result"]);
     //print(scheduleGroup!.id);
     notifyListeners();
-    print(currentGroupList[0].groupName);
-    print(currentGroupList[0].groupId);
 
     currentTable == false
         ? response = await http.get(Uri.parse(

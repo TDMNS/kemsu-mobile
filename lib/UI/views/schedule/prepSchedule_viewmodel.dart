@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
@@ -19,9 +20,32 @@ class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleTable? prepScheduleTable;
   List<PrepScheduleTable>? scheduleList = [];
   int? teacherId;
+  int? currentTeacherID;
+  String? teacherFIO;
   String? currentDate;
   String? currentWeek;
-  int? weekId;
+  int weekId = 0;
+  bool tableView = false;
+  bool currentTable = false;
+  bool weekType = true;
+  int? groupId;
+  int? groupIdChoice;
+  int? currentSemester;
+  ScheduleRequest? scheduleSemester;
+  FacultyList? scheduleFaculty;
+  GroupList? scheduleGroup;
+  List<WeekGetId> weekID = [];
+  List<GroupList> groupList = [];
+  List<FacultyList> facultyList = [];
+  List<String> coupleTime = [
+    '8:00 - 9:35',
+    '9:45 - 11:20',
+    '11:45 - 13:20',
+    '13:30 - 15:05',
+    '15:30 - 17:05',
+    '17:15 - 18:50',
+    '19:00 - 20:35'
+  ];
 
   List<CurrentGroupList> currentGroupList = [];
 
@@ -41,7 +65,6 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getTeacher();
-    getWeekData();
   }
 
   void changeWeek(value) {
@@ -49,65 +72,36 @@ class PrepScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<List<String>> getWeekData() async {
-//Getting the response from the targeted url
-    final response = await http.Client()
-        .get(Uri.parse('https://kemsu.ru/education/schedule/'));
-    circle = false;
-
-    //Status Code 200 means response has been received successfully
-    if (response.statusCode == 200) {
-      //Getting the html document from the response
-      var document = parser.parse(response.body);
-      try {
-        //Scraping the first article title
-        var responseString1 =
-            document.getElementsByClassName('calendar-week')[0].children[0];
-        var responseString2 =
-            document.getElementsByClassName('calendar-week')[0].children[1];
-
-        currentDate = responseString1.text.trim();
-        currentWeek = responseString2.text.trim();
-        if (currentWeek!.substring(10, currentWeek!.length) == 'четная') {
-          weekId = 1;
-        } else {
-          weekId = 0;
-        }
-
-        return [responseString1.text.trim(), responseString2.text.trim()];
-      } catch (e) {
-        return ['', '', 'Error!'];
-      }
-    } else {
-      return ['', '', 'Error: ${response.statusCode}.'];
-    }
-  }
-
-  changeTeacher(value) async {
+  changeTeacher(data) async {
     //choiceTeacher = value;
-    teacherId = value;
-    print('Func work, id: $teacherId}');
-    notifyListeners();
+    var dio = Dio();
+    teacherFIO = data;
+    //print('Data FIO: ${teacherList[0].prepId}');
+    for (int i = 0; i < teacherList.length; i++) {
+      if (teacherFIO == teacherList[i].fio) {
+        teacherId = teacherList[i].prepId;
+      }
+    }
+    circle = true;
+    print('WTF: $currentTeacherID');
     String? token = await storage.read(key: "tokenKey");
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=${currentGroupList[0].semesterId}&prepId=$teacherId&accessToken=$token'));
+        '${Config.prepSchedule}?semesterId=9&prepId=$teacherId&accessToken=$token'));
+
     var jsonResponse = json.decode(response.body)['result'];
+
     result = Result.fromJson(jsonResponse);
 
-    int days = result!.prepScheduleTable!.length;
-    int ceilLength = result!.prepScheduleTable![0].ceilList!.length;
-
-    //evenList = parseEvenList(
-    //    jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
     evenList = parseEvenList(
         jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
     for (int i = 0; i < evenList.length; i++) {
       print(evenList[i].discName);
     }
+
     circle = false;
 
     notifyListeners();
@@ -128,21 +122,33 @@ class PrepScheduleViewModel extends BaseViewModel {
       indexDay == 0 ? indexDay = 7 : indexDay == 7;
     }
     notifyListeners();
-    print(indexDay);
   }
 
   getTeacher() async {
     String? token = await storage.read(key: "tokenKey");
+    String? fio = await storage.read(key: "FIO");
+
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
-    var response = await http.get(Uri.parse(
-        '${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
+    var response = await http.get(
+        Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=9'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
+    for (int i = 0; i < teacherList.length; i++) {
+      if (teacherList[i].fio == fio) {
+        teacherFIO = teacherList[i].fio;
+        currentTeacherID = teacherList[i].prepId;
+        print("Old ID is: ${teacherList[i].prepId}");
+        print("New ID is: $currentTeacherID");
+      }
+    }
+    print('FIO: $fio');
+    changeTeacher(fio);
+
+    //circle = false;
     notifyListeners();
-    print(teacherList[0].fio);
   }
 
   List<TeacherList> parseTeacherList(List response) {

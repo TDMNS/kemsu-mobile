@@ -4,7 +4,8 @@ import 'package:kemsu_app/UI/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 class MainBugReportScreenRoute extends MaterialPageRoute {
-  MainBugReportScreenRoute() : super(builder: (context) => const MainBugReportScreen());
+  MainBugReportScreenRoute()
+      : super(builder: (context) => const MainBugReportScreen());
 }
 
 class MainBugReportScreen extends StatelessWidget {
@@ -16,30 +17,43 @@ class MainBugReportScreen extends StatelessWidget {
         viewModelBuilder: () => BugReportViewModel(context),
         onModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle ? const Center(child: CircularProgressIndicator(),) : Scaffold(
-            appBar: customAppBar(context, model, "Сообщения об ошибках"),
-            body: _body(context, model),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.edit),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (_) => newMessageDialog(context, model)
+          return model.circle
+              ? Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                )
+              : Scaffold(
+                  appBar: customAppBar(context, model, "Сообщения об ошибках"),
+                  body: _body(context, model),
+                  floatingActionButton: FloatingActionButton(
+                    child: const Icon(Icons.edit),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => newMessageDialog(context, model));
+                    },
+                  ),
                 );
-              },
-            ),
-          );
         });
   }
 }
 
 _body(context, BugReportViewModel model) {
   return ListView(
-    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+    physics:
+        const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
     children: [
-      const SizedBox(height: 34,),
+      const SizedBox(
+        height: 34,
+      ),
       _errorMessagesTitle(),
-      const SizedBox(height: 34,),
+      const SizedBox(
+        height: 34,
+      ),
       _reportSpace(context, model),
     ],
   );
@@ -57,8 +71,7 @@ _errorMessagesTitle() {
               fontSize: 24,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF5B5B7E)
-          ),
+              color: Color(0xFF5B5B7E)),
         ),
       ],
     ),
@@ -67,65 +80,65 @@ _errorMessagesTitle() {
 
 _reportSpace(context, BugReportViewModel model) {
   return Padding(
-    padding: EdgeInsets.all(8),
-    child: model.reportList.isEmpty ? Center(
-        child: Text(
-            "Нет отправленных обращений.",
-            style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)
-        )
-    ) : ListView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: model.reportList.length,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            title: Text(model.reportList[index].message.toString()),
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: const TextStyle(
-                            fontSize: 16, color: Colors.black),
-                        children: <TextSpan>[
-                          const TextSpan(text: 'Дата обращения: '),
-                          TextSpan(
-                              text: model.reportList[index].messageDate.toString(),
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+    padding: const EdgeInsets.all(8),
+    child: model.reportList.isEmpty
+        ? const Center(
+            child: Text("Нет отправленных обращений.",
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF757575),
+                    fontWeight: FontWeight.w500)))
+        : ListView.builder(
+            physics: const ScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: model.reportList.length,
+            itemBuilder: (context, index) {
+              return ExpansionTile(
+                title: Text(model.reportList[index].message.toString()),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Дата обращения: '),
+                              TextSpan(
+                                  text: model.reportList[index].messageDate
+                                      .toString(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
-          );
-        }
-    ),
+                  )
+                ],
+              );
+            }),
   );
 }
 
 newMessageDialog(context, BugReportViewModel model) {
   return AlertDialog(
-    title: Text("Создать обращение"),
+    title: const Text("Создать обращение"),
     content: TextField(
       controller: model.errorMsgController,
-      decoration: InputDecoration.collapsed(
-          hintText: 'Введите сообщение'
-      ),
+      decoration:
+          const InputDecoration.collapsed(hintText: 'Введите сообщение'),
     ),
     actions: [
       TextButton(
           onPressed: () async {
             model.sendAction(context);
           },
-          child: Text("Отправить")
-      )
+          child: const Text("Отправить"))
     ],
   );
 }

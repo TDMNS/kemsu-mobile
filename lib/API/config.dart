@@ -2,6 +2,8 @@ class Config {
   static String apiHost = 'https://api-next.kemsu.ru/api/auth';
   static String studCardHost =
       'https://api.kemsu.ru/api/dekanat/students/study-cards';
+  static String empCardHost =
+      "https://api-next.kemsu.ru/api/personal-office/integration/empInfo";
   static String brsSemesterList =
       "https://api-next.kemsu.ru/api/personal-office/integration/brsSemesterList";
   static String reitList =
@@ -36,6 +38,18 @@ class Config {
       "https://api-next.kemsu.ru/api/orders/main/basicList";
   static String periodList =
       "https://api-next.kemsu.ru/api/orders/main/periodList";
+  static String addRequest =
+      "https://api-next.kemsu.ru/api/orders/main/addRequest";
+  static String requestListReferences =
+      "https://api-next.kemsu.ru/api/orders/main/requestList";
   static String studCheckList =
       'https://api-next.kemsu.ru/api/debt/main/checkList';
+  static String proLongToken =
+      'https://api-next.kemsu.ru/api/security/auth/prolong';
+  static String updateEmail =
+      'https://api-next.kemsu.ru/api/personal-office/integration/updateUserEmail';
+  static String updatePhone =
+      'https://api-next.kemsu.ru/api/personal-office/integration/updateUserPhone';
+  static String newsMessages =
+      'https://api-dev.kemsu.ru/api/telegram/kemsu-live/messages'; //now api-dev, but later will need change to api-next
 }

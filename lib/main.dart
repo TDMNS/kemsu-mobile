@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-
-import 'UI/views/auth/auth_view.dart';
+import 'UI/DarkTheme.dart';
+import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
-import 'UI/views/schedule/schedule_view.dart';
+import 'UI/views/profile/profile_viewmodel.dart';
+import 'UI/views/schedule/schedule2.0_view.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -23,13 +22,16 @@ class App extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarBrightness: Brightness.light)
     );
     return MaterialApp(
+      theme: !ProfileViewModel(context).darkTheme == true
+          ? lightThemeProperties
+          : darkThemeProperties,
       routes: {
         '/first': (context) => const NewsView(),
         '/second': (context) => const ProfileView(),
-        '/third': (context) => const ScheduleView(),
+        '/third': (context) => const NewScheduleView(),
       },
       debugShowCheckedModeBanner: false,
-      home: const AuthView(),
+      home: const LoadingView(),
     );
   }
 }

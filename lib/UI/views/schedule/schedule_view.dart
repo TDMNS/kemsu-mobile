@@ -249,7 +249,6 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                     groupValue: model.weekId,
                     onChanged: (value) {
                       model.changeWeek(value);
-                      print(model.weekId);
                     },
                   ),
                 ),
@@ -263,7 +262,6 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                       groupValue: model.weekId,
                       onChanged: (value) {
                         model.changeWeek(value);
-                        print(model.weekId);
                       },
                     ),
                   ),
@@ -363,7 +361,6 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
               groupValue: model.weekId,
               onChanged: (value) {
                 model.changeWeek(value);
-                print(model.weekId);
               },
             ),
           ),
@@ -377,7 +374,6 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
                 groupValue: model.weekId,
                 onChanged: (value) {
                   model.changeWeek(value);
-                  print(model.weekId);
                 },
               ),
             ),
@@ -422,7 +418,7 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PrepScheduleView()),
+            MaterialPageRoute(builder: (context) => const PrepScheduleView()),
           );
         },
         child: Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../loadingScreen.dart';
 import 'edit_pgas_request_viewmodel.dart';
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
@@ -18,7 +19,7 @@ class EditPgasRequestScreen extends StatelessWidget {
         viewModelBuilder: () => EditPgasRequestViewModel(context),
         onModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
-          return model.circle ? const Center(child: CircularProgressIndicator(),) : Scaffold(
+          return Scaffold(
               body: NestedScrollView(
                 floatHeaderSlivers: true,
                 headerSliverBuilder: (context, innerBoxIsScrolled) =>

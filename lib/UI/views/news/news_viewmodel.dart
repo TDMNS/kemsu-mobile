@@ -1,8 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../API/config.dart';
 
 class NewsViewModel extends BaseViewModel {
   NewsViewModel(BuildContext context);
+
+  final storage = const FlutterSecureStorage();
+  String newsURL = 'https://api-dev.kemsu.ru';
   int selectedIndex = 0;
 
   void onTapBottomBar(int index) {
@@ -10,7 +17,9 @@ class NewsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future onReady() async {}
+  Future onReady() async {
+    messageService();
+  }
 
   List<String> newsName = [
     '23 апреля в Кемеровском государственном университете состоится день открытых дверей',
@@ -36,4 +45,12 @@ class NewsViewModel extends BaseViewModel {
     '13.04.2022',
     '13.04.2022',
   ];
+
+  messageService() async {
+    String? token = await storage.read(key: 'tokenKey');
+    final newsResponse = await http.get(
+        Uri.parse('${Config.newsMessages}?limit=10'),
+        headers: {'x-access-token': token!});
+    print(newsResponse.body);
+  }
 }

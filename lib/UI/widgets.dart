@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
 
 class EnumScreensWithoutPopArrow {
-  static String get profile => "Профиль";
+  static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
 }
@@ -47,19 +46,22 @@ customAppBar(context, model, name) {
       style: TextStyle(color: Colors.blueGrey.shade800),
     ),
     centerTitle: true,
-    actions:
-      name == "Сообщения об ошибках" ? null : <Widget> [
-        IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
-            },
-            icon: Icon(
-              Icons.report,
-              color: Colors.indigo.shade700,
-              size: 32,
-            )
-        ),
-      ],
+    // actions: name == "Сообщения об ошибках"
+    //     ? null
+    //     : <Widget>[
+    //         IconButton(
+    //             onPressed: () {
+    //               Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                       builder: (context) => const NotificationView()));
+    //             },
+    //             icon: Icon(
+    //               Icons.notifications,
+    //               color: Colors.indigo.shade700,
+    //               size: 32,
+    //             )),
+    //       ],
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: const SystemUiOverlayStyle(
@@ -68,14 +70,18 @@ customAppBar(context, model, name) {
     ),
     backgroundColor: Colors.white,
     shadowColor: Colors.black.withOpacity(0.2),
-    leading: name == EnumScreensWithoutPopArrow.news || name == EnumScreensWithoutPopArrow.profile || name == EnumScreensWithoutPopArrow.schedule ? Container() : IconButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      icon: Icon(
-        Icons.arrow_back_outlined,
-        color: Colors.indigo.shade700,
-      )),
+    leading: name == EnumScreensWithoutPopArrow.news ||
+            name == EnumScreensWithoutPopArrow.profile ||
+            name == EnumScreensWithoutPopArrow.schedule
+        ? Container()
+        : IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.indigo.shade700,
+            )),
   );
 }
 
@@ -142,10 +148,10 @@ customBottomBar(BuildContext context, model) {
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
-              child: const Icon(Icons.person),
+              child: const Icon(Icons.home),
             ),
-            icon: const Icon(Icons.person),
-            label: 'Профиль',
+            icon: const Icon(Icons.home),
+            label: 'Главная',
           ),
           BottomNavigationBarItem(
             activeIcon: ShaderMask(

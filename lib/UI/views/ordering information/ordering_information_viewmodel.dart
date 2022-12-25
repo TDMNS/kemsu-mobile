@@ -1,37 +1,35 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../auth/auth_view.dart';
 
 class OrderingInformationViewModel extends BaseViewModel {
   OrderingInformationViewModel(BuildContext context);
 
   final storage = const FlutterSecureStorage();
 
-  /// first request
   List<BasisOfEducation> receivedBasicList = [];
   BasisOfEducation? selectedBasic;
 
-  /// second request
-  List<PeriodListModel> periodList = [];
-  PeriodListModel? selectedPeriod;
-  PeriodListModel lastParagraph = PeriodListModel();
+  List<PeriodList> periodList = [];
+  PeriodList? selectedPeriod;
+  PeriodList lastParagraph = PeriodList();
+
   DateTime? startDate = DateTime(0, 0, 0);
   DateTime? endDate = DateTime(0, 0, 0);
 
-  /// third request
-  List<ReitList> reitList = [];
+  List<StudyCard> receivedStudyCard = [];
+  StudyCard? studyCard;
+  TextEditingController count = TextEditingController();
 
-  /// four request
-  List<ReitItemList> reitItemList = [];
+  List<RequestReference> receivedReferences = [];
+  RequestReference? references;
 
   int selectedIndex = 2;
   bool isSelected = false;
@@ -42,7 +40,32 @@ class OrderingInformationViewModel extends BaseViewModel {
   }
 
   Future onReady() async {
+    await getStudCard();
     await getBasicList();
+  }
+
+  List<StudyCard> parseCard(List response) {
+    return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
+  }
+
+  List<BasisOfEducation> parseBasicList(List response) {
+    return response
+        .map<BasisOfEducation>((json) => BasisOfEducation.fromJson(json))
+        .toList();
+  }
+
+  List<PeriodList> parsePeriodList(List response) {
+    return response
+        .map<PeriodList>((json) => PeriodList.fromJson(json))
+        .toList();
+  }
+
+  getStudCard() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response =
+        await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
+    receivedStudyCard = parseCard(json.decode(response.body));
+    notifyListeners();
   }
 
   getBasicList() async {
@@ -53,16 +76,9 @@ class OrderingInformationViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  List<BasisOfEducation> parseBasicList(List response) {
-    return response
-        .map<BasisOfEducation>((json) => BasisOfEducation.fromJson(json))
-        .toList();
-  }
-
-  List<PeriodListModel> parsePeriodList(List response) {
-    return response
-        .map<PeriodListModel>((json) => PeriodListModel.fromJson(json))
-        .toList();
+  changeCard(value) async {
+    studyCard = value;
+    notifyListeners();
   }
 
   changeBasic(value) async {
@@ -80,28 +96,59 @@ class OrderingInformationViewModel extends BaseViewModel {
   changePeriod(value) async {
     selectedPeriod = value;
     isSelected = true;
-    // String? token = await storage.read(key: "tokenKey");
-    // var response =
-    // await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));
-    // periodList = parsePeriodList(json.decode(response.body)["periodList"]);
     notifyListeners();
   }
-  //
-  // getReitList(startDate, endDate, semester) async {
-  //   String? token = await storage.read(key: "tokenKey");
-  //   var response = await http.get(Uri.parse(
-  //       '${Config.reitList}?studentId=${studyCard
-  //           ?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
-  //   reitList = parseReitList(json.decode(response.body)["reitList"]);
-  //   notifyListeners();
-  // }
-  //
-  // getReitItemList(studyId) async {
-  //   String? token = await storage.read(key: "tokenKey");
-  //   var response = await http.get(Uri.parse(
-  //       '${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
-  //   reitItemList =
-  //       parseReitItemList(json.decode(response.body)["brsActivityList"]);
-  //   notifyListeners();
-  // }
+
+  List<RequestReference> parseReferences(List response) {
+    return response
+        .map<RequestReference>((json) => RequestReference.fromJson(json))
+        .toList();
+  }
+
+  void sendReferences() async {
+    String? token = await storage.read(key: "tokenKey");
+    String? safeToken = token ?? "Error";
+
+    int basicId = selectedBasic?.basicId ?? 0;
+    int periodId = selectedPeriod?.periodId ?? -1;
+
+    if (count.text == "") {
+      count.text = "1";
+    }
+
+    int numberReferences = int.parse(count.text);
+    DateTime safeStartDate = startDate ?? DateTime.now();
+    DateTime safeEndDate = endDate ?? DateTime.now();
+    String formattedStartDate = DateFormat('dd.MM.yyyy').format(safeStartDate);
+    String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
+    int studentId = studyCard?.id ?? 0;
+
+    final _ = await http.post(
+        Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "basicId": basicId,
+          "periodId": periodId,
+          "cnt": numberReferences,
+          "startPeriodDate": periodId == -1 ? formattedStartDate : null,
+          "endPeriodDate": periodId == -1 ? formattedEndDate : null,
+          "studentId": studentId
+        }));
+
+    print(_.body);
+
+    getRequestList();
+    notifyListeners();
+  }
+
+  getRequestList() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http
+        .get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
+    receivedReferences =
+        parseReferences(json.decode(response.body)["requestList"]);
+    notifyListeners();
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './debts_viewmodel.dart';
@@ -23,7 +24,7 @@ class DebtsView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'Долги'),
-              bottomNavigationBar: customBottomBar(context, model),
+              //bottomNavigationBar: customBottomBar(context, model),
               body: _debtsView(context, model),
             ),
           );
@@ -39,51 +40,47 @@ _debtsView(BuildContext context, DebtsViewModel model) {
         child: Expanded(
             child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
-          child: DataTable(
+          child: model.DebtsCourse.isNotEmpty ? DataTable(
             columnSpacing: 0,
-            columns: [
+            columns: const [
               DataColumn(
-                  label: Container(
-                child: Expanded(
+                label: Expanded(
                     child: Text('Номер курса',
                         textAlign: TextAlign.center, softWrap: true)),
-              )),
+              ),
               DataColumn(
-                  label: Container(
-                child: Expanded(
+                label: Expanded(
                     child: Text('Номер семестра',
                         textAlign: TextAlign.center, softWrap: true)),
-              )),
+              ),
               DataColumn(
-                  label: Container(
-                child: Expanded(
+                label: Expanded(
                     child: Text('Дисциплина',
                         textAlign: TextAlign.center, softWrap: true)),
-              )),
+              ),
               DataColumn(
-                  label: Container(
-                child: Expanded(
+                label: Expanded(
                     child: Text('Текущая оценка',
                         textAlign: TextAlign.center, softWrap: true)),
-              )),
+              ),
             ],
             rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
                   DataCell(Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(e.COURSE.toString(),
-                      textAlign: TextAlign.center, softWrap: true))),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e.COURSE.toString(),
+                          textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(e.SEMESTER.toString(),
-                      textAlign: TextAlign.center, softWrap: true))),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e.SEMESTER.toString(),
+                          textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(e.DISCIPLINE.toString(),
-                      textAlign: TextAlign.center, softWrap: true))),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(e.DISCIPLINE.toString(),
+                          textAlign: TextAlign.center, softWrap: true))),
                   DataCell(Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(e.OCENKA_SHORT.toString(),
-                      textAlign: TextAlign.center, softWrap: true))),
+                          textAlign: TextAlign.center, softWrap: true))),
                 ])).toList(),
             border: TableBorder.all(
               color: Colors.black,
@@ -92,7 +89,7 @@ _debtsView(BuildContext context, DebtsViewModel model) {
             ),
             dataRowHeight: 80,
             showCheckboxColumn: false,
-          ),
+          ) : const Text("Долги отсутствуют"),
         )),
       ),
     ],

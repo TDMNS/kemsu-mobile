@@ -1,17 +1,23 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
-import 'package:kemsu_app/UI/views/auth/auth_viewmodel.dart';
+import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
+import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
-import 'package:kemsu_app/UI/views/checkList/checkList_view.dart';
+import 'package:kemsu_app/UI/views/checkList/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets.dart';
+import '../bug_report/main_bug_report_screen.dart';
 import '../ordering information/ordering_information_view.dart';
 
 class ProfileView extends StatefulWidget {
@@ -25,104 +31,372 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProfileViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onModelReady: (viewModel) => viewModel.onReady(context),
         viewModelBuilder: () => ProfileViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Профиль'),
-                  bottomNavigationBar: customBottomBar(context, model),
-                  body: _profileView(context, model),
+                child: WillPopScope(
+                  onWillPop: () async => false,
+                  child: Scaffold(
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, 'Главная'),
+                    // bottomNavigationBar: customBottomBar(context, model),
+                    body: _profileView(context, model),
+                  ),
                 ),
               ));
         });
   }
-}
 
-_profileView(BuildContext context, ProfileViewModel model) {
-  return Stack(
-    children: [
-      ListView(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.25),
-                blurRadius: 20,
-                offset: const Offset(0, 40))
-          ]),
-          child: Card(
-            margin: const EdgeInsets.only(left: 20, right: 20),
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
+  avatarChoice(context, ProfileViewModel model) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Выбор фотографии'),
+        actions: <Widget>[
+          Align(
+            alignment: Alignment.center,
             child: Column(
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                GestureDetector(
+                  onTap: () {
+                    _getFromGallery(model);
+
+                    Navigator.pop(context, 'OK');
+                  },
+                  child: const Text(
+                    'Галерея',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _getFromCamera(model);
+                    Navigator.pop(context, 'OK');
+                  },
+                  child: const Text(
+                    'Камера',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _getFromGallery(ProfileViewModel model) async {
+    XFile? pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        model.imageFile = File(pickedFile.path);
+      });
+    }
+    model.saveImage();
+  }
+
+  _getFromCamera(ProfileViewModel model) async {
+    XFile? pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        model.imageFile = File(pickedFile.path);
+      });
+    }
+    model.saveImage();
+
+    print('NewFile: $pickedFile');
+
+    //var temp = await pickedFile.saveTo('$appDocPath/images/avatar.png');
+    //print('ЫЫЫ: $newFile');
+  }
+
+  _profileView(BuildContext context, ProfileViewModel model) {
+    return Stack(
+      children: [
+        ListView(children: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(top: 15),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.25),
+                  blurRadius: 20,
+                  offset: const Offset(0, 40))
+            ]),
+            child: Card(
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    alignment: Alignment.centerLeft,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          avatarChoice(context, model);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
+                          width: 100,
+                          height: 100,
+                          child: model.file != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    model.file!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : const SizedBox(),
+                          decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                  image: AssetImage('images/avatar1.png')),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 15,
+                            left: MediaQuery.of(context).size.width / 3,
+                            bottom: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              model.lastName,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(
+                              "${model.firstName} ${model.middleName}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            const SizedBox(height: 10),
+                            RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          model.userType == EnumUserType.student
+                                              ? 'Группа: '
+                                              : 'Должность: \n'),
+                                  model.userType == EnumUserType.student
+                                      ? TextSpan(
+                                          text: model.group,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold))
+                                      : TextSpan(
+                                          text: model.jobTitle,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  const TextSpan(text: 'Телефон: '),
+                                  TextSpan(
+                                      text: model.phone,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, bottom: 30, right: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.4),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15))
+                  ]),
+              child: Theme(
+                data: ThemeData(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  expandedAlignment: Alignment.center,
+                  title: const Text(
+                    'Данные пользователя',
+                    style: TextStyle(
+                        fontFamily: "Ubuntu",
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold),
+                  ),
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.all(15),
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: NetworkImage(
-                                  'https://www.ixbt.com/img/n1/news/2021/1/0/%D0%91%D0%B5%D0%B7%20%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F_2.png'),
-                              fit: BoxFit.cover),
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(50)),
-                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            model.lastName,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          Text(
-                            "${model.firstName} ${model.middleName}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: model.userType == EnumUserType.student
+                                        ? 'Группа: '
+                                        : 'Должность: '),
+                                model.userType == EnumUserType.student
+                                    ? TextSpan(
+                                        text: model.group,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold))
+                                    : TextSpan(
+                                        text: model.jobTitle,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 10),
                           RichText(
                             text: TextSpan(
                               style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
+                                  fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(text: 'Группа: '),
                                 TextSpan(
-                                    text: model.group,
+                                    text: model.userType == EnumUserType.student
+                                        ? 'Направление: '
+                                        : 'Отдел: '),
+                                model.userType == EnumUserType.student
+                                    ? TextSpan(
+                                        text: model.speciality,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold))
+                                    : TextSpan(
+                                        text: model.department,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                          model.userType == EnumUserType.student
+                              ? const SizedBox(height: 10)
+                              : const SizedBox.shrink(),
+                          model.userType == EnumUserType.student
+                              ? RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                    children: <TextSpan>[
+                                      const TextSpan(text: 'Форма обучения: '),
+                                      TextSpan(
+                                          text: model.learnForm,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          model.userType == EnumUserType.student
+                              ? const SizedBox(height: 10)
+                              : const SizedBox.shrink(),
+                          model.userType == EnumUserType.student
+                              ? RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                    children: <TextSpan>[
+                                      const TextSpan(
+                                          text: 'Форма финансирования: '),
+                                      TextSpan(
+                                          text: model.finForm,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              children: <TextSpan>[
+                                const TextSpan(text: 'Email: '),
+                                TextSpan(
+                                    text: model.email,
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           RichText(
                             text: TextSpan(
                               style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
+                                  fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
                                 const TextSpan(text: 'Телефон: '),
                                 TextSpan(
@@ -133,213 +407,243 @@ _profileView(BuildContext context, ProfileViewModel model) {
                               ],
                             ),
                           ),
+                          model.userType == EnumUserType.student
+                              ? const SizedBox(height: 10)
+                              : const SizedBox.shrink(),
+                          model.userType == EnumUserType.student &&
+                                  model.finForm != "бюджетная"
+                              ? RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                    children: <TextSpan>[
+                                      const TextSpan(
+                                          text: 'Задолженность за обучение: '),
+                                      TextSpan(
+                                          text: model.debtData,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () {
+                                _updateProfile(context, model);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: Colors.blue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 9))
+                                    ]),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
                   ],
-                )
-              ],
+                ),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, bottom: 30, right: 20),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
-                ]),
-            child: Theme(
-              data: ThemeData(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                expandedAlignment: Alignment.center,
-                title: const Text(
-                  'Данные пользователя',
-                  style: TextStyle(
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Группа: '),
-                              TextSpan(
-                                  text: model.group,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PRSView()),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 30),
+                      height: 100,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 15,
+                                offset: const Offset(0, 15))
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/icons/Search.png',
+                            scale: 4,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Направление: '),
-                              TextSpan(
-                                  text: model.speciality,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
+                          const SizedBox(height: 10),
+                          const Text(
+                            'БРС',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              settings: const RouteSettings(name: "PgasList"),
+                              builder: (context) => const PgasScreen()));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 30),
+                      height: 100,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 15,
+                                offset: const Offset(0, 15))
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/icons/Invoice.png',
+                            scale: 4,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Форма обучения: '),
-                              TextSpan(
-                                  text: model.learnForm,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
+                          const SizedBox(height: 10),
+                          const Text(
+                            'ПГАС',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const IaisView()));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 30),
+                      height: 100,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 15,
+                                offset: const Offset(0, 15))
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/icons/Book.png',
+                            scale: 4,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Форма финансирования: '),
-                              TextSpan(
-                                  text: model.finForm,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Email: '),
-                              TextSpan(
-                                  text: model.email,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Телефон: '),
-                              TextSpan(
-                                  text: model.phone,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        if (model.finForm != "бюджетная")
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Задолженность за обучение: '),
-                                TextSpan(
-                                    text: model.debtData,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                              ],
+                          const SizedBox(height: 10),
+                          const Center(
+                            child: Text(
+                              'ИнфОУПро',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DebtsView()));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 30),
+                      height: 100,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                blurRadius: 15,
+                                offset: const Offset(0, 15))
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/icons/Alert.png',
+                            scale: 4,
+                          ),
+                          const SizedBox(height: 10),
+                          const Center(
+                            child: Text(
+                              'Долги',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-        ),
-        Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              const SizedBox(height: 30),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PRSView()),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 30),
-                    height: 100,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
-                              blurRadius: 15,
-                              offset: const Offset(0, 15))
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'images/icons/Search.png',
-                          scale: 4,
-                        ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'БРС',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            settings: RouteSettings(name: "PgasList"),
-                            builder: (context) => const PgasScreen()));
+                            builder: (context) =>
+                                const OrderingInformationMainView()));
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(right: 30),
+                    margin: const EdgeInsets.only(left: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -353,34 +657,32 @@ _profileView(BuildContext context, ProfileViewModel model) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'images/icons/Invoice.png',
+                          'images/icons/orderingInformation.png',
                           scale: 4,
                         ),
                         const SizedBox(height: 10),
-                        const Text(
-                          'ПГАС',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )
+                        const Center(
+                          child: Text(
+                            'Заказ справок',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => IaisView()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CheckListView()));
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(left: 30),
+                    margin: const EdgeInsets.only(right: 30),
                     height: 100,
-                    width: 150,
+                    width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.white,
@@ -400,7 +702,7 @@ _profileView(BuildContext context, ProfileViewModel model) {
                         const SizedBox(height: 10),
                         const Center(
                           child: Text(
-                            'ИнфОУПро',
+                            'Обходной лист',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -409,158 +711,203 @@ _profileView(BuildContext context, ProfileViewModel model) {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DebtsView()));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 30),
-                    height: 100,
-                    width: 150,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
-                              blurRadius: 15,
-                              offset: const Offset(0, 15))
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              ]),
+              model.userType == EnumUserType.student
+                  ? const SizedBox(height: 30)
+                  : const SizedBox.shrink(),
+              model.userType == EnumUserType.student
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          'images/icons/Alert.png',
-                          scale: 4,
-                        ),
-                        const SizedBox(height: 10),
-                        const Center(
-                          child: Text(
-                            'Долги',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          _paymentWebView(context, model)));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 30),
+                              height: 100,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(0.4),
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 15))
+                                  ]),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'images/icons/money.png',
+                                    scale: 4,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Center(
+                                    child: Text(
+                                      'Оплата услуг',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     // model.darkTheme == false
+                          //     //     ? model.changeTheme(true)
+                          //     //     : model.changeTheme(false);
+                          //     setState(() {
+                          //       model.darkTheme == false
+                          //           ? model.darkTheme = true
+                          //           : model.darkTheme = false;
+                          //     });
+                          //     print('VALUE: ${model.darkTheme}');
+                          //   },
+                          //   child: Container(
+                          //     margin: const EdgeInsets.only(right: 30),
+                          //     height: 100,
+                          //     width: 130,
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(30),
+                          //         color: Colors.white,
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //               color: Colors.grey.withOpacity(0.4),
+                          //               blurRadius: 15,
+                          //               offset: const Offset(0, 15))
+                          //         ]),
+                          //     child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.center,
+                          //       children: const <Widget>[
+                          //         // Image.asset(
+                          //         //   'images/icons/money.png',
+                          //         //   scale: 4,
+                          //         // ),
+                          //         Icon(
+                          //           Icons.dark_mode,
+                          //           size: 35,
+                          //         ),
+                          //         SizedBox(height: 10),
+                          //         Center(
+                          //           child: Text(
+                          //             'Темная тема (beta)',
+                          //             style: TextStyle(
+                          //                 fontWeight: FontWeight.bold,
+                          //                 fontSize: 16),
+                          //             textAlign: TextAlign.center,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                        ])
+                  : const SizedBox.shrink(),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
               GestureDetector(
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OrderingInformationView()));
+                          builder: (context) => const MainBugReportScreen()));
                 },
                 child: Container(
-                  margin: const EdgeInsets.only(left: 30),
-                  height: 100,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            blurRadius: 15,
-                            offset: const Offset(0, 15))
-                      ]),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'images/icons/orderingInformation.png',
-                        scale: 4,
-                      ),
-                      const SizedBox(height: 10),
-                      const Center(
+                  padding: const EdgeInsets.only(left: 30),
+                  width: 160,
+                  height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15))
+                  ]),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Center(
                         child: Text(
-                          'Заказ справок',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                    ],
+                      'Поддержка',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
+              const Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CheckListView()));
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Предупреждение'),
+                      content: const Text(
+                          'Вы действительно хотите выйти из мобильного приложения?'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Отмена')),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AuthView()));
+                            },
+                            child: const Text('Да'))
+                      ],
+                    ),
+                  );
                 },
                 child: Container(
-                  margin: const EdgeInsets.only(right: 30),
-                  height: 100,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            blurRadius: 15,
-                            offset: const Offset(0, 15))
-                      ]),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'images/icons/Book.png',
-                        scale: 4,
-                      ),
-                      const SizedBox(height: 10),
-                      const Center(
+                  padding: const EdgeInsets.only(right: 30),
+                  width: 160,
+                  height: 50,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15))
+                  ]),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: const Center(
                         child: Text(
-                          'Обходной лист',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                    ],
+                      'Выйти',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )),
                   ),
                 ),
               ),
-            ])
-          ],
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        GestureDetector(
-          onTap: () {
-            model.exitButton(context);
-          },
-          child: Container(
-            margin: const EdgeInsets.only(left: 100, right: 100, top: 20),
-            height: 50,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  blurRadius: 15,
-                  offset: const Offset(0, 15))
-            ]),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const Center(
-                  child: Text(
-                'Выйти',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              )),
-            ),
+            ],
           ),
-        )
-      ]),
-      //const LoadingScreen()
-    ],
-  );
+        ]),
+
+        //const LoadingScreen()
+      ],
+    );
+  }
 }
 
 class LoadingScreen extends StatefulWidget {
@@ -580,7 +927,7 @@ class _MyHomePageState extends State<LoadingScreen>
     super.initState();
 
     Timer _timer = Timer(const Duration(seconds: 3), () => {});
-    if (_timer != null && _timer.isActive) {
+    if (_timer.isActive) {
       _timer.cancel();
     }
   }
@@ -647,4 +994,97 @@ class _MyHomePageState extends State<LoadingScreen>
       ),
     );
   }
+}
+
+_paymentWebView(BuildContext context, ProfileViewModel model) {
+  String fio = model.fio;
+  String phone = model.phone.replaceFirst('+7 ', '') ?? '';
+  String email = model.email;
+  bool isLoading = true;
+  return Scaffold(
+    extendBody: false,
+    extendBodyBehindAppBar: false,
+    appBar: customAppBar(context, model, 'Оплата услуг'),
+    body: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Stack(children: [
+          WebView(
+              initialUrl: Uri.encodeFull(
+                  'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
+                      .replaceAll(' ', '+')),
+              javascriptMode: JavascriptMode.unrestricted,
+              onPageFinished: (finish) {
+                setState(() {
+                  isLoading = false;
+                });
+              }),
+          isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Stack(),
+        ]);
+      },
+    ),
+  );
+}
+
+_updateProfile(BuildContext context, ProfileViewModel model) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Обновление данных'),
+      actions: [
+        TextFormField(
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(left: 15, top: 15),
+              suffixIcon: Icon(Icons.email),
+              focusColor: Colors.black,
+              hintText: 'E-Mail',
+              hintStyle: TextStyle(
+                  fontFamily: "Ubuntu",
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold)),
+          style: const TextStyle(
+              fontFamily: "Ubuntu",
+              color: Color.fromRGBO(91, 91, 126, 1),
+              fontWeight: FontWeight.bold),
+          controller: model.emailController,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(left: 15, top: 15),
+              suffixIcon: Icon(Icons.phone),
+              focusColor: Colors.black,
+              hintText: 'Телефон',
+              hintStyle: TextStyle(
+                  fontFamily: "Ubuntu",
+                  color: Colors.grey,
+                  fontWeight: FontWeight.bold)),
+          style: const TextStyle(
+              fontFamily: "Ubuntu",
+              color: Color.fromRGBO(91, 91, 126, 1),
+              fontWeight: FontWeight.bold),
+          controller: model.phoneController,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Отмена')),
+            const SizedBox(width: 10),
+            ElevatedButton(
+                onPressed: () {
+                  model.updateProfile();
+                  Navigator.pop(context);
+                },
+                child: const Text('Изменить'))
+          ],
+        ),
+      ],
+    ),
+  );
 }

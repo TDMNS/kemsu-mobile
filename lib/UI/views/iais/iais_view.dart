@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './iais_viewmodel.dart';
 import './iais_disc_view.dart';
-import './iais_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -25,7 +24,7 @@ class IaisView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'ИнфОУПро'),
-              bottomNavigationBar: customBottomBar(context, model),
+              //bottomNavigationBar: customBottomBar(context, model),
               body: _iaisView(context, model),
             ),
           );
@@ -76,8 +75,6 @@ _iaisView(BuildContext context, IaisViewModel model) {
                     onSelectChanged: (selected) async {
                       if (selected == true) {
                         {
-                          print(e.DISC_NAME);
-                          print(e.COURSE_ID);
                           await model.getDiscReports(e.COURSE_ID);
                           Navigator.push(
                             context,
@@ -86,7 +83,6 @@ _iaisView(BuildContext context, IaisViewModel model) {
                                     discData: e, repList: model.Report)),
                           );
                         }
-                        ;
                       }
                     },
                     cells: [

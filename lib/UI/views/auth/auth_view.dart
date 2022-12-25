@@ -106,6 +106,23 @@ _authView(BuildContext context, AuthViewModel model) {
           obscureText: model.isObscure,
         ),
       ),
+      Padding(
+        padding: const EdgeInsets.only(left: 20, bottom: 10),
+        child: Row(
+          children: <Widget>[
+            Checkbox(
+                value: model.rememberMe,
+                activeColor: Colors.blue,
+                onChanged: (bool? value) {
+                  model.rememberFunc(value);
+                }),
+            const Text(
+              'Запомнить меня',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            )
+          ],
+        ),
+      ),
       GestureDetector(
         onTap: () {
           model.authButton(context);

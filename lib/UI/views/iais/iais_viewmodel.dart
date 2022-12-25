@@ -40,32 +40,37 @@ class IaisViewModel extends BaseViewModel {
   getDiscs(allFlag) async {
     String? token = await storage.read(key: "tokenKey");
     var response;
-    if(allFlag==1) {
-      response = await http.get(Uri.parse(
-          '${Config.studCourseList}?allCourseFlag=1'), headers: {"x-access-token": token!,},);
-    }
-    else {
-      response = await http.get(Uri.parse(
-          '${Config.studCourseList}?allCourseFlag=0'), headers: {"x-access-token": token!,},);
+    if (allFlag == 1) {
+      response = await http.get(
+        Uri.parse('${Config.studCourseList}?allCourseFlag=1'),
+        headers: {
+          "x-access-token": token!,
+        },
+      );
+    } else {
+      response = await http.get(
+        Uri.parse('${Config.studCourseList}?allCourseFlag=0'),
+        headers: {
+          "x-access-token": token!,
+        },
+      );
     }
 
-    print(response.body);
-    Course =
-        parseCourseList(json.decode(response.body)['studentCourseList']);
-    print(Course);
+    Course = parseCourseList(json.decode(response.body)['studentCourseList']);
 
     notifyListeners();
   }
 
   getDiscReports(courseId) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.studRepList}/${courseId}'), headers: {"x-access-token": token!,},);
-    print(response.body);
+    var response = await http.get(
+      Uri.parse('${Config.studRepList}/$courseId'),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
 
-    Report =
-        parseReportList(json.decode(response.body)['studentReportList']);
-    print(Report[0]);
+    Report = parseReportList(json.decode(response.body)['studentReportList']);
 
     notifyListeners();
   }

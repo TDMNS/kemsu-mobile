@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/API/config.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_detail_view.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../widgets.dart';
-import '../schedule/schedule_model.dart';
 import '../schedule/schedule_view.dart';
 import 'prs_viewmodel.dart';
 
@@ -36,7 +33,7 @@ class PRSView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'БРС'),
-                  bottomNavigationBar: customBottomBar(context, model),
+                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _prsView(context, model),
                 ),
               ));

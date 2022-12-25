@@ -27,12 +27,15 @@ class NewsView extends StatelessWidget {
                     currentFocus.unfocus();
                   }
                 },
-                child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Новости'),
-                  bottomNavigationBar: customBottomBar(context, model),
-                  body: _newsView(context, model),
+                child: WillPopScope(
+                  onWillPop: () async => false,
+                  child: Scaffold(
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, 'Новости'),
+                    //bottomNavigationBar: customBottomBar(context, model),
+                    body: _newsView(context, model),
+                  ),
                 ),
               ));
         });
@@ -40,61 +43,76 @@ class NewsView extends StatelessWidget {
 }
 
 _newsView(context, NewsViewModel model) {
-  return ListView.builder(
-      padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 150, bottom: 100),
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      itemCount: model.newsName.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.all(10),
-          height: 150,
-          width: 200,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 15)),
-              ]),
-          child: Stack(
-            children: [
-              Row(
+  return ListView(
+    children: [
+      GestureDetector(
+        onTap: () {
+          model.messageService();
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 50, right: 50, top: 50),
+          height: 30,
+          width: 30,
+          color: Colors.amber,
+        ),
+      ),
+      ListView.builder(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 150, bottom: 100),
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          itemCount: model.newsName.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.all(10),
+              height: 150,
+              width: 200,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.4),
+                        blurRadius: 15,
+                        offset: const Offset(0, 15)),
+                  ]),
+              child: Stack(
                 children: [
-                  Container(
-                    height: 120,
-                    width: 130,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        image: DecorationImage(
-                            image: AssetImage(model.newsPhoto[index]),
-                            fit: BoxFit.cover)),
+                  Row(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: 130,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            image: DecorationImage(
+                                image: AssetImage(model.newsPhoto[index]),
+                                fit: BoxFit.cover)),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: Text(
+                        model.newsName[index],
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ))
+                    ],
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
+                  Align(
+                      alignment: Alignment.bottomRight,
                       child: Text(
-                    model.newsName[index],
-                    style: const TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ))
+                        model.newsDate[index],
+                        style: TextStyle(
+                            color: Colors.grey.withOpacity(0.5),
+                            fontWeight: FontWeight.bold),
+                      ))
                 ],
               ),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    model.newsDate[index],
-                    style: TextStyle(
-                        color: Colors.grey.withOpacity(0.5),
-                        fontWeight: FontWeight.bold),
-                  ))
-            ],
-          ),
-        );
-      });
+            );
+          }),
+    ],
+  );
 }
