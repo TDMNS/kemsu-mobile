@@ -6,17 +6,19 @@ class MyThemes {
       dividerColor: Colors.transparent,
       primaryColor: Colors.grey.shade900,
       primaryColorDark: Colors.white,
+      primaryColorLight: Colors.grey.withOpacity(0.2),
       canvasColor: Colors.white,
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.grey.shade900,
       ),
       cardColor: Colors.grey.shade900,
       expansionTileTheme: ExpansionTileThemeData(
-          backgroundColor: Colors.grey.shade900,
-          textColor: Colors.blue,
-          collapsedIconColor: Colors.white,
-          iconColor: Colors.blue,
-          collapsedBackgroundColor: Colors.grey.shade900),
+        //backgroundColor: Colors.grey.shade900,
+        textColor: Colors.blue,
+        collapsedIconColor: Colors.white,
+        iconColor: Colors.blue,
+        //collapsedBackgroundColor: Colors.grey.shade900,
+      ),
       colorScheme: const ColorScheme.dark());
 
   static final lightTheme = ThemeData(
@@ -24,6 +26,7 @@ class MyThemes {
       dividerColor: Colors.transparent,
       primaryColor: Colors.white,
       primaryColorDark: Colors.black,
+      primaryColorLight: Colors.grey.withOpacity(0.4),
       canvasColor: Colors.grey.shade600,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,

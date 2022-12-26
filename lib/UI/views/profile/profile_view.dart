@@ -151,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
             padding: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
+                  color: Theme.of(context).primaryColorLight,
                   blurRadius: 20,
                   offset: const Offset(0, 40))
             ]),
@@ -270,14 +270,16 @@ class _ProfileViewState extends State<ProfileView> {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),
               child: ExpansionTile(
+                backgroundColor: Colors.transparent,
+                collapsedBackgroundColor: Colors.transparent,
                 expandedAlignment: Alignment.center,
                 title: const Text(
                   'Данные пользователя',
@@ -458,7 +460,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: Colors.blue,
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.grey.withOpacity(0.4),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                         blurRadius: 10,
                                         offset: const Offset(0, 9))
                                   ]),
@@ -499,7 +502,7 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -537,7 +540,7 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -580,7 +583,7 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -619,7 +622,7 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -663,7 +666,7 @@ class _ProfileViewState extends State<ProfileView> {
                         color: Theme.of(context).primaryColor,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
+                              color: Theme.of(context).primaryColorLight,
                               blurRadius: 15,
                               offset: const Offset(0, 15))
                         ]),
@@ -702,7 +705,7 @@ class _ProfileViewState extends State<ProfileView> {
                         color: Theme.of(context).primaryColor,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
+                              color: Theme.of(context).primaryColorLight,
                               blurRadius: 15,
                               offset: const Offset(0, 15))
                         ]),
@@ -750,7 +753,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: Theme.of(context).primaryColor,
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.grey.withOpacity(0.4),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                         blurRadius: 15,
                                         offset: const Offset(0, 15))
                                   ]),
@@ -847,7 +851,7 @@ class _ProfileViewState extends State<ProfileView> {
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),
@@ -897,7 +901,7 @@ class _ProfileViewState extends State<ProfileView> {
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),
