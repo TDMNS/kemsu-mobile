@@ -151,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
             padding: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
+                  color: Theme.of(context).primaryColorLight,
                   blurRadius: 20,
                   offset: const Offset(0, 40))
             ]),
@@ -211,9 +211,9 @@ class _ProfileViewState extends State<ProfileView> {
                             const SizedBox(height: 10),
                             RichText(
                               text: TextSpan(
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.black,
+                                  color: Theme.of(context).primaryColorDark,
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
@@ -224,13 +224,15 @@ class _ProfileViewState extends State<ProfileView> {
                                   model.userType == EnumUserType.student
                                       ? TextSpan(
                                           text: model.group,
-                                          style: const TextStyle(
-                                              color: Colors.black,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
                                               fontWeight: FontWeight.bold))
                                       : TextSpan(
                                           text: model.jobTitle,
-                                          style: const TextStyle(
-                                              color: Colors.black,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
                                               fontWeight: FontWeight.bold)),
                                 ],
                               ),
@@ -238,16 +240,17 @@ class _ProfileViewState extends State<ProfileView> {
                             const SizedBox(height: 5),
                             RichText(
                               text: TextSpan(
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.black,
+                                  color: Theme.of(context).primaryColorDark,
                                 ),
                                 children: <TextSpan>[
                                   const TextSpan(text: 'Телефон: '),
                                   TextSpan(
                                       text: model.phone,
-                                      style: const TextStyle(
-                                          color: Colors.black,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               ),
@@ -267,198 +270,212 @@ class _ProfileViewState extends State<ProfileView> {
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),
-              child: Theme(
-                data: ThemeData(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  expandedAlignment: Alignment.center,
-                  title: const Text(
-                    'Данные пользователя',
-                    style: TextStyle(
-                        fontFamily: "Ubuntu",
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: model.userType == EnumUserType.student
-                                        ? 'Группа: '
-                                        : 'Должность: '),
-                                model.userType == EnumUserType.student
-                                    ? TextSpan(
-                                        text: model.group,
+              child: ExpansionTile(
+                backgroundColor: Colors.transparent,
+                collapsedBackgroundColor: Colors.transparent,
+                expandedAlignment: Alignment.center,
+                title: const Text(
+                  'Данные пользователя',
+                  style: TextStyle(
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: model.userType == EnumUserType.student
+                                      ? 'Группа: '
+                                      : 'Должность: '),
+                              model.userType == EnumUserType.student
+                                  ? TextSpan(
+                                      text: model.group,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold))
+                                  : TextSpan(
+                                      text: model.jobTitle,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: model.userType == EnumUserType.student
+                                      ? 'Направление: '
+                                      : 'Отдел: '),
+                              model.userType == EnumUserType.student
+                                  ? TextSpan(
+                                      text: model.speciality,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold))
+                                  : TextSpan(
+                                      text: model.department,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  children: <TextSpan>[
+                                    const TextSpan(text: 'Форма обучения: '),
+                                    TextSpan(
+                                        text: model.learnForm,
                                         style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold))
-                                    : TextSpan(
-                                        text: model.jobTitle,
-                                        style: const TextStyle(
-                                            color: Colors.black,
                                             fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: model.userType == EnumUserType.student
-                                        ? 'Направление: '
-                                        : 'Отдел: '),
-                                model.userType == EnumUserType.student
-                                    ? TextSpan(
-                                        text: model.speciality,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold))
-                                    : TextSpan(
-                                        text: model.department,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                          model.userType == EnumUserType.student
-                              ? const SizedBox(height: 10)
-                              : const SizedBox.shrink(),
-                          model.userType == EnumUserType.student
-                              ? RichText(
-                                  text: TextSpan(
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                    children: <TextSpan>[
-                                      const TextSpan(text: 'Форма обучения: '),
-                                      TextSpan(
-                                          text: model.learnForm,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          model.userType == EnumUserType.student
-                              ? const SizedBox(height: 10)
-                              : const SizedBox.shrink(),
-                          model.userType == EnumUserType.student
-                              ? RichText(
-                                  text: TextSpan(
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                    children: <TextSpan>[
-                                      const TextSpan(
-                                          text: 'Форма финансирования: '),
-                                      TextSpan(
-                                          text: model.finForm,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          const SizedBox(height: 10),
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                const TextSpan(text: 'Email: '),
-                                TextSpan(
-                                    text: model.email,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
-                              children: <TextSpan>[
-                                const TextSpan(text: 'Телефон: '),
-                                TextSpan(
-                                    text: model.phone,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                          model.userType == EnumUserType.student
-                              ? const SizedBox(height: 10)
-                              : const SizedBox.shrink(),
-                          model.userType == EnumUserType.student &&
-                                  model.finForm != "бюджетная"
-                              ? RichText(
-                                  text: TextSpan(
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
-                                    children: <TextSpan>[
-                                      const TextSpan(
-                                          text: 'Задолженность за обучение: '),
-                                      TextSpan(
-                                          text: model.debtData,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () {
-                                _updateProfile(context, model);
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                height: 35,
-                                width: 35,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: Colors.blue,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.4),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 9))
-                                    ]),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
+                                  ],
                                 ),
+                              )
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: 'Форма финансирования: '),
+                                    TextSpan(
+                                        text: model.finForm,
+                                        style: const TextStyle(
+                                            // color: Colors.black,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Email: '),
+                              TextSpan(
+                                  text: model.email,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            children: <TextSpan>[
+                              const TextSpan(text: 'Телефон: '),
+                              TextSpan(
+                                  text: model.phone,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                        model.userType == EnumUserType.student
+                            ? const SizedBox(height: 10)
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student &&
+                                model.finForm != "бюджетная"
+                            ? RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: 'Задолженность за обучение: '),
+                                    TextSpan(
+                                        text: model.debtData,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              _updateProfile(context, model);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              height: 35,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.blue,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 9))
+                                  ]),
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -482,10 +499,10 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 130,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -520,10 +537,10 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 130,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -563,10 +580,10 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 130,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -602,10 +619,10 @@ class _ProfileViewState extends State<ProfileView> {
                       width: 130,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(0.4),
+                                color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
                                 offset: const Offset(0, 15))
                           ]),
@@ -646,10 +663,10 @@ class _ProfileViewState extends State<ProfileView> {
                     width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
+                              color: Theme.of(context).primaryColorLight,
                               blurRadius: 15,
                               offset: const Offset(0, 15))
                         ]),
@@ -685,10 +702,10 @@ class _ProfileViewState extends State<ProfileView> {
                     width: 130,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
+                              color: Theme.of(context).primaryColorLight,
                               blurRadius: 15,
                               offset: const Offset(0, 15))
                         ]),
@@ -733,10 +750,11 @@ class _ProfileViewState extends State<ProfileView> {
                               width: 130,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.grey.withOpacity(0.4),
+                                        color:
+                                            Theme.of(context).primaryColorLight,
                                         blurRadius: 15,
                                         offset: const Offset(0, 15))
                                   ]),
@@ -833,7 +851,7 @@ class _ProfileViewState extends State<ProfileView> {
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),
@@ -883,7 +901,7 @@ class _ProfileViewState extends State<ProfileView> {
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15))
                   ]),

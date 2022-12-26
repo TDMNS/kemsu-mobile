@@ -22,9 +22,9 @@ class App extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarBrightness: Brightness.light)
     );
     return MaterialApp(
-      theme: !ProfileViewModel(context).darkTheme == true
-          ? lightThemeProperties
-          : darkThemeProperties,
+      themeMode: ThemeMode.system,
+      theme: MyThemes.lightTheme,
+      darkTheme: MyThemes.darkTheme,
       routes: {
         '/first': (context) => const NewsView(),
         '/second': (context) => const ProfileView(),

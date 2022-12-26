@@ -57,10 +57,10 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<StudyCard>(
+                dropdownColor: Theme.of(context).primaryColor,
                 itemHeight: 70.0,
                 hint: const Text(
                   '- Выбрать учебную карту -',
-                  style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
                   model.changeCard(value);
@@ -84,10 +84,10 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButton<BasisOfEducation>(
+                      dropdownColor: Theme.of(context).primaryColor,
                       itemHeight: 70.0,
                       hint: const Text(
                         '- Выбрать основу обучения -',
-                        style: TextStyle(color: Colors.black),
                       ),
                       onChanged: (value) {
                         model.changeBasic(value);
@@ -112,10 +112,10 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButton<PeriodList>(
+                      dropdownColor: Theme.of(context).primaryColor,
                       itemHeight: 70.0,
                       hint: const Text(
                         '- Период за который требуется справка -',
-                        style: TextStyle(color: Colors.black),
                       ),
                       onChanged: (value) {
                         model.changePeriod(value);

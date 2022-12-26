@@ -40,7 +40,8 @@ class _OrderingInformationMainViewState
                   appBar: AppBar(
                     title: Text(
                       'Заказ справок',
-                      style: TextStyle(color: Colors.blueGrey.shade800),
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark),
                     ),
                     centerTitle: true,
                     shape: const RoundedRectangleBorder(
@@ -50,7 +51,6 @@ class _OrderingInformationMainViewState
                       statusBarColor: Colors.transparent,
                       statusBarIconBrightness: Brightness.dark,
                     ),
-                    backgroundColor: Colors.white,
                     shadowColor: Colors.black.withOpacity(0.2),
                     leading: IconButton(
                         onPressed: () {
@@ -129,7 +129,7 @@ Widget getListView(List<RequestReference> items) {
             margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
+                color: Theme.of(context).primaryColor,
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.4),
@@ -143,7 +143,8 @@ Widget getListView(List<RequestReference> items) {
                 expandedAlignment: Alignment.center,
                 title: Text(
                   'Справка №${index + 1}',
-                  style: const TextStyle(
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
                       fontFamily: "Ubuntu",
                       fontSize: 17,
                       fontWeight: FontWeight.bold),
@@ -154,30 +155,31 @@ Widget getListView(List<RequestReference> items) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        richText("Фамилия: ", "${item.lastName}"),
+                        richText("Фамилия: ", "${item.lastName}", context),
                         const SizedBox(height: 10),
-                        richText("Имя: ", "${item.firstName}"),
+                        richText("Имя: ", "${item.firstName}", context),
                         const SizedBox(height: 10),
-                        richText("Отчество: ", "${item.patronymic}"),
+                        richText("Отчество: ", "${item.patronymic}", context),
+                        const SizedBox(height: 10),
+                        richText("Название института: ",
+                            "${item.instituteName}", context),
+                        const SizedBox(height: 10),
+                        richText("Курс: ", "${item.courseNumber}", context),
+                        const SizedBox(height: 10),
+                        richText("Уровень образования: ",
+                            "${item.educationLevel}", context),
+                        const SizedBox(height: 10),
+                        richText("Группа: ", "${item.groupName}", context),
+                        const SizedBox(height: 10),
+                        richText("Форма обучения: ", "${item.basic}", context),
+                        const SizedBox(height: 10),
+                        richText("Период: ", "${item.period}", context),
+                        const SizedBox(height: 10),
+                        richText("Количество справок: ",
+                            "${item.countReferences}", context),
                         const SizedBox(height: 10),
                         richText(
-                            "Название института: ", "${item.instituteName}"),
-                        const SizedBox(height: 10),
-                        richText("Курс: ", "${item.courseNumber}"),
-                        const SizedBox(height: 10),
-                        richText(
-                            "Уровень образования: ", "${item.educationLevel}"),
-                        const SizedBox(height: 10),
-                        richText("Группа: ", "${item.groupName}"),
-                        const SizedBox(height: 10),
-                        richText("Форма обучения: ", "${item.basic}"),
-                        const SizedBox(height: 10),
-                        richText("Период: ", "${item.period}"),
-                        const SizedBox(height: 10),
-                        richText(
-                            "Количество справок: ", "${item.countReferences}"),
-                        const SizedBox(height: 10),
-                        richText("Дата запроса: ", "${item.requestDate}"),
+                            "Дата запроса: ", "${item.requestDate}", context),
                         const SizedBox(height: 10),
                       ],
                     ),
@@ -192,16 +194,20 @@ Widget getListView(List<RequestReference> items) {
   );
 }
 
-RichText richText(String title, String item) {
+RichText richText(String title, String item, context) {
   return RichText(
     text: TextSpan(
-      style: const TextStyle(fontSize: 16, color: Colors.black),
+      style: TextStyle(
+        fontSize: 16,
+        color: Theme.of(context).primaryColorDark,
+      ),
       children: <TextSpan>[
         TextSpan(text: title),
         TextSpan(
             text: item,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+                fontWeight: FontWeight.bold)),
       ],
     ),
   );

@@ -108,6 +108,7 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
         borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<AchieveCategoryModel>(
+          dropdownColor: Theme.of(context).primaryColor,
           isExpanded: true,
           value: model.chosenCategory,
           items: model.achieveCategories

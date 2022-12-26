@@ -43,7 +43,7 @@ customAppBar(context, model, name) {
   return AppBar(
     title: Text(
       name,
-      style: TextStyle(color: Colors.blueGrey.shade800),
+      // style: TextStyle(color: Colors.blueGrey.shade800),
     ),
     centerTitle: true,
     // actions: name == "Сообщения об ошибках"
@@ -68,7 +68,6 @@ customAppBar(context, model, name) {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
-    backgroundColor: Colors.white,
     shadowColor: Colors.black.withOpacity(0.2),
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||

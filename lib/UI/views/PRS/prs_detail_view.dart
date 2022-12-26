@@ -52,7 +52,9 @@ _prsDetailView(context, PRSViewModel model, reitList) {
       Padding(
           padding: const EdgeInsets.all(8.0),
           child: Table(
-            border: TableBorder.all(),
+            border: TableBorder.all(
+              color: Theme.of(context).canvasColor,
+            ),
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             defaultColumnWidth: const FlexColumnWidth(),
             children: [

@@ -181,7 +181,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
       ),
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
-          child: _choiceDay(model)),
+          child: _choiceDay(model, context)),
       Center(
           child: GestureDetector(
         onTap: () {
@@ -243,9 +243,9 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<FacultyList>(
+                dropdownColor: Theme.of(context).primaryColor,
                 hint: const Text(
                   'Выбрать институт',
-                  style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
                   model.changeFaculty(value);
@@ -269,9 +269,9 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<GroupList>(
+                dropdownColor: Theme.of(context).primaryColor,
                 hint: const Text(
                   'Выбрать группу',
-                  style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
                   model.changeGroup(value);
@@ -424,33 +424,36 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
             ),
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
-          child:
-              model.tableView == false ? const SizedBox() : _choiceDay(model))
+          child: model.tableView == false
+              ? const SizedBox()
+              : _choiceDay(model, context))
     ],
   );
 }
 
-_choiceDay(model) {
+_choiceDay(model, context) {
   if (model.indexDay == 1) {
-    return _tableDay1(model);
+    return _tableDay1(model, context);
   } else if (model.indexDay == 2) {
-    return _tableDay2(model);
+    return _tableDay2(model, context);
   } else if (model.indexDay == 3) {
-    return _tableDay3(model);
+    return _tableDay3(model, context);
   } else if (model.indexDay == 4) {
-    return _tableDay4(model);
+    return _tableDay4(model, context);
   } else if (model.indexDay == 5) {
-    return _tableDay5(model);
+    return _tableDay5(model, context);
   } else if (model.indexDay == 6) {
-    return _tableDay6(model);
+    return _tableDay6(model, context);
   } else if (model.indexDay == 7) {
     return _tableDay7();
   }
 }
 
-_tableDay1(NewScheduleViewModel model) {
+_tableDay1(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
@@ -658,9 +661,11 @@ _tableDay1(NewScheduleViewModel model) {
   );
 }
 
-_tableDay2(NewScheduleViewModel model) {
+_tableDay2(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
@@ -868,9 +873,11 @@ _tableDay2(NewScheduleViewModel model) {
   );
 }
 
-_tableDay3(NewScheduleViewModel model) {
+_tableDay3(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
@@ -1078,9 +1085,11 @@ _tableDay3(NewScheduleViewModel model) {
   );
 }
 
-_tableDay4(NewScheduleViewModel model) {
+_tableDay4(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
@@ -1288,9 +1297,11 @@ _tableDay4(NewScheduleViewModel model) {
   );
 }
 
-_tableDay5(NewScheduleViewModel model) {
+_tableDay5(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
@@ -1498,9 +1509,11 @@ _tableDay5(NewScheduleViewModel model) {
   );
 }
 
-_tableDay6(NewScheduleViewModel model) {
+_tableDay6(NewScheduleViewModel model, context) {
   return Table(
-    border: TableBorder.all(),
+    border: TableBorder.all(
+      color: Theme.of(context).canvasColor,
+    ),
     children: [
       const TableRow(children: [
         Padding(
