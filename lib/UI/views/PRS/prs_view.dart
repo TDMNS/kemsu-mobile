@@ -143,7 +143,10 @@ _prsView(context, PRSViewModel model) {
                                         )),
                               );
                             },
-                            icon: const Icon(Icons.saved_search))
+                            icon: Icon(
+                              Icons.saved_search,
+                              color: Theme.of(context).primaryColorDark,
+                            ))
                       ],
                     );
                   }),
