@@ -34,9 +34,11 @@ class _MainMenuState extends State<MainMenu> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Theme.of(context).primaryColor,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey.shade600, //<-- Unselected text
+            unselectedItemColor:
+                Theme.of(context).canvasColor, //<-- Unselected text
             type: BottomNavigationBarType.fixed,
             onTap: _onItemTapped,
             items: const <BottomNavigationBarItem>[

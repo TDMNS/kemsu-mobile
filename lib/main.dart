@@ -18,9 +18,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: !ProfileViewModel(context).darkTheme == true
-          ? lightThemeProperties
-          : darkThemeProperties,
+      themeMode: ThemeMode.system,
+      theme: MyThemes.lightTheme,
+      darkTheme: MyThemes.darkTheme,
       routes: {
         '/first': (context) => const NewsView(),
         '/second': (context) => const ProfileView(),

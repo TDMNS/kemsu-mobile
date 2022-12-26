@@ -60,10 +60,10 @@ _prsView(context, PRSViewModel model) {
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<StudyCard>(
+                dropdownColor: Theme.of(context).primaryColor,
                 itemHeight: 70.0,
                 hint: const Text(
                   '- Выбрать учебную карту -',
-                  style: TextStyle(color: Colors.black),
                 ),
                 onChanged: (value) {
                   model.changeCard(value);
@@ -85,7 +85,9 @@ _prsView(context, PRSViewModel model) {
           ? Padding(
               padding: const EdgeInsets.all(8.0),
               child: Table(
-                border: TableBorder.all(),
+                border: TableBorder.all(
+                  color: Theme.of(context).canvasColor,
+                ),
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                 defaultColumnWidth: const FlexColumnWidth(),
                 children: [

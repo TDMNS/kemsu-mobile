@@ -51,7 +51,9 @@ _prsDetailItemView(context, PRSViewModel model, reitItemList) {
       Padding(
           padding: const EdgeInsets.all(8.0),
           child: Table(
-            border: TableBorder.all(),
+            border: TableBorder.all(
+              color: Theme.of(context).canvasColor,
+            ),
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             defaultColumnWidth: const FlexColumnWidth(),
             children: [
@@ -81,10 +83,8 @@ _prsDetailItemView(context, PRSViewModel model, reitItemList) {
                   children: [
                     Text(
                       element.comment != null
-                          ?
-                      "${element.activityName} (${element.comment})"
-                          :
-                      "${element.activityName}",
+                          ? "${element.activityName} (${element.comment})"
+                          : "${element.activityName}",
                       textAlign: TextAlign.center,
                     ),
                     Text(

@@ -40,56 +40,58 @@ _debtsView(BuildContext context, DebtsViewModel model) {
         child: Expanded(
             child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
-          child: model.DebtsCourse.isNotEmpty ? DataTable(
-            columnSpacing: 0,
-            columns: const [
-              DataColumn(
-                label: Expanded(
-                    child: Text('Номер курса',
-                        textAlign: TextAlign.center, softWrap: true)),
-              ),
-              DataColumn(
-                label: Expanded(
-                    child: Text('Номер семестра',
-                        textAlign: TextAlign.center, softWrap: true)),
-              ),
-              DataColumn(
-                label: Expanded(
-                    child: Text('Дисциплина',
-                        textAlign: TextAlign.center, softWrap: true)),
-              ),
-              DataColumn(
-                label: Expanded(
-                    child: Text('Текущая оценка',
-                        textAlign: TextAlign.center, softWrap: true)),
-              ),
-            ],
-            rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
-                  DataCell(Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.COURSE.toString(),
-                          textAlign: TextAlign.center, softWrap: true))),
-                  DataCell(Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.SEMESTER.toString(),
-                          textAlign: TextAlign.center, softWrap: true))),
-                  DataCell(Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.DISCIPLINE.toString(),
-                          textAlign: TextAlign.center, softWrap: true))),
-                  DataCell(Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(e.OCENKA_SHORT.toString(),
-                          textAlign: TextAlign.center, softWrap: true))),
-                ])).toList(),
-            border: TableBorder.all(
-              color: Colors.black,
-              style: BorderStyle.solid,
-              width: 1.5,
-            ),
-            dataRowHeight: 80,
-            showCheckboxColumn: false,
-          ) : const Text("Долги отсутствуют"),
+          child: model.DebtsCourse.isNotEmpty
+              ? DataTable(
+                  columnSpacing: 0,
+                  columns: const [
+                    DataColumn(
+                      label: Expanded(
+                          child: Text('Номер курса',
+                              textAlign: TextAlign.center, softWrap: true)),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                          child: Text('Номер семестра',
+                              textAlign: TextAlign.center, softWrap: true)),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                          child: Text('Дисциплина',
+                              textAlign: TextAlign.center, softWrap: true)),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                          child: Text('Текущая оценка',
+                              textAlign: TextAlign.center, softWrap: true)),
+                    ),
+                  ],
+                  rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.COURSE.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.SEMESTER.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.DISCIPLINE.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.OCENKA_SHORT.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                      ])).toList(),
+                  border: TableBorder.all(
+                    color: Theme.of(context).canvasColor,
+                    style: BorderStyle.solid,
+                    width: 1.5,
+                  ),
+                  dataRowHeight: 80,
+                  showCheckboxColumn: false,
+                )
+              : const Text("Долги отсутствуют"),
         )),
       ),
     ],

@@ -47,8 +47,7 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
           child: DataTable(
             columns: [
               const DataColumn(label: Text('Название')),
-              const DataColumn(
-                  label: Text('Реш.')),
+              const DataColumn(label: Text('Реш.')),
               const DataColumn(
                   label: Expanded(
                       child: Text(
@@ -59,11 +58,10 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
               const DataColumn(
                   label: Expanded(
                       child: Text(
-                        'Макс. балл',
-                        softWrap: true,
-                      ))),
-              const DataColumn(
-                  label: Text('Рез.')),
+                'Макс. балл',
+                softWrap: true,
+              ))),
+              const DataColumn(label: Text('Рез.')),
               DataColumn(
                   label: GestureDetector(
                 onTap: () {
@@ -125,7 +123,7 @@ _iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
                     ))
                 .toList(),
             border: TableBorder.all(
-              color: Colors.black,
+              color: Theme.of(context).canvasColor,
               style: BorderStyle.solid,
               width: 1.5,
             ),

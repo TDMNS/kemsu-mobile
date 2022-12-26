@@ -50,7 +50,7 @@ _body(context, BugReportViewModel model) {
       const SizedBox(
         height: 34,
       ),
-      _errorMessagesTitle(),
+      _errorMessagesTitle(context),
       const SizedBox(
         height: 34,
       ),
@@ -59,19 +59,19 @@ _body(context, BugReportViewModel model) {
   );
 }
 
-_errorMessagesTitle() {
+_errorMessagesTitle(context) {
   return Padding(
     padding: const EdgeInsets.only(right: 20),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: const [
+      children: [
         Text(
           "Ваши обращения",
           style: TextStyle(
               fontSize: 24,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF5B5B7E)),
+              color: Theme.of(context).primaryColorDark),
         ),
       ],
     ),
@@ -103,15 +103,16 @@ _reportSpace(context, BugReportViewModel model) {
                       children: [
                         RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context).primaryColorDark),
                             children: <TextSpan>[
                               const TextSpan(text: 'Дата обращения: '),
                               TextSpan(
                                   text: model.reportList[index].messageDate
                                       .toString(),
-                                  style: const TextStyle(
-                                      color: Colors.black,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),

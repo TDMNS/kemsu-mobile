@@ -5,9 +5,14 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 import 'news_viewmodel.dart';
 
-class NewsView extends StatelessWidget {
+class NewsView extends StatefulWidget {
   const NewsView({Key? key}) : super(key: key);
 
+  @override
+  State<NewsView> createState() => _NewsViewState();
+}
+
+class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewsViewModel>.reactive(
@@ -27,15 +32,12 @@ class NewsView extends StatelessWidget {
                     currentFocus.unfocus();
                   }
                 },
-                child: WillPopScope(
-                  onWillPop: () async => false,
-                  child: Scaffold(
-                    extendBody: true,
-                    extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, 'Новости'),
-                    //bottomNavigationBar: customBottomBar(context, model),
-                    body: _newsView(context, model),
-                  ),
+                child: Scaffold(
+                  extendBody: true,
+                  extendBodyBehindAppBar: true,
+                  appBar: customAppBar(context, model, 'Новости'),
+                  //bottomNavigationBar: customBottomBar(context, model),
+                  body: _newsView(context, model),
                 ),
               ));
         });
@@ -45,20 +47,21 @@ class NewsView extends StatelessWidget {
 _newsView(context, NewsViewModel model) {
   return ListView(
     children: [
-      GestureDetector(
-        onTap: () {
-          model.messageService();
-        },
-        child: Container(
-          margin: EdgeInsets.only(left: 50, right: 50, top: 50),
-          height: 30,
-          width: 30,
-          color: Colors.amber,
-        ),
-      ),
+      // GestureDetector(
+      //   onTap: () {
+      //     model.messageService();
+      //   },
+      //   child: Container(
+      //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
+      //     height: 30,
+      //     width: 30,
+      //     color: Colors.amber,
+      //   ),
+      // ),
+
       ListView.builder(
           padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 150, bottom: 100),
+              const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
           shrinkWrap: true,
           physics: const ScrollPhysics(),
           itemCount: model.newsName.length,
@@ -70,7 +73,7 @@ _newsView(context, NewsViewModel model) {
               width: 200,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   boxShadow: [
                     BoxShadow(
                         color: Colors.grey.withOpacity(0.4),
@@ -96,8 +99,9 @@ _newsView(context, NewsViewModel model) {
                       Expanded(
                           child: Text(
                         model.newsName[index],
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColorDark),
                       ))
                     ],
                   ),
@@ -106,8 +110,8 @@ _newsView(context, NewsViewModel model) {
                       child: Text(
                         model.newsDate[index],
                         style: TextStyle(
-                            color: Colors.grey.withOpacity(0.5),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColorDark),
                       ))
                 ],
               ),

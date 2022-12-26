@@ -90,7 +90,7 @@ _iaisView(BuildContext context, IaisViewModel model) {
                       DataCell(Text(e.FIO.toString())),
                     ])).toList(),
             border: TableBorder.all(
-              color: Colors.black,
+              color: Theme.of(context).canvasColor,
               style: BorderStyle.solid,
               width: 1.5,
             ),
