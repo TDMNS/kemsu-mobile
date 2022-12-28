@@ -10,7 +10,7 @@ import '../../../API/config.dart';
 import '../auth/auth_view.dart';
 import '../iais/iais_view.dart';
 import '../debts/debts_view.dart';
-import '../checkList/check_list_view.dart';
+import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 

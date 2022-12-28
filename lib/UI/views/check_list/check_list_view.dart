@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './check_list_viewmodel.dart';
+import 'check_list_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -57,9 +57,10 @@ Widget getListView(List<CheckList> items) {
       final item = items[index];
       final departmentTitle = item.departmentTitle ?? '';
       final groupName = item.groupName ?? '';
+      final address = item.address ?? '';
       return ListTile(
           title: Text(departmentTitle),
-          subtitle: Text(groupName),
+          subtitle: Text(groupName + '\n' + address),
           trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red)
       );
     },

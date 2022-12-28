@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../checkList/check_list_model.dart';
+import 'check_list_model.dart';
 import 'dart:convert';
 
 class CheckListViewModel extends BaseViewModel {
@@ -29,7 +29,7 @@ class CheckListViewModel extends BaseViewModel {
       },
     );
     checkList = parseCheckList(json.decode(response.body)['checkList']);
-
+    print("Result: ${response.body}");
     notifyListeners();
   }
 }

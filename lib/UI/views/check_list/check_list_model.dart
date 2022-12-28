@@ -3,12 +3,14 @@ class CheckList {
   String? departmentTitle;
   String? debt;
   String? commentary;
+  String? address;
 
   CheckList({
     this.groupName,
     this.departmentTitle,
     this.debt,
-    this.commentary
+    this.commentary,
+    this.address
   });
 
   CheckList.fromJson(Map<String, dynamic> json) {
@@ -22,5 +24,6 @@ class CheckList {
     debt="";
     if (json["noDebtFlag"] == 1) debt = "Нет";
     if (json["debtFlag"] == 1) debt = "Есть";
+    address = json["address"];
   }
 }
