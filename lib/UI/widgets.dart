@@ -7,28 +7,12 @@ class EnumScreensWithoutPopArrow {
   static String get schedule => "Расписание";
 }
 
-errorDialog1(context) {
+errorDialog(context, textContent) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Ошибка'),
-      content: const Text('Требуется логин/пароль пользователя!'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-errorDialog2(context) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Ошибка'),
-      content: const Text('Некорректный логин/пароль пользователя!'),
+      content: Text(textContent),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
@@ -42,26 +26,9 @@ errorDialog2(context) {
 customAppBar(context, model, name) {
   return AppBar(
     title: Text(
-      name,
-      // style: TextStyle(color: Colors.blueGrey.shade800),
+      name
     ),
     centerTitle: true,
-    // actions: name == "Сообщения об ошибках"
-    //     ? null
-    //     : <Widget>[
-    //         IconButton(
-    //             onPressed: () {
-    //               Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                       builder: (context) => const NotificationView()));
-    //             },
-    //             icon: Icon(
-    //               Icons.notifications,
-    //               color: Colors.indigo.shade700,
-    //               size: 32,
-    //             )),
-    //       ],
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: const SystemUiOverlayStyle(

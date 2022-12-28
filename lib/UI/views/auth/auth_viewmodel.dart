@@ -43,8 +43,7 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void authButton(context) async {
-    AuthRoute route = AuthRoute(
-        login: loginController.text, password: passwordController.text);
+    AuthRoute route = AuthRoute(login: loginController.text, password: passwordController.text);
     NetworkResponse response = await _apiProvider.request(route);
     var dio = Dio();
 
@@ -55,7 +54,7 @@ class AuthViewModel extends BaseViewModel {
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
     userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
-    print('Type: $userProfile');
+
     await storage.write(key: "tokenKey", value: response.data['accessToken']);
     await storage.write(key: "login", value: loginController.text);
     await storage.write(key: "password", value: passwordController.text);
@@ -66,18 +65,22 @@ class AuthViewModel extends BaseViewModel {
     middleName = userData['middleName'];
     fio = ('$lastName $firstName $middleName');
     await storage.write(key: "FIO", value: fio);
-    if (response.statusCode == 400) {
-      errorDialog1(context);
-    } else if (response.statusCode == 401) {
-      errorDialog2(context);
-    } else if (response.statusCode == 200) {
+
+    if (response.statusCode == 200) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => MainMenu(
-                    type: userProfile,
-                  )));
+                type: userProfile,
+              )));
+    } else if (response.statusCode == 400) {
+      print("Hello world1");
+      errorDialog(context, 'Требуется логин/пароль пользователя!');
+    } else if (response.statusCode == 401) {
+      print("Hello world2");
+      errorDialog(context, 'Некорректный логин/пароль пользователя!');
     }
+
     notifyListeners();
   }
 
