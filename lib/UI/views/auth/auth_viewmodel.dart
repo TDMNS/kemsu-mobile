@@ -74,10 +74,8 @@ class AuthViewModel extends BaseViewModel {
                 type: userProfile,
               )));
     } else if (response.statusCode == 400) {
-      print("Hello world1");
       errorDialog(context, 'Требуется логин/пароль пользователя!');
     } else if (response.statusCode == 401) {
-      print("Hello world2");
       errorDialog(context, 'Некорректный логин/пароль пользователя!');
     }
 
