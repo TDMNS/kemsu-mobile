@@ -174,36 +174,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
             ))
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
-          ? Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      orderInfo(context, model);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 200,
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 20,
-                            offset: const Offset(0, 15))
-                      ]),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          'Подать заявку',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )),
-                      ),
-                    ),
-                  )),
-            )
+          ? applyButton(context, model)
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
@@ -249,38 +220,41 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) &&
               model.selectedPeriod == model.lastParagraph
-          ? Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      orderInfo(context, model);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 200,
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 20,
-                            offset: const Offset(0, 15))
-                      ]),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          'Подать заявку',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        )),
-                      ),
-                    ),
-                  )),
-            )
-          : const SizedBox.shrink(),
+          ? applyButton(context, model)
+          : const SizedBox.shrink()
     ],
+  );
+}
+
+Center applyButton(context, OrderingInformationViewModel model) {
+  return Center(
+    child: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: GestureDetector(
+          onTap: () {
+            orderInfo(context, model);
+          },
+          child: Container(
+            height: 50,
+            width: 200,
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 20,
+                  offset: const Offset(0, 15))
+            ]),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const Center(
+                  child: Text(
+                'Подать заявку',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              )),
+            ),
+          ),
+        )),
   );
 }
 
@@ -288,8 +262,11 @@ orderInfo(context, OrderingInformationViewModel model) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: const Text('Готово'),
-      content: const Text('Справку можно забрать:'),
+      title: const Text('Заявка успешно создана!'),
+      content: const Text('Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+          ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
+          'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
+          'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.'),
       actions: <Widget>[
         TextButton(
           onPressed: () {
