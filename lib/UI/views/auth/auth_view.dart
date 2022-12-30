@@ -23,11 +23,10 @@ class AuthView extends StatelessWidget {
                     Theme.of(context).primaryColor == Colors.grey.shade900
                         ? Brightness.light
                         : Brightness.dark,
-              ), //прозрачность statusbar и установка тёмных иконок
+              ),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context);
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }

@@ -1,15 +1,11 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/API/config.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../API/api_provider.dart';
-import '../../../API/network_response.dart';
-import '../../../API/routes/auth_route.dart';
 import '../../menu.dart';
 import '../../widgets.dart';
 import 'auth_view.dart';
@@ -25,7 +21,6 @@ class AuthViewModel extends BaseViewModel {
   String middleName = '';
   bool rememberMe = false;
   final storage = const FlutterSecureStorage();
-  final ApiProvider _apiProvider = ApiProvider();
 
   Future onReady() async {
     String? login = await storage.read(key: "login");
