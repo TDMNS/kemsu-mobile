@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/API/config.dart';
 import 'package:stacked/stacked.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../API/api_provider.dart';
 import '../../../API/network_response.dart';
@@ -43,41 +46,53 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void authButton(context) async {
-    AuthRoute route = AuthRoute(
-        login: loginController.text, password: passwordController.text);
-    NetworkResponse response = await _apiProvider.request(route);
+    // AuthRoute route = AuthRoute(
+    //     login: loginController.text, password: passwordController.text);
+    // NetworkResponse response = await _apiProvider.request(route);
     var dio = Dio();
 
-    final responseAuth = await dio.post(Config.apiHost, data: {
+    final teeest = await http.post(Uri.parse(Config.apiHost), body: {
       "login": loginController.text,
       "password": passwordController.text
     });
-    var userData = responseAuth.data['userInfo'];
-    userType = userData["userType"];
-    userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
-    print('Type: $userProfile');
-    await storage.write(key: "tokenKey", value: response.data['accessToken']);
-    await storage.write(key: "login", value: loginController.text);
-    await storage.write(key: "password", value: passwordController.text);
-    await storage.write(key: "userType", value: userType);
+    final tempToken = json.decode(teeest.body)['accessToken'];
 
-    lastName = userData['lastName'];
-    firstName = userData['firstName'];
-    middleName = userData['middleName'];
-    fio = ('$lastName $firstName $middleName');
-    await storage.write(key: "FIO", value: fio);
-    if (response.statusCode == 400) {
-      errorDialog1(context);
-    } else if (response.statusCode == 401) {
-      errorDialog2(context);
-    } else if (response.statusCode == 200) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MainMenu(
-                    type: userProfile,
-                  )));
+    // final responseAuth = await dio.post(Config.apiHost, data: {
+    //   "login": loginController.text,
+    //   "password": passwordController.text
+    // });
+    print('STATUS: ${teeest.body}');
+
+    if (teeest.statusCode == 200) {
+      var userData = json.decode(teeest.body)['userInfo'];
+      userType = userData["userType"];
+      userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
+      print('Type: $userProfile');
+      await storage.write(key: "tokenKey", value: tempToken);
+      await storage.write(key: "login", value: loginController.text);
+      await storage.write(key: "password", value: passwordController.text);
+      await storage.write(key: "userType", value: userType);
+
+      lastName = userData['lastName'];
+      firstName = userData['firstName'];
+      middleName = userData['middleName'];
+      fio = ('$lastName $firstName $middleName');
+      await storage.write(key: "FIO", value: fio);
     }
+
+    teeest.statusCode == 400
+        ? errorDialog1(context)
+        : teeest.statusCode == 401
+            ? errorDialog2(context)
+            : teeest.statusCode == 200
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainMenu(
+                              type: userProfile,
+                            )))
+                : null;
+
     notifyListeners();
   }
 

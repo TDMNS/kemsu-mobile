@@ -51,7 +51,8 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
-                        appBar: customAppBar(context, model, 'Расписание преподавателя'),
+                        appBar: customAppBar(
+                            context, model, 'Расписание преподавателя'),
                         //bottomNavigationBar: customBottomBar(context, model),
                         body: _prepSchedule(context, model)),
               ));
@@ -218,7 +219,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                       ),
                     ),
                   )
-                : _choiceDay(model),
+                : _choiceDay(model, context),
       ),
       const SizedBox(
         height: 50,
@@ -227,25 +228,25 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
   );
 }
 
-_choiceDay(model) {
+_choiceDay(model, context) {
   if (model.indexDay == 1) {
-    return _mondayTable(model);
+    return _mondayTable(model, context);
   } else if (model.indexDay == 2) {
-    return _tuesdayTable(model);
+    return _tuesdayTable(model, context);
   } else if (model.indexDay == 3) {
-    return _wednesdayTable(model);
+    return _wednesdayTable(model, context);
   } else if (model.indexDay == 4) {
-    return _thursdayTable(model);
+    return _thursdayTable(model, context);
   } else if (model.indexDay == 5) {
-    return _fridayTable(model);
+    return _fridayTable(model, context);
   } else if (model.indexDay == 6) {
-    return _saturdayTable(model);
+    return _saturdayTable(model, context);
   } else if (model.indexDay == 7) {
     return _tableDay7(model);
   }
 }
 
-_mondayTable(PrepScheduleViewModel model) {
+_mondayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -256,7 +257,9 @@ _mondayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(
@@ -523,7 +526,7 @@ _mondayTable(PrepScheduleViewModel model) {
         );
 }
 
-_tuesdayTable(PrepScheduleViewModel model) {
+_tuesdayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -534,7 +537,9 @@ _tuesdayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(
@@ -801,7 +806,7 @@ _tuesdayTable(PrepScheduleViewModel model) {
         );
 }
 
-_wednesdayTable(PrepScheduleViewModel model) {
+_wednesdayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -812,7 +817,9 @@ _wednesdayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(
@@ -1079,7 +1086,7 @@ _wednesdayTable(PrepScheduleViewModel model) {
         );
 }
 
-_thursdayTable(PrepScheduleViewModel model) {
+_thursdayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -1090,7 +1097,9 @@ _thursdayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(
@@ -1357,7 +1366,7 @@ _thursdayTable(PrepScheduleViewModel model) {
         );
 }
 
-_fridayTable(PrepScheduleViewModel model) {
+_fridayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -1368,7 +1377,9 @@ _fridayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(
@@ -1635,7 +1646,7 @@ _fridayTable(PrepScheduleViewModel model) {
         );
 }
 
-_saturdayTable(PrepScheduleViewModel model) {
+_saturdayTable(PrepScheduleViewModel model, context) {
   return model.circle
       ? Container(
           color: Colors.white,
@@ -1646,7 +1657,9 @@ _saturdayTable(PrepScheduleViewModel model) {
           ),
         )
       : Table(
-          border: TableBorder.all(),
+          border: TableBorder.all(
+            color: Theme.of(context).canvasColor,
+          ),
           children: [
             const TableRow(children: [
               Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 
@@ -7,6 +8,7 @@ class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
+  static String get prepSchedule => "Расписание преподавателя";
 }
 
 errorDialog1(context) {
@@ -41,11 +43,13 @@ errorDialog2(context) {
   );
 }
 
+const storage = FlutterSecureStorage();
+
 customAppBar(context, model, name) {
   return AppBar(
     title: Text(
       name,
-      // style: TextStyle(color: Colors.blueGrey.shade800),
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
     // actions: name == "Сообщения об ошибках"
@@ -66,14 +70,18 @@ customAppBar(context, model, name) {
     //       ],
     shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
-    systemOverlayStyle: const SystemUiOverlayStyle(
+    systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness:
+          Theme.of(context).primaryColor == Colors.grey.shade900
+              ? Brightness.light
+              : Brightness.dark,
     ),
     shadowColor: Colors.black.withOpacity(0.2),
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||
-            name == EnumScreensWithoutPopArrow.schedule
+            name == EnumScreensWithoutPopArrow.schedule ||
+            name == EnumScreensWithoutPopArrow.prepSchedule
         ? Container()
         : IconButton(
             onPressed: () {

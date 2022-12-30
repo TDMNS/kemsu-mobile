@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
+import 'package:snowfall/snowfall/snowfall_widget.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({Key? key}) : super(key: key);
@@ -20,11 +21,16 @@ class _MyHomePageState extends State<LoadingView>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: const Color.fromRGBO(239, 239, 239, 1),
-      child: Image.asset(
-        'images/1.gif',
-        scale: 2.5,
+    return SnowfallWidget(
+      numberOfSnowflakes: 15,
+      alpha: 25,
+      color: Theme.of(context).primaryColorDark,
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Image.asset(
+          'images/splash_logo_xmas.png',
+          scale: 2.5,
+        ),
       ),
     );
   }
