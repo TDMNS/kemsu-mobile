@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/API/config.dart';
 import 'package:stacked/stacked.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../API/api_provider.dart';
 import '../../../API/network_response.dart';
@@ -43,42 +46,45 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void authButton(context) async {
-    AuthRoute route = AuthRoute(login: loginController.text, password: passwordController.text);
-    NetworkResponse response = await _apiProvider.request(route);
-    var dio = Dio();
-
-    final responseAuth = await dio.post(Config.apiHost, data: {
+    final response = await http.post(Uri.parse(Config.apiHost), body: {
       "login": loginController.text,
       "password": passwordController.text
     });
-    var userData = responseAuth.data['userInfo'];
-    userType = userData["userType"];
-    userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
-
-    await storage.write(key: "tokenKey", value: response.data['accessToken']);
-    await storage.write(key: "login", value: loginController.text);
-    await storage.write(key: "password", value: passwordController.text);
-    await storage.write(key: "userType", value: userType);
-
-    lastName = userData['lastName'];
-    firstName = userData['firstName'];
-    middleName = userData['middleName'];
-    fio = ('$lastName $firstName $middleName');
-    await storage.write(key: "FIO", value: fio);
+    final tempToken = json.decode(response.body)['accessToken'];
 
     if (response.statusCode == 200) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MainMenu(
-                type: userProfile,
-              )));
-    } else if (response.statusCode == 400) {
-      errorDialog(context, 'Требуется логин/пароль пользователя!');
-    } else if (response.statusCode == 401) {
-      errorDialog(context, 'Некорректный логин/пароль пользователя!');
+      var userData = json.decode(response.body)['userInfo'];
+      userType = userData["userType"];
+      userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
+
+      await storage.write(key: "tokenKey", value: tempToken);
+      await storage.write(key: "login", value: loginController.text);
+      await storage.write(key: "password", value: passwordController.text);
+      await storage.write(key: "userType", value: userType);
+
+      lastName = userData['lastName'];
+      firstName = userData['firstName'];
+      middleName = userData['middleName'];
+      fio = ('$lastName $firstName $middleName');
+      await storage.write(key: "FIO", value: fio);
     }
 
+    switch (response.statusCode) {
+      case 200:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MainMenu(
+                      type: userProfile,
+                    )));
+        break;
+      case 400:
+        errorDialog(context, 'Требуется логин/пароль пользователя!');
+        break;
+      case 401:
+        errorDialog(context, 'Некорректный логин/пароль пользователя!');
+        break;
+    }
     notifyListeners();
   }
 

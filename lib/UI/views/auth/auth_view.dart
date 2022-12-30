@@ -17,10 +17,13 @@ class AuthView extends StatelessWidget {
         viewModelBuilder: () => AuthViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark),
+              value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness:
+                    Theme.of(context).primaryColor == Colors.grey.shade900
+                        ? Brightness.light
+                        : Brightness.dark,
+              ), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(
@@ -43,10 +46,15 @@ _authView(BuildContext context, AuthViewModel model) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      Image.asset(
-        'images/kemsu_logo.png',
-        height: 120,
-      ),
+      Theme.of(context).primaryColor == Colors.grey.shade900
+          ? Image.asset(
+              'images/logo_dark.png',
+              height: 120,
+            )
+          : Image.asset(
+              'images/logo_light.png',
+              height: 120,
+            ),
       const SizedBox(height: 50),
       Container(
         margin: const EdgeInsets.only(right: 30, left: 30, bottom: 30, top: 8),
@@ -54,7 +62,9 @@ _authView(BuildContext context, AuthViewModel model) {
         child: TextFormField(
           decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(left: 15, top: 15),
-              suffixIcon: Icon(Icons.person),
+              suffixIcon: Icon(
+                Icons.person,
+              ),
               focusColor: Colors.black,
               hintText: 'Логин',
               hintStyle: TextStyle(
@@ -62,9 +72,7 @@ _authView(BuildContext context, AuthViewModel model) {
                   color: Colors.grey,
                   fontWeight: FontWeight.bold)),
           style: const TextStyle(
-              fontFamily: "Ubuntu",
-              color: Color.fromRGBO(91, 91, 126, 1),
-              fontWeight: FontWeight.bold),
+              fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
           controller: loginController,
         ),
       ),
@@ -86,7 +94,9 @@ _authView(BuildContext context, AuthViewModel model) {
                               ? Icons.remove_red_eye
                               : Icons.remove_red_eye_outlined))
                       : const SizedBox(),
-                  const Icon(Icons.vpn_key),
+                  const Icon(
+                    Icons.vpn_key,
+                  ),
                   const SizedBox(width: 5)
                 ],
               ),
@@ -95,12 +105,10 @@ _authView(BuildContext context, AuthViewModel model) {
               hintStyle: const TextStyle(
                   letterSpacing: 5.0,
                   fontFamily: "Ubuntu",
-                  color: Color.fromRGBO(91, 91, 126, 1),
                   fontWeight: FontWeight.bold)),
           style: const TextStyle(
               letterSpacing: 5.0,
               fontFamily: "Ubuntu",
-              color: Color.fromRGBO(91, 91, 126, 1),
               fontWeight: FontWeight.bold),
           controller: passwordController,
           obscureText: model.isObscure,

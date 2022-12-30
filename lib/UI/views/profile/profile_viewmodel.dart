@@ -127,11 +127,13 @@ class ProfileViewModel extends BaseViewModel {
     final responseAuth = await dio
         .post(Config.apiHost, data: {"login": login, "password": password});
     print('Code: ${responseAuth.statusCode}');
+    print('Reponse: ${responseAuth.data}');
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
-    email = userData["email"];
-    phone = userData["phone"];
+
+    userData["email"] != null ? email = userData["email"] : email = '';
+    userData["phone"] != null ? phone = userData["phone"] : phone = '';
     String emailTemp = email;
     String phoneTemp = phone;
     emailController?.text = emailTemp;

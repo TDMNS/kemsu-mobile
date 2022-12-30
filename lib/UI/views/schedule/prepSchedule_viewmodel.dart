@@ -76,6 +76,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     //choiceTeacher = value;
     var dio = Dio();
     teacherFIO = data;
+    teacherId = 0;
     //print('Data FIO: ${teacherList[0].prepId}');
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherFIO == teacherList[i].fio) {
@@ -83,7 +84,7 @@ class PrepScheduleViewModel extends BaseViewModel {
       }
     }
     circle = true;
-    print('WTF: $currentTeacherID');
+    print('WTF: $teacherId');
     String? token = await storage.read(key: "tokenKey");
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
@@ -127,6 +128,9 @@ class PrepScheduleViewModel extends BaseViewModel {
   getTeacher() async {
     String? token = await storage.read(key: "tokenKey");
     String? fio = await storage.read(key: "FIO");
+    int? type;
+    String? userTypeTemp = await storage.read(key: "userType");
+    userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
 
     var response2 = await http
         .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
@@ -145,9 +149,10 @@ class PrepScheduleViewModel extends BaseViewModel {
       }
     }
     print('FIO: $fio');
-    changeTeacher(fio);
+    print('AAAA: ${response.body}');
+    type == 0 ? changeTeacher(teacherFIO) : changeTeacher(fio);
 
-    //circle = false;
+    circle = false;
     notifyListeners();
   }
 

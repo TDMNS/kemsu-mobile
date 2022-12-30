@@ -58,13 +58,12 @@ _newsView(context, NewsViewModel model) {
       //     color: Colors.amber,
       //   ),
       // ),
-
       ListView.builder(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
           shrinkWrap: true,
           physics: const ScrollPhysics(),
-          itemCount: model.newsName.length,
+          itemCount: model.tempData != null ? model.tempData!.length : 1,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               margin: const EdgeInsets.only(bottom: 20),
@@ -87,32 +86,27 @@ _newsView(context, NewsViewModel model) {
                       Container(
                         height: 120,
                         width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            image: DecorationImage(
-                                image: AssetImage(model.newsPhoto[index]),
-                                fit: BoxFit.cover)),
+                        child: model.tgImage != null
+                            ? Image.memory(
+                                Uint8List.fromList(model.tgImage!),
+                                width: 250,
+                                height: 250,
+                                fit: BoxFit.contain,
+                              )
+                            : Container(),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                           child: Text(
-                        model.newsName[index],
+                        model.textList[index],
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColorDark),
                       ))
                     ],
                   ),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        model.newsDate[index],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColorDark),
-                      ))
                 ],
               ),
             );
