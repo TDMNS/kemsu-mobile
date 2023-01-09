@@ -21,16 +21,11 @@ class _MyHomePageState extends State<LoadingView>
 
   @override
   Widget build(BuildContext context) {
-    return SnowfallWidget(
-      numberOfSnowflakes: 15,
-      alpha: 25,
-      color: Theme.of(context).primaryColorDark,
-      child: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: Image.asset(
-          'images/splash_logo_xmas.png',
-          scale: 2.5,
-        ),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Image.asset(
+        'images/splash_logo.png',
+        scale: 2.5,
       ),
     );
   }

@@ -172,7 +172,8 @@ class _ProfileViewState extends State<ProfileView> {
                           avatarChoice(context, model);
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 10),
+                          margin: const EdgeInsets.only(
+                              top: 10, bottom: 10, left: 10),
                           width: 100,
                           height: 100,
                           child: model.file != null
