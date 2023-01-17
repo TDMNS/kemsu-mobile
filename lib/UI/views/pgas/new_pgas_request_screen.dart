@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../widgets.dart';
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
 import 'new_pgas_request_viewmodel.dart';
@@ -20,31 +21,11 @@ class NewPgasRequestScreen extends StatelessWidget {
         onModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-              body: NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) =>
-                [_appBar(context, model)],
+            appBar: customAppBar(context, model, "Новая заявка"),
             body: _body(context, model),
-          ));
+          );
         });
   }
-}
-
-_appBar(context, model) {
-  return SliverAppBar(
-    floating: true,
-    snap: true,
-    leading: IconButton(
-      icon: const Icon(Icons.arrow_back_outlined),
-      color: Colors.black,
-      onPressed: () async {
-        Navigator.pop(context);
-      },
-      iconSize: 32,
-    ),
-    elevation: 0,
-    backgroundColor: Colors.transparent,
-  );
 }
 
 _body(context, NewPgasRequestViewModel model) {

@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/model/achieve_category.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
 import 'package:kemsu_app/UI/views/pgas/model/year.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_viewmodel.dart';
 import 'package:stacked/stacked.dart';
+import '../../widgets.dart';
 
 class NewAchievePgasScreen extends StatelessWidget {
   const NewAchievePgasScreen({Key? key}) : super(key: key);
@@ -16,31 +16,11 @@ class NewAchievePgasScreen extends StatelessWidget {
         onModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-              body: NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) =>
-                [_appBar(context, model)],
+            appBar: customAppBar(context, model, "Прикрепление"),
             body: _body(context, model),
-          ));
+          );
         });
   }
-}
-
-_appBar(context, model) {
-  return SliverAppBar(
-    floating: true,
-    snap: true,
-    leading: IconButton(
-      icon: const Icon(Icons.arrow_back_outlined),
-      color: Colors.black,
-      onPressed: () async {
-        Navigator.pop(context);
-      },
-      iconSize: 32,
-    ),
-    elevation: 0,
-    backgroundColor: Colors.transparent,
-  );
 }
 
 _body(context, NewAchievePgasViewModel model) {

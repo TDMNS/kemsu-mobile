@@ -4,6 +4,7 @@ import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../widgets.dart';
 import 'pgas_detail_viewmodel.dart';
 
 class PgasDetailScreenRoute extends MaterialPageRoute {
@@ -21,34 +22,11 @@ class PgasDetailScreen extends StatelessWidget {
         onModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: _appBar(context, model),
+            appBar: customAppBar(context, model, "Достижения"),
             body: _body(context, model),
           );
         });
   }
-}
-
-_appBar(context, PgasDetailViewModel model) {
-  return AppBar(
-    leading: IconButton(
-      icon: const Icon(Icons.arrow_back_outlined),
-      color: Colors.black,
-      onPressed: () {
-        model.goToPgasRequestList(context);
-      },
-      iconSize: 32,
-    ),
-    elevation: 0,
-    actions: [
-      IconButton(
-          onPressed: () {
-            model.goToPgasRequestInfoScreen(context);
-          },
-          icon: _gradientIcon(
-              Icons.more_horiz, const Color(0xFF00C2FF), Colors.blueAccent))
-    ],
-    backgroundColor: Colors.transparent,
-  );
 }
 
 _body(context, PgasDetailViewModel model) {
