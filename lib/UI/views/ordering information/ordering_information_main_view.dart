@@ -37,36 +37,8 @@ class _OrderingInformationMainViewState
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: AppBar(
-                    title: Text(
-                      'Заказ справок',
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorDark),
-                    ),
-                    centerTitle: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(bottom: Radius.circular(20))),
-                    systemOverlayStyle: const SystemUiOverlayStyle(
-                      statusBarColor: Colors.transparent,
-                      statusBarIconBrightness: Brightness.dark,
-                    ),
-                    shadowColor: Colors.black.withOpacity(0.2),
-                    leading: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MainMenu(type: model.type!)),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_outlined,
-                          color: Colors.indigo.shade700,
-                        )),
-                  ),
-                  body: _orderingInformationView(context, model),
+                  appBar: customAppBar(context, model, 'Заказ справок'),
+                  body: _orderingInformationView(context, model)
                 ),
               ));
         });
