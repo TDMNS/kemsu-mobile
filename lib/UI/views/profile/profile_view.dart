@@ -525,47 +525,96 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              settings: const RouteSettings(name: "PgasList"),
-                              builder: (context) => const PgasScreen()));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 30),
-                      height: 100,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Theme.of(context).primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15))
-                          ]),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'images/icons/Invoice.png',
-                            scale: 4,
+                  model.userType == EnumUserType.student
+                      ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    settings:
+                                        const RouteSettings(name: "PgasList"),
+                                    builder: (context) => const PgasScreen()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 30),
+                            height: 100,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Theme.of(context).primaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 15))
+                                ]),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'images/icons/Invoice.png',
+                                  scale: 4,
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'ПГАС',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                )
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'ПГАС',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const IaisView()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 30),
+                            height: 100,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Theme.of(context).primaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 15))
+                                ]),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'images/icons/Book.png',
+                                  scale: 4,
+                                ),
+                                const SizedBox(height: 10),
+                                const Center(
+                                  child: Text(
+                                    'ИнфОУПро',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
-              const SizedBox(height: 30),
+              model.userType == EnumUserType.student
+                  ? const SizedBox(height: 30)
+                  : const SizedBox(height: 70),
+              model.userType == EnumUserType.student
+                  ?
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -648,8 +697,11 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 30),
+              ) : const SizedBox.shrink(),
+              model.userType == EnumUserType.student
+                  ? const SizedBox(height: 30)
+                  : const SizedBox.shrink(),
+              model.userType == EnumUserType.student ?
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 GestureDetector(
                   onTap: () {
@@ -730,7 +782,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                 ),
-              ]),
+              ]) : const SizedBox.shrink(),
               model.userType == EnumUserType.student
                   ? const SizedBox(height: 30)
                   : const SizedBox.shrink(),
@@ -781,56 +833,6 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                             ),
                           ),
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     // model.darkTheme == false
-                          //     //     ? model.changeTheme(true)
-                          //     //     : model.changeTheme(false);
-                          //     setState(() {
-                          //       model.darkTheme == false
-                          //           ? model.darkTheme = true
-                          //           : model.darkTheme = false;
-                          //     });
-                          //     print('VALUE: ${model.darkTheme}');
-                          //   },
-                          //   child: Container(
-                          //     margin: const EdgeInsets.only(right: 30),
-                          //     height: 100,
-                          //     width: 130,
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(30),
-                          //         color: Colors.white,
-                          //         boxShadow: [
-                          //           BoxShadow(
-                          //               color: Colors.grey.withOpacity(0.4),
-                          //               blurRadius: 15,
-                          //               offset: const Offset(0, 15))
-                          //         ]),
-                          //     child: Column(
-                          //       mainAxisAlignment: MainAxisAlignment.center,
-                          //       children: const <Widget>[
-                          //         // Image.asset(
-                          //         //   'images/icons/money.png',
-                          //         //   scale: 4,
-                          //         // ),
-                          //         Icon(
-                          //           Icons.dark_mode,
-                          //           size: 35,
-                          //         ),
-                          //         SizedBox(height: 10),
-                          //         Center(
-                          //           child: Text(
-                          //             'Темная тема (beta)',
-                          //             style: TextStyle(
-                          //                 fontWeight: FontWeight.bold,
-                          //                 fontSize: 16),
-                          //             textAlign: TextAlign.center,
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
                         ])
                   : const SizedBox.shrink(),
             ],
