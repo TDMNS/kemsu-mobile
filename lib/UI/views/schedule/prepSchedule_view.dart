@@ -1,10 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_viewmodel.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_viewmodel.dart';
 
 import 'package:stacked/stacked.dart';
 
@@ -30,11 +27,11 @@ class _ScheduleViewState extends State<PrepScheduleView> {
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                      .dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                      context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -82,9 +79,38 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           //asyncItems: (String filter) => getData(filter),
           items: model.teacherList.map((e) => e.fio).toList(),
           //itemAsString: (Teacher t) => t.fio,
-          onChanged: (value) => {print(value), model.changeTeacher(value)},
+          onChanged: (value) => { model.changeTeacher(value) },
         ),
       ),
+      Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: GestureDetector(
+            onTap: () {
+              model.getTeacher();
+              model.changeTeacher("");
+              model.notifyListeners();
+            },
+            child: Container(
+              height: 50,
+              width: 200,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    offset: const Offset(0, 15))
+              ]),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: const Center(
+                    child: Text(
+                      'Сбросить',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    )),
+              ),
+            ),
+          )),
       model.teacherId != 0
           ? Center(
               child: Padding(
@@ -185,7 +211,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                     groupValue: model.weekId,
                     onChanged: (value) {
                       model.changeWeek(value);
-                      print(model.weekId);
                     },
                   ),
                 ),
@@ -199,7 +224,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                       groupValue: model.weekId,
                       onChanged: (value) {
                         model.changeWeek(value);
-                        print(model.weekId);
                       },
                     ),
                   ),
