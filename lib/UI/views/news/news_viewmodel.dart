@@ -10,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
+import 'package:video_player/video_player.dart';
 
 import '../../../API/config.dart';
 
@@ -21,7 +22,10 @@ class NewsViewModel extends BaseViewModel {
   int selectedIndex = 0;
   int newsLimit = 10;
   bool showNews = false;
+  bool fileLoader = false;
+  int newsIndex = 0;
   var imageTG;
+  String? mimeType;
   List<dynamic>? tempData;
   List<dynamic>? imageFromTG;
   File? file;
@@ -29,9 +33,17 @@ class NewsViewModel extends BaseViewModel {
   List<String> textList = [];
   List<IconData> newsIcons = [];
   final player = AudioPlayer();
+  Uint8List? tempSound;
+  Uint8List? tempPic;
+  late VideoPlayerController _controller;
 
   void onTapBottomBar(int index) {
     selectedIndex = index;
+    notifyListeners();
+  }
+
+  void fileLoaderChange(value) {
+    fileLoader = value;
     notifyListeners();
   }
 
@@ -40,6 +52,8 @@ class NewsViewModel extends BaseViewModel {
   }
 
   void testMessage(index) async {
+    mimeType = null;
+
     String? partialFileUrl;
     var dio = Dio();
     String? token = await storage.read(key: 'tokenKey');
@@ -57,12 +71,26 @@ class NewsViewModel extends BaseViewModel {
       //         'MESSAGE:: ${tempData![i][0]['message']}, DATA:: ${temp['mimeType']}')
       //     : print('MESSAGE:: ${tempData![i][0]['message']}');
     }
-    print(tempData![index][0]);
-    getAudio(partialFileUrl);
+    print(tempData![index][0]['file']['mimeType']);
+    if (tempData![index][0]['file'] != null) {
+      mimeType = tempData![index][0]['file']['mimeType'];
+      if (mimeType == 'image/jpeg') {
+        getPicture(partialFileUrl);
+      } else if (mimeType == 'audio/mpeg') {
+        getAudio(partialFileUrl);
+      }
+    } else {
+      mimeType = null;
+    }
+    notifyListeners();
+  }
+
+  changeIndex(index) {
+    newsIndex = index;
+    notifyListeners();
   }
 
   getAudio(partialFileUrl) async {
-    var dio = Dio();
     String? token = await storage.read(key: 'tokenKey');
     String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
 
@@ -70,13 +98,31 @@ class NewsViewModel extends BaseViewModel {
 
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token!});
-    var tempSound = getFile.bodyBytes;
+    tempSound = getFile.bodyBytes;
     print(tempSound);
-    await player.play(BytesSource(tempSound));
   }
 
-  getPicture() async {}
+  getPicture(partialFileUrl) async {
+    String? token = await storage.read(key: 'tokenKey');
+    String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
+
+    Map<String, dynamic> map = {'x-access-token': token};
+
+    final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
+        headers: {'x-access-token': token!});
+    tempPic = getFile.bodyBytes;
+    fileLoader = false;
+    notifyListeners();
+  }
+
   getVideo() async {}
+
+  void openNewsCard() async {}
+
+  void newsOnOff(value) async {
+    showNews = value;
+    notifyListeners();
+  }
 
   String getTimeStringFromDouble(int value) {
     if (value < 0) return 'Invalid Value';

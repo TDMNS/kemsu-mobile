@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
@@ -45,83 +46,216 @@ class _NewsViewState extends State<NewsView> {
 }
 
 _newsView(context, NewsViewModel model) {
-  return ListView(
+  return Stack(
     children: [
-      // GestureDetector(
-      //   onTap: () {
-      //     model.messageService();
-      //   },
-      //   child: Container(
-      //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
-      //     height: 30,
-      //     width: 30,
-      //     color: Colors.amber,
-      //   ),
-      // ),
-      ListView.builder(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
-          shrinkWrap: true,
-          physics: const ScrollPhysics(),
-          itemCount: model.textList.length,
-          reverse: true,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              padding: const EdgeInsets.all(10),
-              width: 100,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Theme.of(context).primaryColor,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).primaryColorLight,
-                        blurRadius: 15,
-                        offset: const Offset(0, 15)),
-                  ]),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      model.testMessage(index);
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: Icon(
-                        model.newsIcons[index],
-                        color: Colors.blueGrey,
-                      ),
+      ListView(
+        children: [
+          // GestureDetector(
+          //   onTap: () {
+          //     model.messageService();
+          //   },
+          //   child: Container(
+          //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
+          //     height: 30,
+          //     width: 30,
+          //     color: Colors.amber,
+          //   ),
+          // ),
+          ListView.builder(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 50, bottom: 100),
+              shrinkWrap: true,
+              physics: const ScrollPhysics(),
+              itemCount: model.textList.length,
+              reverse: true,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    model.fileLoaderChange(true);
+
+                    model.testMessage(index);
+
+                    model.newsOnOff(true);
+
+                    model.changeIndex(index);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.all(10),
+                    width: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Theme.of(context).primaryColor,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context).primaryColorLight,
+                              blurRadius: 15,
+                              offset: const Offset(0, 15)),
+                        ]),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            model.testMessage(index);
+                          },
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Icon(
+                              model.newsIcons[index],
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: Text(
+                          model.textList[index].length > 35
+                              ? '${model.textList[index].substring(0, 35)}...'
+                              : model.textList[index],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColorDark),
+                        ))
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      child: Text(
-                    model.textList[index],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColorDark),
-                  ))
-                ],
-              ),
-            );
-          }),
+                );
+              }),
+        ],
+      ),
+      model.showNews == true
+          ? _currentNewsView(context, model, model.newsIndex)
+          : SizedBox()
     ],
   );
 }
 
-_currentNewsView(BuildContext context, NewsViewModel model) {
+_currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
   return Container(
-    margin: EdgeInsets.only(top: 100, left: 50, right: 50),
-    height: 500,
-    width: 500,
-    color: Colors.grey,
+    margin: EdgeInsets.only(
+        top: MediaQuery.of(context).size.width / 3.5,
+        left: 15,
+        right: 15,
+        bottom: MediaQuery.of(context).size.width / 4),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).primaryColor,
+        boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).primaryColorLight,
+              blurRadius: 15,
+              offset: const Offset(0, 15)),
+        ]),
     child: ListView(
-      children: <Widget>[Center(child: Text(model.textList[0]))],
+      padding: EdgeInsets.only(top: 30),
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            model.newsOnOff(false);
+          },
+          child: Container(
+            height: 30,
+            margin: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width / 3,
+                right: MediaQuery.of(context).size.width / 3),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Theme.of(context).primaryColorDark,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15)),
+                ]),
+            child: Center(
+                child: Text(
+              'Закрыть',
+              style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.bold),
+            )),
+          ),
+        ),
+        model.mimeType == 'image/jpeg'
+            ? _pictureView(context, model, newsIndex)
+            : model.mimeType == 'audio/mpeg'
+                ? _audioPlayer(context, model, newsIndex)
+                : model.mimeType == null
+                    ? SizedBox()
+                    : SizedBox(),
+        SizedBox(
+          height: 20,
+        ),
+        Center(
+            child: Padding(
+          padding:
+              const EdgeInsets.only(left: 25, right: 25, top: 30, bottom: 40),
+          child: Text(model.textList[newsIndex]),
+        ))
+      ],
     ),
   );
+}
+
+_audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      IconButton(
+          onPressed: () async {
+            model.tempSound != null
+                ? await model.player.play(BytesSource(model.tempSound!))
+                : await model.player.resume();
+          },
+          icon: Icon(
+            Icons.play_circle,
+            size: 40,
+            color: Theme.of(context).primaryColorDark,
+          )),
+      // IconButton(
+      //     onPressed: () async {
+      //       await model.player.pause();
+      //     },
+      //     icon: Icon(
+      //       Icons.pause_circle,
+      //       size: 40,
+      //       color: Theme.of(context).primaryColorDark,
+      //     )),
+      IconButton(
+          onPressed: () async {
+            model.tempSound = null;
+            await model.player.stop();
+          },
+          icon: Icon(
+            Icons.stop_circle,
+            size: 40,
+            color: Theme.of(context).primaryColorDark,
+          )),
+    ],
+  );
+}
+
+_pictureView(BuildContext context, NewsViewModel model, newsIndex) {
+  return model.fileLoader == true
+      ? Container(
+          margin: EdgeInsets.only(
+              top: 10,
+              left: MediaQuery.of(context).size.width / 2.5,
+              right: MediaQuery.of(context).size.width / 2.5),
+          height: 50,
+          child: CircularProgressIndicator(
+            color: Colors.blueGrey.shade700,
+          ))
+      : Container(
+          margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+          height: 300,
+          child: Image.memory(
+            Uint8List.fromList(model.tempPic!),
+            fit: BoxFit.contain,
+          ));
 }

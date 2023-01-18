@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyThemes {
   static final darkTheme = ThemeData(
       scaffoldBackgroundColor: Colors.black54,
+      accentColor: Colors.black,
       dividerColor: Colors.transparent,
       primaryColor: Colors.grey.shade900,
       focusColor: Colors.white,
@@ -16,7 +17,7 @@ class MyThemes {
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white))),
       primaryColorDark: Colors.white,
-      primaryColorLight: Colors.grey.withOpacity(0.2),
+      primaryColorLight: Colors.blueGrey.shade900.withOpacity(0.3),
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.blue))),
@@ -38,6 +39,7 @@ class MyThemes {
       scaffoldBackgroundColor: Colors.white,
       dividerColor: Colors.transparent,
       primaryColor: Colors.white,
+      accentColor: Colors.white,
       primaryColorDark: Colors.black,
       primaryColorLight: Colors.grey.withOpacity(0.4),
       focusColor: Colors.black,
