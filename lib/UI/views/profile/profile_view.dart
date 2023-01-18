@@ -13,7 +13,6 @@ import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/iais/iais_view.dart';
 import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
-import 'package:snowfall/snowfall.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -614,175 +613,187 @@ class _ProfileViewState extends State<ProfileView> {
                   ? const SizedBox(height: 30)
                   : const SizedBox(height: 70),
               model.userType == EnumUserType.student
-                  ?
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const IaisView()));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 30),
-                      height: 100,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Theme.of(context).primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15))
-                          ]),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'images/icons/Book.png',
-                            scale: 4,
-                          ),
-                          const SizedBox(height: 10),
-                          const Center(
-                            child: Text(
-                              'ИнфОУПро',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const IaisView()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 30),
+                            height: 100,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Theme.of(context).primaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 15))
+                                ]),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'images/icons/Book.png',
+                                  scale: 4,
+                                ),
+                                const SizedBox(height: 10),
+                                const Center(
+                                  child: Text(
+                                    'ИнфОУПро',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DebtsView()));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 30),
-                      height: 100,
-                      width: 130,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Theme.of(context).primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15))
-                          ]),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'images/icons/Alert.png',
-                            scale: 4,
-                          ),
-                          const SizedBox(height: 10),
-                          const Center(
-                            child: Text(
-                              'Долги',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DebtsView()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 30),
+                            height: 100,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Theme.of(context).primaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 15))
+                                ]),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'images/icons/Alert.png',
+                                  scale: 4,
+                                ),
+                                const SizedBox(height: 10),
+                                const Center(
+                                  child: Text(
+                                    'Долги',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ) : const SizedBox.shrink(),
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
               model.userType == EnumUserType.student
                   ? const SizedBox(height: 30)
                   : const SizedBox.shrink(),
-              model.userType == EnumUserType.student ?
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const OrderingInformationMainView()));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 30),
-                    height: 100,
-                    width: 130,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Theme.of(context).primaryColor,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context).primaryColorLight,
-                              blurRadius: 15,
-                              offset: const Offset(0, 15))
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              model.userType == EnumUserType.student
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          'images/icons/orderingInformation.png',
-                          scale: 4,
-                        ),
-                        const SizedBox(height: 10),
-                        const Center(
-                          child: Text(
-                            'Заказ справок',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const OrderingInformationMainView()));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 30),
+                              height: 100,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Theme.of(context).primaryColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 15))
+                                  ]),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'images/icons/orderingInformation.png',
+                                    scale: 4,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Center(
+                                    child: Text(
+                                      'Заказ справок',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CheckListView()));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 30),
-                    height: 100,
-                    width: 130,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Theme.of(context).primaryColor,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context).primaryColorLight,
-                              blurRadius: 15,
-                              offset: const Offset(0, 15))
-                        ]),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'images/icons/Book.png',
-                          scale: 4,
-                        ),
-                        const SizedBox(height: 10),
-                        const Center(
-                          child: Text(
-                            'Обходной лист',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CheckListView()));
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 30),
+                              height: 100,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Theme.of(context).primaryColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 15))
+                                  ]),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'images/icons/Book.png',
+                                    scale: 4,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Center(
+                                    child: Text(
+                                      'Обходной лист',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]) : const SizedBox.shrink(),
+                        ])
+                  : const SizedBox.shrink(),
               model.userType == EnumUserType.student
                   ? const SizedBox(height: 30)
                   : const SizedBox.shrink(),

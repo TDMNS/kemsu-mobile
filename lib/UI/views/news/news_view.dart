@@ -63,54 +63,65 @@ _newsView(context, NewsViewModel model) {
               const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
           shrinkWrap: true,
           physics: const ScrollPhysics(),
-          itemCount: model.tempData != null ? model.tempData!.length : 1,
+          itemCount: model.textList.length,
+          reverse: true,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               margin: const EdgeInsets.only(bottom: 20),
               padding: const EdgeInsets.all(10),
-              height: 150,
-              width: 200,
+              width: 100,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(30),
                   color: Theme.of(context).primaryColor,
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
+                        color: Theme.of(context).primaryColorLight,
                         blurRadius: 15,
                         offset: const Offset(0, 15)),
                   ]),
-              child: Stack(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 120,
-                        width: 130,
-                        child: model.tgImage != null
-                            ? Image.memory(
-                                Uint8List.fromList(model.tgImage!),
-                                width: 250,
-                                height: 250,
-                                fit: BoxFit.contain,
-                              )
-                            : Container(),
+                  GestureDetector(
+                    onTap: () {
+                      model.testMessage(index);
+                    },
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Icon(
+                        model.newsIcons[index],
+                        color: Colors.blueGrey,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                          child: Text(
-                        model.textList[index],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColorDark),
-                      ))
-                    ],
+                    ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: Text(
+                    model.textList[index],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColorDark),
+                  ))
                 ],
               ),
             );
           }),
     ],
+  );
+}
+
+_currentNewsView(BuildContext context, NewsViewModel model) {
+  return Container(
+    margin: EdgeInsets.only(top: 100, left: 50, right: 50),
+    height: 500,
+    width: 500,
+    color: Colors.grey,
+    child: ListView(
+      children: <Widget>[Center(child: Text(model.textList[0]))],
+    ),
   );
 }

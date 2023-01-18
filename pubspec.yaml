@@ -32,7 +32,8 @@ dependencies:
   dropdown_search: ^5.0.3
   flutter_launcher_icons: ^0.11.0
   shared_preferences: ^2.0.15
-  snowfall: ^0.0.1
+  audioplayers: ^2.0.0
+  video_player: ^2.4.10
 
 dev_dependencies:
   flutter_test:
