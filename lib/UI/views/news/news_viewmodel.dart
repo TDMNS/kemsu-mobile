@@ -19,6 +19,7 @@ class NewsViewModel extends BaseViewModel {
 
   final storage = const FlutterSecureStorage();
   String newsURL = 'https://api-dev.kemsu.ru';
+  String? videoURL;
   int selectedIndex = 0;
   int newsLimit = 10;
   bool showNews = false;
@@ -35,7 +36,7 @@ class NewsViewModel extends BaseViewModel {
   final player = AudioPlayer();
   Uint8List? tempSound;
   Uint8List? tempPic;
-  late VideoPlayerController _controller;
+  late VideoPlayerController videoController;
 
   void onTapBottomBar(int index) {
     selectedIndex = index;
@@ -78,6 +79,8 @@ class NewsViewModel extends BaseViewModel {
         getPicture(partialFileUrl);
       } else if (mimeType == 'audio/mpeg') {
         getAudio(partialFileUrl);
+      } else if (mimeType == 'video/mp4') {
+        getVideo(partialFileUrl);
       }
     } else {
       mimeType = null;
@@ -105,6 +108,7 @@ class NewsViewModel extends BaseViewModel {
   getPicture(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
     String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
+    videoURL = fileURL;
 
     Map<String, dynamic> map = {'x-access-token': token};
 
@@ -115,7 +119,17 @@ class NewsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getVideo() async {}
+  getVideo(partialFileUrl) async {
+    String? token = await storage.read(key: 'tokenKey');
+    String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
+
+    Map<String, dynamic> map = {'x-access-token': token};
+
+    final getFile = await http
+        .get(Uri.parse('$fileURL'), headers: {'x-access-token': token!});
+    fileLoader = false;
+    notifyListeners();
+  }
 
   void openNewsCard() async {}
 

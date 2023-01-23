@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../widgets.dart';
 import 'news_viewmodel.dart';
@@ -114,8 +115,8 @@ _newsView(context, NewsViewModel model) {
                         ),
                         Expanded(
                             child: Text(
-                          model.textList[index].length > 35
-                              ? '${model.textList[index].substring(0, 35)}...'
+                          model.textList[index].length > 65
+                              ? '${model.textList[index].substring(0, 65)}...'
                               : model.textList[index],
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -138,10 +139,10 @@ _newsView(context, NewsViewModel model) {
 _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
   return Container(
     margin: EdgeInsets.only(
-        top: MediaQuery.of(context).size.width / 3.5,
+        top: MediaQuery.of(context).size.width / 3,
         left: 15,
         right: 15,
-        bottom: MediaQuery.of(context).size.width / 4),
+        bottom: 40),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: Theme.of(context).primaryColor,
@@ -151,55 +152,81 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
               blurRadius: 15,
               offset: const Offset(0, 15)),
         ]),
-    child: ListView(
-      padding: EdgeInsets.only(top: 30),
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            model.newsOnOff(false);
-          },
-          child: Container(
-            height: 30,
-            margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 3,
-                right: MediaQuery.of(context).size.width / 3),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Theme.of(context).primaryColorDark,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15)),
-                ]),
-            child: Center(
-                child: Text(
-              'Закрыть',
-              style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                  fontWeight: FontWeight.bold),
+    child: Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.only(top: 30),
+          children: <Widget>[
+            model.mimeType == 'image/jpeg'
+                ? _pictureView(context, model, newsIndex)
+                : model.mimeType == 'audio/mpeg'
+                    ? _audioPlayer(context, model, newsIndex)
+                    : model.mimeType == 'video/mp4'
+                        ? SizedBox()
+                        : SizedBox(),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+                child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 25, right: 25, top: 30, bottom: 40),
+              child: Text(model.textList[newsIndex]),
             )),
-          ),
+            GestureDetector(
+              onTap: () {
+                model.newsOnOff(false);
+              },
+              child: Container(
+                height: 30,
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 3,
+                    right: MediaQuery.of(context).size.width / 3),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).primaryColorDark,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context).primaryColorLight,
+                          blurRadius: 15,
+                          offset: const Offset(0, 15)),
+                    ]),
+                child: Center(
+                    child: Text(
+                  'Закрыть',
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold),
+                )),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            )
+          ],
         ),
-        model.mimeType == 'image/jpeg'
-            ? _pictureView(context, model, newsIndex)
-            : model.mimeType == 'audio/mpeg'
-                ? _audioPlayer(context, model, newsIndex)
-                : model.mimeType == null
-                    ? SizedBox()
-                    : SizedBox(),
-        SizedBox(
-          height: 20,
-        ),
-        Center(
-            child: Padding(
-          padding:
-              const EdgeInsets.only(left: 25, right: 25, top: 30, bottom: 40),
-          child: Text(model.textList[newsIndex]),
-        ))
+        IconButton(
+            onPressed: () {
+              model.newsOnOff(false);
+            },
+            icon: Icon(Icons.close))
       ],
     ),
   );
+}
+
+_videoPlayer(BuildContext context, NewsViewModel model, newsIndex) {
+  model.videoController = VideoPlayerController.network(model.videoURL!);
+  return model.fileLoader == true
+      ? CircularProgressIndicator()
+      : Column(
+          children: [
+            VideoPlayer(model.videoController),
+            FloatingActionButton(onPressed: () {
+              model.videoController.play();
+            })
+          ],
+        );
 }
 
 _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
