@@ -47,6 +47,14 @@ _iaisView(BuildContext context, IaisViewModel model) {
           ),
           const SizedBox(width: 10), //SizedBox
           Checkbox(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2.0),
+              ),
+              side: MaterialStateBorderSide.resolveWith(
+                    (states) => const BorderSide(width: 1.2, color: Colors.black),
+              ),
+              checkColor: Colors.white,
+              fillColor: MaterialStateProperty.all(Colors.blue),
               value: model.isChecked,
               onChanged: (e) {
                 model.isChecked = !model.isChecked;
