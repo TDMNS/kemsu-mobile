@@ -62,6 +62,7 @@ _newsView(context, NewsViewModel model) {
           //     color: Colors.amber,
           //   ),
           // ),
+
           ListView.builder(
               padding: const EdgeInsets.only(
                   left: 20, right: 20, top: 50, bottom: 100),
@@ -127,6 +128,15 @@ _newsView(context, NewsViewModel model) {
                   ),
                 );
               }),
+          // GestureDetector(
+          //   onTap: () {
+          //     model.appMetricaTest();
+          //   },
+          //   child: Container(
+          //     color: Colors.red,
+          //     height: 100,
+          //   ),
+          // ),
         ],
       ),
       model.showNews == true

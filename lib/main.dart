@@ -19,8 +19,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarBrightness: Brightness.light)
-    );
+        const SystemUiOverlayStyle(statusBarBrightness: Brightness.light));
     return MaterialApp(
       themeMode: ThemeMode.system,
       theme: MyThemes.lightTheme,

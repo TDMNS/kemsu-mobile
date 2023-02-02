@@ -84,7 +84,7 @@ class NewScheduleViewModel extends BaseViewModel {
     var response = await dio
         .get(Config.currentGroupList, queryParameters: {"accessToken": token});
     groupId = response.data['currentGroupList'][0]['groupId'];
-    currentSemester = semesterResponse.data['result'][1]['Id'];
+    currentSemester = semesterResponse.data['result'][0]['Id'];
     var weekResponse =
         await dio.get('${Config.weekList}?semesterId=$currentSemester');
     currentWeek = weekResponse.data['result'][0]['Id'];
