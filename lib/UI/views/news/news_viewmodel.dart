@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +18,7 @@ class NewsViewModel extends BaseViewModel {
   NewsViewModel(BuildContext context);
 
   final storage = const FlutterSecureStorage();
-  String newsURL = 'https://api-dev.kemsu.ru';
+  String newsURL = 'https://api3.kemsu.ru';
   String? videoURL;
   int selectedIndex = 0;
   int newsLimit = 10;
@@ -50,6 +50,13 @@ class NewsViewModel extends BaseViewModel {
 
   Future onReady() async {
     messageService();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('This is new test event!');
+    print('app metrica test');
   }
 
   void testMessage(index) async {

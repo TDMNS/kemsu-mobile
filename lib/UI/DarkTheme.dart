@@ -37,6 +37,8 @@ class MyThemes {
 
   static final lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.white,
+      radioTheme:
+          RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
       dividerColor: Colors.transparent,
       primaryColor: Colors.white,
       accentColor: Colors.white,
