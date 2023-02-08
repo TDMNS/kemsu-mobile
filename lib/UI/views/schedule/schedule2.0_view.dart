@@ -255,8 +255,8 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                 items:
                     model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
                   return DropdownMenuItem<FacultyList>(
-                    child: Text(e.faculty.toString()),
-                    value: e,
+                    child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)),
+                    value: e
                   );
                 }).toList(),
               )),
