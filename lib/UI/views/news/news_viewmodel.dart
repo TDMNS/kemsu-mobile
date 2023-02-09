@@ -56,7 +56,6 @@ class NewsViewModel extends BaseViewModel {
     AppMetrica.activate(
         const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('This is new test event!');
-    print('app metrica test');
   }
 
   void testMessage(index) async {
@@ -114,6 +113,7 @@ class NewsViewModel extends BaseViewModel {
 
   getPicture(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
+    print(partialFileUrl);
     String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
     videoURL = fileURL;
 
@@ -122,6 +122,7 @@ class NewsViewModel extends BaseViewModel {
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token!});
     tempPic = getFile.bodyBytes;
+    print('TEMP PIC:: $tempPic}');
     fileLoader = false;
     notifyListeners();
   }
@@ -168,9 +169,10 @@ class NewsViewModel extends BaseViewModel {
     var dio = Dio();
     String? token = await storage.read(key: 'tokenKey');
     final newsResponse = await http.get(
-        Uri.parse('${Config.newsMessages}?limit=100'),
+        Uri.parse('${Config.newsMessages}?limit=20'),
         headers: {'x-access-token': token!});
     tempData = json.decode(newsResponse.body);
+    print('NEWS DATA:: $tempData');
     //partialFileUrl = json.decode(newsResponse.body)[0][0]['partialFileUrl'];
 
     for (int i = 0; i < tempData!.length; i++) {
@@ -193,7 +195,7 @@ class NewsViewModel extends BaseViewModel {
           textList.add(tempData![i][0]['message']);
           newsIcons.add(Icons.newspaper);
         }
-      } else {
+      } else if (tempData![i][0]['message'] != '') {
         textList.add(tempData![i][0]['message']);
         newsIcons.add(Icons.newspaper);
       }
@@ -201,7 +203,7 @@ class NewsViewModel extends BaseViewModel {
 
     for (int i = 0; i < tempData!.length; i++) {
       if (tempData![i][0]['file'] != null) {
-        print(tempData![i][0]['partialFileUrl']);
+        print('FILE URL:: ${tempData![i][0]['partialFileUrl']}');
         partialFileUrl = tempData![i][0]['partialFileUrl'];
       }
     }
@@ -209,9 +211,6 @@ class NewsViewModel extends BaseViewModel {
 
     Map<String, dynamic> map = {'x-access-token': token};
 
-    final restFile = await dio.get(fileURL,
-        options: Options(headers: {'x-access-token': token}),
-        queryParameters: {'thumbSize': 'y'});
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token});
 

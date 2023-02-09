@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
@@ -20,6 +21,13 @@ class PgasViewModel extends BaseViewModel {
 
   Future onReady(context) async {
     await fetchPgasRequests(context);
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Pgas event');
   }
 
   void refreshData(context) async {
@@ -31,33 +39,45 @@ class PgasViewModel extends BaseViewModel {
   }
 
   goToNewPgasRequest(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewPgasRequestScreen())).then((value) => onGoBack(context));
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const NewPgasRequestScreen()))
+        .then((value) => onGoBack(context));
   }
 
   goToPgasDetail(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const PgasDetailScreen())).then((value) => onGoBack(context));
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PgasDetailScreen()))
+        .then((value) => onGoBack(context));
   }
 
   fetchPgasRequests(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {
-      "X-Access-Token": "$eiosAccessToken"
-    };
-    var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestList"), headers: header);
+    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    var response = await http.post(
+        Uri.parse(
+            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestList"),
+        headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       pgasList = parsePgasRequests(json.decode(response.body)["result"]);
       circle = false;
       notifyListeners();
     } else if (response.statusCode == 401) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const AuthView()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const AuthView()),
+          (Route<dynamic> route) => false);
       await storage.delete(key: "tokenKey");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content:
+              Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
     }
   }
 
   List<ShortPgasRequestModel> parsePgasRequests(List response) {
     return response
-        .map<ShortPgasRequestModel>((json) => ShortPgasRequestModel.fromJson(json))
+        .map<ShortPgasRequestModel>(
+            (json) => ShortPgasRequestModel.fromJson(json))
         .toList();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
@@ -46,7 +47,14 @@ class NewPgasRequestViewModel extends BaseViewModel {
     middleNameController.text = middleName!;
     phone != null ? phoneController.text = phone : phoneController.text = '';
     groupController.text = group!;
+    appMetricaTest();
     notifyListeners();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('New pgas request event');
   }
 
   fetchInstitutesList() async {

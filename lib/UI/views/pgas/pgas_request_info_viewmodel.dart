@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
@@ -19,7 +20,14 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   Future onReady(context) async {
     await fetchDetailPgasRequest(context);
     circle = false;
+    appMetricaTest();
     notifyListeners();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Pgas request info event');
   }
 
   goToEditPgasRequestScreen(context) {

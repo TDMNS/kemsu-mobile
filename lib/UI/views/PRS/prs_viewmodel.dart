@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
@@ -31,6 +32,13 @@ class PRSViewModel extends BaseViewModel {
 
   Future onReady() async {
     await getStudCard();
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('PRS event');
   }
 
   getStudCard() async {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,6 +66,13 @@ class NewAchievePgasViewModel extends BaseViewModel {
   Future onReady() async {
     await fetchAchieveCategories();
     await fetchYears();
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('New achieve pgas event');
   }
 
   fetchAchieveCategories() async {
