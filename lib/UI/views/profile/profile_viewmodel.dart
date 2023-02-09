@@ -235,7 +235,8 @@ class ProfileViewModel extends BaseViewModel {
     print(updateEmail.data);
   }
 
-  void exitButton(context) {
+  void exitButton(context) async {
+    await storage.write(key: "tokenKey", value: "");
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AuthView()));
     notifyListeners();

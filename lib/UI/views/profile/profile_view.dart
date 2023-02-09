@@ -900,10 +900,7 @@ class _ProfileViewState extends State<ProfileView> {
                             child: const Text('Отмена')),
                         ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AuthView()));
+                              model.exitButton(context);
                             },
                             child: const Text('Да'))
                       ],
