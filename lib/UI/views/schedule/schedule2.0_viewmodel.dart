@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -44,10 +45,18 @@ class NewScheduleViewModel extends BaseViewModel {
     '17:15 - 18:50',
     '19:00 - 20:35'
   ];
+  List<WeekDay> weekDays = [];
 
   Future onReady() async {
     getScheduleOnRequest();
     getSchedule();
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Student schedule event');
   }
 
   void changeWeek(value) {
@@ -98,6 +107,16 @@ class NewScheduleViewModel extends BaseViewModel {
     // final jsonResponseCoupleList =
     // json.decode(mainTable)['result']['CoupleList'];
     scheduleTable = FinalTable.fromJson(jsonResponse);
+
+    weekDays = [
+      scheduleTable!.weekDay1!,
+      scheduleTable!.weekDay2!,
+      scheduleTable!.weekDay3!,
+      scheduleTable!.weekDay4!,
+      scheduleTable!.weekDay5!,
+      scheduleTable!.weekDay6!,
+    ];
+
     circle = false;
     tableView = true;
     print(currentSemester);

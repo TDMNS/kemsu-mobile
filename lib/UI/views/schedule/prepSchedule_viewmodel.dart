@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -65,6 +66,13 @@ class PrepScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getTeacher();
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Teacher schedule event');
   }
 
   void changeWeek(value) {
@@ -91,7 +99,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     currentGroupList =
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=9&prepId=$teacherId&accessToken=$token'));
+        '${Config.prepSchedule}?semesterId=10&prepId=$teacherId&accessToken=$token'));
 
     var jsonResponse = json.decode(response.body)['result'];
 
@@ -138,7 +146,7 @@ class PrepScheduleViewModel extends BaseViewModel {
         parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
     var response = await http.get(
-        Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=9'));
+        Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=10'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherList[i].fio == fio) {

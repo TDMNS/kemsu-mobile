@@ -50,6 +50,8 @@ class Config {
       'https://api-next.kemsu.ru/api/personal-office/integration/updateUserEmail';
   static String updatePhone =
       'https://api-next.kemsu.ru/api/personal-office/integration/updateUserPhone';
+  static String newsMessagesTest =
+      'https://api3.kemsu.ru/api/telegram/kemsu-live/messages/test';
   static String newsMessages =
       'https://api3.kemsu.ru/api/telegram/kemsu-live/messages'; //now api-dev, but later will need change to api-next
 }

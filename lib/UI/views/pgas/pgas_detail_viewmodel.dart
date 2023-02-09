@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,6 +17,13 @@ class PgasDetailViewModel extends BaseViewModel {
 
   Future onReady() async {
     await fetchUserAchieves();
+    appMetricaTest();
+  }
+
+  void appMetricaTest() {
+    AppMetrica.activate(
+        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Pgas detail event');
   }
 
   void refreshData(context) async {

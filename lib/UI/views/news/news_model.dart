@@ -17,13 +17,26 @@ class NewsFileClass {
   FileClass? file;
   String? message;
   String? partialFileUrl;
+
+  NewsFileClass(
+      {this.id, this.date, this.file, this.message, this.partialFileUrl});
+
+  factory NewsFileClass.fromJson(Map<String, dynamic> json) {
+    return NewsFileClass(
+        id: json['id'],
+        date: json['date'],
+        file: FileClass.fromJson(json['file']),
+        message: json['message'],
+        partialFileUrl: json['partialFileUrl']);
+  }
 }
 
 class FileClass {
   String? id;
   String? mimeType;
-  String? fileReference;
+  FileReference? fileReference;
   String? accessHash;
+  ThumbsClass? sizes;
   int? size;
   ThumbsClass? thumbs;
 
@@ -32,6 +45,7 @@ class FileClass {
       this.mimeType,
       this.fileReference,
       this.accessHash,
+      this.sizes,
       this.size,
       this.thumbs});
 
@@ -39,9 +53,10 @@ class FileClass {
     return FileClass(
         id: json['id'],
         mimeType: json['mimeType'],
-        fileReference: json['fileReference'],
+        fileReference: FileReference.fromJson(json['fileReference']),
         accessHash: json['accessHash'],
-        size: json['size'],
+        size: json['sizes'],
+        sizes: ThumbsClass.fromJson(json['sizes']),
         thumbs: json[
             'thumbs']); //тут скорее всего не будет работать, надо посмотреть как в расписании парсится массив, я уже иссох прост)0
   }
@@ -58,5 +73,16 @@ class ThumbsClass {
   factory ThumbsClass.fromJson(Map<String, dynamic> json) {
     return ThumbsClass(
         type: json['type'], w: json['w'], h: json['h'], size: json['size']);
+  }
+}
+
+class FileReference {
+  String? type;
+  List<int>? data;
+
+  FileReference({this.type, this.data});
+
+  factory FileReference.fromJson(Map<String, dynamic> json) {
+    return FileReference(type: json['type'], data: json['data']);
   }
 }
