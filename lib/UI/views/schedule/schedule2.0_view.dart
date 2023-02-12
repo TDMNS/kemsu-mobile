@@ -81,6 +81,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Text('${model.weekDays[0].coupleAll6![0].discName}'),
                 IconButton(
                     onPressed: () {
                       model.choiceDay('back');

@@ -52,17 +52,17 @@ _newsView(context, NewsViewModelTest model) {
     children: [
       ListView(
         children: [
-          // GestureDetector(
-          //   onTap: () {
-          //     model.getMessages();
-          //   },
-          //   child: Container(
-          //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
-          //     height: 30,
-          //     width: 30,
-          //     color: Colors.amber,
-          //   ),
-          // ),
+          GestureDetector(
+            onTap: () {
+              model.getMessages();
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 50, right: 50, top: 50),
+              height: 30,
+              width: 30,
+              color: Colors.amber,
+            ),
+          ),
           const Center(
               child: Padding(
             padding: EdgeInsets.only(top: 20),
