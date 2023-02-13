@@ -25,6 +25,7 @@ class NewsViewModel extends BaseViewModel {
   bool showNews = false;
   bool fileLoader = false;
   int newsIndex = 0;
+  bool stopOrPause = false;
   var imageTG;
   String? mimeType;
   List<dynamic>? tempData;
@@ -58,6 +59,11 @@ class NewsViewModel extends BaseViewModel {
     AppMetrica.reportEvent('This is new test event!');
   }
 
+  void pauseOrStop(value) {
+    stopOrPause = value;
+    notifyListeners();
+  }
+
   void testMessage(index) async {
     mimeType = null;
 
@@ -78,7 +84,7 @@ class NewsViewModel extends BaseViewModel {
       //         'MESSAGE:: ${tempData![i][0]['message']}, DATA:: ${temp['mimeType']}')
       //     : print('MESSAGE:: ${tempData![i][0]['message']}');
     }
-    print(tempData![index][0]['file']['mimeType']);
+    // print(tempData![index][0]['file']['mimeType']);
     if (tempData![index][0]['file'] != null) {
       mimeType = tempData![index][0]['file']['mimeType'];
       if (mimeType == 'image/jpeg') {
@@ -91,6 +97,7 @@ class NewsViewModel extends BaseViewModel {
     } else {
       mimeType = null;
     }
+    print(tempData![index][0]['file']['mimeType']);
     notifyListeners();
   }
 
@@ -101,7 +108,7 @@ class NewsViewModel extends BaseViewModel {
 
   getAudio(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
-    String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
+    String fileURL = '${Config.newsFile}$partialFileUrl';
 
     Map<String, dynamic> map = {'x-access-token': token};
 
@@ -113,8 +120,8 @@ class NewsViewModel extends BaseViewModel {
 
   getPicture(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
-    print(partialFileUrl);
-    String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
+    // print(partialFileUrl);
+    String fileURL = '${Config.newsFile}$partialFileUrl';
     videoURL = fileURL;
 
     Map<String, dynamic> map = {'x-access-token': token};
@@ -122,20 +129,22 @@ class NewsViewModel extends BaseViewModel {
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token!});
     tempPic = getFile.bodyBytes;
-    print('TEMP PIC:: $tempPic}');
+    print(tempPic);
+    print(getFile.body);
     fileLoader = false;
     notifyListeners();
   }
 
   getVideo(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
-    String fileURL = 'https://api-dev.kemsu.ru$partialFileUrl';
-
+    String fileURL = '${Config.newsFile}$partialFileUrl';
+    print('VIDEO WORK:: ');
     Map<String, dynamic> map = {'x-access-token': token};
 
     final getFile = await http
         .get(Uri.parse('$fileURL'), headers: {'x-access-token': token!});
     fileLoader = false;
+    print('RESPONSE:: ${getFile.bodyBytes}');
     notifyListeners();
   }
 
@@ -172,7 +181,7 @@ class NewsViewModel extends BaseViewModel {
         Uri.parse('${Config.newsMessages}?limit=20'),
         headers: {'x-access-token': token!});
     tempData = json.decode(newsResponse.body);
-    print('NEWS DATA:: $tempData');
+    // print('NEWS DATA:: $tempData');
     //partialFileUrl = json.decode(newsResponse.body)[0][0]['partialFileUrl'];
 
     for (int i = 0; i < tempData!.length; i++) {
@@ -203,7 +212,7 @@ class NewsViewModel extends BaseViewModel {
 
     for (int i = 0; i < tempData!.length; i++) {
       if (tempData![i][0]['file'] != null) {
-        print('FILE URL:: ${tempData![i][0]['partialFileUrl']}');
+        // print('FILE URL:: ${tempData![i][0]['partialFileUrl']}');
         partialFileUrl = tempData![i][0]['partialFileUrl'];
       }
     }
@@ -216,7 +225,7 @@ class NewsViewModel extends BaseViewModel {
 
     imageTG = Image.memory(getFile.bodyBytes).image;
     tgImage = getFile.bodyBytes;
-    print(getFile.bodyBytes);
+    // print(getFile.bodyBytes);
     notifyListeners();
   }
 }
