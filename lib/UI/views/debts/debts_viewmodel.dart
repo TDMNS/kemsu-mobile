@@ -2,6 +2,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/debts/debts_lib_model.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
@@ -14,24 +15,20 @@ class DebtsViewModel extends BaseViewModel {
   final storage = const FlutterSecureStorage();
 
   List<AcademyDebts> DebtsCourse = [];
+  List<LibraryDebts> libraryDebts = [];
 
   int selectedIndex = 2;
 
-  List<AcademyDebts> parseCourseList(List response) {
-    return response
-        .map<AcademyDebts>((json) => AcademyDebts.fromJson(json))
-        .toList();
-  }
-
   Future onReady() async {
     getAcademyDebts();
+    getLibraryDebts();
     appMetricaTest();
   }
 
   getAcademyDebts() async {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(
-      Uri.parse('${Config.studDebt}'),
+      Uri.parse(Config.studDebt),
       headers: {
         "x-access-token": token!,
       },
@@ -40,6 +37,31 @@ class DebtsViewModel extends BaseViewModel {
     DebtsCourse = parseCourseList(json.decode(response.body)['studyDebtList']);
 
     notifyListeners();
+  }
+
+  List<AcademyDebts> parseCourseList(List response) {
+    return response
+        .map<AcademyDebts>((json) => AcademyDebts.fromJson(json))
+        .toList();
+  }
+
+  getLibraryDebts() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(
+      Uri.parse(Config.libraryDebt),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
+
+    libraryDebts = parseLibraryList(json.decode(response.body)['literatureDebtList']);
+    notifyListeners();
+  }
+
+  List<LibraryDebts> parseLibraryList(List response) {
+    return response
+        .map<LibraryDebts>((json) => LibraryDebts.fromJson(json))
+        .toList();
   }
 
   void appMetricaTest() {

@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './debts_viewmodel.dart';
@@ -19,12 +18,11 @@ class DebtsView extends StatelessWidget {
             value: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness
-                    .dark), //прозрачность statusbar и установка тёмных иконок
+                    .dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'Долги'),
-              //bottomNavigationBar: customBottomBar(context, model),
               body: _debtsView(context, model),
             ),
           );
@@ -37,35 +35,86 @@ _debtsView(BuildContext context, DebtsViewModel model) {
     children: <Widget>[
       const SizedBox(height: 12),
       Center(
-        child: Expanded(
-            child: SingleChildScrollView(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(8.0),
           child: model.DebtsCourse.isNotEmpty
-              ? DataTable(
-                  columnSpacing: 0,
-                  columns: const [
-                    DataColumn(
-                      label: Expanded(
-                          child: Text('Номер курса',
-                              textAlign: TextAlign.center, softWrap: true)),
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                          child: Text('Номер семестра',
-                              textAlign: TextAlign.center, softWrap: true)),
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                          child: Text('Дисциплина',
-                              textAlign: TextAlign.center, softWrap: true)),
-                    ),
-                    DataColumn(
-                      label: Expanded(
-                          child: Text('Текущая оценка',
-                              textAlign: TextAlign.center, softWrap: true)),
-                    ),
-                  ],
-                  rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
+          ? Column(
+            children: [
+              model.libraryDebts.isNotEmpty ?
+              ElevatedButton(
+                  onPressed: () {
+                    DataTable(
+                      columnSpacing: 0,
+                      columns: const [
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Книга',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Дата выдачи книги',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Предполагаемая дата возврата книги',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        )
+                      ],
+                      rows: model.libraryDebts.map<DataRow>((e) => DataRow(cells: [
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.info.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.extraditionDay.toString(),
+                                textAlign: TextAlign.center, softWrap: true))),
+                        DataCell(Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(e.estimatedReturnDay.toString(),
+                                textAlign: TextAlign.center, softWrap: true)))
+                      ])).toList(),
+                      border: TableBorder.all(
+                        color: Theme.of(context).canvasColor,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      dataRowHeight: 80,
+                      showCheckboxColumn: false,
+                    );
+                  },
+                  child: const Text('Показать долги по книгам'))
+              : const SizedBox.shrink(),
+              model.DebtsCourse.isNotEmpty ?
+              ElevatedButton(
+                  onPressed: () {
+                    DataTable(
+                      columnSpacing: 0,
+                      columns: const [
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Номер курса',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Номер семестра',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Дисциплина',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                              child: Text('Текущая оценка',
+                                  textAlign: TextAlign.center, softWrap: true)),
+                        ),
+                      ],
+                      rows: model.DebtsCourse.map<DataRow>((e) => DataRow(cells: [
                         DataCell(Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.COURSE.toString(),
@@ -83,16 +132,21 @@ _debtsView(BuildContext context, DebtsViewModel model) {
                             child: Text(e.OCENKA_SHORT.toString(),
                                 textAlign: TextAlign.center, softWrap: true))),
                       ])).toList(),
-                  border: TableBorder.all(
-                    color: Theme.of(context).canvasColor,
-                    style: BorderStyle.solid,
-                    width: 1.5,
-                  ),
-                  dataRowHeight: 80,
-                  showCheckboxColumn: false,
-                )
-              : const Text("Долги отсутствуют"),
-        )),
+                      border: TableBorder.all(
+                        color: Theme.of(context).canvasColor,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      dataRowHeight: 80,
+                      showCheckboxColumn: false,
+                    );
+                  },
+                  child: const Text('Показать др. виды задолженности'))
+              : const SizedBox.shrink(),
+            ],
+          )
+          : const Text("Долги отсутствуют"),
+        ),
       ),
     ],
   );
