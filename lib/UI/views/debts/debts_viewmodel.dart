@@ -2,19 +2,19 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/debts/debts_lib_model.dart';
+import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../debts/debts_model.dart';
+import 'models/debts_model.dart';
 import 'dart:convert';
 
 class DebtsViewModel extends BaseViewModel {
   DebtsViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
-  List<AcademyDebts> DebtsCourse = [];
+  List<AcademyDebts> debtsCourse = [];
   List<LibraryDebts> libraryDebts = [];
 
   int selectedIndex = 2;
@@ -22,7 +22,7 @@ class DebtsViewModel extends BaseViewModel {
   Future onReady() async {
     getAcademyDebts();
     getLibraryDebts();
-    appMetricaTest();
+    appMetricTest();
   }
 
   getAcademyDebts() async {
@@ -34,7 +34,7 @@ class DebtsViewModel extends BaseViewModel {
       },
     );
 
-    DebtsCourse = parseCourseList(json.decode(response.body)['studyDebtList']);
+    debtsCourse = parseCourseList(json.decode(response.body)['studyDebtList']);
 
     notifyListeners();
   }
@@ -64,7 +64,7 @@ class DebtsViewModel extends BaseViewModel {
         .toList();
   }
 
-  void appMetricaTest() {
+  void appMetricTest() {
     AppMetrica.activate(
         const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Debts event');
