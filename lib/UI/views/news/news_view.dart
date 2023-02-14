@@ -18,9 +18,9 @@ class NewsView extends StatefulWidget {
 class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<NewsViewModelTest>.reactive(
+    return ViewModelBuilder<NewsViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => NewsViewModelTest(context),
+        viewModelBuilder: () => NewsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
@@ -47,14 +47,14 @@ class _NewsViewState extends State<NewsView> {
   }
 }
 
-_newsView(context, NewsViewModelTest model) {
+_newsView(context, NewsViewModel model) {
   return Stack(
     children: [
       ListView(
         children: [
           // GestureDetector(
           //   onTap: () {
-          //     model.getMessages();
+          //     model.messageService();
           //   },
           //   child: Container(
           //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
@@ -63,29 +63,29 @@ _newsView(context, NewsViewModelTest model) {
           //     color: Colors.amber,
           //   ),
           // ),
-          const Center(
-              child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text(
-              'Новости отсутствуют',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          )),
+          // const Center(
+          //     child: Padding(
+          //   padding: EdgeInsets.only(top: 20),
+          //   child: Text(
+          //     'Новости отсутствуют',
+          //     style: TextStyle(fontSize: 16, color: Colors.grey),
+          //   ),
+          // )),
           ListView.builder(
               padding: const EdgeInsets.only(
                   left: 20, right: 20, top: 50, bottom: 100),
               shrinkWrap: true,
               physics: const ScrollPhysics(),
-              // itemCount: model.textList.length,
-              itemCount: 0,
-              reverse: true,
+              itemCount: model.textList.length,
+              // itemCount: 0,
+              reverse: false,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    // model.fileLoaderChange(true);
-                    // model.testMessage(index);
-                    // model.newsOnOff(true);
-                    // model.changeIndex(index);
+                    model.fileLoaderChange(true);
+                    model.testMessage(index);
+                    model.newsOnOff(true);
+                    model.changeIndex(index);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 20),
@@ -106,14 +106,14 @@ _newsView(context, NewsViewModelTest model) {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // model.testMessage(index);
+                            model.testMessage(index);
                           },
                           child: SizedBox(
                             height: 50,
                             width: 50,
                             child: Icon(
-                              Icons.add,
-                              // model.newsIcons[index],
+                              // Icons.add,
+                              model.newsIcons[index],
                               color: Colors.blueGrey,
                             ),
                           ),
@@ -121,15 +121,15 @@ _newsView(context, NewsViewModelTest model) {
                         const SizedBox(
                           width: 10,
                         ),
-                        // Expanded(
-                        //     child: Text(
-                        //   model.textList[index].length > 65
-                        //       ? '${model.textList[index].substring(0, 65)}...'
-                        //       : model.textList[index],
-                        //   style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       color: Theme.of(context).primaryColorDark),
-                        // ))
+                        Expanded(
+                            child: Text(
+                          model.textList[index].length > 65
+                              ? '${model.textList[index].substring(0, 65)}...'
+                              : model.textList[index],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColorDark),
+                        ))
                       ],
                     ),
                   ),
@@ -146,9 +146,9 @@ _newsView(context, NewsViewModelTest model) {
           // ),
         ],
       ),
-      // model.showNews == true
-      //     ? _currentNewsView(context, model, model.newsIndex)
-      //     : SizedBox()
+      model.showNews == true
+          ? _currentNewsView(context, model, model.newsIndex)
+          : SizedBox()
     ],
   );
 }
@@ -233,17 +233,15 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
 }
 
 _videoPlayer(BuildContext context, NewsViewModel model, newsIndex) {
-  model.videoController = VideoPlayerController.network(model.videoURL!);
-  return model.fileLoader == true
-      ? CircularProgressIndicator()
-      : Column(
-          children: [
-            VideoPlayer(model.videoController),
-            FloatingActionButton(onPressed: () {
-              model.videoController.play();
-            })
-          ],
-        );
+  // model.videoController = VideoPlayerController.network(model.videoURL!);
+  return Column(
+    children: [
+      // VideoPlayer(model.videoController),
+      FloatingActionButton(onPressed: () {
+        model.videoController.play();
+      })
+    ],
+  );
 }
 
 _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
@@ -252,7 +250,7 @@ _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
     children: <Widget>[
       IconButton(
           onPressed: () async {
-            model.tempSound != null
+            model.stopOrPause == true
                 ? await model.player.play(BytesSource(model.tempSound!))
                 : await model.player.resume();
           },
@@ -261,19 +259,22 @@ _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
             size: 40,
             color: Theme.of(context).primaryColorDark,
           )),
-      // IconButton(
-      //     onPressed: () async {
-      //       await model.player.pause();
-      //     },
-      //     icon: Icon(
-      //       Icons.pause_circle,
-      //       size: 40,
-      //       color: Theme.of(context).primaryColorDark,
-      //     )),
       IconButton(
           onPressed: () async {
-            model.tempSound = null;
+            await model.player.pause();
+            model.pauseOrStop(false);
+
+            //await model.player.resume();
+          },
+          icon: Icon(
+            Icons.pause_circle,
+            size: 40,
+            color: Theme.of(context).primaryColorDark,
+          )),
+      IconButton(
+          onPressed: () async {
             await model.player.stop();
+            model.pauseOrStop(true);
           },
           icon: Icon(
             Icons.stop_circle,

@@ -58,7 +58,7 @@ class FileClass {
         size: json['sizes'],
         sizes: ThumbsClass.fromJson(json['sizes']),
         thumbs: json[
-            'thumbs']); //тут скорее всего не будет работать, надо посмотреть как в расписании парсится массив, я уже иссох прост)0
+            'thumbs']);
   }
 }
 
