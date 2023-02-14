@@ -34,6 +34,7 @@ dependencies:
   shared_preferences: ^2.0.15
   audioplayers: ^2.0.0
   video_player: ^2.4.10
+  chewie: ^1.4.0
   appmetrica_plugin: ^1.1.0
 
 dev_dependencies:
