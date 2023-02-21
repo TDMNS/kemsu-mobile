@@ -170,6 +170,13 @@
             </list>
           </value>
         </entry>
+        <entry key="chewie">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/chewie-1.4.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="cli_util">
           <value>
             <list>
@@ -1080,6 +1087,41 @@
             </list>
           </value>
         </entry>
+        <entry key="wakelock">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="wakelock_macos">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="wakelock_platform_interface">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_platform_interface-0.3.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="wakelock_web">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_web-0.4.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="wakelock_windows">
+          <value>
+            <list>
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_windows-0.2.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="watcher">
           <value>
             <list>
@@ -1177,6 +1219,7 @@
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/built_value-8.4.2/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.2.1/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/checked_yaml-2.0.2/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/chewie-1.4.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/cli_util-0.3.5/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.1/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/code_builder-4.4.0/lib" />
@@ -1303,6 +1346,11 @@
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_avfoundation-2.3.8/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_platform_interface-6.0.1/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-2.0.13/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.2/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_platform_interface-0.3.0/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_web-0.4.0/lib" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_windows-0.2.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.2/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-2.2.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-3.0.4/lib" />

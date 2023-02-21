@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
-import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
@@ -18,7 +16,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets.dart';
 import '../bug_report/main_bug_report_screen.dart';
-import '../ordering information/ordering_information_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -36,8 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -77,10 +73,7 @@ class _ProfileViewState extends State<ProfileView> {
                   },
                   child: const Text(
                     'Галерея',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 const SizedBox(
@@ -93,10 +86,7 @@ class _ProfileViewState extends State<ProfileView> {
                   },
                   child: const Text(
                     'Камера',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 const SizedBox(
@@ -150,10 +140,7 @@ class _ProfileViewState extends State<ProfileView> {
           Container(
             padding: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Theme.of(context).primaryColorLight,
-                  blurRadius: 20,
-                  offset: const Offset(0, 40))
+              BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 20, offset: const Offset(0, 40))
             ]),
             child: Card(
               margin: const EdgeInsets.only(left: 20, right: 20),
@@ -171,8 +158,7 @@ class _ProfileViewState extends State<ProfileView> {
                           avatarChoice(context, model);
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 10, bottom: 10, left: 10),
+                          margin: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                           width: 100,
                           height: 100,
                           child: model.file != null
@@ -185,29 +171,23 @@ class _ProfileViewState extends State<ProfileView> {
                                 )
                               : const SizedBox(),
                           decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                  image: AssetImage('images/avatar1.png')),
+                              image: const DecorationImage(image: AssetImage('images/avatar1.png')),
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(50)),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: 15,
-                            left: MediaQuery.of(context).size.width / 3,
-                            bottom: 15),
+                        padding: EdgeInsets.only(top: 15, left: MediaQuery.of(context).size.width / 3, bottom: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               model.lastName,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             Text(
                               "${model.firstName} ${model.middleName}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             const SizedBox(height: 10),
                             RichText(
@@ -218,23 +198,12 @@ class _ProfileViewState extends State<ProfileView> {
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
-                                      text:
-                                          model.userType == EnumUserType.student
-                                              ? 'Группа: '
-                                              : 'Должность: \n'),
+                                      text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: \n',
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                                   model.userType == EnumUserType.student
-                                      ? TextSpan(
-                                          text: model.group,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              fontWeight: FontWeight.bold))
-                                      : TextSpan(
-                                          text: model.jobTitle,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              fontWeight: FontWeight.bold)),
+                                      ? TextSpan(text: model.group)
+                                      : TextSpan(text: model.jobTitle),
                                 ],
                               ),
                             ),
@@ -246,13 +215,11 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 children: <TextSpan>[
-                                  const TextSpan(text: 'Телефон: '),
                                   TextSpan(
-                                      text: model.phone,
+                                      text: 'Телефон: ',
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          fontWeight: FontWeight.bold)),
+                                          color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                                  TextSpan(text: model.phone),
                                 ],
                               ),
                             ),
@@ -273,10 +240,7 @@ class _ProfileViewState extends State<ProfileView> {
                   borderRadius: BorderRadius.circular(20),
                   color: Theme.of(context).primaryColor,
                   boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).primaryColorLight,
-                        blurRadius: 15,
-                        offset: const Offset(0, 15))
+                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
                   ]),
               child: ExpansionTile(
                 backgroundColor: Colors.transparent,
@@ -284,10 +248,7 @@ class _ProfileViewState extends State<ProfileView> {
                 expandedAlignment: Alignment.center,
                 title: const Text(
                   'Данные пользователя',
-                  style: TextStyle(
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
                   Padding(
@@ -303,22 +264,12 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: model.userType == EnumUserType.student
-                                      ? 'Группа: '
-                                      : 'Должность: '),
+                                  text: model.userType == EnumUserType.student ? 'Группа: ' : 'Должность: ',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                               model.userType == EnumUserType.student
-                                  ? TextSpan(
-                                      text: model.group,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          fontWeight: FontWeight.bold))
-                                  : TextSpan(
-                                      text: model.jobTitle,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          fontWeight: FontWeight.bold)),
+                                  ? TextSpan(text: model.group)
+                                  : TextSpan(text: model.jobTitle),
                             ],
                           ),
                         ),
@@ -331,44 +282,15 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
-                                  text: model.userType == EnumUserType.student
-                                      ? 'Направление: '
-                                      : 'Отдел: '),
+                                  text: model.userType == EnumUserType.student ? 'Направление: ' : 'Отдел: ',
+                                  style: const TextStyle(fontWeight: FontWeight.bold)),
                               model.userType == EnumUserType.student
-                                  ? TextSpan(
-                                      text: model.speciality,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold))
-                                  : TextSpan(
-                                      text: model.department,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                  ? TextSpan(text: model.speciality)
+                                  : TextSpan(text: model.department),
                             ],
                           ),
                         ),
-                        model.userType == EnumUserType.student
-                            ? const SizedBox(height: 10)
-                            : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student
-                            ? RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                  children: <TextSpan>[
-                                    const TextSpan(text: 'Форма обучения: '),
-                                    TextSpan(
-                                        text: model.learnForm,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student
-                            ? const SizedBox(height: 10)
-                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
                         model.userType == EnumUserType.student
                             ? RichText(
                                 text: TextSpan(
@@ -378,12 +300,24 @@ class _ProfileViewState extends State<ProfileView> {
                                   ),
                                   children: <TextSpan>[
                                     const TextSpan(
-                                        text: 'Форма финансирования: '),
-                                    TextSpan(
-                                        text: model.finForm,
-                                        style: const TextStyle(
-                                            // color: Colors.black,
-                                            fontWeight: FontWeight.bold)),
+                                        text: 'Форма обучения: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    TextSpan(text: model.learnForm),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student
+                            ? RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: 'Форма финансирования: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    TextSpan(text: model.finForm),
                                   ],
                                 ),
                               )
@@ -396,12 +330,11 @@ class _ProfileViewState extends State<ProfileView> {
                               color: Theme.of(context).primaryColorDark,
                             ),
                             children: <TextSpan>[
-                              const TextSpan(text: 'Email: '),
                               TextSpan(
-                                  text: model.email,
+                                  text: 'Email: ',
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontWeight: FontWeight.bold)),
+                                      color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                              TextSpan(text: model.email),
                             ],
                           ),
                         ),
@@ -413,20 +346,16 @@ class _ProfileViewState extends State<ProfileView> {
                               color: Theme.of(context).primaryColorDark,
                             ),
                             children: <TextSpan>[
-                              const TextSpan(text: 'Телефон: '),
                               TextSpan(
-                                  text: model.phone,
+                                  text: 'Телефон: ',
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontWeight: FontWeight.bold)),
+                                      color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                              TextSpan(text: model.phone),
                             ],
                           ),
                         ),
-                        model.userType == EnumUserType.student
-                            ? const SizedBox(height: 10)
-                            : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student &&
-                                model.finForm != "бюджетная"
+                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
+                        model.userType == EnumUserType.student && model.finForm != "бюджетная"
                             ? RichText(
                                 text: TextSpan(
                                   style: TextStyle(
@@ -434,14 +363,11 @@ class _ProfileViewState extends State<ProfileView> {
                                     color: Theme.of(context).primaryColorDark,
                                   ),
                                   children: <TextSpan>[
-                                    const TextSpan(
-                                        text: 'Задолженность за обучение: '),
                                     TextSpan(
-                                        text: model.debtData,
+                                        text: 'Задолженность за обучение: ',
                                         style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorDark,
-                                            fontWeight: FontWeight.bold)),
+                                            color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                                    TextSpan(text: model.debtData),
                                   ],
                                 ),
                               )
@@ -461,8 +387,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: Colors.blue,
                                   boxShadow: [
                                     BoxShadow(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
+                                        color: Theme.of(context).primaryColorLight,
                                         blurRadius: 10,
                                         offset: const Offset(0, 9))
                                   ]),
@@ -490,8 +415,7 @@ class _ProfileViewState extends State<ProfileView> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const PRSView()),
+                        MaterialPageRoute(builder: (context) => const PRSView()),
                       );
                     },
                     child: Container(
@@ -503,9 +427,7 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15))
+                                color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
                           ]),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -517,8 +439,7 @@ class _ProfileViewState extends State<ProfileView> {
                           const SizedBox(height: 10),
                           const Text(
                             'БРС',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                           )
                         ],
                       ),
@@ -530,8 +451,7 @@ class _ProfileViewState extends State<ProfileView> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    settings:
-                                        const RouteSettings(name: "PgasList"),
+                                    settings: const RouteSettings(name: "PgasList"),
                                     builder: (context) => const PgasScreen()));
                           },
                           child: Container(
@@ -543,8 +463,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 color: Theme.of(context).primaryColor,
                                 boxShadow: [
                                   BoxShadow(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
                                       offset: const Offset(0, 15))
                                 ]),
@@ -558,9 +477,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 const SizedBox(height: 10),
                                 const Text(
                                   'ПГАС',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                 )
                               ],
                             ),
@@ -568,10 +485,7 @@ class _ProfileViewState extends State<ProfileView> {
                         )
                       : GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const IaisView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -582,8 +496,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 color: Theme.of(context).primaryColor,
                                 boxShadow: [
                                   BoxShadow(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
                                       offset: const Offset(0, 15))
                                 ]),
@@ -598,9 +511,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 const Center(
                                   child: Text(
                                     'ИнфОУПро',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -609,19 +520,14 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                 ],
               ),
-              model.userType == EnumUserType.student
-                  ? const SizedBox(height: 30)
-                  : const SizedBox(height: 70),
+              model.userType == EnumUserType.student ? const SizedBox(height: 30) : const SizedBox(height: 70),
               model.userType == EnumUserType.student
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const IaisView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 30),
@@ -632,8 +538,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 color: Theme.of(context).primaryColor,
                                 boxShadow: [
                                   BoxShadow(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
                                       offset: const Offset(0, 15))
                                 ]),
@@ -648,9 +553,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 const Center(
                                   child: Text(
                                     'ИнфОУПро',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -659,10 +562,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const DebtsView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DebtsView()));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -673,8 +573,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 color: Theme.of(context).primaryColor,
                                 boxShadow: [
                                   BoxShadow(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
+                                      color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
                                       offset: const Offset(0, 15))
                                 ]),
@@ -689,9 +588,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 const Center(
                                   child: Text(
                                     'Долги',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                   ),
                                 ),
                               ],
@@ -701,150 +598,123 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     )
                   : const SizedBox.shrink(),
+              model.userType == EnumUserType.student ? const SizedBox(height: 30) : const SizedBox.shrink(),
               model.userType == EnumUserType.student
-                  ? const SizedBox(height: 30)
-                  : const SizedBox.shrink(),
-              model.userType == EnumUserType.student
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const OrderingInformationMainView()));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 30),
-                              height: 100,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Theme.of(context).primaryColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 15))
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/icons/orderingInformation.png',
-                                    scale: 4,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Center(
-                                    child: Text(
-                                      'Заказ справок',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ],
+                  ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 30),
+                          height: 100,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Theme.of(context).primaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context).primaryColorLight,
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 15))
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'images/icons/orderingInformation.png',
+                                scale: 4,
                               ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CheckListView()));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 30),
-                              height: 100,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Theme.of(context).primaryColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 15))
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/icons/Book.png',
-                                    scale: 4,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Center(
-                                    child: Text(
-                                      'Обходной лист',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ],
+                              const SizedBox(height: 10),
+                              const Center(
+                                child: Text(
+                                  'Заказ справок',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ])
-                  : const SizedBox.shrink(),
-              model.userType == EnumUserType.student
-                  ? const SizedBox(height: 30)
-                  : const SizedBox.shrink(),
-              model.userType == EnumUserType.student
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          _paymentWebView(context, model)));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 30),
-                              height: 100,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Theme.of(context).primaryColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                        blurRadius: 15,
-                                        offset: const Offset(0, 15))
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/icons/money.png',
-                                    scale: 4,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Center(
-                                    child: Text(
-                                      'Оплата услуг',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckListView()));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 30),
+                          height: 100,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Theme.of(context).primaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context).primaryColorLight,
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 15))
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'images/icons/Book.png',
+                                scale: 4,
                               ),
-                            ),
+                              const SizedBox(height: 10),
+                              const Center(
+                                child: Text(
+                                  'Обходной лист',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
+                              ),
+                            ],
                           ),
-                        ])
+                        ),
+                      ),
+                    ])
+                  : const SizedBox.shrink(),
+              model.userType == EnumUserType.student ? const SizedBox(height: 30) : const SizedBox.shrink(),
+              model.userType == EnumUserType.student
+                  ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => _paymentWebView(context, model)));
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 30),
+                          height: 100,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Theme.of(context).primaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context).primaryColorLight,
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 15))
+                              ]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'images/icons/money.png',
+                                scale: 4,
+                              ),
+                              const SizedBox(height: 10),
+                              const Center(
+                                child: Text(
+                                  'Оплата услуг',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ])
                   : const SizedBox.shrink(),
             ],
           ),
@@ -855,20 +725,14 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainBugReportScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
                 },
                 child: Container(
                   padding: const EdgeInsets.only(left: 30),
                   width: 160,
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).primaryColorLight,
-                        blurRadius: 15,
-                        offset: const Offset(0, 15))
+                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
                   ]),
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -877,8 +741,7 @@ class _ProfileViewState extends State<ProfileView> {
                     child: const Center(
                         child: Text(
                       'Поддержка',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     )),
                   ),
                 ),
@@ -890,8 +753,7 @@ class _ProfileViewState extends State<ProfileView> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Предупреждение'),
-                      content: const Text(
-                          'Вы действительно хотите выйти из мобильного приложения?'),
+                      content: const Text('Вы действительно хотите выйти из мобильного приложения?'),
                       actions: [
                         ElevatedButton(
                             onPressed: () {
@@ -912,10 +774,7 @@ class _ProfileViewState extends State<ProfileView> {
                   width: 160,
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: Theme.of(context).primaryColorLight,
-                        blurRadius: 15,
-                        offset: const Offset(0, 15))
+                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
                   ]),
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -924,8 +783,7 @@ class _ProfileViewState extends State<ProfileView> {
                     child: const Center(
                         child: Text(
                       'Выйти',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     )),
                   ),
                 ),
@@ -947,12 +805,10 @@ class LoadingScreen extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<LoadingScreen>
-    with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<LoadingScreen> with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 3));
     _controller!.forward();
     super.initState();
 
@@ -997,10 +853,8 @@ class _MyHomePageState extends State<LoadingScreen>
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Ожидайте.',
-                      style: TextStyle(
-                          color: Color.fromRGBO(91, 91, 126, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
+                      style:
+                          TextStyle(color: Color.fromRGBO(91, 91, 126, 1), fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
                   ),
                   const Padding(
@@ -1008,10 +862,8 @@ class _MyHomePageState extends State<LoadingScreen>
                     child: Text(
                       'Ваши данные находятся на проверке.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color.fromRGBO(91, 91, 126, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
+                      style:
+                          TextStyle(color: Color.fromRGBO(91, 91, 126, 1), fontWeight: FontWeight.bold, fontSize: 16.0),
                     ),
                   ),
                   Image.asset('images/icons/loader.gif', height: 50, width: 50),
@@ -1071,14 +923,9 @@ _updateProfile(BuildContext context, ProfileViewModel model) {
               suffixIcon: Icon(Icons.email),
               focusColor: Colors.black,
               hintText: 'E-Mail',
-              hintStyle: TextStyle(
-                  fontFamily: "Ubuntu",
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold)),
-          style: const TextStyle(
-              fontFamily: "Ubuntu",
-              color: Color.fromRGBO(91, 91, 126, 1),
-              fontWeight: FontWeight.bold),
+              hintStyle: TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold)),
+          style:
+              const TextStyle(fontFamily: "Ubuntu", color: Color.fromRGBO(91, 91, 126, 1), fontWeight: FontWeight.bold),
           controller: model.emailController,
         ),
         TextFormField(
@@ -1087,14 +934,9 @@ _updateProfile(BuildContext context, ProfileViewModel model) {
               suffixIcon: Icon(Icons.phone),
               focusColor: Colors.black,
               hintText: 'Телефон',
-              hintStyle: TextStyle(
-                  fontFamily: "Ubuntu",
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold)),
-          style: const TextStyle(
-              fontFamily: "Ubuntu",
-              color: Color.fromRGBO(91, 91, 126, 1),
-              fontWeight: FontWeight.bold),
+              hintStyle: TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold)),
+          style:
+              const TextStyle(fontFamily: "Ubuntu", color: Color.fromRGBO(91, 91, 126, 1), fontWeight: FontWeight.bold),
           controller: model.phoneController,
         ),
         Row(

@@ -44,6 +44,9 @@
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_avfoundation-2.3.8" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_android-2.3.10" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/appmetrica_plugin-1.1.0" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_web-0.4.0" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0" />
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.2" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

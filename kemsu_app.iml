@@ -141,6 +141,12 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/appmetrica_plugin/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/appmetrica_plugin/build" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/appmetrica_plugin/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/wakelock/example/.dart_tool" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />
