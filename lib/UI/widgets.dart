@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
-import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 
 class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";

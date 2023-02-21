@@ -15,6 +15,7 @@ class _MyHomePageState extends State<LoadingView>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
+    super.initState();
     getUserType(context);
   }
 

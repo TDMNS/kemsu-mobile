@@ -6,7 +6,6 @@ import 'UI/DarkTheme.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule2.0_view.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
