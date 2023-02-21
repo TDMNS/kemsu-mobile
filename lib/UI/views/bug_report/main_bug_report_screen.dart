@@ -30,7 +30,8 @@ class MainBugReportScreen extends StatelessWidget {
                   appBar: customAppBar(context, model, "Сообщения об ошибках"),
                   body: _body(context, model),
                   floatingActionButton: FloatingActionButton(
-                    child: const Icon(Icons.edit),
+                    backgroundColor: Colors.blue,
+                    child: const Icon(Icons.edit, color: Colors.white),
                     onPressed: () {
                       showDialog(
                           context: context,
@@ -136,6 +137,9 @@ newMessageDialog(context, BugReportViewModel model) {
     ),
     actions: [
       TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue, // Text Color
+          ),
           onPressed: () async {
             model.sendAction(context);
           },

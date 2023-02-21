@@ -33,7 +33,7 @@ customAppBar(context, model, name) {
   return AppBar(
     title: Text(
       name,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
     shape: const RoundedRectangleBorder(
@@ -55,9 +55,9 @@ customAppBar(context, model, name) {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_outlined,
-              color: Colors.indigo.shade700,
+              color: Colors.blue,
             )),
   );
 }
