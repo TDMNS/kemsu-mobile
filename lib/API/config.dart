@@ -18,6 +18,8 @@ class Config {
   static String studMoneyDebt = 'https://api-next.kemsu.ru/api/debt/main/moneyDebtInfo';
   static String studDebt = 'https://api-next.kemsu.ru/api/debt/main/studyDebtList';
   static String libraryDebt = "https://api-next.kemsu.ru/api/debt/main/literatureDebtList";
+  static String libraryDebtUpdate = "https://api-next.kemsu.ru/api/debt-stud/literature";
+  static String academicDebtUpdate = "https://api-next.kemsu.ru/api/debt-stud/user";
   static String basicList = "https://api-next.kemsu.ru/api/orders/main/basicList";
   static String periodList = "https://api-next.kemsu.ru/api/orders/main/periodList";
   static String addRequest = "https://api-next.kemsu.ru/api/orders/main/addRequest";

@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './debts_viewmodel.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../widgets.dart';
 
-class DebtsView extends StatelessWidget {
+class DebtsView extends StatefulWidget {
   const DebtsView({Key? key}) : super(key: key);
 
+  @override
+  State<DebtsView> createState() => _DebtsViewState();
+}
+
+class _DebtsViewState extends State<DebtsView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DebtsViewModel>.reactive(
@@ -23,10 +27,19 @@ class DebtsView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'Долги'),
-              body: _debtsView(context, model),
+              body: RefreshIndicator(
+                backgroundColor: Colors.blue,
+                color: Colors.white,
+                onRefresh: () => _pullRefresh(model),
+                child: _debtsView(context, model),
+              )
             ),
           );
         });
+  }
+
+  Future<void> _pullRefresh(DebtsViewModel model) async {
+    await model.updateDebts();
   }
 }
 

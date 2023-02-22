@@ -64,6 +64,23 @@ class DebtsViewModel extends BaseViewModel {
         .toList();
   }
 
+  updateDebts() async {
+    print("hello world!");
+    String? token = await storage.read(key: "tokenKey");
+    await http.get(
+      Uri.parse(Config.academicDebtUpdate),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
+    await http.get(
+      Uri.parse(Config.libraryDebtUpdate),
+      headers: {
+        "x-access-token": token,
+      },
+    );
+  }
+
   void appMetricTest() {
     AppMetrica.activate(
         const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
