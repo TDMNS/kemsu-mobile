@@ -65,7 +65,6 @@ class DebtsViewModel extends BaseViewModel {
   }
 
   updateDebts() async {
-    print("hello world!");
     String? token = await storage.read(key: "tokenKey");
     await http.get(
       Uri.parse(Config.academicDebtUpdate),
