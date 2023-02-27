@@ -10,6 +10,12 @@ import '../../../API/config.dart';
 import 'models/debts_model.dart';
 import 'dart:convert';
 
+class EnumDebts {
+  static String get academicDebt => "Академическая задолженность";
+  static String get libraryDebt => "Задолженность по книгам в библиотеке";
+  static String get payDebt => "Задолженность за платные услуги";
+}
+
 class DebtsViewModel extends BaseViewModel {
   DebtsViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
@@ -18,6 +24,9 @@ class DebtsViewModel extends BaseViewModel {
   List<LibraryDebts> libraryDebts = [];
 
   int selectedIndex = 2;
+
+  String? defaultDebt;
+  List<String> debtsType = [EnumDebts.academicDebt, EnumDebts.libraryDebt, EnumDebts.payDebt];
 
   Future onReady() async {
     getAcademyDebts();
@@ -78,6 +87,11 @@ class DebtsViewModel extends BaseViewModel {
         "x-access-token": token,
       },
     );
+  }
+
+  changeCard(value) async {
+    defaultDebt = value;
+    notifyListeners();
   }
 
   void appMetricTest() {

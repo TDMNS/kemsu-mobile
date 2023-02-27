@@ -11,12 +11,10 @@ class OrderingInformationMainView extends StatefulWidget {
   const OrderingInformationMainView({Key? key}) : super(key: key);
 
   @override
-  State<OrderingInformationMainView> createState() =>
-      _OrderingInformationMainViewState();
+  State<OrderingInformationMainView> createState() => _OrderingInformationMainViewState();
 }
 
-class _OrderingInformationMainViewState
-    extends State<OrderingInformationMainView> {
+class _OrderingInformationMainViewState extends State<OrderingInformationMainView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrderingInformationMainViewModel>.reactive(
@@ -25,8 +23,7 @@ class _OrderingInformationMainViewState
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -35,11 +32,10 @@ class _OrderingInformationMainViewState
                   }
                 },
                 child: Scaffold(
-                  extendBody: true,
-                  extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Заказ справок'),
-                  body: _orderingInformationView(context, model)
-                ),
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, 'Заказ справок'),
+                    body: _orderingInformationView(context, model)),
               ));
         });
   }
@@ -55,11 +51,7 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
             padding: const EdgeInsets.only(top: 20.0),
             child: ElevatedButton(
                 onPressed: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const OrderingInformationView()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
                 },
                 child: const Text("Заказать новую справку"))),
       ),
@@ -73,18 +65,14 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
 _checkListView(BuildContext context, OrderingInformationMainViewModel model) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        children: [
-          const SizedBox(height: 12),
-          Wrap(children: [
-            Text("Список заказанных справок",
-                style: Theme.of(context).textTheme.headline5),
-            const SizedBox(height: 38),
-            getListView(model.receivedReferences)
-          ]),
-        ]),
+    child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
+      const SizedBox(height: 12),
+      Wrap(children: [
+        Text("Список заказанных справок", style: Theme.of(context).textTheme.headline5),
+        const SizedBox(height: 38),
+        getListView(model.receivedReferences)
+      ]),
+    ]),
   );
 }
 
@@ -103,10 +91,7 @@ Widget getListView(List<RequestReference> items) {
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
                 boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
+                  BoxShadow(color: Colors.grey.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 15))
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
@@ -133,13 +118,11 @@ Widget getListView(List<RequestReference> items) {
                         const SizedBox(height: 10),
                         richText("Отчество: ", "${item.patronymic}", context),
                         const SizedBox(height: 10),
-                        richText("Название института: ",
-                            "${item.instituteName}", context),
+                        richText("Название института: ", "${item.instituteName}", context),
                         const SizedBox(height: 10),
                         richText("Курс: ", "${item.courseNumber}", context),
                         const SizedBox(height: 10),
-                        richText("Уровень образования: ",
-                            "${item.educationLevel}", context),
+                        richText("Уровень образования: ", "${item.educationLevel}", context),
                         const SizedBox(height: 10),
                         richText("Группа: ", "${item.groupName}", context),
                         const SizedBox(height: 10),
@@ -147,11 +130,9 @@ Widget getListView(List<RequestReference> items) {
                         const SizedBox(height: 10),
                         richText("Период: ", "${item.period}", context),
                         const SizedBox(height: 10),
-                        richText("Количество справок: ",
-                            "${item.countReferences}", context),
+                        richText("Количество справок: ", "${item.countReferences}", context),
                         const SizedBox(height: 10),
-                        richText(
-                            "Дата запроса: ", "${item.requestDate}", context),
+                        richText("Дата запроса: ", "${item.requestDate}", context),
                         const SizedBox(height: 10),
                       ],
                     ),
@@ -174,12 +155,8 @@ RichText richText(String title, String item, context) {
         color: Theme.of(context).primaryColorDark,
       ),
       children: <TextSpan>[
-        TextSpan(text: title),
-        TextSpan(
-            text: item,
-            style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-                fontWeight: FontWeight.bold)),
+        TextSpan(text: title, style: TextStyle(color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+        TextSpan(text: item),
       ],
     ),
   );
