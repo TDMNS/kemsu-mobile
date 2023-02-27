@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
+import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
@@ -22,15 +23,14 @@ class DebtsViewModel extends BaseViewModel {
 
   List<AcademyDebts> debtsCourse = [];
   List<LibraryDebts> libraryDebts = [];
+  List<PayDebts> payDebts = [];
 
   int selectedIndex = 2;
-
-  String? defaultDebt;
-  List<String> debtsType = [EnumDebts.academicDebt, EnumDebts.libraryDebt, EnumDebts.payDebt];
 
   Future onReady() async {
     getAcademyDebts();
     getLibraryDebts();
+    getPayDebts();
     appMetricTest();
   }
 
@@ -89,9 +89,27 @@ class DebtsViewModel extends BaseViewModel {
     );
   }
 
-  changeCard(value) async {
-    defaultDebt = value;
+  getPayDebts() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(
+      Uri.parse(Config.studMoneyDebt),
+      headers: {
+        "x-access-token": token!,
+      },
+    );
+
+    final moneyDebt = json.decode(response.body)["debtInfo"];
+    if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
+      payDebts = parsePayDebtsList(json.decode(response.body)["debtInfo"]);
+    }
+    
     notifyListeners();
+  }
+
+  List<PayDebts> parsePayDebtsList(List response) {
+    return response
+        .map<PayDebts>((json) => PayDebts.fromJson(json))
+        .toList();
   }
 
   void appMetricTest() {

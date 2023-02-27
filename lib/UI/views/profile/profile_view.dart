@@ -354,24 +354,6 @@ class _ProfileViewState extends State<ProfileView> {
                             ],
                           ),
                         ),
-                        model.userType == EnumUserType.student ? const SizedBox(height: 10) : const SizedBox.shrink(),
-                        model.userType == EnumUserType.student && model.finForm != "бюджетная"
-                            ? RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Задолженность за обучение: ',
-                                        style: TextStyle(
-                                            color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
-                                    TextSpan(text: model.debtData),
-                                  ],
-                                ),
-                              )
-                            : const SizedBox.shrink(),
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(

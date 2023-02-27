@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_model.dart';
+import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import '../ordering information/ordering_information_main_view.dart';
 import './debts_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -54,10 +55,11 @@ _debtsView(BuildContext context, DebtsViewModel model) {
               children: [
                 model.debtsCourse.isNotEmpty ? _getAcademyDebtView(model.debtsCourse) : const SizedBox.shrink(),
                 model.libraryDebts.isNotEmpty ? _getLibraryDebtView(model.libraryDebts) : const SizedBox.shrink(),
+                model.payDebts.isNotEmpty ? _getPayDebtsView(model.payDebts) : const SizedBox.shrink(),
                 const SizedBox(
                   height: 30,
                 ),
-                model.debtsCourse.isEmpty && model.libraryDebts.isEmpty
+                model.debtsCourse.isEmpty && model.libraryDebts.isEmpty && model.payDebts.isEmpty
                     ? const Text("Задолженностей нет")
                     : const SizedBox.shrink()
               ],
@@ -165,6 +167,59 @@ Widget _getLibraryDebtView(List<LibraryDebts> items) {
                         const SizedBox(height: 10),
                         richText("Предполагаемая дата возврата книги: ", "${item.estimatedReturnDay}", context),
                         const SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Widget _getPayDebtsView(List<PayDebts> items) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(color: Colors.grey.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 15))
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                initiallyExpanded: true,
+                expandedAlignment: Alignment.center,
+                title: Text(
+                  EnumDebts.payDebt,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        richText("Сумма: ", "${item.amount}", context),
+                        const SizedBox(height: 10),
+                        richText("На дату: ", "${item.date}", context),
+                        const SizedBox(height: 10)
                       ],
                     ),
                   ),

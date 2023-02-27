@@ -48,7 +48,6 @@ class ProfileViewModel extends BaseViewModel {
   String statusSTR = '';
   String finForm = '';
   String startYear = '';
-  String debtData = '';
   String userType = '';
   int? userTypeInt;
   String jobTitle = '';
@@ -163,17 +162,6 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "group", value: group);
 
-      final responseMoneyDebt = await dio
-          .get(Config.studMoneyDebt, queryParameters: {"accessToken": token2});
-      var moneyDebt = responseMoneyDebt.data["debtInfo"];
-      if (moneyDebt["DEBT_AMOUNT"] == null) {
-        debtData = "Отсутствует";
-      } else {
-        debtData = moneyDebt["DEBT_AMOUNT"].toString() +
-            " (на дату: " +
-            moneyDebt["DEBT_DATE"] +
-            ")";
-      }
     } else if (userType == EnumUserType.employee) {
       final responseEmployee = await dio
           .get(Config.empCardHost, queryParameters: {"accessToken": token2});
