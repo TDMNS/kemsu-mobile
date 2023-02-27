@@ -8,20 +8,20 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import 'models/debts_model.dart';
+import 'models/debts_academy_model.dart';
 import 'dart:convert';
 
 class EnumDebts {
-  static String get academicDebt => "Академическая задолженность";
-  static String get libraryDebt => "Задолженность по книгам в библиотеке";
-  static String get payDebt => "Задолженность за платные услуги";
+  static String get academyDebtsTitle => "Академическая задолженность";
+  static String get libraryDebtsTitle => "Задолженность по книгам в библиотеке";
+  static String get payDebtsTitle => "Задолженность за платные услуги";
 }
 
 class DebtsViewModel extends BaseViewModel {
   DebtsViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
-  List<AcademyDebts> debtsCourse = [];
+  List<AcademyDebts> academyDebts = [];
   List<LibraryDebts> libraryDebts = [];
   List<PayDebts> payDebts = [];
 
@@ -43,12 +43,12 @@ class DebtsViewModel extends BaseViewModel {
       },
     );
 
-    debtsCourse = parseCourseList(json.decode(response.body)['studyDebtList']);
+    academyDebts = parseAcademyDebtsList(json.decode(response.body)['studyDebtList']);
 
     notifyListeners();
   }
 
-  List<AcademyDebts> parseCourseList(List response) {
+  List<AcademyDebts> parseAcademyDebtsList(List response) {
     return response
         .map<AcademyDebts>((json) => AcademyDebts.fromJson(json))
         .toList();
@@ -63,11 +63,11 @@ class DebtsViewModel extends BaseViewModel {
       },
     );
 
-    libraryDebts = parseLibraryList(json.decode(response.body)['literatureDebtList']);
+    libraryDebts = parseLibraryDebtsList(json.decode(response.body)['literatureDebtList']);
     notifyListeners();
   }
 
-  List<LibraryDebts> parseLibraryList(List response) {
+  List<LibraryDebts> parseLibraryDebtsList(List response) {
     return response
         .map<LibraryDebts>((json) => LibraryDebts.fromJson(json))
         .toList();
@@ -102,7 +102,7 @@ class DebtsViewModel extends BaseViewModel {
     if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
       payDebts = parsePayDebtsList(json.decode(response.body)["debtInfo"]);
     }
-    
+
     notifyListeners();
   }
 

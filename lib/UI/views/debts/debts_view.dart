@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
-import 'package:kemsu_app/UI/views/debts/models/debts_model.dart';
+import 'package:kemsu_app/UI/views/debts/models/debts_academy_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import '../ordering information/ordering_information_main_view.dart';
 import './debts_viewmodel.dart';
@@ -53,13 +53,13 @@ _debtsView(BuildContext context, DebtsViewModel model) {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                model.debtsCourse.isNotEmpty ? _getAcademyDebtView(model.debtsCourse) : const SizedBox.shrink(),
-                model.libraryDebts.isNotEmpty ? _getLibraryDebtView(model.libraryDebts) : const SizedBox.shrink(),
+                model.academyDebts.isNotEmpty ? _getAcademyDebtsView(model.academyDebts) : const SizedBox.shrink(),
+                model.libraryDebts.isNotEmpty ? _getLibraryDebtsView(model.libraryDebts) : const SizedBox.shrink(),
                 model.payDebts.isNotEmpty ? _getPayDebtsView(model.payDebts) : const SizedBox.shrink(),
                 const SizedBox(
                   height: 30,
                 ),
-                model.debtsCourse.isEmpty && model.libraryDebts.isEmpty && model.payDebts.isEmpty
+                model.academyDebts.isEmpty && model.libraryDebts.isEmpty && model.payDebts.isEmpty
                     ? const Text("Задолженностей нет")
                     : const SizedBox.shrink()
               ],
@@ -69,7 +69,7 @@ _debtsView(BuildContext context, DebtsViewModel model) {
   );
 }
 
-Widget _getAcademyDebtView(List<AcademyDebts> items) {
+Widget _getAcademyDebtsView(List<AcademyDebts> items) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
@@ -92,7 +92,7 @@ Widget _getAcademyDebtView(List<AcademyDebts> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  EnumDebts.academicDebt,
+                  EnumDebts.academyDebtsTitle,
                   style: TextStyle(
                       color: Theme.of(context).primaryColorDark,
                       fontFamily: "Ubuntu",
@@ -125,7 +125,7 @@ Widget _getAcademyDebtView(List<AcademyDebts> items) {
   );
 }
 
-Widget _getLibraryDebtView(List<LibraryDebts> items) {
+Widget _getLibraryDebtsView(List<LibraryDebts> items) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
@@ -148,7 +148,7 @@ Widget _getLibraryDebtView(List<LibraryDebts> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  EnumDebts.libraryDebt,
+                  EnumDebts.libraryDebtsTitle,
                   style: TextStyle(
                       color: Theme.of(context).primaryColorDark,
                       fontFamily: "Ubuntu",
@@ -203,7 +203,7 @@ Widget _getPayDebtsView(List<PayDebts> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  EnumDebts.payDebt,
+                  EnumDebts.payDebtsTitle,
                   style: TextStyle(
                       color: Theme.of(context).primaryColorDark,
                       fontFamily: "Ubuntu",
