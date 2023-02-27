@@ -25,6 +25,105 @@ class FinalTable {
   }
 }
 
+class FinalTableString {
+  WeekDayString? weekDay1;
+  WeekDayString? weekDay2;
+  WeekDayString? weekDay3;
+  WeekDayString? weekDay4;
+  WeekDayString? weekDay5;
+  WeekDayString? weekDay6;
+
+  FinalTableString(
+      {this.weekDay1,
+      this.weekDay2,
+      this.weekDay3,
+      this.weekDay4,
+      this.weekDay5,
+      this.weekDay6});
+
+  factory FinalTableString.fromJson(Map<String, dynamic> json) {
+    return FinalTableString(
+        weekDay1: WeekDayString.fromJson(json['weekDay1']),
+        weekDay2: WeekDayString.fromJson(json['weekDay2']),
+        weekDay3: WeekDayString.fromJson(json['weekDay3']),
+        weekDay4: WeekDayString.fromJson(json['weekDay4']),
+        weekDay5: WeekDayString.fromJson(json['weekDay5']),
+        weekDay6: WeekDayString.fromJson(json['weekDay6']));
+  }
+}
+
+class WeekDayString {
+  String? coupleAll1;
+  String? coupleAll2;
+  String? coupleAll3;
+  String? coupleAll4;
+  String? coupleAll5;
+  String? coupleAll6;
+  String? coupleAll7;
+  String? coupleEven1;
+  String? coupleEven2;
+  String? coupleEven3;
+  String? coupleEven4;
+  String? coupleEven5;
+  String? coupleEven6;
+  String? coupleEven7;
+  String? coupleOdd1;
+  String? coupleOdd2;
+  String? coupleOdd3;
+  String? coupleOdd4;
+  String? coupleOdd5;
+  String? coupleOdd6;
+  String? coupleOdd7;
+
+  WeekDayString(
+      {this.coupleAll1,
+      this.coupleAll2,
+      this.coupleAll3,
+      this.coupleAll4,
+      this.coupleAll5,
+      this.coupleAll6,
+      this.coupleAll7,
+      this.coupleEven1,
+      this.coupleEven2,
+      this.coupleEven3,
+      this.coupleEven4,
+      this.coupleEven5,
+      this.coupleEven6,
+      this.coupleEven7,
+      this.coupleOdd1,
+      this.coupleOdd2,
+      this.coupleOdd3,
+      this.coupleOdd4,
+      this.coupleOdd5,
+      this.coupleOdd6,
+      this.coupleOdd7});
+
+  factory WeekDayString.fromJson(Map<String, dynamic> json) {
+    return WeekDayString(
+        coupleAll1: json['coupleAll1_str'],
+        coupleAll2: json['coupleAll2_str'],
+        coupleAll3: json['coupleAll3_str'],
+        coupleAll4: json['coupleAll4_str'],
+        coupleAll5: json['coupleAll5_str'],
+        coupleAll6: json['coupleAll6_str'],
+        coupleAll7: json['coupleAll7_str'],
+        coupleEven1: json['coupleEven1_str'],
+        coupleEven2: json['coupleEven2_str'],
+        coupleEven3: json['coupleEven3_str'],
+        coupleEven4: json['coupleEven4_str'],
+        coupleEven5: json['coupleEven5_str'],
+        coupleEven6: json['coupleEven6_str'],
+        coupleEven7: json['coupleEven7_str'],
+        coupleOdd1: json['coupleOdd1_str'],
+        coupleOdd2: json['coupleOdd2_str'],
+        coupleOdd3: json['coupleOdd3_str'],
+        coupleOdd4: json['coupleOdd4_str'],
+        coupleOdd5: json['coupleOdd5_str'],
+        coupleOdd6: json['coupleOdd6_str'],
+        coupleOdd7: json['coupleOdd7_str']);
+  }
+}
+
 class WeekDay {
   List<CoupleData>? coupleAll1;
   List<CoupleData>? coupleAll2;

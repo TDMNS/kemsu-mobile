@@ -21,7 +21,7 @@ class NewScheduleViewModel extends BaseViewModel {
   static const storage = FlutterSecureStorage();
   bool circle = true;
   bool tableView = false;
-  int indexDay = DateTime.now().weekday;
+  int indexDay = DateTime.now().weekday - 1;
   bool currentTable = false;
   bool weekType = true;
   int? groupId;
@@ -29,9 +29,17 @@ class NewScheduleViewModel extends BaseViewModel {
   int? currentSemester;
   int? currentWeek;
   FinalTable? scheduleTable;
+  FinalTableString? scheduleTableString;
+  List<WeekDayString>? daysList;
+  List<String>? coupleAllList;
+  List<String>? coupleEvenList;
+  List<String>? coupleOddList;
   ScheduleRequest? scheduleSemester;
   FacultyList? scheduleFaculty;
   GroupList? scheduleGroup;
+  // List<CoupleData> coupleAllList = [];
+  // List<CoupleData> coupleOddList = [];
+  // List<CoupleData> coupleEvenList = [];
   List<WeekGetId> weekID = [];
   List<GroupList> groupList = [];
   List<FacultyList> facultyList = [];
@@ -49,6 +57,7 @@ class NewScheduleViewModel extends BaseViewModel {
 
   Future onReady() async {
     getScheduleOnRequest();
+    getScheduleString();
     getSchedule();
     appMetricaTest();
   }
@@ -67,22 +76,114 @@ class NewScheduleViewModel extends BaseViewModel {
   void choiceDay(action) {
     if (action == 'next') {
       indexDay++;
-      indexDay == 8 ? indexDay = 1 : indexDay == 1;
+      indexDay == 6 ? indexDay = 0 : indexDay == 0;
     } else if (action == 'back') {
       indexDay--;
-      indexDay == 0 ? indexDay = 7 : indexDay == 7;
+      indexDay == -1 ? indexDay = 6 : indexDay == 6;
     }
+
+    coupleAllList = [
+      daysList![indexDay].coupleAll1!,
+      daysList![indexDay].coupleAll2!,
+      daysList![indexDay].coupleAll3!,
+      daysList![indexDay].coupleAll4!,
+      daysList![indexDay].coupleAll5!,
+      daysList![indexDay].coupleAll6!,
+      daysList![indexDay].coupleAll7!
+    ];
+
+    coupleEvenList = [
+      daysList![indexDay].coupleEven1!,
+      daysList![indexDay].coupleEven2!,
+      daysList![indexDay].coupleEven3!,
+      daysList![indexDay].coupleEven4!,
+      daysList![indexDay].coupleEven5!,
+      daysList![indexDay].coupleEven6!,
+      daysList![indexDay].coupleEven7!
+    ];
+    coupleOddList = [
+      daysList![indexDay].coupleOdd1!,
+      daysList![indexDay].coupleOdd2!,
+      daysList![indexDay].coupleOdd3!,
+      daysList![indexDay].coupleOdd4!,
+      daysList![indexDay].coupleOdd5!,
+      daysList![indexDay].coupleOdd6!,
+      daysList![indexDay].coupleOdd7!
+    ];
     notifyListeners();
   }
 
   void choiceSchedule() async {
     currentTable = false;
-    await getSchedule();
+    await getScheduleString();
     notifyListeners();
   }
 
   tableViewOnOff(data) {
     tableView = data;
+    notifyListeners();
+  }
+
+  getScheduleString() async {
+    circle = true;
+    indexDay == 6 ? indexDay = 1 : indexDay == 1;
+    String? token = await storage.read(key: "tokenKey");
+    var dio = Dio();
+    var semesterResponse = await dio.get(Config.semesterList);
+    var response = await dio
+        .get(Config.currentGroupList, queryParameters: {"accessToken": token});
+    groupId = response.data['currentGroupList'][0]['groupId'];
+    currentSemester = semesterResponse.data['result'][0]['Id'];
+    var weekResponse =
+        await dio.get('${Config.weekList}?semesterId=$currentSemester');
+    currentWeek = weekResponse.data['result'][0]['Id'];
+    currentTable == true
+        ? groupId = groupIdChoice
+        : groupId = response.data['currentGroupList'][0]['groupId'];
+    var getScheduleTable = await http.get(Uri.parse(
+        '${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
+    var mainTable = getScheduleTable.body;
+    final jsonResponse = json.decode(mainTable)['result']['Table'];
+    scheduleTableString = FinalTableString.fromJson(jsonResponse);
+    daysList = [
+      scheduleTableString!.weekDay1!,
+      scheduleTableString!.weekDay2!,
+      scheduleTableString!.weekDay3!,
+      scheduleTableString!.weekDay4!,
+      scheduleTableString!.weekDay5!,
+      scheduleTableString!.weekDay6!
+    ];
+
+    coupleAllList = [
+      daysList![indexDay].coupleAll1!,
+      daysList![indexDay].coupleAll2!,
+      daysList![indexDay].coupleAll3!,
+      daysList![indexDay].coupleAll4!,
+      daysList![indexDay].coupleAll5!,
+      daysList![indexDay].coupleAll6!,
+      daysList![indexDay].coupleAll7!
+    ];
+
+    coupleEvenList = [
+      daysList![indexDay].coupleEven1!,
+      daysList![indexDay].coupleEven2!,
+      daysList![indexDay].coupleEven3!,
+      daysList![indexDay].coupleEven4!,
+      daysList![indexDay].coupleEven5!,
+      daysList![indexDay].coupleEven6!,
+      daysList![indexDay].coupleEven7!
+    ];
+    coupleOddList = [
+      daysList![indexDay].coupleOdd1!,
+      daysList![indexDay].coupleOdd2!,
+      daysList![indexDay].coupleOdd3!,
+      daysList![indexDay].coupleOdd4!,
+      daysList![indexDay].coupleOdd5!,
+      daysList![indexDay].coupleOdd6!,
+      daysList![indexDay].coupleOdd7!
+    ];
+    circle = false;
+    tableView = true;
     notifyListeners();
   }
 
@@ -119,7 +220,6 @@ class NewScheduleViewModel extends BaseViewModel {
 
     circle = false;
     tableView = true;
-    print(currentSemester);
     notifyListeners();
   }
 

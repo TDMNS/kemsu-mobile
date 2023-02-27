@@ -70,13 +70,11 @@ class ProfileViewModel extends BaseViewModel {
     file = File('$appDocPath/$fileName');
     await storage.write(key: "avatar", value: file!.path);
 
-    print('NewFile22: $file');
     notifyListeners();
   }
 
   changeTheme(value) {
     darkTheme = value;
-    print('Value is: $value');
     notifyListeners();
   }
 
@@ -101,7 +99,6 @@ class ProfileViewModel extends BaseViewModel {
         ? Navigator.push(
             context, MaterialPageRoute(builder: (context) => const AuthView()))
         : null;
-    print(responseToken.statusCode);
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
@@ -111,9 +108,7 @@ class ProfileViewModel extends BaseViewModel {
     String? img = await storage.read(key: "avatar");
     img != null ? file = File(img) : file;
 
-    print('NewFile22: $file');
     String? token = await storage.read(key: "tokenKey");
-    print('Old token:' + token!);
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
     String? userTypeTemp = await storage.read(key: "userType");
@@ -121,14 +116,10 @@ class ProfileViewModel extends BaseViewModel {
     final responseProlongToken = await dio
         .post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
-    print('Code: ${responseProlongToken.statusCode}');
     await storage.write(key: "tokenKey", value: token);
     String? token2 = await storage.read(key: "tokenKey");
-    print('New token: ' + token2!);
     final responseAuth = await dio
         .post(Config.apiHost, data: {"login": login, "password": password});
-    print('Code: ${responseAuth.statusCode}');
-    print('Reponse: ${responseAuth.data}');
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
@@ -141,7 +132,6 @@ class ProfileViewModel extends BaseViewModel {
     phoneController?.text = phoneTemp;
     notifyListeners();
 
-    print(userData);
     if (userType == EnumUserType.student) {
       firstName = userData["firstName"];
       lastName = userData["lastName"];
@@ -222,7 +212,6 @@ class ProfileViewModel extends BaseViewModel {
     //print('Image: $image, Save Image: $avatar');
     Uint8List imageBytes = await image!.readAsBytes();
     String _base64String = base64.encode(imageBytes);
-    print(_base64String);
     await storage.write(key: "avatar", value: _base64String);
     //print(img64);
     notifyListeners();
@@ -240,7 +229,6 @@ class ProfileViewModel extends BaseViewModel {
     email = emailController!.text;
     phone = phoneController!.text;
     notifyListeners();
-    print(updateEmail.data);
   }
 
   void exitButton(context) {

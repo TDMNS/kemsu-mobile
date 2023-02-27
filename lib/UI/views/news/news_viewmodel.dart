@@ -82,7 +82,6 @@ class NewsViewModel extends BaseViewModel {
         tempData!.removeAt(i);
       }
     }
-    print('RESPONSE JSON:: $tempData');
     // newsModel = parseTest(tempData!);
     // // print('NEWS DATA:: $tempData');
     // //partialFileUrl = json.decode(newsResponse.body)[0][0]['partialFileUrl'];
@@ -90,18 +89,15 @@ class NewsViewModel extends BaseViewModel {
     for (int i = 0; i < tempData!.length; i++) {
       tempo.add(tempData![i]);
     }
-    print('WTF:: ${tempo.length}');
     for (int i = 0; i < tempData!.length; i++) {
       var tempo = [];
       tempo.add(tempData![i]);
-      print('TEMPO LENGHT:: ${tempo.length}');
     }
 
     for (int i = 0; i < tempData!.length; i++) {
       dynamic lengthNews = tempData![i];
       int numero = lengthNews.length;
       var file = tempData![i][0]['file'];
-      print('TEST:: ${tempData![i][numero - 1]['message']}');
       if (tempData![i][numero - 1]['message'] != null) {
         if (file != null) {
           if (file['mimeType'] == 'image/jpeg' &&
@@ -184,9 +180,7 @@ class NewsViewModel extends BaseViewModel {
     }
     partialFileUrl = tempData![index][0]['partialFileUrl'];
 
-    print('APP ID:: ${tempData![index][0]['id']} - MY ID:: ${idList[index]}');
     tempData![index][0]['id'] = idList[index];
-    print('APP ID:: ${tempData![index][0]['id']} - MY ID:: ${idList[index]}');
 
     for (int i = 0; i < tempData!.length; i++) {
       dynamic lengthNews = tempData![i];
@@ -203,7 +197,6 @@ class NewsViewModel extends BaseViewModel {
     // print(tempData![index][0]['file']['mimeType']);
     if (tempData![index][0]['file'] != null) {
       mimeType = tempData![index][0]['file']['mimeType'];
-      print('MIMETYPE:: $mimeType');
       if (mimeType == 'image/jpeg') {
         getPicture(partialFileUrl);
       } else if (mimeType == 'audio/mpeg') {
@@ -214,7 +207,6 @@ class NewsViewModel extends BaseViewModel {
     } else {
       mimeType = null;
     }
-    print(tempData![index][0]['file']['mimeType']);
     notifyListeners();
   }
 
@@ -232,7 +224,6 @@ class NewsViewModel extends BaseViewModel {
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token!});
     tempSound = getFile.bodyBytes;
-    print(tempSound);
   }
 
   getPicture(partialFileUrl) async {
@@ -246,15 +237,12 @@ class NewsViewModel extends BaseViewModel {
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'),
         headers: {'x-access-token': token!});
     tempPic = getFile.bodyBytes;
-    print(tempPic);
-    print(getFile.body);
     fileLoader = false;
     notifyListeners();
   }
 
   getVideoPreview(partialFileUrl) async {
     String? token = await storage.read(key: 'tokenKey');
-    // print(partialFileUrl);
     String fileURL = '${Config.newsFile}$partialFileUrl';
     videoURL = fileURL;
 
@@ -263,8 +251,6 @@ class NewsViewModel extends BaseViewModel {
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=m'),
         headers: {'x-access-token': token!});
     tempPic = getFile.bodyBytes;
-    print(tempPic);
-    print(getFile.body);
     fileLoader = false;
     notifyListeners();
   }
@@ -287,18 +273,14 @@ class NewsViewModel extends BaseViewModel {
     }
     String partialFileUrl = tempData![index][0]['partialFileUrl'];
 
-    print(partialFileUrl);
     String fileURL = '${Config.newsFile}$partialFileUrl';
-    print('VIDEO WORK:: ');
     Map<String, dynamic> map = {'x-access-token': token};
 
     final getFile = await http
         .get(Uri.parse('$fileURL'), headers: {'x-access-token': token!});
     fileLoader = false;
-    print('RESPONSE:: ${getFile.bodyBytes}');
     decodeVideo =
         await File("$path/video1.mp4").writeAsBytes(getFile.bodyBytes);
-    print(decodeVideo!.path);
     videoPath = decodeVideo!.path;
     videoPlayFunc(true);
     videoController = VideoPlayerController.network(
