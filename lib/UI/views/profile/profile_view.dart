@@ -902,7 +902,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
               }),
           isLoading
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Colors.blue),
                 )
               : Stack(),
         ]);
