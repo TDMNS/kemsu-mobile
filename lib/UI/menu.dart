@@ -3,6 +3,7 @@ import 'package:kemsu_app/UI/views/news/news_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule2.0_view.dart';
+import 'package:kemsu_app/UI/views/schedule/test_view.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key, required this.type}) : super(key: key);

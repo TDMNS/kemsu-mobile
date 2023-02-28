@@ -151,16 +151,6 @@ class _NewsViewState extends State<NewsView> {
             // ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 105),
-          child: IconButton(
-            onPressed: () {
-              model.messageService();
-            },
-            icon: Icon(Icons.refresh),
-            color: Colors.blue,
-          ),
-        ),
         model.showNews == true
             ? _currentNewsView(context, model, model.newsIndex)
             : SizedBox()

@@ -26,12 +26,10 @@ class _ScheduleViewState extends State<PrepScheduleView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark),
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context);
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -79,7 +77,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           //asyncItems: (String filter) => getData(filter),
           items: model.teacherList.map((e) => e.fio).toList(),
           //itemAsString: (Teacher t) => t.fio,
-          onChanged: (value) => { model.changeTeacher(value) },
+          onChanged: (value) => {model.changeTeacher(value)},
         ),
       ),
       Padding(
@@ -105,9 +103,9 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                 ),
                 child: const Center(
                     child: Text(
-                      'Сбросить',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    )),
+                  'Сбросить',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                )),
               ),
             ),
           )),
