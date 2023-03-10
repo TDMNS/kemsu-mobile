@@ -63,8 +63,7 @@ class NewScheduleViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Student schedule event');
   }
 
@@ -130,18 +129,14 @@ class NewScheduleViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
     var semesterResponse = await dio.get(Config.semesterList);
-    var response = await dio
-        .get(Config.currentGroupList, queryParameters: {"accessToken": token});
+    var response = await dio.get(Config.currentGroupList, queryParameters: {"accessToken": token});
     groupId = response.data['currentGroupList'][0]['groupId'];
     currentSemester = semesterResponse.data['result'][0]['Id'];
-    var weekResponse =
-        await dio.get('${Config.weekList}?semesterId=$currentSemester');
+    var weekResponse = await dio.get('${Config.weekList}?semesterId=$currentSemester');
     currentWeek = weekResponse.data['result'][0]['Id'];
-    currentTable == true
-        ? groupId = groupIdChoice
-        : groupId = response.data['currentGroupList'][0]['groupId'];
-    var getScheduleTable = await http.get(Uri.parse(
-        '${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
+    currentTable == true ? groupId = groupIdChoice : groupId = response.data['currentGroupList'][0]['groupId'];
+    var getScheduleTable =
+        await http.get(Uri.parse('${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
     var mainTable = getScheduleTable.body;
     final jsonResponse = json.decode(mainTable)['result']['Table'];
     scheduleTableString = FinalTableString.fromJson(jsonResponse);
@@ -191,18 +186,14 @@ class NewScheduleViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
     var semesterResponse = await dio.get(Config.semesterList);
-    var response = await dio
-        .get(Config.currentGroupList, queryParameters: {"accessToken": token});
+    var response = await dio.get(Config.currentGroupList, queryParameters: {"accessToken": token});
     groupId = response.data['currentGroupList'][0]['groupId'];
     currentSemester = semesterResponse.data['result'][0]['Id'];
-    var weekResponse =
-        await dio.get('${Config.weekList}?semesterId=$currentSemester');
+    var weekResponse = await dio.get('${Config.weekList}?semesterId=$currentSemester');
     currentWeek = weekResponse.data['result'][0]['Id'];
-    currentTable == true
-        ? groupId = groupIdChoice
-        : groupId = response.data['currentGroupList'][0]['groupId'];
-    var getScheduleTable = await http.get(Uri.parse(
-        '${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
+    currentTable == true ? groupId = groupIdChoice : groupId = response.data['currentGroupList'][0]['groupId'];
+    var getScheduleTable =
+        await http.get(Uri.parse('${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
     var mainTable = getScheduleTable.body;
     final jsonResponse = json.decode(mainTable)['result']['Table'];
     // final jsonResponseCoupleList =
@@ -226,10 +217,11 @@ class NewScheduleViewModel extends BaseViewModel {
   getScheduleOnRequest() async {
     var response = await http.get(Uri.parse(Config.semesterList));
     scheduleList = parseSchedule(json.decode(response.body)['result']);
-    var response3 = await http.get(
-        Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
+    var response3 = await http.get(Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
     facultyList = parseFaculty(json.decode(response3.body)["result"]);
     currentTable = false;
+    circle = false;
+
     notifyListeners();
   }
 
@@ -249,15 +241,11 @@ class NewScheduleViewModel extends BaseViewModel {
   }
 
   List<ScheduleRequest> parseSchedule(List response) {
-    return response
-        .map<ScheduleRequest>((json) => ScheduleRequest.fromJson(json))
-        .toList();
+    return response.map<ScheduleRequest>((json) => ScheduleRequest.fromJson(json)).toList();
   }
 
   List<FacultyList> parseFaculty(List response) {
-    return response
-        .map<FacultyList>((json) => FacultyList.fromJson(json))
-        .toList();
+    return response.map<FacultyList>((json) => FacultyList.fromJson(json)).toList();
   }
 
   void changeSemester(value) async {
@@ -266,8 +254,7 @@ class NewScheduleViewModel extends BaseViewModel {
     scheduleGroup = null;
     scheduleSemester = value;
     notifyListeners();
-    var response = await http.get(
-        Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
+    var response = await http.get(Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
     facultyList = parseFaculty(json.decode(response.body)["result"]);
     notifyListeners();
   }
@@ -277,8 +264,8 @@ class NewScheduleViewModel extends BaseViewModel {
     scheduleGroup = null;
     scheduleFaculty = value;
     notifyListeners();
-    var response = await http.get(Uri.parse(
-        '${Config.groupList}?facultyId=${scheduleFaculty!.id}&semesterId=${scheduleList[0].id}'));
+    var response = await http
+        .get(Uri.parse('${Config.groupList}?facultyId=${scheduleFaculty!.id}&semesterId=${scheduleList[0].id}'));
     groupList = parseGroup(json.decode(response.body)["result"]);
     notifyListeners();
   }
@@ -287,8 +274,7 @@ class NewScheduleViewModel extends BaseViewModel {
     scheduleGroup = value;
     tableViewOnOff(false);
     notifyListeners();
-    var response = await http
-        .get(Uri.parse('${Config.weekList}?semesterId=${scheduleList[0].id}'));
+    var response = await http.get(Uri.parse('${Config.weekList}?semesterId=${scheduleList[0].id}'));
     weekID = parseWeekID(json.decode(response.body)["result"]);
     groupIdChoice = scheduleGroup!.id;
     notifyListeners();

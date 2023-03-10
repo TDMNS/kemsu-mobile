@@ -24,14 +24,12 @@ class _NewScheduleViewState extends State<NewScheduleView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: WillPopScope(
                 onWillPop: () async => false,
                 child: GestureDetector(
                   onTap: () {
-                    FocusScopeNode currentFocus = FocusScope.of(
-                        context); //расфокус textfield при нажатии на экран
+                    FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
                     }
@@ -96,43 +94,37 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                       model.indexDay == 0
                           ? const Text(
                               'Понедельник',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 1
                           ? const Text(
                               'Вторник',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 2
                           ? const Text(
                               'Среда',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 3
                           ? const Text(
                               'Четверг',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 4
                           ? const Text(
                               'Пятница',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 5
                           ? const Text(
                               'Суббота',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       IconButton(
@@ -161,8 +153,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 2),
+                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
                     title: const Text('нечетная'),
                     leading: Radio(
@@ -177,37 +168,26 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
               ],
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
-                child: _scheduleTable(context, model)),
+                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30), child: _scheduleTable(context, model)),
             Center(
                 child: GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const PrepScheduleView()),
+                  MaterialPageRoute(builder: (context) => const PrepScheduleView()),
                 );
               },
               child: Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   height: 50,
                   width: 250,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 15,
-                            offset: const Offset(0, 15))
-                      ]),
+                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
+                    BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15))
+                  ]),
                   child: const Center(
                       child: Text(
                     'Расписание преподавателей',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                   ))),
             )),
           ],
@@ -251,12 +231,9 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                 },
                 isExpanded: true,
                 value: model.scheduleFaculty,
-                items:
-                    model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
+                items: model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
                   return DropdownMenuItem<FacultyList>(
-                    child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)),
-                    value: e
-                  );
+                      child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)), value: e);
                 }).toList(),
               )),
         ),
@@ -299,18 +276,12 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                 color: model.scheduleGroup == null ? Colors.grey : Colors.red,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
+                  BoxShadow(color: Colors.grey.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 15))
                 ]),
             child: const Center(
               child: Text(
                 'Показать',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
           ),
@@ -333,43 +304,37 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                   model.indexDay == 0
                       ? const Text(
                           'Понедельник',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 1
                       ? const Text(
                           'Вторник',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 2
                       ? const Text(
                           'Среда',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 3
                       ? const Text(
                           'Четверг',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 4
                       ? const Text(
                           'Пятница',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 5
                       ? const Text(
                           'Суббота',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   IconButton(
@@ -399,8 +364,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 2),
+                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
                     title: const Text('нечетная'),
                     leading: Radio(
@@ -416,9 +380,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
             ),
       Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
-          child: model.tableView == false
-              ? const SizedBox()
-              : _scheduleTable(context, model))
+          child: model.tableView == false ? const SizedBox() : _scheduleTable(context, model))
     ],
   );
 }
@@ -435,12 +397,10 @@ _scheduleTable(BuildContext context, NewScheduleViewModel model) {
       model.weekType == true
           ? model.indexDay == 6
               ? const Text('')
-              : Text(
-                  '${model.coupleAllList![i]}\r\n${model.coupleEvenList![i]}')
+              : Text('${model.coupleAllList![i]}\r\n${model.coupleEvenList![i]}')
           : model.indexDay == 6
               ? const Text('')
-              : Text(
-                  '${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
+              : Text('${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
     ]));
   }
   return Table(

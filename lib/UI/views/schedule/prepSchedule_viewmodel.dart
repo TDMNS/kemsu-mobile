@@ -70,8 +70,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Teacher schedule event');
   }
 
@@ -85,31 +84,21 @@ class PrepScheduleViewModel extends BaseViewModel {
     var dio = Dio();
     teacherFIO = data;
     teacherId = 0;
-    //print('Data FIO: ${teacherList[0].prepId}');
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherFIO == teacherList[i].fio) {
         teacherId = teacherList[i].prepId;
       }
     }
     circle = true;
-    print('WTF: $teacherId');
     String? token = await storage.read(key: "tokenKey");
-    var response2 = await http
-        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
-    currentGroupList =
-        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
-    var response = await http.get(Uri.parse(
-        '${Config.prepSchedule}?semesterId=10&prepId=$teacherId&accessToken=$token'));
+    var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+    var response =
+        await http.get(Uri.parse('${Config.prepSchedule}?semesterId=10&prepId=$teacherId&accessToken=$token'));
 
     var jsonResponse = json.decode(response.body)['result'];
 
     result = Result.fromJson(jsonResponse);
-
-    evenList = parseEvenList(
-        jsonResponse['prepScheduleTable'][0]['ceilList'][4]['ceil']['even']);
-    for (int i = 0; i < evenList.length; i++) {
-      print(evenList[i].discName);
-    }
 
     circle = false;
 
@@ -117,9 +106,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   List<CurrentGroupList> parseCurrentGroupList(List response) {
-    return response
-        .map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json))
-        .toList();
+    return response.map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json)).toList();
   }
 
   void choiceDay(action) {
@@ -140,24 +127,17 @@ class PrepScheduleViewModel extends BaseViewModel {
     String? userTypeTemp = await storage.read(key: "userType");
     userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
 
-    var response2 = await http
-        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
-    currentGroupList =
-        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+    var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
-    var response = await http.get(
-        Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=10'));
+    var response = await http.get(Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=10'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherList[i].fio == fio) {
         teacherFIO = teacherList[i].fio;
         currentTeacherID = teacherList[i].prepId;
-        print("Old ID is: ${teacherList[i].prepId}");
-        print("New ID is: $currentTeacherID");
       }
     }
-    print('FIO: $fio');
-    print('AAAA: ${response.body}');
     type == 0 ? changeTeacher(teacherFIO) : changeTeacher(fio);
 
     circle = false;
@@ -165,9 +145,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   List<TeacherList> parseTeacherList(List response) {
-    return response
-        .map<TeacherList>((json) => TeacherList.fromJson(json))
-        .toList();
+    return response.map<TeacherList>((json) => TeacherList.fromJson(json)).toList();
   }
 
   List<Even> parseEvenList(List response) {
@@ -181,8 +159,7 @@ class Teacher {
 
   const Teacher({required this.fio, required this.prepId});
 
-  static Teacher fromJson(Map<String, dynamic> json) =>
-      Teacher(fio: json['fio'], prepId: json['prepId']);
+  static Teacher fromJson(Map<String, dynamic> json) => Teacher(fio: json['fio'], prepId: json['prepId']);
 }
 
 class TeacherApi {
@@ -191,19 +168,15 @@ class TeacherApi {
 
     final storage = const FlutterSecureStorage();
     List<CurrentGroupList> parseCurrentGroupList(List response) {
-      return response
-          .map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json))
-          .toList();
+      return response.map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json)).toList();
     }
 
     String? token = await storage.read(key: "tokenKey");
-    var response2 = await http
-        .get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
-    currentGroupList =
-        parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
+    var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
+    currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
-    var response = await http.get(Uri.parse(
-        '${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
+    var response = await http
+        .get(Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=${currentGroupList[0].semesterId}'));
     if (response.statusCode == 200) {
       final List teachers = json.decode(response.body)['teacherList'];
 
