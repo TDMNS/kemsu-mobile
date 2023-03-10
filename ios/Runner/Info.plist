@@ -26,6 +26,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Нам необходим доступ к камере, чтобы вы могли установить себе изображение профиля</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Нам необходим доступ к фото, чтобы вы могли установить себе изображение профиля</string>
 	<key>UILaunchStoryboardName</key>

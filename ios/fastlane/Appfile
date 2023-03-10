@@ -1,0 +1,8 @@
+app_identifier("com.tdmns.kemsuapp") # The bundle identifier of your app
+apple_id("773o@mail.ru") # Your Apple Developer Portal username
+
+itc_team_id("125725960") # App Store Connect Team ID
+team_id("JJ624BWUC6") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
