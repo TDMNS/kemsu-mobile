@@ -20,9 +20,7 @@ class AuthView extends StatelessWidget {
               value: SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness:
-                    Theme.of(context).primaryColor == Colors.grey.shade900
-                        ? Brightness.light
-                        : Brightness.dark,
+                    Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
               ),
               child: GestureDetector(
                 onTap: () {
@@ -66,12 +64,8 @@ _authView(BuildContext context, AuthViewModel model) {
               ),
               focusColor: Colors.black,
               hintText: 'Логин',
-              hintStyle: TextStyle(
-                  fontFamily: "Ubuntu",
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold)),
-          style: const TextStyle(
-              fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+              hintStyle: TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold)),
+          style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
           controller: loginController,
         ),
       ),
@@ -89,9 +83,7 @@ _authView(BuildContext context, AuthViewModel model) {
                           onPressed: () {
                             model.isVisiblePassword();
                           },
-                          icon: Icon(model.isObscure
-                              ? Icons.remove_red_eye
-                              : Icons.remove_red_eye_outlined))
+                          icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined))
                       : const SizedBox(),
                   const Icon(
                     Icons.vpn_key,
@@ -101,14 +93,8 @@ _authView(BuildContext context, AuthViewModel model) {
               ),
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
               hintText: '••••••',
-              hintStyle: const TextStyle(
-                  letterSpacing: 5.0,
-                  fontFamily: "Ubuntu",
-                  fontWeight: FontWeight.bold)),
-          style: const TextStyle(
-              letterSpacing: 5.0,
-              fontFamily: "Ubuntu",
-              fontWeight: FontWeight.bold),
+              hintStyle: const TextStyle(letterSpacing: 5.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold)),
+          style: const TextStyle(letterSpacing: 5.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
           controller: passwordController,
           obscureText: model.isObscure,
         ),
@@ -138,10 +124,7 @@ _authView(BuildContext context, AuthViewModel model) {
           height: 50,
           width: 200,
           decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                blurRadius: 20,
-                offset: const Offset(0, 15))
+            BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 20, offset: const Offset(0, 15))
           ]),
           child: Card(
             shape: RoundedRectangleBorder(

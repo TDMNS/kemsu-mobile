@@ -21,14 +21,13 @@ class MyThemes {
           AppBarTheme(backgroundColor: Colors.grey.shade900, titleTextStyle: const TextStyle(color: Colors.white)),
       cardColor: Colors.grey.shade900,
       expansionTileTheme: const ExpansionTileThemeData(
-        //backgroundColor: Colors.grey.shade900,
         textColor: Colors.blue,
         collapsedIconColor: Colors.white,
         iconColor: Colors.blue,
-        //collapsedBackgroundColor: Colors.grey.shade900,
       ),
       colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.black),
-      textSelectionTheme: const TextSelectionThemeData(selectionHandleColor: Colors.blue, selectionColor: Colors.blue));
+      textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue));
 
   static final lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.white,
@@ -39,6 +38,7 @@ class MyThemes {
       primaryColorLight: Colors.grey.withOpacity(0.4),
       focusColor: Colors.black,
       inputDecorationTheme: const InputDecorationTheme(
+          suffixIconColor: Colors.grey,
           iconColor: Colors.black,
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           fillColor: Colors.black,
@@ -50,11 +50,11 @@ class MyThemes {
       appBarTheme: const AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black)),
       cardColor: Colors.white,
       expansionTileTheme: const ExpansionTileThemeData(
-        //backgroundColor: Colors.white,
         textColor: Colors.blue,
         collapsedIconColor: Colors.black,
         iconColor: Colors.blue,
       ),
       colorScheme: const ColorScheme.light().copyWith(secondary: Colors.white),
-      textSelectionTheme: const TextSelectionThemeData(selectionHandleColor: Colors.blue, selectionColor: Colors.blue));
+      textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue));
 }
