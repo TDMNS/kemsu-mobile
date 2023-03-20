@@ -4,8 +4,7 @@ import 'package:kemsu_app/UI/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 class MainBugReportScreenRoute extends MaterialPageRoute {
-  MainBugReportScreenRoute()
-      : super(builder: (context) => const MainBugReportScreen());
+  MainBugReportScreenRoute() : super(builder: (context) => const MainBugReportScreen());
 }
 
 class MainBugReportScreen extends StatelessWidget {
@@ -19,9 +18,10 @@ class MainBugReportScreen extends StatelessWidget {
         builder: (context, model, child) {
           return model.circle
               ? Container(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                   child: const Center(
                     child: CircularProgressIndicator(
+                      color: Colors.blue,
                       backgroundColor: Colors.white,
                     ),
                   ),
@@ -33,9 +33,7 @@ class MainBugReportScreen extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     child: const Icon(Icons.edit, color: Colors.white),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) => newMessageDialog(context, model));
+                      showDialog(context: context, builder: (_) => newMessageDialog(context, model));
                     },
                   ),
                 );
@@ -45,8 +43,7 @@ class MainBugReportScreen extends StatelessWidget {
 
 _body(context, BugReportViewModel model) {
   return ListView(
-    physics:
-        const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
     children: [
       const SizedBox(
         height: 34,
@@ -85,10 +82,7 @@ _reportSpace(context, BugReportViewModel model) {
     child: model.reportList.isEmpty
         ? const Center(
             child: Text("Нет отправленных обращений.",
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF757575),
-                    fontWeight: FontWeight.w500)))
+                style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
         : ListView.builder(
             physics: const ScrollPhysics(),
             shrinkWrap: true,
@@ -104,17 +98,13 @@ _reportSpace(context, BugReportViewModel model) {
                       children: [
                         RichText(
                           text: TextSpan(
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).primaryColorDark),
+                            style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColorDark),
                             children: <TextSpan>[
                               const TextSpan(text: 'Дата обращения: '),
                               TextSpan(
-                                  text: model.reportList[index].messageDate
-                                      .toString(),
+                                  text: model.reportList[index].messageDate.toString(),
                                   style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontWeight: FontWeight.bold)),
+                                      color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -132,8 +122,7 @@ newMessageDialog(context, BugReportViewModel model) {
     title: const Text("Создать обращение"),
     content: TextField(
       controller: model.errorMsgController,
-      decoration:
-          const InputDecoration.collapsed(hintText: 'Введите сообщение'),
+      decoration: const InputDecoration.collapsed(hintText: 'Введите сообщение'),
     ),
     actions: [
       TextButton(
