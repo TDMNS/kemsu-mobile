@@ -121,8 +121,12 @@ newMessageDialog(context, BugReportViewModel model) {
   return AlertDialog(
     title: const Text("Создать обращение"),
     content: TextField(
+      cursorColor: Colors.blue,
       controller: model.errorMsgController,
-      decoration: const InputDecoration.collapsed(hintText: 'Введите сообщение'),
+      decoration: const InputDecoration(
+        hintText: 'Введите сообщение',
+      ),
+      maxLines: null,
     ),
     actions: [
       TextButton(
