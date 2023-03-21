@@ -18,7 +18,7 @@ class MainBugReportScreen extends StatelessWidget {
         builder: (context, model, child) {
           return model.circle
               ? Container(
-                  color: Theme.of(context).primaryColorLight,
+                  color: Theme.of(context).primaryColor,
                   child: const Center(
                     child: CircularProgressIndicator(
                       color: Colors.blue,

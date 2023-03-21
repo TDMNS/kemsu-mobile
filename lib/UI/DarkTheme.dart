@@ -7,6 +7,7 @@ class MyThemes {
       primaryColor: Colors.grey.shade900,
       focusColor: Colors.white,
       inputDecorationTheme: const InputDecorationTheme(
+          suffixIconColor: Colors.blue,
           iconColor: Colors.white,
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           fillColor: Colors.white,
@@ -38,7 +39,7 @@ class MyThemes {
       primaryColorLight: Colors.grey.withOpacity(0.4),
       focusColor: Colors.black,
       inputDecorationTheme: const InputDecorationTheme(
-          suffixIconColor: Colors.grey,
+          suffixIconColor: Colors.blue,
           iconColor: Colors.black,
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           fillColor: Colors.black,
