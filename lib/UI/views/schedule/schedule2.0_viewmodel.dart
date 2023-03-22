@@ -37,9 +37,6 @@ class NewScheduleViewModel extends BaseViewModel {
   ScheduleRequest? scheduleSemester;
   FacultyList? scheduleFaculty;
   GroupList? scheduleGroup;
-  // List<CoupleData> coupleAllList = [];
-  // List<CoupleData> coupleOddList = [];
-  // List<CoupleData> coupleEvenList = [];
   List<WeekGetId> weekID = [];
   List<GroupList> groupList = [];
   List<FacultyList> facultyList = [];
@@ -196,8 +193,6 @@ class NewScheduleViewModel extends BaseViewModel {
         await http.get(Uri.parse('${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
     var mainTable = getScheduleTable.body;
     final jsonResponse = json.decode(mainTable)['result']['Table'];
-    // final jsonResponseCoupleList =
-    // json.decode(mainTable)['result']['CoupleList'];
     scheduleTable = FinalTable.fromJson(jsonResponse);
 
     weekDays = [
