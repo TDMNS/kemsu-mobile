@@ -121,7 +121,6 @@ class NewScheduleViewModel extends BaseViewModel {
   }
 
   getScheduleString() async {
-    circle = true;
     indexDay == 6 ? indexDay = 1 : indexDay == 1;
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
@@ -174,8 +173,8 @@ class NewScheduleViewModel extends BaseViewModel {
       daysList![indexDay].coupleOdd6!,
       daysList![indexDay].coupleOdd7!
     ];
-    circle = false;
     tableView = true;
+    circle = false;
     notifyListeners();
   }
 
@@ -204,7 +203,6 @@ class NewScheduleViewModel extends BaseViewModel {
       scheduleTable!.weekDay6!,
     ];
 
-    circle = false;
     tableView = true;
     notifyListeners();
   }
@@ -215,7 +213,6 @@ class NewScheduleViewModel extends BaseViewModel {
     var response3 = await http.get(Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
     facultyList = parseFaculty(json.decode(response3.body)["result"]);
     currentTable = false;
-    circle = false;
 
     notifyListeners();
   }

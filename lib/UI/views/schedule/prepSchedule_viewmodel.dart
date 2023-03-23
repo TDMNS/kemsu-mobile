@@ -140,7 +140,6 @@ class PrepScheduleViewModel extends BaseViewModel {
     }
     type == 0 ? changeTeacher(teacherFIO) : changeTeacher(fio);
 
-    circle = false;
     notifyListeners();
   }
 
