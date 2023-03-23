@@ -69,11 +69,19 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
         padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
         child: DropdownSearch<dynamic>(
           popupProps: const PopupProps.menu(showSearchBox: true),
-          dropdownDecoratorProps:
-              const DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration(labelText: 'Выбор преподавателя')),
-          //asyncItems: (String filter) => getData(filter),
+          dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+            labelText: 'Выбор преподавателя',
+            labelStyle: TextStyle(
+              color: Color(Theme.of(context).primaryColorDark.value),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.blue,
+              ),
+            ),
+          )),
           items: model.teacherList.map((e) => e.fio).toList(),
-          //itemAsString: (Teacher t) => t.fio,
           onChanged: (value) => {model.changeTeacher(value)},
         ),
       ),
