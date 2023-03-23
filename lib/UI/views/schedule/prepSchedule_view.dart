@@ -46,8 +46,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
-                        appBar: customAppBar(context, model, 'Расписание преподавателя'),
-                        //bottomNavigationBar: customBottomBar(context, model),
+                        appBar: customAppBar(context, model, model.appBarTitle),
                         body: _prepSchedule(context, model)),
               ));
         });
@@ -195,7 +194,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                     groupValue: model.weekId,
                     onChanged: (value) {
                       model.changeWeek(value);
-                      print(model.weekId);
                     },
                   ),
                 ),
@@ -208,7 +206,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                       groupValue: model.weekId,
                       onChanged: (value) {
                         model.changeWeek(value);
-                        print(model.weekId);
                       },
                     ),
                   ),

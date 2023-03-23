@@ -36,9 +36,10 @@ class _NewScheduleViewState extends State<NewScheduleView> {
                   },
                   child: model.circle
                       ? Container(
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           child: const Center(
                             child: CircularProgressIndicator(
+                              color: Colors.blue,
                               backgroundColor: Colors.white,
                             ),
                           ),

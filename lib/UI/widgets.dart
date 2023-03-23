@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 
 class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
-  static String get prepSchedule => "Расписание преподавателя";
+  static String get prepScheduleEmp => "Расписание преподавателя";
+  static String get prepScheduleStud => "Расписание преподавателей";
 }
 
 errorDialog(context, textContent) {
@@ -26,10 +25,7 @@ errorDialog(context, textContent) {
   );
 }
 
-const storage = FlutterSecureStorage();
-
 customAppBar(context, model, name) {
-  final userType = storage.read(key: "userType").toString();
   return AppBar(
     title: Text(
       name,
@@ -46,7 +42,7 @@ customAppBar(context, model, name) {
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||
             name == EnumScreensWithoutPopArrow.schedule ||
-            (name == EnumScreensWithoutPopArrow.prepSchedule && userType == EnumUserType.employee)
+            name == EnumScreensWithoutPopArrow.prepScheduleEmp
         ? Container()
         : IconButton(
             onPressed: () {
