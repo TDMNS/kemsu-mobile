@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyThemes {
+class CustomThemes {
   static final darkTheme = ThemeData(
       scaffoldBackgroundColor: Colors.black54,
       dividerColor: Colors.transparent,
