@@ -408,12 +408,15 @@ _scheduleTable(BuildContext context, NewScheduleViewModel model) {
               : Text('${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
     ]));
   }
-  return GestureDetector(
-    onHorizontalDragEnd: (details) {
-      if (details.primaryVelocity! < 0) {
-        model.choiceDay('next');
+  return Dismissible(
+    key: Key("${model.indexDay}"),
+    direction: DismissDirection.horizontal,
+    onDismissed: (direction) {
+      print(direction.name);
+      if (direction.name == "endToStart") {
+        model.choiceDay("next");
       } else {
-        model.choiceDay('back');
+        model.choiceDay("back");
       }
     },
     child: Table(
