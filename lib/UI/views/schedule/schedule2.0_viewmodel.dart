@@ -75,7 +75,7 @@ class NewScheduleViewModel extends BaseViewModel {
       indexDay == 6 ? indexDay = 0 : indexDay == 0;
     } else if (action == 'back') {
       indexDay--;
-      indexDay == -1 ? indexDay = 6 : indexDay == 6;
+      indexDay == -1 ? indexDay = 5 : indexDay == 5;
     }
 
     coupleAllList = [
