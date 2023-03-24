@@ -66,8 +66,29 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
         )
       : ListView(
           children: <Widget>[
+            Center(
+                child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PrepScheduleView()),
+                );
+              },
+              child: Container(
+                  margin: const EdgeInsets.only(bottom: 10, top: 20),
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
+                    BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15))
+                  ]),
+                  child: const Center(
+                      child: Text(
+                    'Расписание преподавателей',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                  ))),
+            )),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 20),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Stack(
                 children: [
                   Align(
@@ -170,27 +191,6 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
             ),
             Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30), child: _scheduleTable(context, model)),
-            Center(
-                child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const PrepScheduleView()),
-                );
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  height: 50,
-                  width: 250,
-                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
-                    BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15))
-                  ]),
-                  child: const Center(
-                      child: Text(
-                    'Расписание преподавателей',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                  ))),
-            )),
           ],
         );
 }
