@@ -408,9 +408,18 @@ _scheduleTable(BuildContext context, NewScheduleViewModel model) {
               : Text('${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
     ]));
   }
-  return Table(
-      border: TableBorder.all(
-        color: Theme.of(context).canvasColor,
-      ),
-      children: rows);
+  return GestureDetector(
+    onHorizontalDragEnd: (details) {
+      if (details.primaryVelocity! < 0) {
+        model.choiceDay('next');
+      } else {
+        model.choiceDay('back');
+      }
+    },
+    child: Table(
+        border: TableBorder.all(
+          color: Theme.of(context).canvasColor,
+        ),
+        children: rows),
+  );
 }
