@@ -412,7 +412,6 @@ _scheduleTable(BuildContext context, NewScheduleViewModel model) {
     key: Key("${model.indexDay}"),
     direction: DismissDirection.horizontal,
     onDismissed: (direction) {
-      print(direction.name);
       if (direction.name == "endToStart") {
         model.choiceDay("next");
       } else {
