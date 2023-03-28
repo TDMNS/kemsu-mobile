@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomThemes {
   static final darkTheme = ThemeData(
       scaffoldBackgroundColor: Colors.black54,
+      radioTheme: RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
       dividerColor: Colors.transparent,
       primaryColor: Colors.grey.shade900,
       focusColor: Colors.white,
