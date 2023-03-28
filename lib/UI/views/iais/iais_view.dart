@@ -17,14 +17,11 @@ class IaisView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Brightness
-                    .dark), //прозрачность statusbar и установка тёмных иконок
+                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'ИнфОУПро'),
-              //bottomNavigationBar: customBottomBar(context, model),
               body: _iaisView(context, model),
             ),
           );
@@ -51,7 +48,7 @@ _iaisView(BuildContext context, IaisViewModel model) {
                 borderRadius: BorderRadius.circular(2.0),
               ),
               side: MaterialStateBorderSide.resolveWith(
-                    (states) => const BorderSide(width: 1.2, color: Colors.black),
+                (states) => BorderSide(width: 1.2, color: Color(Theme.of(context).primaryColorDark.value)),
               ),
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.all(Colors.blue),
@@ -71,13 +68,8 @@ _iaisView(BuildContext context, IaisViewModel model) {
           padding: const EdgeInsets.all(8.0),
           child: DataTable(
             columns: const [
-              DataColumn(
-                  label: Expanded(
-                      child: Text('Дисциплина', textAlign: TextAlign.center))),
-              DataColumn(
-                  label: Expanded(
-                      child:
-                          Text('Преподаватель', textAlign: TextAlign.center))),
+              DataColumn(label: Expanded(child: Text('Дисциплина', textAlign: TextAlign.center))),
+              DataColumn(label: Expanded(child: Text('Преподаватель', textAlign: TextAlign.center))),
             ],
             rows: model.Course.map<DataRow>((e) => DataRow(
                     onSelectChanged: (selected) async {
@@ -86,9 +78,7 @@ _iaisView(BuildContext context, IaisViewModel model) {
                           await model.getDiscReports(e.COURSE_ID);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => IaisRepView(
-                                    discData: e, repList: model.Report)),
+                            MaterialPageRoute(builder: (context) => IaisRepView(discData: e, repList: model.Report)),
                           );
                         }
                       }
