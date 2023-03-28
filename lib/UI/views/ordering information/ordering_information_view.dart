@@ -13,8 +13,7 @@ class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
 
   @override
-  State<OrderingInformationView> createState() =>
-      _OrderingInformationViewState();
+  State<OrderingInformationView> createState() => _OrderingInformationViewState();
 }
 
 class _OrderingInformationViewState extends State<OrderingInformationView> {
@@ -26,8 +25,7 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -67,8 +65,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 },
                 isExpanded: true,
                 value: model.studyCard,
-                items: model.receivedStudyCard
-                    .map<DropdownMenuItem<StudyCard>>((e) {
+                items: model.receivedStudyCard.map<DropdownMenuItem<StudyCard>>((e) {
                   return DropdownMenuItem<StudyCard>(
                     child: Text(e.speciality.toString()),
                     value: e,
@@ -94,8 +91,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                       },
                       isExpanded: true,
                       value: model.selectedBasic,
-                      items: model.receivedBasicList
-                          .map<DropdownMenuItem<BasisOfEducation>>((e) {
+                      items: model.receivedBasicList.map<DropdownMenuItem<BasisOfEducation>>((e) {
                         return DropdownMenuItem<BasisOfEducation>(
                           child: Text(e.basic.toString()),
                           value: e,
@@ -122,8 +118,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                       },
                       isExpanded: true,
                       value: model.selectedPeriod,
-                      items: model.periodList
-                          .map<DropdownMenuItem<PeriodList>>((e) {
+                      items: model.periodList.map<DropdownMenuItem<PeriodList>>((e) {
                         return DropdownMenuItem<PeriodList>(
                           child: Text(e.period.toString()),
                           value: e,
@@ -176,8 +171,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? applyButton(context, model)
           : const SizedBox.shrink(),
-      model.startDate != DateTime(0, 0, 0) &&
-              model.selectedPeriod == model.lastParagraph
+      model.startDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? Center(
               child: Padding(
                   padding: const EdgeInsets.only(top: 20.0),
@@ -197,8 +191,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                               "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
             )
           : const SizedBox.shrink(),
-      model.endDate != DateTime(0, 0, 0) &&
-              model.selectedPeriod == model.lastParagraph
+      model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? Center(
               child: Card(
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -218,8 +211,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               ),
             ))
           : const SizedBox.shrink(),
-      model.endDate != DateTime(0, 0, 0) &&
-              model.selectedPeriod == model.lastParagraph
+      model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? applyButton(context, model)
           : const SizedBox.shrink()
     ],
@@ -238,10 +230,7 @@ Center applyButton(context, OrderingInformationViewModel model) {
             height: 50,
             width: 200,
             decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 20,
-                  offset: const Offset(0, 15))
+              BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 20, offset: const Offset(0, 15))
             ]),
             child: Card(
               shape: RoundedRectangleBorder(
@@ -263,7 +252,8 @@ orderInfo(context, OrderingInformationViewModel model) {
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Заявка успешно создана!'),
-      content: const Text('Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+      content: const Text(
+          'Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
           ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
           'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
           'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.'),
@@ -271,12 +261,12 @@ orderInfo(context, OrderingInformationViewModel model) {
         TextButton(
           onPressed: () {
             model.sendReferences();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const OrderingInformationMainView()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
           },
           child: const Text('OK'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          ),
         ),
       ],
     ),

@@ -79,7 +79,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                   height: 50,
                   width: 250,
                   decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
-                    BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15))
+                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
                   ]),
                   child: const Center(
                       child: Text(
