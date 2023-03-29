@@ -24,8 +24,7 @@ class BugReportViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('BugReport event');
   }
 
@@ -39,53 +38,44 @@ class BugReportViewModel extends BaseViewModel {
         "message": errorMsgController.text,
       };
 
-      var response = await http.post(
-          Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"),
-          headers: header,
-          body: body);
+      var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"),
+          headers: header, body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchReports(context);
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Ваше обращение успешно отправлено.")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено.")));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(json.decode(response.body)["message"])));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(json.decode(response.body)["message"])));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Заполните все поля обращения!")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Заполните все поля обращения!")));
     }
 
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    errorMsgController.clear();
+
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Send bugreport event');
   }
 
   fetchReports(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
-    var response = await http.get(
-        Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"),
-        headers: header);
+    var response =
+        await http.get(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"), headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       reportList = parseReports(json.decode(response.body)["result"]);
       notifyListeners();
     } else if (response.statusCode == 401) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const AuthView()),
-          (Route<dynamic> route) => false);
+          MaterialPageRoute(builder: (context) => const AuthView()), (Route<dynamic> route) => false);
       await storage.delete(key: "tokenKey");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
     }
   }
 
   List<ReportModel> parseReports(List response) {
-    return response
-        .map<ReportModel>((json) => ReportModel.fromJson(json))
-        .toList();
+    return response.map<ReportModel>((json) => ReportModel.fromJson(json)).toList();
   }
 }
