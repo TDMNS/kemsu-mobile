@@ -17,10 +17,12 @@ class PgasRequestInfoScreen extends StatelessWidget {
         viewModelBuilder: () => PgasRequestInfoViewModel(context),
         onModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle ? const Center(child: LoadingScreen()) : Scaffold(
-            appBar: _appBar(context, model),
-            body: _body(context, model),
-          );
+          return model.circle
+              ? const Center(child: LoadingScreen())
+              : Scaffold(
+                  appBar: _appBar(context, model),
+                  body: _body(context, model),
+                );
         });
   }
 }
@@ -40,14 +42,14 @@ _appBar(context, PgasRequestInfoViewModel model) {
           onPressed: () {
             model.goToEditPgasRequestScreen(context);
           },
-          icon: _gradientIcon(Icons.edit, const Color(0xFF00C2FF), Colors.blueAccent, 32)//const Icon(Icons.edit_outlined, color: Color(0xFF5878DD), size: 32,)
-      ),
+          icon: _gradientIcon(Icons.edit, const Color(0xFF00C2FF), Colors.blueAccent,
+              32) //const Icon(Icons.edit_outlined, color: Color(0xFF5878DD), size: 32,)
+          ),
       IconButton(
           onPressed: () {
             _deleteRequestAlert(context, model);
           },
-          icon: _gradientIcon(Icons.delete, Colors.red, Colors.deepOrange, 32)
-      )
+          icon: _gradientIcon(Icons.delete, Colors.red, Colors.deepOrange, 32))
     ],
     elevation: 0,
     backgroundColor: Colors.transparent,
@@ -67,12 +69,18 @@ _body(context, PgasRequestInfoViewModel model) {
             ],
           ),
         ),
-        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.surname.toString(), "Фамилия"),
-        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.name.toString(), "Имя"),
-        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.patronymic.toString(), "Отчество"),
-        _infoTextField(context, _gradientIcon(Icons.phone, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.phone.toString(), "Номер телефона"),
-        _infoTextField(context, _gradientIcon(Icons.school, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.facultyName.toString(), "Институт"),
-        _infoTextField(context, _gradientIcon(Icons.school, const Color(0xFF00C2FF), Colors.blueAccent, 32), model.pgasRequest!.group.toString(), "Группа"),
+        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.surname.toString(), "Фамилия"),
+        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.name.toString(), "Имя"),
+        _infoTextField(context, _gradientIcon(Icons.person, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.patronymic.toString(), "Отчество"),
+        _infoTextField(context, _gradientIcon(Icons.phone, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.phone.toString(), "Номер телефона"),
+        _infoTextField(context, _gradientIcon(Icons.school, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.facultyName.toString(), "Институт"),
+        _infoTextField(context, _gradientIcon(Icons.school, const Color(0xFF00C2FF), Colors.blueAccent, 32),
+            model.pgasRequest!.group.toString(), "Группа"),
         _infoTextField(context, null, model.pgasRequest!.courseNum.toString(), "Курс"),
         _infoTextField(context, null, model.pgasRequest!.studyYear.toString(), "Учебный год"),
         _infoTextField(context, null, model.pgasRequest!.semesterType.toString(), "Семестр"),
@@ -83,12 +91,7 @@ _body(context, PgasRequestInfoViewModel model) {
 
 _title(context) {
   return const Text("Ваша заявка",
-      style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w800,
-          color: Color(0xFF5B5B7E)
-      )
-  );
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Color(0xFF5B5B7E)));
 }
 
 _deleteRequestAlert(context, PgasRequestInfoViewModel model) {
@@ -100,11 +103,7 @@ _deleteRequestAlert(context, PgasRequestInfoViewModel model) {
             child: Text(
               "Удаление заявки на ПГАС",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF5B5B7E)
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Color(0xFF5B5B7E)),
             ),
           ),
           content: Column(
@@ -112,33 +111,25 @@ _deleteRequestAlert(context, PgasRequestInfoViewModel model) {
             children: [
               const Text(
                 "Вы действительно хотите удалить заявку?\nВосстановить заявку будет невозможно.",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF757575)
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Color(0xFF757575)),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Container(
                     width: double.maxFinite,
                     decoration: BoxDecoration(
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
-                            color: Colors.black45,
-                            offset: Offset(0, 6),
-                            spreadRadius: 1,
-                            blurRadius: 7
-                        )
+                            color: Theme.of(context).primaryColorLight,
+                            offset: const Offset(0, 6),
+                            spreadRadius: -1,
+                            blurRadius: 5)
                       ],
                       borderRadius: BorderRadius.circular(25),
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.redAccent,
-                          Colors.red
-                        ],
+                        colors: [Colors.redAccent, Colors.red],
                       ),
                     ),
                     child: TextButton(
@@ -151,23 +142,18 @@ _deleteRequestAlert(context, PgasRequestInfoViewModel model) {
                           fontStyle: FontStyle.normal,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,),
+                          color: Colors.white,
+                        ),
                       ),
-
-                    )
-                ),
+                    )),
               ),
             ],
           ),
           actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Отмена")
-            ),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text("Отмена")),
           ],
         );
-      }
-  );
+      });
 }
 
 _infoTextField(context, ShaderMask? icon, String dataString, String label) {
@@ -175,13 +161,8 @@ _infoTextField(context, ShaderMask? icon, String dataString, String label) {
     padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
     child: TextFormField(
       enabled: false,
-      decoration: InputDecoration(
-          prefixIcon: icon,
-          labelText: label,
-          labelStyle: const TextStyle(
-              color: Color(0xFF4065D8)
-          )
-      ),
+      decoration:
+          InputDecoration(prefixIcon: icon, labelText: label, labelStyle: const TextStyle(color: Color(0xFF4065D8))),
       initialValue: dataString,
     ),
   );
@@ -189,15 +170,11 @@ _infoTextField(context, ShaderMask? icon, String dataString, String label) {
 
 _gradientIcon(IconData icon, Color firstColor, Color secondColor, double size) {
   return ShaderMask(
-    shaderCallback: (bounds) =>
-        LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            firstColor,
-            secondColor
-          ],
-        ).createShader(bounds),
+    shaderCallback: (bounds) => LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [firstColor, secondColor],
+    ).createShader(bounds),
     child: Icon(
       icon,
       size: size,

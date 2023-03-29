@@ -30,12 +30,10 @@ class _NewsViewState extends State<NewsView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -76,8 +74,7 @@ class _NewsViewState extends State<NewsView> {
             //   ),
             // )),
             ListView.builder(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 50, bottom: 100),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
                 shrinkWrap: true,
                 physics: const ScrollPhysics(),
                 itemCount: model.textList.length,
@@ -103,7 +100,8 @@ class _NewsViewState extends State<NewsView> {
                             BoxShadow(
                                 color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
-                                offset: const Offset(0, 15)),
+                                offset: const Offset(0, 15),
+                                spreadRadius: -15),
                           ]),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,9 +129,7 @@ class _NewsViewState extends State<NewsView> {
                             model.textList[index].length > 65
                                 ? '${model.textList[index].substring(0, 65)}...'
                                 : model.textList[index],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColorDark),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark),
                           ))
                         ],
                       ),
@@ -151,9 +147,7 @@ class _NewsViewState extends State<NewsView> {
             // ),
           ],
         ),
-        model.showNews == true
-            ? _currentNewsView(context, model, model.newsIndex)
-            : SizedBox()
+        model.showNews == true ? _currentNewsView(context, model, model.newsIndex) : SizedBox()
       ],
     );
   }
@@ -165,20 +159,15 @@ class _NewsViewState extends State<NewsView> {
           color: Colors.black.withOpacity(0.6),
         ),
         Container(
-          margin: EdgeInsets.only(
-              top: MediaQuery.of(context).size.width / 3,
-              left: 15,
-              right: 15,
-              bottom: 40),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Theme.of(context).primaryColor,
-              boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context).primaryColorLight,
-                    blurRadius: 15,
-                    offset: const Offset(0, 15)),
-              ]),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.width / 3, left: 15, right: 15, bottom: 40),
+          decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColor, boxShadow: [
+            BoxShadow(
+                color: Theme.of(context).primaryColorLight,
+                blurRadius: 15,
+                offset: const Offset(0, 15),
+                spreadRadius: -15),
+          ]),
           child: Stack(
             children: [
               ListView(
@@ -196,8 +185,7 @@ class _NewsViewState extends State<NewsView> {
                   ),
                   Center(
                       child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 25, right: 25, top: 30, bottom: 40),
+                    padding: const EdgeInsets.only(left: 25, right: 25, top: 30, bottom: 40),
                     child: Text(model.textList[newsIndex]),
                   )),
                   GestureDetector(
@@ -207,8 +195,7 @@ class _NewsViewState extends State<NewsView> {
                     child: Container(
                       height: 30,
                       margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width / 3,
-                          right: MediaQuery.of(context).size.width / 3),
+                          left: MediaQuery.of(context).size.width / 3, right: MediaQuery.of(context).size.width / 3),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: Theme.of(context).primaryColorDark,
@@ -216,14 +203,13 @@ class _NewsViewState extends State<NewsView> {
                             BoxShadow(
                                 color: Theme.of(context).primaryColorLight,
                                 blurRadius: 15,
-                                offset: const Offset(0, 15)),
+                                offset: const Offset(0, 15),
+                                spreadRadius: -15),
                           ]),
                       child: Center(
                           child: Text(
                         'Закрыть',
-                        style: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
                       )),
                     ),
                   ),
@@ -289,9 +275,7 @@ class _NewsViewState extends State<NewsView> {
     return model.fileLoader == true
         ? Container(
             margin: EdgeInsets.only(
-                top: 10,
-                left: MediaQuery.of(context).size.width / 2.5,
-                right: MediaQuery.of(context).size.width / 2.5),
+                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
             child: CircularProgressIndicator(
               color: Colors.blueGrey.shade700,
@@ -308,9 +292,7 @@ class _NewsViewState extends State<NewsView> {
     return model.fileLoader == true
         ? Container(
             margin: EdgeInsets.only(
-                top: 10,
-                left: MediaQuery.of(context).size.width / 2.5,
-                right: MediaQuery.of(context).size.width / 2.5),
+                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
             child: CircularProgressIndicator(
               color: Colors.blueGrey.shade700,
@@ -331,8 +313,7 @@ class _NewsViewState extends State<NewsView> {
               ),
               Center(
                   child: Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 10),
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
                 child: IconButton(
                   onPressed: () {
                     model.getVideo(context, newsIndex);
@@ -347,8 +328,7 @@ class _NewsViewState extends State<NewsView> {
               model.videoLoader
                   ? Center(
                       child: Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height / 10),
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
                       child: SizedBox(
                         height: 50,
                         width: 50,

@@ -8,8 +8,7 @@ import '../../widgets.dart';
 import 'pgas_detail_viewmodel.dart';
 
 class PgasDetailScreenRoute extends MaterialPageRoute {
-  PgasDetailScreenRoute()
-      : super(builder: (context) => const PgasDetailScreen());
+  PgasDetailScreenRoute() : super(builder: (context) => const PgasDetailScreen());
 }
 
 class PgasDetailScreen extends StatelessWidget {
@@ -31,8 +30,7 @@ class PgasDetailScreen extends StatelessWidget {
 
 _body(context, PgasDetailViewModel model) {
   return ListView(
-    physics:
-        const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
     children: [
       const SizedBox(
         height: 34,
@@ -56,10 +54,7 @@ _pgasAchieveTitle() {
         Text(
           "Прикрепленные достижения",
           style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF5B5B7E)),
+              fontSize: 24, fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Color(0xFF5B5B7E)),
         ),
       ],
     ),
@@ -87,12 +82,9 @@ _createAchieveButton(context, PgasDetailViewModel model) {
         width: double.maxFinite,
         height: 46,
         decoration: BoxDecoration(
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-                color: Colors.black45,
-                offset: Offset(0, 6),
-                spreadRadius: 1,
-                blurRadius: 7)
+                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
           ],
           borderRadius: BorderRadius.circular(10),
           gradient: const LinearGradient(
@@ -103,10 +95,7 @@ _createAchieveButton(context, PgasDetailViewModel model) {
         ),
         child: TextButton(
           onPressed: () async {
-            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NewAchievePgasScreen()))
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewAchievePgasScreen()))
                 .then((value) => model.onGoBack(context));
           },
           child: const Text(
@@ -128,18 +117,14 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
       child: model.userAchievesList.isEmpty
           ? const Center(
               child: Text("Нет прикрепленных достижений.",
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF757575),
-                      fontWeight: FontWeight.w500)))
+                  style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
           : ListView.builder(
               physics: const ScrollPhysics(),
               shrinkWrap: true,
               itemCount: model.userAchievesList.length,
               itemBuilder: (context, index) {
                 return ExpansionTile(
-                  title: Text(
-                      model.userAchievesList[index].activityName.toString()),
+                  title: Text(model.userAchievesList[index].activityName.toString()),
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -148,17 +133,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                         children: [
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
                                 const TextSpan(text: 'Ваше описание: '),
                                 TextSpan(
-                                    text: model
-                                        .userAchievesList[index].activityName
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].activityName.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -167,18 +147,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Полное название достижения: '),
+                                const TextSpan(text: 'Полное название достижения: '),
                                 TextSpan(
-                                    text: model.userAchievesList[index]
-                                        .fullActivityName
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].fullActivityName.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -187,17 +161,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
                                 const TextSpan(text: 'Тип достижения: '),
                                 TextSpan(
-                                    text: model
-                                        .userAchievesList[index].activityType
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].activityType.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -206,18 +175,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Год получения достижения: '),
+                                const TextSpan(text: 'Год получения достижения: '),
                                 TextSpan(
-                                    text: model
-                                        .userAchievesList[index].activityYear
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].activityYear.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -226,18 +189,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Месяц получения достижения: '),
+                                const TextSpan(text: 'Месяц получения достижения: '),
                                 TextSpan(
-                                    text: model
-                                        .userAchievesList[index].activityMonth
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].activityMonth.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -246,20 +203,14 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Подтверждение достижения: '),
+                                const TextSpan(text: 'Подтверждение достижения: '),
                                 TextSpan(
-                                  text: model
-                                      .userAchievesList[index].activitySrc
-                                      .toString(),
+                                  text: model.userAchievesList[index].activitySrc.toString(),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      launchUrl(Uri.parse(model
-                                          .userAchievesList[index].activitySrc
-                                          .toString()));
+                                      launchUrl(Uri.parse(model.userAchievesList[index].activitySrc.toString()));
                                     },
                                   style: const TextStyle(
                                       color: Colors.black,
@@ -274,17 +225,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
                                 const TextSpan(text: 'Баллы за достижение: '),
                                 TextSpan(
-                                    text: model
-                                        .userAchievesList[index].activityBall
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].activityBall.toString(),
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -293,19 +239,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
                                 const TextSpan(text: 'Достижение утверждено: '),
                                 TextSpan(
-                                    text: model.userAchievesList[index]
-                                                .approveFlag ==
-                                            0
-                                        ? "Нет"
-                                        : "Да",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].approveFlag == 0 ? "Нет" : "Да",
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -314,20 +253,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Достижение является групповым: '),
+                                const TextSpan(text: 'Достижение является групповым: '),
                                 TextSpan(
-                                    text: model.userAchievesList[index]
-                                                .groupActivityFlag ==
-                                            0
-                                        ? "Нет"
-                                        : "Да",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].groupActivityFlag == 0 ? "Нет" : "Да",
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -336,18 +267,12 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           RichText(
                             text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: const TextStyle(fontSize: 16, color: Colors.black),
                               children: <TextSpan>[
-                                const TextSpan(
-                                    text: 'Комментарий администрации: '),
+                                const TextSpan(text: 'Комментарий администрации: '),
                                 TextSpan(
-                                    text:
-                                        model.userAchievesList[index].comment ??
-                                            "",
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    text: model.userAchievesList[index].comment ?? "",
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -356,37 +281,31 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           ),
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 22),
+                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
                               child: Container(
                                   width: 200,
                                   height: 36,
                                   decoration: BoxDecoration(
-                                    boxShadow: const [
+                                    boxShadow: [
                                       BoxShadow(
-                                          color: Colors.black45,
-                                          offset: Offset(0, 6),
-                                          spreadRadius: 1,
-                                          blurRadius: 7)
+                                          color: Theme.of(context).primaryColorLight,
+                                          offset: const Offset(0, 6),
+                                          spreadRadius: -1,
+                                          blurRadius: 5)
                                     ],
                                     borderRadius: BorderRadius.circular(20),
                                     gradient: const LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.deepOrangeAccent,
-                                        Colors.red
-                                      ],
+                                      colors: [Colors.deepOrangeAccent, Colors.red],
                                     ),
                                   ),
                                   child: TextButton(
                                     onPressed: () async {
-                                      await model.deleteBtnAction(context,
-                                          model.userAchievesList[index]);
+                                      await model.deleteBtnAction(context, model.userAchievesList[index]);
                                     },
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
                                         Icon(
                                           Icons.delete,

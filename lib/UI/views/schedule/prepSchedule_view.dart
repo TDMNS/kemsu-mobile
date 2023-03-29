@@ -97,7 +97,11 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
               height: 50,
               width: 200,
               decoration: BoxDecoration(boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 20, offset: const Offset(0, 15))
+                BoxShadow(
+                    color: Theme.of(context).primaryColorLight,
+                    blurRadius: 15,
+                    offset: const Offset(0, 15),
+                    spreadRadius: -15)
               ]),
               child: Card(
                 shape: RoundedRectangleBorder(

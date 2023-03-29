@@ -7,8 +7,7 @@ import 'model/semester_type.dart';
 import 'new_pgas_request_viewmodel.dart';
 
 class NewPgasRequestScreenRoute extends MaterialPageRoute {
-  NewPgasRequestScreenRoute()
-      : super(builder: (context) => const NewPgasRequestScreen());
+  NewPgasRequestScreenRoute() : super(builder: (context) => const NewPgasRequestScreen());
 }
 
 class NewPgasRequestScreen extends StatelessWidget {
@@ -49,8 +48,7 @@ _body(context, NewPgasRequestViewModel model) {
           children: [
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF00C2FF)),
-                  borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
               width: 156,
               height: 30,
               child: DropdownButtonHideUnderline(
@@ -58,8 +56,7 @@ _body(context, NewPgasRequestViewModel model) {
                     dropdownColor: Theme.of(context).primaryColor,
                     isExpanded: true,
                     value: model.chooseFaculty,
-                    items: model.facultiesList
-                        .map<DropdownMenuItem<FacultyModel>>((e) {
+                    items: model.facultiesList.map<DropdownMenuItem<FacultyModel>>((e) {
                       return DropdownMenuItem<FacultyModel>(
                         child: FittedBox(
                           child: Padding(
@@ -73,10 +70,7 @@ _body(context, NewPgasRequestViewModel model) {
                     hint: const Center(
                         child: Text(
                       "Институт",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          fontStyle: FontStyle.normal),
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
                     )),
                     onChanged: (value) {
                       model.chooseFaculty = value!;
@@ -86,8 +80,7 @@ _body(context, NewPgasRequestViewModel model) {
             ),
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF00C2FF)),
-                  borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
               width: 156,
               height: 30,
               child: DropdownButtonHideUnderline(
@@ -95,8 +88,7 @@ _body(context, NewPgasRequestViewModel model) {
                     dropdownColor: Theme.of(context).primaryColor,
                     isExpanded: true,
                     value: model.chooseSemester,
-                    items: model.semestersList
-                        .map<DropdownMenuItem<SemesterTypeModel>>((e) {
+                    items: model.semestersList.map<DropdownMenuItem<SemesterTypeModel>>((e) {
                       return DropdownMenuItem<SemesterTypeModel>(
                         child: FittedBox(
                           child: Padding(
@@ -110,10 +102,7 @@ _body(context, NewPgasRequestViewModel model) {
                     hint: const Center(
                       child: Text(
                         "Семестр",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            fontStyle: FontStyle.normal),
+                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
                       ),
                     ),
                     onChanged: (value) {
@@ -139,13 +128,11 @@ _body(context, NewPgasRequestViewModel model) {
         const SizedBox(
           height: 10,
         ),
-        _textField(
-            context, "Номер телефона в любом формате", model.phoneController),
+        _textField(context, "Номер телефона в любом формате", model.phoneController),
         const SizedBox(
           height: 10,
         ),
-        _textField(
-            context, "Название группы (пример: М-185)", model.groupController),
+        _textField(context, "Название группы (пример: М-185)", model.groupController),
         const SizedBox(
           height: 10,
         ),
@@ -178,17 +165,12 @@ _textField(context, String label, TextEditingController controller) {
                 contentPadding: const EdgeInsets.all(8),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide:
-                        const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                    borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide:
-                        const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                    borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
                 hintText: label,
-                hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontSize: 14))),
+                hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14))),
       ),
     ],
   );
@@ -196,9 +178,8 @@ _textField(context, String label, TextEditingController controller) {
 
 _yearDropdownButton(context, NewPgasRequestViewModel model) {
   return Container(
-    decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)),
+    decoration:
+        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     width: 334,
     height: 40,
     child: DropdownButtonHideUnderline(
@@ -223,10 +204,7 @@ _yearDropdownButton(context, NewPgasRequestViewModel model) {
             padding: EdgeInsets.all(8.0),
             child: Text(
               "Учебный год",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                  fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
             ),
           )),
     ),
@@ -235,9 +213,8 @@ _yearDropdownButton(context, NewPgasRequestViewModel model) {
 
 _courseDropdownButton(context, NewPgasRequestViewModel model) {
   return Container(
-    decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFF00C2FF)),
-        borderRadius: BorderRadius.circular(10)),
+    decoration:
+        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     width: 334,
     height: 40,
     child: DropdownButtonHideUnderline(
@@ -262,10 +239,7 @@ _courseDropdownButton(context, NewPgasRequestViewModel model) {
             padding: EdgeInsets.all(8.0),
             child: Text(
               "Номер курса",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                  fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
             ),
           )),
     ),
@@ -279,12 +253,9 @@ _sendButton(context, NewPgasRequestViewModel model) {
         width: double.maxFinite,
         height: 46,
         decoration: BoxDecoration(
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-                color: Colors.black45,
-                offset: Offset(0, 6),
-                spreadRadius: 1,
-                blurRadius: 7)
+                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
           ],
           borderRadius: BorderRadius.circular(10),
           gradient: const LinearGradient(
@@ -312,6 +283,5 @@ _sendButton(context, NewPgasRequestViewModel model) {
 
 _title(context) {
   return const Text("Новая заявка на ПГАС",
-      style: TextStyle(
-          fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blueAccent));
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blueAccent));
 }

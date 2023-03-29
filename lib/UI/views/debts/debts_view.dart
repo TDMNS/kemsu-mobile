@@ -84,7 +84,11 @@ Widget _getAcademyDebtsView(List<AcademyDebts> items) {
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
                 boxShadow: [
-                  BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
@@ -140,7 +144,11 @@ Widget _getLibraryDebtsView(List<LibraryDebts> items) {
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
                 boxShadow: [
-                  BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
@@ -195,7 +203,11 @@ Widget _getPayDebtsView(List<PayDebts> items) {
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
                 boxShadow: [
-                  BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),

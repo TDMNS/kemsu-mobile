@@ -140,7 +140,11 @@ class _ProfileViewState extends State<ProfileView> {
           Container(
             padding: const EdgeInsets.only(top: 15),
             decoration: BoxDecoration(boxShadow: [
-              BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 20, offset: const Offset(0, 40))
+              BoxShadow(
+                  color: Theme.of(context).primaryColorLight,
+                  blurRadius: 15,
+                  offset: const Offset(0, 20),
+                  spreadRadius: -20)
             ]),
             child: Card(
               margin: const EdgeInsets.only(left: 20, right: 20),
@@ -240,7 +244,11 @@ class _ProfileViewState extends State<ProfileView> {
                   borderRadius: BorderRadius.circular(20),
                   color: Theme.of(context).primaryColor,
                   boxShadow: [
-                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                    BoxShadow(
+                        color: Theme.of(context).primaryColorLight,
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                        spreadRadius: -5)
                   ]),
               child: ExpansionTile(
                 backgroundColor: Colors.transparent,
@@ -370,8 +378,9 @@ class _ProfileViewState extends State<ProfileView> {
                                   boxShadow: [
                                     BoxShadow(
                                         color: Theme.of(context).primaryColorLight,
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 9))
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 5),
+                                        spreadRadius: -4)
                                   ]),
                               child: const Icon(
                                 Icons.edit,
@@ -409,7 +418,10 @@ class _ProfileViewState extends State<ProfileView> {
                           color: Theme.of(context).primaryColor,
                           boxShadow: [
                             BoxShadow(
-                                color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                                color: Theme.of(context).primaryColorLight,
+                                blurRadius: 15,
+                                offset: const Offset(0, 5),
+                                spreadRadius: -4)
                           ]),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -447,7 +459,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   BoxShadow(
                                       color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
-                                      offset: const Offset(0, 15))
+                                      offset: const Offset(0, 5),
+                                      spreadRadius: -4)
                                 ]),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -480,7 +493,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   BoxShadow(
                                       color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
-                                      offset: const Offset(0, 15))
+                                      offset: const Offset(0, 5),
+                                      spreadRadius: -4)
                                 ]),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -522,7 +536,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   BoxShadow(
                                       color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
-                                      offset: const Offset(0, 15))
+                                      offset: const Offset(0, 5),
+                                      spreadRadius: -4)
                                 ]),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -557,7 +572,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   BoxShadow(
                                       color: Theme.of(context).primaryColorLight,
                                       blurRadius: 15,
-                                      offset: const Offset(0, 15))
+                                      offset: const Offset(0, 5),
+                                      spreadRadius: -4)
                                 ]),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -599,7 +615,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 BoxShadow(
                                     color: Theme.of(context).primaryColorLight,
                                     blurRadius: 15,
-                                    offset: const Offset(0, 15))
+                                    offset: const Offset(0, 5),
+                                    spreadRadius: -4)
                               ]),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -634,7 +651,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 BoxShadow(
                                     color: Theme.of(context).primaryColorLight,
                                     blurRadius: 15,
-                                    offset: const Offset(0, 15))
+                                    offset: const Offset(0, 5),
+                                    spreadRadius: -4)
                               ]),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -675,7 +693,8 @@ class _ProfileViewState extends State<ProfileView> {
                                 BoxShadow(
                                     color: Theme.of(context).primaryColorLight,
                                     blurRadius: 15,
-                                    offset: const Offset(0, 15))
+                                    offset: const Offset(0, 5),
+                                    spreadRadius: -4)
                               ]),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -714,7 +733,11 @@ class _ProfileViewState extends State<ProfileView> {
                   width: 160,
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                    BoxShadow(
+                        color: Theme.of(context).primaryColorLight,
+                        blurRadius: 15,
+                        offset: const Offset(13, 8),
+                        spreadRadius: -18)
                   ]),
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -756,7 +779,11 @@ class _ProfileViewState extends State<ProfileView> {
                   width: 160,
                   height: 50,
                   decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15))
+                    BoxShadow(
+                        color: Theme.of(context).primaryColorLight,
+                        blurRadius: 15,
+                        offset: const Offset(-13, 8),
+                        spreadRadius: -18)
                   ]),
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -819,10 +846,10 @@ class _MyHomePageState extends State<LoadingScreen> with SingleTickerProviderSta
             width: double.infinity,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                blurRadius: 15,
-                offset: const Offset(0, 20),
-              )
+                  color: Theme.of(context).primaryColorLight,
+                  blurRadius: 15,
+                  offset: const Offset(0, 15),
+                  spreadRadius: -15)
             ]),
             child: Card(
               margin: const EdgeInsets.only(left: 50, right: 50),
