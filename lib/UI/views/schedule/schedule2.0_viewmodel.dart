@@ -23,7 +23,10 @@ class NewScheduleViewModel extends BaseViewModel {
   bool tableView = false;
   int indexDay = DateTime.now().weekday - 1;
   bool currentTable = false;
-  bool weekType = true;
+  bool? weekType;
+  int? weekNumApi;
+  String? weekTypeApi;
+  String? currentDateApi;
   int? groupId;
   int? groupIdChoice;
   int? currentSemester;
@@ -125,7 +128,13 @@ class NewScheduleViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
     var semesterResponse = await dio.get(Config.semesterList);
+    var getWeek = await dio.get(Config.getWeekNum, queryParameters: {"accessToken": token});
     var response = await dio.get(Config.currentGroupList, queryParameters: {"accessToken": token});
+    weekNumApi = getWeek.data['currentDay']['weekNum'];
+    weekTypeApi = getWeek.data['currentDay']['weekType'];
+    currentDateApi = getWeek.data['currentDay']['currentDate'];
+    print('WEEK API:: $weekNumApi, $weekTypeApi, $currentDateApi');
+    weekTypeApi == 'четная' ? weekType = true : weekType = false;
     groupId = response.data['currentGroupList'][0]['groupId'];
     currentSemester = semesterResponse.data['result'][0]['Id'];
     var weekResponse = await dio.get('${Config.weekList}?semesterId=$currentSemester');
