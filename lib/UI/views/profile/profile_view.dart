@@ -31,27 +31,23 @@ class _ProfileViewState extends State<ProfileView> {
         onModelReady: (viewModel) => viewModel.onReady(context),
         viewModelBuilder: () => ProfileViewModel(context),
         builder: (context, model, child) {
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-              child: GestureDetector(
-                onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
-                  }
-                },
-                child: WillPopScope(
-                  onWillPop: () async => false,
-                  child: Scaffold(
-                    extendBody: true,
-                    extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, 'Главная'),
-                    // bottomNavigationBar: customBottomBar(context, model),
-                    body: _profileView(context, model),
-                  ),
-                ),
-              ));
+          return GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: WillPopScope(
+              onWillPop: () async => false,
+              child: Scaffold(
+                extendBody: true,
+                extendBodyBehindAppBar: true,
+                appBar: customAppBar(context, model, 'Главная'),
+                body: _profileView(context, model),
+              ),
+            ),
+          );
         });
   }
 
@@ -126,11 +122,6 @@ class _ProfileViewState extends State<ProfileView> {
       });
     }
     model.saveImage();
-
-    print('NewFile: $pickedFile');
-
-    //var temp = await pickedFile.saveTo('$appDocPath/images/avatar.png');
-    //print('ЫЫЫ: $newFile');
   }
 
   _profileView(BuildContext context, ProfileViewModel model) {
@@ -889,7 +880,7 @@ class _MyHomePageState extends State<LoadingScreen> with SingleTickerProviderSta
 
 _paymentWebView(BuildContext context, ProfileViewModel model) {
   String fio = model.fio;
-  String phone = model.phone.replaceFirst('+7 ', '') ?? '';
+  String phone = model.phone.replaceFirst('+7 ', '');
   String email = model.email;
   bool isLoading = true;
   return Scaffold(
