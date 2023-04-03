@@ -209,7 +209,7 @@ class _NewsViewState extends State<NewsView> {
                       child: Center(
                           child: Text(
                         'Закрыть',
-                        style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                       )),
                     ),
                   ),

@@ -185,7 +185,7 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
                 child: Center(
                     child: Text(
                   'Закрыть',
-                  style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                 )),
               ),
             ),
@@ -233,15 +233,6 @@ _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
             size: 40,
             color: Theme.of(context).primaryColorDark,
           )),
-      // IconButton(
-      //     onPressed: () async {
-      //       await model.player.pause();
-      //     },
-      //     icon: Icon(
-      //       Icons.pause_circle,
-      //       size: 40,
-      //       color: Theme.of(context).primaryColorDark,
-      //     )),
       IconButton(
           onPressed: () async {
             model.tempSound = null;
