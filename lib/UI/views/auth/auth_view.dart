@@ -138,7 +138,41 @@ _authView(BuildContext context, AuthViewModel model) {
             )),
           ),
         ),
-      )
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 35),
+        child: GestureDetector(
+          onTap: () {
+            authAlert(context);
+          },
+          child: const Text(
+            'Проблемы с входом?',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
+          ),
+        ),
+      ),
     ],
+  );
+}
+
+authAlert(context) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Проблемы со входом?'),
+      content: const Text(
+          'Если у вас наблюдаются проблемы с входом попробуйте использовать Wi-Fi КемГУ, изменить сотового оператора, либо использовать VPN. Мы уже исправляем эту проблему. В данный момент не работают сотовые операторы "Мегафон" и "Yota"'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('OK'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          ),
+        ),
+      ],
+    ),
   );
 }
