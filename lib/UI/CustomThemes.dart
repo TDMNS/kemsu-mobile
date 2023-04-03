@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomThemes {
   static final darkTheme = ThemeData(
+      brightness: Brightness.dark,
       scaffoldBackgroundColor: Colors.black54,
       radioTheme: RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
       dividerColor: Colors.transparent,
@@ -32,6 +33,7 @@ class CustomThemes {
           selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue));
 
   static final lightTheme = ThemeData(
+      brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
       radioTheme: RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
       dividerColor: Colors.transparent,
