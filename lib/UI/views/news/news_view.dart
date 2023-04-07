@@ -4,10 +4,11 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:chewie/chewie.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:photo_view/photo_view.dart';
 import '../../widgets.dart';
 import 'news_videoPlayer.dart';
 import 'news_viewmodel.dart';
@@ -147,7 +148,7 @@ class _NewsViewState extends State<NewsView> {
             // ),
           ],
         ),
-        model.showNews == true ? _currentNewsView(context, model, model.newsIndex) : SizedBox()
+        model.showNews == true ? _currentNewsView(context, model, model.newsIndex) : const SizedBox()
       ],
     );
   }
@@ -171,7 +172,7 @@ class _NewsViewState extends State<NewsView> {
           child: Stack(
             children: [
               ListView(
-                padding: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 30),
                 children: <Widget>[
                   model.mimeType == 'image/jpeg'
                       ? _pictureView(context, model, newsIndex)
@@ -179,8 +180,8 @@ class _NewsViewState extends State<NewsView> {
                           ? _audioPlayer(context, model, newsIndex)
                           : model.mimeType == 'video/mp4'
                               ? _videoPreviewView(context, model, newsIndex)
-                              : SizedBox(),
-                  SizedBox(
+                              : const SizedBox(),
+                  const SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -189,7 +190,8 @@ class _NewsViewState extends State<NewsView> {
                     child: Text(model.textList[newsIndex]),
                   )),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await model.player.stop();
                       model.newsOnOff(false);
                     },
                     child: Container(
@@ -219,10 +221,11 @@ class _NewsViewState extends State<NewsView> {
                 ],
               ),
               IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await model.player.stop();
                     model.newsOnOff(false);
                   },
-                  icon: Icon(Icons.close))
+                  icon: const Icon(Icons.close))
             ],
           ),
         ),
@@ -271,6 +274,31 @@ class _NewsViewState extends State<NewsView> {
     );
   }
 
+  _imageTest(BuildContext context, NewsViewModel model, newsIndex) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return Scaffold(
+            body: Center(
+              child: PhotoView(
+                imageProvider: Image.memory(
+                  Uint8List.fromList(model.tempPic!),
+                  fit: BoxFit.contain,
+                ) as ImageProvider,
+                minScale: PhotoViewComputedScale.contained * 0.8,
+                maxScale: PhotoViewComputedScale.covered * 2,
+              ),
+            ),
+          );
+        }));
+      },
+      child: Image.memory(
+        Uint8List.fromList(model.tempPic!),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
   _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Container(
@@ -280,12 +308,35 @@ class _NewsViewState extends State<NewsView> {
             child: CircularProgressIndicator(
               color: Colors.blueGrey.shade700,
             ))
-        : Container(
-            margin: EdgeInsets.only(left: 30, right: 30, top: 20),
-            child: Image.memory(
-              Uint8List.fromList(model.tempPic!),
-              fit: BoxFit.contain,
-            ));
+        : GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return Scaffold(
+                  body: Center(
+                    child: Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.vertical,
+                      onDismissed: (_) => Navigator.pop(context),
+                      child: PhotoView(
+                        scaleStateController: PhotoViewScaleStateController(),
+                        backgroundDecoration: BoxDecoration(color: Colors.transparent),
+                        imageProvider: model.newsImage,
+                        minScale: PhotoViewComputedScale.contained * 0.8,
+                        maxScale: PhotoViewComputedScale.covered * 2,
+                      ),
+                    ),
+                  ),
+                );
+              }));
+            },
+            child: Container(
+              margin: EdgeInsets.all(15),
+              child: Image.memory(
+                Uint8List.fromList(model.tempPic!),
+                fit: BoxFit.contain,
+              ),
+            ),
+          );
   }
 
   _videoPreviewView(BuildContext context, NewsViewModel model, newsIndex) {
@@ -300,14 +351,14 @@ class _NewsViewState extends State<NewsView> {
         : Stack(
             children: [
               Container(
-                  margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+                  margin: const EdgeInsets.only(left: 30, right: 30, top: 20),
                   height: 180,
                   child: Image.memory(
                     Uint8List.fromList(model.tempPic!),
                     fit: BoxFit.contain,
                   )),
               Container(
-                margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+                margin: const EdgeInsets.only(left: 30, right: 30, top: 20),
                 height: 180,
                 color: Colors.black.withOpacity(0.7),
               ),
@@ -329,10 +380,10 @@ class _NewsViewState extends State<NewsView> {
                   ? Center(
                       child: Padding(
                       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
-                      child: SizedBox(
+                      child: const SizedBox(
                         height: 50,
                         width: 50,
-                        child: const CircularProgressIndicator(
+                        child: CircularProgressIndicator(
                           color: Colors.blue,
                         ),
                       ),
@@ -354,10 +405,10 @@ class _NewsViewState extends State<NewsView> {
     //   });
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
-        FloatingActionButton(onPressed: () {}, child: Icon(Icons.play_arrow)),
+        FloatingActionButton(onPressed: () {}, child: const Icon(Icons.play_arrow)),
         // FloatingActionButton(onPressed: () {
         //   model.videoController.play();
         // })

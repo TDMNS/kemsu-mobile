@@ -31,4 +31,5 @@ class Config {
   static String newsMessagesTest = 'https://api3.kemsu.ru/api/telegram/kemsu-live/messages/test';
   static String newsMessages = 'https://api3.kemsu.ru/api/telegram/kemsu-live/messages';
   static String newsFile = 'https://api3.kemsu.ru';
+  static String getWeekNum = 'https://api-next.kemsu.ru/api/schedule/integration/currentDayInfo';
 }
