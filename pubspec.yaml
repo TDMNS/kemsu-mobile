@@ -36,6 +36,7 @@ dependencies:
   video_player: ^2.4.10
   chewie: ^1.4.0
   appmetrica_plugin: ^1.1.0
+  device_info_plus:
 
 dev_dependencies:
   flutter_test:

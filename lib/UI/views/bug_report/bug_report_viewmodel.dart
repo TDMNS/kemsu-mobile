@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
@@ -7,18 +8,22 @@ import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:kemsu_app/UI/views/bug_report/report.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
+import 'package:device_info_plus/device_info_plus.dart';
 
 class BugReportViewModel extends BaseViewModel {
   BugReportViewModel(BuildContext context);
 
   FlutterSecureStorage storage = const FlutterSecureStorage();
   bool circle = true;
+  String deviceInfoParam = "";
   List<ReportModel> reportList = [];
   TextEditingController errorMsgController = TextEditingController();
 
   Future onReady(context) async {
     await fetchReports(context);
     circle = false;
+
+    getDeviceInfo();
     appMetricaTest();
     notifyListeners();
   }
@@ -28,15 +33,31 @@ class BugReportViewModel extends BaseViewModel {
     AppMetrica.reportEvent('BugReport event');
   }
 
+  getDeviceInfo() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      var release = androidInfo.version.release;
+      var sdkInt = androidInfo.version.sdkInt;
+      var model = androidInfo.model;
+      deviceInfoParam = "Android $release (SDK $sdkInt), $model";
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      var systemName = iosInfo.systemName;
+      var version = iosInfo.systemVersion;
+      var name = iosInfo.name;
+      var model = iosInfo.model;
+      deviceInfoParam = '$systemName $version, $name $model';
+    }
+  }
+
   sendAction(context) async {
     String? eiosAccessToken = await storage.read(key: "tokenKey");
     if (errorMsgController.text.isNotEmpty) {
       notifyListeners();
       Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
 
-      Map<String, dynamic> body = {
-        "message": errorMsgController.text,
-      };
+      Map<String, dynamic> body = {"message": errorMsgController.text, "deviceInfo": deviceInfoParam};
 
       var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"),
           headers: header, body: body);
