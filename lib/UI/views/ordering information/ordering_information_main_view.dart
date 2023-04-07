@@ -91,7 +91,11 @@ Widget getListView(List<RequestReference> items) {
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
                 boxShadow: [
-                  BoxShadow(color: Colors.grey.withOpacity(0.4), blurRadius: 15, offset: const Offset(0, 15))
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),

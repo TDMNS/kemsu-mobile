@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
-  static String get prepSchedule => "Расписание преподавателя";
+  static String get prepScheduleEmp => "Расписание преподавателя";
+  static String get prepScheduleStud => "Расписание преподавателей";
 }
 
 errorDialog(context, textContent) {
@@ -25,8 +25,6 @@ errorDialog(context, textContent) {
   );
 }
 
-const storage = FlutterSecureStorage();
-
 customAppBar(context, model, name) {
   return AppBar(
     title: Text(
@@ -34,20 +32,17 @@ customAppBar(context, model, name) {
       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness:
-          Theme.of(context).primaryColor == Colors.grey.shade900
-              ? Brightness.light
-              : Brightness.dark,
+          Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
     ),
     shadowColor: Colors.black.withOpacity(0.2),
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||
             name == EnumScreensWithoutPopArrow.schedule ||
-            name == EnumScreensWithoutPopArrow.prepSchedule
+            name == EnumScreensWithoutPopArrow.prepScheduleEmp
         ? Container()
         : IconButton(
             onPressed: () {
@@ -100,10 +95,7 @@ customBottomBar(BuildContext context, model) {
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
@@ -116,10 +108,7 @@ customBottomBar(BuildContext context, model) {
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
@@ -132,10 +121,7 @@ customBottomBar(BuildContext context, model) {
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },

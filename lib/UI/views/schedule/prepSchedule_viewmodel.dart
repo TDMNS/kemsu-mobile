@@ -1,16 +1,17 @@
 import 'dart:convert';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:html/parser.dart' as parser;
 
 import '../../../API/config.dart';
+import '../../splash_screen.dart';
+import '../../widgets.dart';
 
 class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleViewModel(BuildContext context);
@@ -57,6 +58,8 @@ class PrepScheduleViewModel extends BaseViewModel {
   Result? result;
   PrepScheduleApi? all;
 
+  String? appBarTitle;
+
   final storage = const FlutterSecureStorage();
 
   void onTapBottomBar(int index) {
@@ -65,6 +68,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   Future onReady() async {
+    getAppBarTitle();
     getTeacher();
     appMetricaTest();
   }
@@ -80,8 +84,6 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   changeTeacher(data) async {
-    //choiceTeacher = value;
-    var dio = Dio();
     teacherFIO = data;
     teacherId = 0;
     for (int i = 0; i < teacherList.length; i++) {
@@ -120,6 +122,15 @@ class PrepScheduleViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  getAppBarTitle() async {
+    String? userType = await storage.read(key: "userType");
+    if (userType == EnumUserType.employee) {
+      appBarTitle = EnumScreensWithoutPopArrow.prepScheduleEmp;
+    } else {
+      appBarTitle = EnumScreensWithoutPopArrow.prepScheduleStud;
+    }
+  }
+
   getTeacher() async {
     String? token = await storage.read(key: "tokenKey");
     String? fio = await storage.read(key: "FIO");
@@ -140,7 +151,6 @@ class PrepScheduleViewModel extends BaseViewModel {
     }
     type == 0 ? changeTeacher(teacherFIO) : changeTeacher(fio);
 
-    circle = false;
     notifyListeners();
   }
 
@@ -166,7 +176,6 @@ class TeacherApi {
   static Future<List<Teacher>> getTeacherData(String querry) async {
     List<CurrentGroupList> currentGroupList = [];
 
-    final storage = const FlutterSecureStorage();
     List<CurrentGroupList> parseCurrentGroupList(List response) {
       return response.map<CurrentGroupList>((json) => CurrentGroupList.fromJson(json)).toList();
     }

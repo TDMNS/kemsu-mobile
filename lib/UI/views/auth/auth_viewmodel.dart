@@ -28,9 +28,7 @@ class AuthViewModel extends BaseViewModel {
     String? check = await storage.read(key: "rememberCheck");
     check == 'true' ? rememberMe = true : rememberMe = false;
     rememberMe ? loginController.text = login! : loginController.text = '';
-    rememberMe
-        ? passwordController.text = password!
-        : passwordController.text = '';
+    rememberMe ? passwordController.text = password! : passwordController.text = '';
     notifyListeners();
   }
 
@@ -41,10 +39,8 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void authButton(context) async {
-    final response = await http.post(Uri.parse(Config.apiHost), body: {
-      "login": loginController.text,
-      "password": passwordController.text
-    });
+    final response = await http
+        .post(Uri.parse(Config.apiHost), body: {"login": loginController.text, "password": passwordController.text});
     final tempToken = json.decode(response.body)['accessToken'];
 
     if (response.statusCode == 200) {
@@ -78,6 +74,9 @@ class AuthViewModel extends BaseViewModel {
         break;
       case 401:
         errorDialog(context, 'Некорректный логин/пароль пользователя!');
+        break;
+      default:
+        errorDialog(context, 'Проблема с провайдером! Попробуйте изменить вашу сеть.');
         break;
     }
     notifyListeners();

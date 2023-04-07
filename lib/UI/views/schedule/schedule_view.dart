@@ -28,12 +28,10 @@ class _ScheduleViewState extends State<ScheduleView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -79,8 +77,7 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
         padding: const EdgeInsets.only(top: 10, left: 30),
         child: Text(
           '${model.currentDate}, ${model.currentWeek}',
-          style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
       ),
       Center(
@@ -98,8 +95,7 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                 },
                 isExpanded: true,
                 value: model.scheduleFaculty,
-                items:
-                    model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
+                items: model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
                   return DropdownMenuItem<FacultyList>(
                     child: Text(e.faculty.toString()),
                     value: e,
@@ -147,17 +143,15 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
+                      color: Theme.of(context).primaryColorLight,
                       blurRadius: 15,
-                      offset: const Offset(0, 15))
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
                 ]),
             child: const Center(
               child: Text(
                 'Показать',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
           ),
@@ -180,50 +174,43 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                   model.indexDay == 1
                       ? const Text(
                           'Понедельник',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 2
                       ? const Text(
                           'Вторник',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 3
                       ? const Text(
                           'Среда',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 4
                       ? const Text(
                           'Четверг',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 5
                       ? const Text(
                           'Пятница',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 6
                       ? const Text(
                           'Суббота',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   model.indexDay == 7
                       ? const Text(
                           'Воскресенье',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       : const Text(''),
                   IconButton(
@@ -253,8 +240,7 @@ _scheduleViewAll(BuildContext context, ScheduleViewModel model) {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 2),
+                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
                     title: const Text('нечетная'),
                     leading: Radio(
@@ -282,8 +268,7 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
         padding: const EdgeInsets.only(top: 10, left: 30),
         child: Text(
           '${model.currentDate}, ${model.currentWeek}',
-          style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
       ),
       Padding(
@@ -365,8 +350,7 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
             ),
           ),
           Padding(
-            padding:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
+            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
             child: ListTile(
               title: const Text('нечетная'),
               leading: Radio(
@@ -380,9 +364,7 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
           )
         ],
       ),
-      Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
-          child: _choiceDay(model)),
+      Padding(padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30), child: _choiceDay(model)),
       Center(
           child: GestureDetector(
         onTap: () {
@@ -392,22 +374,17 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
         child: Container(
             height: 50,
             width: 200,
-            decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
-                ]),
+            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).primaryColorLight,
+                  blurRadius: 15,
+                  offset: const Offset(0, 15),
+                  spreadRadius: -15)
+            ]),
             child: const Center(
                 child: Text(
               'Выбрать расписание',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
             ))),
       )),
       const SizedBox(
@@ -424,22 +401,17 @@ _scheduleViewStudent(BuildContext context, ScheduleViewModel model) {
         child: Container(
             height: 50,
             width: 250,
-            decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 15,
-                      offset: const Offset(0, 15))
-                ]),
+            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(25), boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).primaryColorLight,
+                  blurRadius: 15,
+                  offset: const Offset(0, 15),
+                  spreadRadius: -15)
+            ]),
             child: const Center(
                 child: Text(
               'Расписание преподавателей',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
             ))),
       )),
     ],
@@ -495,8 +467,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All1[0].discName}, ${model.modelDay1All1[0].lessonType}, ${model.modelDay1All1[0].prepName}, ${model.modelDay1All1[0].auditoryName}',
                   )
-                : model.modelDay1Even1?.length > 0 &&
-                        model.modelDay1Odd1?.length > 0
+                : model.modelDay1Even1?.length > 0 && model.modelDay1Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -521,8 +492,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All2[0].discName}, ${model.modelDay1All2[0].lessonType}, ${model.modelDay1All2[0].prepName}, ${model.modelDay1All2[0].auditoryName}',
                   )
-                : model.modelDay1Even2?.length > 0 &&
-                        model.modelDay1Odd2?.length > 0
+                : model.modelDay1Even2?.length > 0 && model.modelDay1Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -547,8 +517,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All3[0].discName}, ${model.modelDay1All3[0].lessonType}, ${model.modelDay1All3[0].prepName}, ${model.modelDay1All3[0].auditoryName}',
                   )
-                : model.modelDay1Even3?.length > 0 &&
-                        model.modelDay1Odd3?.length > 0
+                : model.modelDay1Even3?.length > 0 && model.modelDay1Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -573,8 +542,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All4[0].discName}, ${model.modelDay1All4[0].lessonType}, ${model.modelDay1All4[0].prepName}, ${model.modelDay1All4[0].auditoryName}',
                   )
-                : model.modelDay1Even4?.length > 0 &&
-                        model.modelDay1Odd4?.length > 0
+                : model.modelDay1Even4?.length > 0 && model.modelDay1Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -603,8 +571,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All5[0].discName}, ${model.modelDay1All5[0].lessonType}, ${model.modelDay1All5[0].prepName}, ${model.modelDay1All5[0].auditoryName}',
                   )
-                : model.modelDay1Even5?.length > 0 &&
-                        model.modelDay1Odd5?.length > 0
+                : model.modelDay1Even5?.length > 0 && model.modelDay1Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -629,8 +596,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All6[0].discName}, ${model.modelDay1All6[0].lessonType}, ${model.modelDay1All6[0].prepName}, ${model.modelDay1All6[0].auditoryName}',
                   )
-                : model.modelDay1Even6?.length > 0 &&
-                        model.modelDay1Odd6?.length > 0
+                : model.modelDay1Even6?.length > 0 && model.modelDay1Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -655,8 +621,7 @@ _tableDay1(model) {
                 ? Text(
                     '${model.modelDay1All7[0].discName}, ${model.modelDay1All7[0].lessonType}, ${model.modelDay1All7[0].prepName}, ${model.modelDay1All7[0].auditoryName}',
                   )
-                : model.modelDay1Even7?.length > 0 &&
-                        model.modelDay1Odd7?.length > 0
+                : model.modelDay1Even7?.length > 0 && model.modelDay1Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -705,8 +670,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All1[0].discName}, ${model.modelDay2All1[0].lessonType}, ${model.modelDay2All1[0].prepName}, ${model.modelDay2All1[0].auditoryName}',
                   )
-                : model.modelDay2Even1?.length > 0 &&
-                        model.modelDay2Odd1?.length > 0
+                : model.modelDay2Even1?.length > 0 && model.modelDay2Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -731,8 +695,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All2[0].discName}, ${model.modelDay2All2[0].lessonType}, ${model.modelDay2All2[0].prepName}, ${model.modelDay2All2[0].auditoryName}',
                   )
-                : model.modelDay2Even2?.length > 0 &&
-                        model.modelDay2Odd2?.length > 0
+                : model.modelDay2Even2?.length > 0 && model.modelDay2Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -757,8 +720,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All3[0].discName}, ${model.modelDay2All3[0].lessonType}, ${model.modelDay2All3[0].prepName}, ${model.modelDay2All3[0].auditoryName}',
                   )
-                : model.modelDay2Even3?.length > 0 &&
-                        model.modelDay2Odd3?.length > 0
+                : model.modelDay2Even3?.length > 0 && model.modelDay2Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -783,8 +745,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All4[0].discName}, ${model.modelDay2All4[0].lessonType}, ${model.modelDay2All4[0].prepName}, ${model.modelDay2All4[0].auditoryName}',
                   )
-                : model.modelDay2Even4?.length > 0 &&
-                        model.modelDay2Odd4?.length > 0
+                : model.modelDay2Even4?.length > 0 && model.modelDay2Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -809,8 +770,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All5[0].discName}, ${model.modelDay2All5[0].lessonType}, ${model.modelDay2All5[0].prepName}, ${model.modelDay2All5[0].auditoryName}',
                   )
-                : model.modelDay2Even5?.length > 0 &&
-                        model.modelDay2Odd5?.length > 0
+                : model.modelDay2Even5?.length > 0 && model.modelDay2Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -835,8 +795,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All6[0].discName}, ${model.modelDay2All6[0].lessonType}, ${model.modelDay2All6[0].prepName}, ${model.modelDay2All6[0].auditoryName}',
                   )
-                : model.modelDay2Even6?.length > 0 &&
-                        model.modelDay2Odd6?.length > 0
+                : model.modelDay2Even6?.length > 0 && model.modelDay2Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -861,8 +820,7 @@ _tableDay2(model) {
                 ? Text(
                     '${model.modelDay2All7[0].discName}, ${model.modelDay2All7[0].lessonType}, ${model.modelDay2All7[0].prepName}, ${model.modelDay2All7[0].auditoryName}',
                   )
-                : model.modelDay2Even7?.length > 0 &&
-                        model.modelDay2Odd7?.length > 0
+                : model.modelDay2Even7?.length > 0 && model.modelDay2Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -911,8 +869,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All1[0].discName}, ${model.modelDay3All1[0].lessonType}, ${model.modelDay3All1[0].prepName}, ${model.modelDay3All1[0].auditoryName}',
                   )
-                : model.modelDay3Even1?.length > 0 &&
-                        model.modelDay3Odd1?.length > 0
+                : model.modelDay3Even1?.length > 0 && model.modelDay3Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -937,8 +894,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All2[0].discName}, ${model.modelDay3All2[0].lessonType}, ${model.modelDay3All2[0].prepName}, ${model.modelDay3All2[0].auditoryName}',
                   )
-                : model.modelDay3Even2?.length > 0 &&
-                        model.modelDay3Odd2?.length > 0
+                : model.modelDay3Even2?.length > 0 && model.modelDay3Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -963,8 +919,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All3[0].discName}, ${model.modelDay3All3[0].lessonType}, ${model.modelDay3All3[0].prepName}, ${model.modelDay3All3[0].auditoryName}',
                   )
-                : model.modelDay3Even3?.length > 0 &&
-                        model.modelDay3Odd3?.length > 0
+                : model.modelDay3Even3?.length > 0 && model.modelDay3Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -989,8 +944,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All4[0].discName}, ${model.modelDay3All4[0].lessonType}, ${model.modelDay3All4[0].prepName}, ${model.modelDay3All4[0].auditoryName}',
                   )
-                : model.modelDay3Even4?.length > 0 &&
-                        model.modelDay3Odd4?.length > 0
+                : model.modelDay3Even4?.length > 0 && model.modelDay3Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1015,8 +969,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All5[0].discName}, ${model.modelDay3All5[0].lessonType}, ${model.modelDay3All5[0].prepName}, ${model.modelDay3All5[0].auditoryName}',
                   )
-                : model.modelDay3Even5?.length > 0 &&
-                        model.modelDay3Odd5?.length > 0
+                : model.modelDay3Even5?.length > 0 && model.modelDay3Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1041,8 +994,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All6[0].discName}, ${model.modelDay3All6[0].lessonType}, ${model.modelDay3All6[0].prepName}, ${model.modelDay3All6[0].auditoryName}',
                   )
-                : model.modelDay3Even6?.length > 0 &&
-                        model.modelDay3Odd6?.length > 0
+                : model.modelDay3Even6?.length > 0 && model.modelDay3Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1067,8 +1019,7 @@ _tableDay3(model) {
                 ? Text(
                     '${model.modelDay3All7[0].discName}, ${model.modelDay3All7[0].lessonType}, ${model.modelDay3All7[0].prepName}, ${model.modelDay3All7[0].auditoryName}',
                   )
-                : model.modelDay3Even7?.length > 0 &&
-                        model.modelDay3Odd7?.length > 0
+                : model.modelDay3Even7?.length > 0 && model.modelDay3Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1117,8 +1068,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All1[0].discName}, ${model.modelDay4All1[0].lessonType}, ${model.modelDay4All1[0].prepName}, ${model.modelDay4All1[0].auditoryName}',
                   )
-                : model.modelDay4Even1?.length > 0 &&
-                        model.modelDay4Odd1?.length > 0
+                : model.modelDay4Even1?.length > 0 && model.modelDay4Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1143,8 +1093,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All2[0].discName}, ${model.modelDay4All2[0].lessonType}, ${model.modelDay4All2[0].prepName}, ${model.modelDay4All2[0].auditoryName}',
                   )
-                : model.modelDay4Even2?.length > 0 &&
-                        model.modelDay4Odd2?.length > 0
+                : model.modelDay4Even2?.length > 0 && model.modelDay4Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1169,8 +1118,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All3[0].discName}, ${model.modelDay4All3[0].lessonType}, ${model.modelDay4All3[0].prepName}, ${model.modelDay4All3[0].auditoryName}',
                   )
-                : model.modelDay4Even3?.length > 0 &&
-                        model.modelDay4Odd3?.length > 0
+                : model.modelDay4Even3?.length > 0 && model.modelDay4Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1195,8 +1143,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All4[0].discName}, ${model.modelDay4All4[0].lessonType}, ${model.modelDay4All4[0].prepName}, ${model.modelDay4All4[0].auditoryName}',
                   )
-                : model.modelDay4Even4?.length > 0 &&
-                        model.modelDay4Odd4?.length > 0
+                : model.modelDay4Even4?.length > 0 && model.modelDay4Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1221,8 +1168,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All5[0].discName}, ${model.modelDay4All5[0].lessonType}, ${model.modelDay4All5[0].prepName}, ${model.modelDay4All5[0].auditoryName}',
                   )
-                : model.modelDay4Even5?.length > 0 &&
-                        model.modelDay4Odd5?.length > 0
+                : model.modelDay4Even5?.length > 0 && model.modelDay4Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1247,8 +1193,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All6[0].discName}, ${model.modelDay4All6[0].lessonType}, ${model.modelDay4All6[0].prepName}, ${model.modelDay4All6[0].auditoryName}',
                   )
-                : model.modelDay4Even6?.length > 0 &&
-                        model.modelDay4Odd6?.length > 0
+                : model.modelDay4Even6?.length > 0 && model.modelDay4Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1273,8 +1218,7 @@ _tableDay4(model) {
                 ? Text(
                     '${model.modelDay4All7[0].discName}, ${model.modelDay4All7[0].lessonType}, ${model.modelDay4All7[0].prepName}, ${model.modelDay4All7[0].auditoryName}',
                   )
-                : model.modelDay4Even7?.length > 0 &&
-                        model.modelDay4Odd7?.length > 0
+                : model.modelDay4Even7?.length > 0 && model.modelDay4Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1323,8 +1267,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All1[0].discName}, ${model.modelDay5All1[0].lessonType}, ${model.modelDay5All1[0].prepName}, ${model.modelDay5All1[0].auditoryName}',
                   )
-                : model.modelDay5Even1?.length > 0 &&
-                        model.modelDay5Odd1?.length > 0
+                : model.modelDay5Even1?.length > 0 && model.modelDay5Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1349,8 +1292,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All2[0].discName}, ${model.modelDay5All2[0].lessonType}, ${model.modelDay5All2[0].prepName}, ${model.modelDay5All2[0].auditoryName}',
                   )
-                : model.modelDay5Even2?.length > 0 &&
-                        model.modelDay5Odd2?.length > 0
+                : model.modelDay5Even2?.length > 0 && model.modelDay5Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1375,8 +1317,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All3[0].discName}, ${model.modelDay5All3[0].lessonType}, ${model.modelDay5All3[0].prepName}, ${model.modelDay5All3[0].auditoryName}',
                   )
-                : model.modelDay5Even3?.length > 0 &&
-                        model.modelDay5Odd3?.length > 0
+                : model.modelDay5Even3?.length > 0 && model.modelDay5Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1401,8 +1342,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All4[0].discName}, ${model.modelDay5All4[0].lessonType}, ${model.modelDay5All4[0].prepName}, ${model.modelDay5All4[0].auditoryName}',
                   )
-                : model.modelDay5Even4?.length > 0 &&
-                        model.modelDay5Odd4?.length > 0
+                : model.modelDay5Even4?.length > 0 && model.modelDay5Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1427,8 +1367,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All5[0].discName}, ${model.modelDay5All5[0].lessonType}, ${model.modelDay5All5[0].prepName}, ${model.modelDay5All5[0].auditoryName}',
                   )
-                : model.modelDay5Even5?.length > 0 &&
-                        model.modelDay5Odd5?.length > 0
+                : model.modelDay5Even5?.length > 0 && model.modelDay5Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1453,8 +1392,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All6[0].discName}, ${model.modelDay5All6[0].lessonType}, ${model.modelDay5All6[0].prepName}, ${model.modelDay5All6[0].auditoryName}',
                   )
-                : model.modelDay5Even6?.length > 0 &&
-                        model.modelDay5Odd6?.length > 0
+                : model.modelDay5Even6?.length > 0 && model.modelDay5Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1479,8 +1417,7 @@ _tableDay5(model) {
                 ? Text(
                     '${model.modelDay5All7[0].discName}, ${model.modelDay5All7[0].lessonType}, ${model.modelDay5All7[0].prepName}, ${model.modelDay5All7[0].auditoryName}',
                   )
-                : model.modelDay5Even7?.length > 0 &&
-                        model.modelDay5Odd7?.length > 0
+                : model.modelDay5Even7?.length > 0 && model.modelDay5Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1529,8 +1466,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All1[0].discName}, ${model.modelDay6All1[0].lessonType}, ${model.modelDay6All1[0].prepName}, ${model.modelDay6All1[0].auditoryName}',
                   )
-                : model.modelDay6Even1?.length > 0 &&
-                        model.modelDay6Odd1?.length > 0
+                : model.modelDay6Even1?.length > 0 && model.modelDay6Odd1?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1555,8 +1491,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All2[0].discName}, ${model.modelDay6All2[0].lessonType}, ${model.modelDay6All2[0].prepName}, ${model.modelDay6All2[0].auditoryName}',
                   )
-                : model.modelDay6Even2?.length > 0 &&
-                        model.modelDay6Odd2?.length > 0
+                : model.modelDay6Even2?.length > 0 && model.modelDay6Odd2?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1581,8 +1516,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All3[0].discName}, ${model.modelDay6All3[0].lessonType}, ${model.modelDay6All3[0].prepName}, ${model.modelDay6All3[0].auditoryName}',
                   )
-                : model.modelDay6Even3?.length > 0 &&
-                        model.modelDay6Odd3?.length > 0
+                : model.modelDay6Even3?.length > 0 && model.modelDay6Odd3?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1607,8 +1541,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All4[0].discName}, ${model.modelDay6All4[0].lessonType}, ${model.modelDay6All4[0].prepName}, ${model.modelDay6All4[0].auditoryName}',
                   )
-                : model.modelDay6Even4?.length > 0 &&
-                        model.modelDay6Odd4?.length > 0
+                : model.modelDay6Even4?.length > 0 && model.modelDay6Odd4?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1633,8 +1566,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All5[0].discName}, ${model.modelDay6All5[0].lessonType}, ${model.modelDay6All5[0].prepName}, ${model.modelDay6All5[0].auditoryName}',
                   )
-                : model.modelDay6Even5?.length > 0 &&
-                        model.modelDay6Odd5?.length > 0
+                : model.modelDay6Even5?.length > 0 && model.modelDay6Odd5?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1659,8 +1591,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All6[0].discName}, ${model.modelDay6All6[0].lessonType}, ${model.modelDay6All6[0].prepName}, ${model.modelDay6All6[0].auditoryName}',
                   )
-                : model.modelDay6Even6?.length > 0 &&
-                        model.modelDay6Odd6?.length > 0
+                : model.modelDay6Even6?.length > 0 && model.modelDay6Odd6?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1
@@ -1685,8 +1616,7 @@ _tableDay6(model) {
                 ? Text(
                     '${model.modelDay6All7[0].discName}, ${model.modelDay6All7[0].lessonType}, ${model.modelDay6All7[0].prepName}, ${model.modelDay6All7[0].auditoryName}',
                   )
-                : model.modelDay6Even7?.length > 0 &&
-                        model.modelDay6Odd7?.length > 0
+                : model.modelDay6Even7?.length > 0 && model.modelDay6Odd7?.length > 0
                     ? Column(
                         children: [
                           model.weekId == 1

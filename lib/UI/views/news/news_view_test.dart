@@ -24,12 +24,10 @@ class _NewsViewState extends State<NewsView> {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -63,8 +61,7 @@ _newsView(context, NewsViewModel model) {
           //   ),
           // ),
           ListView.builder(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 50, bottom: 100),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
               shrinkWrap: true,
               physics: const ScrollPhysics(),
               itemCount: model.textList.length,
@@ -88,7 +85,8 @@ _newsView(context, NewsViewModel model) {
                           BoxShadow(
                               color: Theme.of(context).primaryColorLight,
                               blurRadius: 15,
-                              offset: const Offset(0, 15)),
+                              offset: const Offset(0, 15),
+                              spreadRadius: -15),
                         ]),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,9 +113,7 @@ _newsView(context, NewsViewModel model) {
                           model.textList[index].length > 65
                               ? '${model.textList[index].substring(0, 65)}...'
                               : model.textList[index],
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColorDark),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark),
                         ))
                       ],
                     ),
@@ -135,29 +131,19 @@ _newsView(context, NewsViewModel model) {
           // ),
         ],
       ),
-      model.showNews == true
-          ? _currentNewsView(context, model, model.newsIndex)
-          : SizedBox()
+      model.showNews == true ? _currentNewsView(context, model, model.newsIndex) : SizedBox()
     ],
   );
 }
 
 _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
   return Container(
-    margin: EdgeInsets.only(
-        top: MediaQuery.of(context).size.width / 3,
-        left: 15,
-        right: 15,
-        bottom: 40),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Theme.of(context).primaryColor,
-        boxShadow: [
-          BoxShadow(
-              color: Theme.of(context).primaryColorLight,
-              blurRadius: 15,
-              offset: const Offset(0, 15)),
-        ]),
+    margin: EdgeInsets.only(top: MediaQuery.of(context).size.width / 3, left: 15, right: 15, bottom: 40),
+    decoration:
+        BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColor, boxShadow: [
+      BoxShadow(
+          color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15),
+    ]),
     child: Stack(
       children: [
         ListView(
@@ -175,8 +161,7 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
             ),
             Center(
                 child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 25, right: 25, top: 30, bottom: 40),
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 30, bottom: 40),
               child: Text(model.textList[newsIndex]),
             )),
             GestureDetector(
@@ -186,8 +171,7 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
               child: Container(
                 height: 30,
                 margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 3,
-                    right: MediaQuery.of(context).size.width / 3),
+                    left: MediaQuery.of(context).size.width / 3, right: MediaQuery.of(context).size.width / 3),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Theme.of(context).primaryColorDark,
@@ -195,14 +179,13 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
                       BoxShadow(
                           color: Theme.of(context).primaryColorLight,
                           blurRadius: 15,
-                          offset: const Offset(0, 15)),
+                          offset: const Offset(0, 15),
+                          spreadRadius: -15),
                     ]),
                 child: Center(
                     child: Text(
                   'Закрыть',
-                  style: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                 )),
               ),
             ),
@@ -224,7 +207,7 @@ _currentNewsView(BuildContext context, NewsViewModel model, newsIndex) {
 _videoPlayer(BuildContext context, NewsViewModel model, newsIndex) {
   model.videoController = VideoPlayerController.network(model.videoURL!);
   return model.fileLoader == true
-      ? CircularProgressIndicator()
+      ? const CircularProgressIndicator()
       : Column(
           children: [
             VideoPlayer(model.videoController),
@@ -250,15 +233,6 @@ _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
             size: 40,
             color: Theme.of(context).primaryColorDark,
           )),
-      // IconButton(
-      //     onPressed: () async {
-      //       await model.player.pause();
-      //     },
-      //     icon: Icon(
-      //       Icons.pause_circle,
-      //       size: 40,
-      //       color: Theme.of(context).primaryColorDark,
-      //     )),
       IconButton(
           onPressed: () async {
             model.tempSound = null;
@@ -277,9 +251,7 @@ _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
   return model.fileLoader == true
       ? Container(
           margin: EdgeInsets.only(
-              top: 10,
-              left: MediaQuery.of(context).size.width / 2.5,
-              right: MediaQuery.of(context).size.width / 2.5),
+              top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
           height: 50,
           child: CircularProgressIndicator(
             color: Colors.blueGrey.shade700,

@@ -35,9 +35,10 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                 },
                 child: model.circle
                     ? Container(
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                         child: const Center(
                           child: CircularProgressIndicator(
+                            color: Colors.blue,
                             backgroundColor: Colors.white,
                           ),
                         ),
@@ -45,8 +46,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                     : Scaffold(
                         extendBody: true,
                         extendBodyBehindAppBar: true,
-                        appBar: customAppBar(context, model, 'Расписание преподавателя'),
-                        //bottomNavigationBar: customBottomBar(context, model),
+                        appBar: customAppBar(context, model, model.appBarTitle),
                         body: _prepSchedule(context, model)),
               ));
         });
@@ -69,11 +69,19 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
         padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
         child: DropdownSearch<dynamic>(
           popupProps: const PopupProps.menu(showSearchBox: true),
-          dropdownDecoratorProps:
-              const DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration(labelText: 'Выбор преподавателя')),
-          //asyncItems: (String filter) => getData(filter),
+          dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+            labelText: 'Выбор преподавателя',
+            labelStyle: TextStyle(
+              color: Color(Theme.of(context).primaryColorDark.value),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.blue,
+              ),
+            ),
+          )),
           items: model.teacherList.map((e) => e.fio).toList(),
-          //itemAsString: (Teacher t) => t.fio,
           onChanged: (value) => {model.changeTeacher(value)},
         ),
       ),
@@ -89,7 +97,11 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
               height: 50,
               width: 200,
               decoration: BoxDecoration(boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 20, offset: const Offset(0, 15))
+                BoxShadow(
+                    color: Theme.of(context).primaryColorLight,
+                    blurRadius: 15,
+                    offset: const Offset(0, 15),
+                    spreadRadius: -15)
               ]),
               child: Card(
                 shape: RoundedRectangleBorder(
@@ -194,7 +206,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                     groupValue: model.weekId,
                     onChanged: (value) {
                       model.changeWeek(value);
-                      print(model.weekId);
                     },
                   ),
                 ),
@@ -207,7 +218,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                       groupValue: model.weekId,
                       onChanged: (value) {
                         model.changeWeek(value);
-                        print(model.weekId);
                       },
                     ),
                   ),
@@ -264,238 +274,249 @@ _scheduleTable(PrepScheduleViewModel model, context, dayIndex) {
             ),
           ),
         )
-      : Table(
-          border: TableBorder.all(
-            color: Theme.of(context).canvasColor,
+      : Dismissible(
+          key: Key("${model.indexDay}"),
+          direction: DismissDirection.horizontal,
+          onDismissed: (direction) {
+            if (direction.name == "endToStart") {
+              model.choiceDay("next");
+            } else {
+              model.choiceDay("back");
+            }
+          },
+          child: Table(
+            border: TableBorder.all(
+              color: Theme.of(context).canvasColor,
+            ),
+            children: [
+              const TableRow(children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Время',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Пары',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                )
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![0].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![1].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![2].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![3].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![4].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![5].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ]),
+              TableRow(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${model.result!.coupleList![6].description}'),
+                ),
+                ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: model.weekId == 0
+                        ? model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven!.length
+                        : model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          model.weekId == 1
+                              ? Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].endWeekNum} нед.')
+                              : Text(
+                                  '${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      );
+                    })
+              ])
+            ],
           ),
-          children: [
-            const TableRow(children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Время',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Пары',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              )
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![0].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![0].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![1].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![1].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![2].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![2].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![3].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![3].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![4].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![4].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![5].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![5].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ]),
-            TableRow(children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${model.result!.coupleList![6].description}'),
-              ),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: model.weekId == 0
-                      ? model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven!.length
-                      : model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        model.weekId == 1
-                            ? Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.even![index].endWeekNum} нед.')
-                            : Text(
-                                '${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].discName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].groupName}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].lessonType}, ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].auditoryName}, с ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].startWeekNum} по ${model.result!.prepScheduleTable![dayIndex].ceilList![6].ceil!.uneven![index].endWeekNum} нед.'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    );
-                  })
-            ])
-          ],
         );
 }
 

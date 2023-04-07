@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
+import 'package:flutter/services.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({Key? key}) : super(key: key);
@@ -11,8 +12,7 @@ class LoadingView extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<LoadingView>
-    with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<LoadingView> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -21,6 +21,8 @@ class _MyHomePageState extends State<LoadingView>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark));
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Image.asset(

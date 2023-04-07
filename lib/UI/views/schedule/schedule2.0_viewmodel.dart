@@ -23,7 +23,10 @@ class NewScheduleViewModel extends BaseViewModel {
   bool tableView = false;
   int indexDay = DateTime.now().weekday - 1;
   bool currentTable = false;
-  bool weekType = true;
+  bool? weekType;
+  int? weekNumApi;
+  String? weekTypeApi;
+  String? currentDateApi;
   int? groupId;
   int? groupIdChoice;
   int? currentSemester;
@@ -37,9 +40,6 @@ class NewScheduleViewModel extends BaseViewModel {
   ScheduleRequest? scheduleSemester;
   FacultyList? scheduleFaculty;
   GroupList? scheduleGroup;
-  // List<CoupleData> coupleAllList = [];
-  // List<CoupleData> coupleOddList = [];
-  // List<CoupleData> coupleEvenList = [];
   List<WeekGetId> weekID = [];
   List<GroupList> groupList = [];
   List<FacultyList> facultyList = [];
@@ -78,7 +78,7 @@ class NewScheduleViewModel extends BaseViewModel {
       indexDay == 6 ? indexDay = 0 : indexDay == 0;
     } else if (action == 'back') {
       indexDay--;
-      indexDay == -1 ? indexDay = 6 : indexDay == 6;
+      indexDay == -1 ? indexDay = 5 : indexDay == 5;
     }
 
     coupleAllList = [
@@ -124,12 +124,17 @@ class NewScheduleViewModel extends BaseViewModel {
   }
 
   getScheduleString() async {
-    circle = true;
     indexDay == 6 ? indexDay = 1 : indexDay == 1;
     String? token = await storage.read(key: "tokenKey");
     var dio = Dio();
     var semesterResponse = await dio.get(Config.semesterList);
+    var getWeek = await dio.get(Config.getWeekNum, queryParameters: {"accessToken": token});
     var response = await dio.get(Config.currentGroupList, queryParameters: {"accessToken": token});
+    weekNumApi = getWeek.data['currentDay']['weekNum'];
+    weekTypeApi = getWeek.data['currentDay']['weekType'];
+    currentDateApi = getWeek.data['currentDay']['currentDate'];
+    print('WEEK API:: $weekNumApi, $weekTypeApi, $currentDateApi');
+    weekTypeApi == 'четная' ? weekType = true : weekType = false;
     groupId = response.data['currentGroupList'][0]['groupId'];
     currentSemester = semesterResponse.data['result'][0]['Id'];
     var weekResponse = await dio.get('${Config.weekList}?semesterId=$currentSemester');
@@ -177,8 +182,8 @@ class NewScheduleViewModel extends BaseViewModel {
       daysList![indexDay].coupleOdd6!,
       daysList![indexDay].coupleOdd7!
     ];
-    circle = false;
     tableView = true;
+    circle = false;
     notifyListeners();
   }
 
@@ -196,8 +201,6 @@ class NewScheduleViewModel extends BaseViewModel {
         await http.get(Uri.parse('${Config.scheduleTable}?groupId=$groupId&semesterWeekId=$currentWeek'));
     var mainTable = getScheduleTable.body;
     final jsonResponse = json.decode(mainTable)['result']['Table'];
-    // final jsonResponseCoupleList =
-    // json.decode(mainTable)['result']['CoupleList'];
     scheduleTable = FinalTable.fromJson(jsonResponse);
 
     weekDays = [
@@ -209,7 +212,6 @@ class NewScheduleViewModel extends BaseViewModel {
       scheduleTable!.weekDay6!,
     ];
 
-    circle = false;
     tableView = true;
     notifyListeners();
   }
@@ -220,7 +222,6 @@ class NewScheduleViewModel extends BaseViewModel {
     var response3 = await http.get(Uri.parse('${Config.facultyList}?semesterId=${scheduleList[0].id}'));
     facultyList = parseFaculty(json.decode(response3.body)["result"]);
     currentTable = false;
-    circle = false;
 
     notifyListeners();
   }

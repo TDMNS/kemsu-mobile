@@ -83,20 +83,10 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   prolongToken(context) async {
-    // var dio = Dio();
-    //
     String? token = await storage.read(key: 'tokenKey');
-    // final responseProlongToken = await dio
-    //     .post(Config.proLongToken, queryParameters: {"accessToken": token});
-    // var newToken = responseProlongToken.data['accessToken'];
-    // await storage.write(key: "tokenKey", value: newToken);
-    // Map data = {"accessToken": token};
-    //var body = json.encode(data);
-    final responseToken = await http
-        .post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
+    final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
     responseToken.statusCode == 401
-        ? Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const AuthView()))
+        ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()))
         : null;
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
@@ -110,15 +100,13 @@ class ProfileViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
-    String? userTypeTemp = await storage.read(key: "userType");
+
     var dio = Dio();
-    final responseProlongToken = await dio
-        .post(Config.proLongToken, queryParameters: {"accessToken": token});
+    final responseProlongToken = await dio.post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
     String? token2 = await storage.read(key: "tokenKey");
-    final responseAuth = await dio
-        .post(Config.apiHost, data: {"login": login, "password": password});
+    final responseAuth = await dio.post(Config.apiHost, data: {"login": login, "password": password});
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
@@ -135,8 +123,7 @@ class ProfileViewModel extends BaseViewModel {
       firstName = userData["firstName"];
       lastName = userData["lastName"];
       middleName = userData["middleName"];
-      final responseStudent = await dio
-          .get(Config.studCardHost, queryParameters: {"accessToken": token2});
+      final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
 
       var studentCard = responseStudent.data[0];
       group = studentCard["GROUP_NAME"];
@@ -151,10 +138,8 @@ class ProfileViewModel extends BaseViewModel {
       await storage.write(key: "lastName", value: lastName);
       await storage.write(key: "middleName", value: middleName);
       await storage.write(key: "group", value: group);
-
     } else if (userType == EnumUserType.employee) {
-      final responseEmployee = await dio
-          .get(Config.empCardHost, queryParameters: {"accessToken": token2});
+      final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
 
       var employeeCard = responseEmployee.data["empList"][0];
       firstName = employeeCard["FIRST_NAME"];
@@ -176,8 +161,7 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "phone", value: phone);
 
     final now = DateTime.now();
-    final newYearDate =
-        DateTime(now.year, DateTime.january, 3).toString().split(' ');
+    final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
     final currentDate = now.toString().split(' ');
     if (currentDate[0] == newYearDate[0]) {
       _showAlertDialog(context);
@@ -187,33 +171,15 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Main screen (profile) event');
-  }
-
-  void old_saveImage(image) async {
-    // await storage.write(key: "avatar", value: '$image');
-    //avatar = await storage.read(key: 'avatar');
-    //final File newImage = await image.copy('images/avatar.png');
-    //image = avatar;
-    //print('Image: $image, Save Image: $avatar');
-    Uint8List imageBytes = await image!.readAsBytes();
-    String _base64String = base64.encode(imageBytes);
-    await storage.write(key: "avatar", value: _base64String);
-    //print(img64);
-    notifyListeners();
   }
 
   void updateProfile() async {
     var dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    final updateEmail = await dio.post(Config.updateEmail,
-        queryParameters: {"accessToken": token},
-        data: {"email": emailController?.text});
-    final phoneEmail = await dio.post(Config.updatePhone,
-        queryParameters: {"accessToken": token},
-        data: {"phone": phoneController?.text});
+    await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController?.text});
+    await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController?.text});
     email = emailController!.text;
     phone = phoneController!.text;
     notifyListeners();
@@ -221,31 +187,26 @@ class ProfileViewModel extends BaseViewModel {
 
   void exitButton(context) async {
     await storage.write(key: "tokenKey", value: "");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const AuthView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()));
     notifyListeners();
   }
 
   void iaisButton(context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const IaisView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
     notifyListeners();
   }
 
   void debtsButton(context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const DebtsView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const DebtsView()));
     notifyListeners();
   }
 
   void checklistButton(context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CheckListView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckListView()));
     notifyListeners();
   }
 
   _showAlertDialog(BuildContext context) {
-    // set up the button
     Widget okButton = TextButton(
       child: const Text("Спасибо"),
       onPressed: () {
@@ -263,7 +224,6 @@ class ProfileViewModel extends BaseViewModel {
       ],
     );
 
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
