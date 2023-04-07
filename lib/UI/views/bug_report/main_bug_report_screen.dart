@@ -88,8 +88,11 @@ _reportSpace(context, BugReportViewModel model) {
             shrinkWrap: true,
             itemCount: model.reportList.length,
             itemBuilder: (context, index) {
+              final reportList = model.reportList[index].reportStatus;
               return ExpansionTile(
                 title: Text(model.reportList[index].message.toString()),
+                subtitle: Text(reportList ?? "Заявка не обработана",
+                    style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(10),
