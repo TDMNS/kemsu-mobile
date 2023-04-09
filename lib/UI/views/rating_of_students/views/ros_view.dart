@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/rating_of_students/ros_detail_view.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_view.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
-import '../../widgets.dart';
-import '../schedule/schedule_view.dart';
-import 'ros_viewmodel.dart';
+import '../../../widgets.dart';
+import '../../schedule/schedule_view.dart';
+import '../ros_viewmodel.dart';
 
 class RosView extends StatelessWidget {
   const RosView({Key? key}) : super(key: key);

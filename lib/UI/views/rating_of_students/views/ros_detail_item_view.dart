@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
-import '../../widgets.dart';
-import 'ros_viewmodel.dart';
+import '../../../widgets.dart';
+import '../ros_viewmodel.dart';
 
 class RosDetailItemView extends StatelessWidget {
   const RosDetailItemView({Key? key, required this.reitItemList, required this.discipline}) : super(key: key);
