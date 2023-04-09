@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_view.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
@@ -397,7 +397,7 @@ class _ProfileViewState extends State<ProfileView> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const PRSView()),
+                        MaterialPageRoute(builder: (context) => const RosView()),
                       );
                     },
                     child: Container(

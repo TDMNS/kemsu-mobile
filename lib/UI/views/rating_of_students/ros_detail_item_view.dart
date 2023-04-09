@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
-import 'prs_viewmodel.dart';
+import 'ros_viewmodel.dart';
 
-class PRSDetailItemView extends StatelessWidget {
-  const PRSDetailItemView(
-      {Key? key, required this.reitItemList, required this.discipline})
-      : super(key: key);
+class RosDetailItemView extends StatelessWidget {
+  const RosDetailItemView({Key? key, required this.reitItemList, required this.discipline}) : super(key: key);
 
   final String discipline;
   final List<ReitItemList> reitItemList;
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<PRSViewModel>.reactive(
+    return ViewModelBuilder<RosViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => PRSViewModel(context),
+        viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -37,14 +33,14 @@ class PRSDetailItemView extends StatelessWidget {
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, discipline),
                   //bottomNavigationBar: customBottomBar(context, model),
-                  body: _prsDetailItemView(context, model, reitItemList),
+                  body: _rosDetailItemView(context, model, reitItemList),
                 ),
               ));
         });
   }
 }
 
-_prsDetailItemView(context, PRSViewModel model, reitItemList) {
+_rosDetailItemView(context, RosViewModel model, reitItemList) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),

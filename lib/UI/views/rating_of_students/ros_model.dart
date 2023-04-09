@@ -10,16 +10,15 @@ class StudyCard {
   }
 }
 
-class PrsSemesterList {
+class RosSemesterList {
   int? semester;
   int? startDate;
   int? endDate;
   int? commonScore;
 
-  PrsSemesterList(
-      {this.semester, this.startDate, this.endDate, this.commonScore});
+  RosSemesterList({this.semester, this.startDate, this.endDate, this.commonScore});
 
-  PrsSemesterList.fromJson(Map<String, dynamic> json) {
+  RosSemesterList.fromJson(Map<String, dynamic> json) {
     semester = json["SEMESTER"];
     startDate = json["STUD_YEAR_START"];
     endDate = json["STUD_YEAR_END"];
@@ -63,8 +62,7 @@ class ReitItemList {
   int? maxBall;
   int? ball;
 
-  ReitItemList(
-      {this.activityName, this.comment, this.count, this.maxBall, this.ball});
+  ReitItemList({this.activityName, this.comment, this.count, this.maxBall, this.ball});
 
   ReitItemList.fromJson(Map<String, dynamic> json) {
     activityName = json["ACTIVITY_NAME"];

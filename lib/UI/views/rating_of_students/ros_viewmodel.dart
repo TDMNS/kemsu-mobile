@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
 
-class PRSViewModel extends BaseViewModel {
-  PRSViewModel(BuildContext context);
+class RosViewModel extends BaseViewModel {
+  RosViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
   /// first request
@@ -16,7 +16,7 @@ class PRSViewModel extends BaseViewModel {
   StudyCard? studyCard;
 
   /// second request
-  List<PrsSemesterList> prsSemesterList = [];
+  List<RosSemesterList> rosSemesterList = [];
 
   /// third request
   List<ReitList> reitList = [];
@@ -36,15 +36,13 @@ class PRSViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
-    AppMetrica.reportEvent('PRS event');
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('rating_of_students event');
   }
 
   getStudCard() async {
     String? token = await storage.read(key: "tokenKey");
-    var response =
-        await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
+    var response = await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
     receivedStudyCard = parseCard(json.decode(response.body));
     notifyListeners();
   }
@@ -53,10 +51,8 @@ class PRSViewModel extends BaseViewModel {
     return response.map<StudyCard>((json) => StudyCard.fromJson(json)).toList();
   }
 
-  List<PrsSemesterList> parsePrsSemesterList(List response) {
-    return response
-        .map<PrsSemesterList>((json) => PrsSemesterList.fromJson(json))
-        .toList();
+  List<RosSemesterList> parseRosSemesterList(List response) {
+    return response.map<RosSemesterList>((json) => RosSemesterList.fromJson(json)).toList();
   }
 
   List<ReitList> parseReitList(List response) {
@@ -64,18 +60,14 @@ class PRSViewModel extends BaseViewModel {
   }
 
   List<ReitItemList> parseReitItemList(List response) {
-    return response
-        .map<ReitItemList>((json) => ReitItemList.fromJson(json))
-        .toList();
+    return response.map<ReitItemList>((json) => ReitItemList.fromJson(json)).toList();
   }
 
   changeCard(value) async {
     studyCard = value;
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
-    prsSemesterList =
-        parsePrsSemesterList(json.decode(response.body)["brsSemesterList"]);
+    var response = await http.get(Uri.parse('${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
+    rosSemesterList = parseRosSemesterList(json.decode(response.body)["brsSemesterList"]);
     notifyListeners();
   }
 
@@ -89,10 +81,8 @@ class PRSViewModel extends BaseViewModel {
 
   getReitItemList(studyId) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
-    reitItemList =
-        parseReitItemList(json.decode(response.body)["brsActivityList"]);
+    var response = await http.get(Uri.parse('${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
+    reitItemList = parseReitItemList(json.decode(response.body)["brsActivityList"]);
     notifyListeners();
   }
 }

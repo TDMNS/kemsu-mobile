@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_detail_view.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_detail_view.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 import '../schedule/schedule_view.dart';
-import 'prs_viewmodel.dart';
+import 'ros_viewmodel.dart';
 
-class PRSView extends StatelessWidget {
-  const PRSView({Key? key}) : super(key: key);
+class RosView extends StatelessWidget {
+  const RosView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<PRSViewModel>.reactive(
+    return ViewModelBuilder<RosViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => PRSViewModel(context),
+        viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -34,14 +32,14 @@ class PRSView extends StatelessWidget {
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'БРС'),
                   //bottomNavigationBar: customBottomBar(context, model),
-                  body: _prsView(context, model),
+                  body: _rosView(context, model),
                 ),
               ));
         });
   }
 }
 
-_prsView(context, PRSViewModel model) {
+_rosView(context, RosViewModel model) {
   dropdownItems = List.generate(
     model.receivedStudyCard.length,
     (index) => DropdownMenuItem(
@@ -70,8 +68,7 @@ _prsView(context, PRSViewModel model) {
                 },
                 isExpanded: true,
                 value: model.studyCard,
-                items: model.receivedStudyCard
-                    .map<DropdownMenuItem<StudyCard>>((e) {
+                items: model.receivedStudyCard.map<DropdownMenuItem<StudyCard>>((e) {
                   return DropdownMenuItem<StudyCard>(
                     child: Text(e.speciality.toString()),
                     value: e,
@@ -111,8 +108,8 @@ _prsView(context, PRSViewModel model) {
                       ),
                     ],
                   ),
-                  ...List.generate(model.prsSemesterList.length, (index) {
-                    var element = model.prsSemesterList[index];
+                  ...List.generate(model.rosSemesterList.length, (index) {
+                    var element = model.rosSemesterList[index];
 
                     return TableRow(
                       children: [
@@ -130,16 +127,13 @@ _prsView(context, PRSViewModel model) {
                         ),
                         IconButton(
                             onPressed: () async {
-                              await model.getReitList(element.startDate,
-                                  element.endDate, element.semester);
+                              await model.getReitList(element.startDate, element.endDate, element.semester);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PRSDetailView(
+                                    builder: (context) => RosDetailView(
                                           reitList: model.reitList,
-                                          semester: element.semester != null
-                                              ? element.semester!
-                                              : 1,
+                                          semester: element.semester != null ? element.semester! : 1,
                                         )),
                               );
                             },

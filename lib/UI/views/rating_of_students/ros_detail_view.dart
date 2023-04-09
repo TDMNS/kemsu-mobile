@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_detail_item_view.dart';
-import 'package:kemsu_app/UI/views/PRS/prs_model.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_detail_item_view.dart';
+import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
-import 'prs_viewmodel.dart';
+import 'ros_viewmodel.dart';
 
-class PRSDetailView extends StatelessWidget {
-  const PRSDetailView(
-      {Key? key, required this.reitList, required this.semester})
-      : super(key: key);
+class RosDetailView extends StatelessWidget {
+  const RosDetailView({Key? key, required this.reitList, required this.semester}) : super(key: key);
 
   final int semester;
   final List<ReitList> reitList;
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<PRSViewModel>.reactive(
+    return ViewModelBuilder<RosViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => PRSViewModel(context),
+        viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -38,14 +34,14 @@ class PRSDetailView extends StatelessWidget {
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Семестр $semester'),
                   //bottomNavigationBar: customBottomBar(context, model),
-                  body: _prsDetailView(context, model, reitList),
+                  body: _rosDetailView(context, model, reitList),
                 ),
               ));
         });
   }
 }
 
-_prsDetailView(context, PRSViewModel model, reitList) {
+_rosDetailView(context, RosViewModel model, reitList) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
@@ -70,8 +66,7 @@ _prsDetailView(context, PRSViewModel model, reitList) {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('ФПА'),
-                            content: const Text(
-                                'ФПА - форма промежуточной аттестации'),
+                            content: const Text('ФПА - форма промежуточной аттестации'),
                             actions: [
                               ElevatedButton(
                                   onPressed: () {
@@ -142,9 +137,8 @@ _prsDetailView(context, PRSViewModel model, reitList) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PRSDetailItemView(
-                                    reitItemList: model.reitItemList,
-                                    discipline: element.discipline)),
+                                builder: (context) => RosDetailItemView(
+                                    reitItemList: model.reitItemList, discipline: element.discipline)),
                           );
                         },
                         icon: const Icon(Icons.saved_search))
