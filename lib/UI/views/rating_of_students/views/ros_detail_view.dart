@@ -4,6 +4,7 @@ import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_item_view
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
+import '../../ordering information/ordering_information_main_view.dart';
 import '../ros_viewmodel.dart';
 
 class RosDetailView extends StatelessWidget {
@@ -20,11 +21,10 @@ class RosDetailView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -33,7 +33,6 @@ class RosDetailView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Семестр $semester'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _rosDetailView(context, model, reitList),
                 ),
               ));
@@ -45,108 +44,87 @@ _rosDetailView(context, RosViewModel model, reitList) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
-      Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Table(
-            border: TableBorder.all(
-              color: Theme.of(context).canvasColor,
-            ),
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            defaultColumnWidth: const FlexColumnWidth(),
-            children: [
-              TableRow(
-                children: [
-                  const Text(
-                    'Дисциплина',
-                    textAlign: TextAlign.center,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('ФПА'),
-                            content: const Text('ФПА - форма промежуточной аттестации'),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Закрыть'))
-                            ],
-                          ),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.black,
+      Padding(padding: const EdgeInsets.all(8.0), child: getListView(model, reitList))
+    ],
+  );
+}
+
+Widget getListView(RosViewModel model, reitList) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: reitList.length,
+    itemBuilder: (context, index) {
+      final item = reitList[index];
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                collapsedIconColor: Colors.blue,
+                initiallyExpanded: true,
+                expandedAlignment: Alignment.centerRight,
+                title: Text(
+                  "${item.discipline}",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          richText("Форма промежуточной аттестации: ", "${item.intermediateAttestationForm}", context),
+                          const SizedBox(height: 10),
+                          richText("Текущий балл: ", "${item.currentScore}", context),
+                          const SizedBox(height: 10),
+                          richText("Аттестационный балл: ", "${item.frontScore}", context),
+                          const SizedBox(height: 10),
+                          richText("Общий балл: ", "${item.commonScore}", context),
+                          const SizedBox(height: 10),
+                          richText("Оценка: ", item.mark != null ? "${item.mark}" : "нет оценки", context),
+                          const SizedBox(height: 10),
+                          TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+                              onPressed: () async {
+                                await model.getReitItemList(item.studyId);
+                                String safelyDiscipline = item.discipline ?? "";
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RosDetailItemView(
+                                          reitItemList: model.reitItemList, discipline: safelyDiscipline)),
+                                );
+                              },
+                              child: const Text("Подробнее", style: TextStyle(color: Colors.white)))
+                        ],
                       ),
-                      child: const Text('ФПА')),
-                  const Text(
-                    'Текущ. балл',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'Аттест. балл',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'Общ. балл',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'Оц-ка',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Text(
-                    'Просмотр',
-                    textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
-              ...List.generate(reitList.length, (index) {
-                var element = reitList[index];
-                return TableRow(
-                  children: [
-                    Text(
-                      "${element.discipline}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.intermediateAttestationForm}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.currentScore}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.frontScore}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.commonScore}",
-                      textAlign: TextAlign.center,
-                    ), //Extracting from Map element the value
-                    Text(
-                      element.mark != null ? "${element.mark}" : "нет оценки",
-                      textAlign: TextAlign.center,
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          await model.getReitItemList(element.studyId);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RosDetailItemView(
-                                    reitItemList: model.reitItemList, discipline: element.discipline)),
-                          );
-                        },
-                        icon: const Icon(Icons.saved_search))
-                  ],
-                );
-              }),
-            ],
-          ))
-    ],
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

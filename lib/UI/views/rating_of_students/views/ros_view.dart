@@ -31,7 +31,6 @@ class RosView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'БРС'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _rosView(context, model),
                 ),
               ));
