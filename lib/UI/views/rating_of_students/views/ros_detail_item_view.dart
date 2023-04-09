@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
+import '../../ordering information/ordering_information_main_view.dart';
 import '../ros_viewmodel.dart';
 
 class RosDetailItemView extends StatelessWidget {
@@ -19,11 +20,10 @@ class RosDetailItemView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -32,7 +32,6 @@ class RosDetailItemView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, discipline),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _rosDetailItemView(context, model, reitItemList),
                 ),
               ));
@@ -44,62 +43,69 @@ _rosDetailItemView(context, RosViewModel model, reitItemList) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),
-      Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Table(
-            border: TableBorder.all(
-              color: Theme.of(context).canvasColor,
-            ),
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            defaultColumnWidth: const FlexColumnWidth(),
-            children: [
-              const TableRow(
-                children: [
-                  Text(
-                    'Вид учебной деятельности',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Количество',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Макс. балл',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Ваш балл',
-                    textAlign: TextAlign.center,
+      Padding(padding: const EdgeInsets.all(8.0), child: getListView(reitItemList))
+    ],
+  );
+}
+
+Widget getListView(reitItemList) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: reitItemList.length,
+    itemBuilder: (context, index) {
+      final item = reitItemList[index];
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                collapsedIconColor: Colors.blue,
+                initiallyExpanded: true,
+                expandedAlignment: Alignment.centerRight,
+                title: Text(
+                  item.comment != null ? "${item.activityName} (${item.comment})" : "${item.activityName}",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          richText("Количество: ", "${item.count}", context),
+                          const SizedBox(height: 10),
+                          richText("Максимальный балл: ", "${item.maxBall}", context),
+                          const SizedBox(height: 10),
+                          richText("Ваш балл: ", "${item.ball}", context)
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
-              ...List.generate(reitItemList.length, (index) {
-                var element = reitItemList[index];
-                return TableRow(
-                  children: [
-                    Text(
-                      element.comment != null
-                          ? "${element.activityName} (${element.comment})"
-                          : "${element.activityName}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.count}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.maxBall}",
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "${element.ball}",
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                );
-              }),
-            ],
-          ))
-    ],
+            ),
+          ),
+        ],
+      );
+    },
   );
 }
