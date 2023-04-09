@@ -92,6 +92,7 @@ Widget getListView(RosViewModel model) {
       return Column(
         children: <Widget>[
           Container(
+            width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

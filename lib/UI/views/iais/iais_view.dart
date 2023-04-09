@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../ordering information/ordering_information_main_view.dart';
 import './iais_viewmodel.dart';
 import './iais_disc_view.dart';
 import 'package:stacked/stacked.dart';
@@ -64,39 +65,54 @@ _iaisView(BuildContext context, IaisViewModel model) {
         ],
       ),
       Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(8.0),
-          child: DataTable(
-            columns: const [
-              DataColumn(label: Expanded(child: Text('Дисциплина', textAlign: TextAlign.center))),
-              DataColumn(label: Expanded(child: Text('Преподаватель', textAlign: TextAlign.center))),
-            ],
-            rows: model.Course.map<DataRow>((e) => DataRow(
-                    onSelectChanged: (selected) async {
-                      if (selected == true) {
-                        {
-                          await model.getDiscReports(e.COURSE_ID);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => IaisRepView(discData: e, repList: model.Report)),
-                          );
-                        }
-                      }
-                    },
-                    cells: [
-                      DataCell(Text(e.DISC_NAME.toString())),
-                      DataCell(Text(e.FIO.toString())),
-                    ])).toList(),
-            border: TableBorder.all(
-              color: Theme.of(context).canvasColor,
-              style: BorderStyle.solid,
-              width: 1.5,
-            ),
-            dataRowHeight: 100,
-            showCheckboxColumn: false,
-          ),
-        ),
+        child: SingleChildScrollView(padding: const EdgeInsets.all(8.0), child: getIaisView(model)),
       ),
     ],
+  );
+}
+
+Widget getIaisView(IaisViewModel model) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: model.Course.length,
+    itemBuilder: (context, index) {
+      final item = model.Course[index];
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.centerLeft),
+                  onPressed: () async {
+                    await model.getDiscReports(item.COURSE_ID);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => IaisRepView(discData: item, repList: model.Report)),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        richText("Дисциплина: ", "${item.DISC_NAME}", context),
+                        const SizedBox(height: 10),
+                        richText("Преподаватель: ", "${item.FIO}", context),
+                      ],
+                    ),
+                  )),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }

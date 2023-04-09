@@ -23,15 +23,11 @@ class IaisViewModel extends BaseViewModel {
   bool isChecked = false;
 
   List<CourseIais> parseCourseList(List response) {
-    return response
-        .map<CourseIais>((json) => CourseIais.fromJson(json))
-        .toList();
+    return response.map<CourseIais>((json) => CourseIais.fromJson(json)).toList();
   }
 
   List<ReportIais> parseReportList(List response) {
-    return response
-        .map<ReportIais>((json) => ReportIais.fromJson(json))
-        .toList();
+    return response.map<ReportIais>((json) => ReportIais.fromJson(json)).toList();
   }
 
   Future onReady() async {
@@ -40,8 +36,7 @@ class IaisViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Iais event');
   }
 
@@ -77,7 +72,7 @@ class IaisViewModel extends BaseViewModel {
         "x-access-token": token!,
       },
     );
-
+    print(response.body);
     Report = parseReportList(json.decode(response.body)['studentReportList']);
 
     notifyListeners();

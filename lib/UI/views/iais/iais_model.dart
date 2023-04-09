@@ -9,7 +9,14 @@ class CourseIais {
   int? COURSE_ID;
 
   CourseIais(
-      {this.DISC_NAME, this.DISC_REP, this.DISC_HOURS, this.FIO, this.DISC_FIRST_DATE, this.DISC_LAST_DATE, this.DISC_MARK, this.COURSE_ID});
+      {this.DISC_NAME,
+      this.DISC_REP,
+      this.DISC_HOURS,
+      this.FIO,
+      this.DISC_FIRST_DATE,
+      this.DISC_LAST_DATE,
+      this.DISC_MARK,
+      this.COURSE_ID});
 
   CourseIais.fromJson(Map<String, dynamic> json) {
     DISC_NAME = json["DISC_NAME"];
@@ -35,22 +42,31 @@ class ReportIais {
   List<TaskListIais>? STUDENT_TASK_LIST;
 
   ReportIais(
-      {this.REP_ID, this.NAME, this.SOLVE_FLAG, this.COMMENTS, this.REP_CONTROL_DATE, this.MAX_BALL, this.SUM_BALL, this.STUDENT_TASK_LIST});
+      {this.REP_ID,
+      this.NAME,
+      this.SOLVE_FLAG,
+      this.COMMENTS,
+      this.REP_CONTROL_DATE,
+      this.MAX_BALL,
+      this.SUM_BALL,
+      this.STUDENT_TASK_LIST});
 
   ReportIais.fromJson(Map<String, dynamic> json) {
     REP_ID = json["REP_ID"];
     NAME = json["NAME"];
     SOLVE_FLAG = json["SOLVE_FLAG"];
     COMMENTS = json["COMMENTS"];
-    if(json["REP_CONTROL_DATE"]==null) REP_CONTROL_DATE = "";
-    else REP_CONTROL_DATE = json["REP_CONTROL_DATE"];
+    if (json["REP_CONTROL_DATE"] == null)
+      REP_CONTROL_DATE = "";
+    else
+      REP_CONTROL_DATE = json["REP_CONTROL_DATE"];
     MAX_BALL = json["MAX_BALL"];
-    if(json["SUM_BALL"]==null) SUM_BALL = "";
-    else SUM_BALL = json["SUM_BALL"].toString();
-    STUDENT_TASK_LIST =
-        json["STUDENT_TASK_LIST"]
-            .map<TaskListIais>((json) => TaskListIais.fromJson(json))
-            .toList();
+    if (json["SUM_BALL"] == null)
+      SUM_BALL = "";
+    else
+      SUM_BALL = json["SUM_BALL"].toString();
+    print(SUM_BALL);
+    STUDENT_TASK_LIST = json["STUDENT_TASK_LIST"].map<TaskListIais>((json) => TaskListIais.fromJson(json)).toList();
   }
 }
 
@@ -72,29 +88,46 @@ class TaskListIais {
   String? OPTION_SOLUTION_STATUS;
 
   TaskListIais(
-      {this.NAME, this.TASK_ID, this.TASK_NAME, this.SOLVE_FLAG, this.COMMENTS, this.TASK_CONTROL_DATE, this.MAX_BALL, this.SUM_BALL, this.SOLUTION_STATUS, this.SOLUTION_STATUS_SHORT, this.OPTION_ID, this.OPTION_NAME, this.OPTION_COMMENTS, this.OPTION_SOLUTION_STATUS});
+      {this.NAME,
+      this.TASK_ID,
+      this.TASK_NAME,
+      this.SOLVE_FLAG,
+      this.COMMENTS,
+      this.TASK_CONTROL_DATE,
+      this.MAX_BALL,
+      this.SUM_BALL,
+      this.SOLUTION_STATUS,
+      this.SOLUTION_STATUS_SHORT,
+      this.OPTION_ID,
+      this.OPTION_NAME,
+      this.OPTION_COMMENTS,
+      this.OPTION_SOLUTION_STATUS});
 
   TaskListIais.fromJson(Map<String, dynamic> json) {
     TASK_ID = json["TASK_ID"];
     TASK_NAME = json["TASK_NAME"];
-    if(json["SOLVE_FLAG"]==0) SOLVE_FLAG = "Нет";
-    else SOLVE_FLAG = "Да";
+    if (json["SOLVE_FLAG"] == 0)
+      SOLVE_FLAG = "Нет";
+    else
+      SOLVE_FLAG = "Да";
     COMMENTS = json["COMMENTS"];
-    if(json["TASK_CONTROL_DATE"]==null) TASK_CONTROL_DATE = "";
-    else TASK_CONTROL_DATE = json["TASK_CONTROL_DATE"];
+    if (json["TASK_CONTROL_DATE"] == null)
+      TASK_CONTROL_DATE = "";
+    else
+      TASK_CONTROL_DATE = json["TASK_CONTROL_DATE"];
     MAX_BALL = json["MAX_BALL"];
-    if(json["SUM_BALL"]==null) SUM_BALL = "";
-    else SUM_BALL = json["SUM_BALL"].toString();
-
-    if(json["STUDENT_OPTION_LIST"].length==0) {
+    if (json["SUM_BALL"] == null)
+      SUM_BALL = "";
+    else
+      SUM_BALL = json["SUM_BALL"].toString();
+    if (json["STUDENT_OPTION_LIST"].length == 0) {
       SOLUTION_STATUS = json["SOLUTION_STATUS"];
       SOLUTION_STATUS_SHORT = json["SOLUTION_STATUS_SHORT"];
       OPTION_ID = 0;
       OPTION_NAME = "";
       OPTION_SOLUTION_STATUS = "";
       OPTION_COMMENTS = "";
-    }
-    else{
+    } else {
       var option = json["STUDENT_OPTION_LIST"][0];
       OPTION_ID = option["OPTION_ID"];
       OPTION_NAME = option["OPTION_NAME"];
@@ -103,7 +136,7 @@ class TaskListIais {
       OPTION_COMMENTS = option["COMMENTS"];
       SOLUTION_STATUS = "";
     }
-    NAME=TASK_NAME;
-    if(OPTION_NAME!="") NAME=NAME.toString()+".\n"+OPTION_NAME.toString();
+    NAME = TASK_NAME;
+    if (OPTION_NAME != "") NAME = NAME.toString() + ".\n" + OPTION_NAME.toString();
   }
 }
