@@ -58,6 +58,7 @@ Widget getListView(reitItemList) {
       return Column(
         children: <Widget>[
           Container(
+            width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -71,26 +72,23 @@ Widget getListView(reitItemList) {
                 ]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                collapsedIconColor: Colors.blue,
-                initiallyExpanded: true,
-                expandedAlignment: Alignment.centerRight,
-                title: Text(
-                  item.comment != null ? "${item.activityName} (${item.comment})" : "${item.activityName}",
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          Text(item.comment != null ? "${item.activityName} (${item.comment})" : "${item.activityName}",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontFamily: "Ubuntu",
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 10),
                           richText("Количество: ", "${item.count}", context),
                           const SizedBox(height: 10),
                           richText("Максимальный балл: ", "${item.maxBall}", context),
