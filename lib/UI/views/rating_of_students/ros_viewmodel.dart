@@ -25,6 +25,7 @@ class RosViewModel extends BaseViewModel {
   List<ReitItemList> reitItemList = [];
 
   int selectedIndex = 2;
+
   void onTapBottomBar(int index) {
     selectedIndex = index;
     notifyListeners();

@@ -4,6 +4,7 @@ import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_view.dart
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
+import '../../ordering information/ordering_information_main_view.dart';
 import '../../schedule/schedule_view.dart';
 import '../ros_viewmodel.dart';
 
@@ -18,11 +19,10 @@ class RosView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -78,75 +78,82 @@ _rosView(context, RosViewModel model) {
         ),
       ),
       const SizedBox(height: 10),
-      model.studyCard?.id != null
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Table(
-                border: TableBorder.all(
-                  color: Theme.of(context).canvasColor,
-                ),
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                defaultColumnWidth: const FlexColumnWidth(),
-                children: [
-                  const TableRow(
-                    children: [
-                      Text(
-                        'Учебный год',
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Семестр',
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Рейтинг',
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Просмотр',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                  ...List.generate(model.rosSemesterList.length, (index) {
-                    var element = model.rosSemesterList[index];
-
-                    return TableRow(
-                      children: [
-                        Text(
-                          "${element.startDate}-${element.endDate}",
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          "${element.semester}",
-                          textAlign: TextAlign.center,
-                        ), //Extracting from Map element the value
-                        Text(
-                          "${element.commonScore}",
-                          textAlign: TextAlign.center,
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              await model.getReitList(element.startDate, element.endDate, element.semester);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RosDetailView(
-                                          reitList: model.reitList,
-                                          semester: element.semester != null ? element.semester! : 1,
-                                        )),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.saved_search,
-                              color: Theme.of(context).primaryColorDark,
-                            ))
-                      ],
-                    );
-                  }),
-                ],
-              ))
-          : const SizedBox.shrink()
+      model.studyCard?.id != null ? getListView(model) : const SizedBox.shrink()
     ],
+  );
+}
+
+Widget getListView(RosViewModel model) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: model.rosSemesterList.length,
+    itemBuilder: (context, index) {
+      final item = model.rosSemesterList[index];
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                collapsedIconColor: Colors.blue,
+                initiallyExpanded: index == 0 ? true : false,
+                expandedAlignment: Alignment.centerRight,
+                title: Text(
+                  "Семестр: ${item.semester}",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontFamily: "Ubuntu",
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold),
+                ),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          richText("Учебный год: ", "${item.startDate}-${item.endDate}", context),
+                          const SizedBox(height: 10),
+                          richText("Рейтинг: ", "${item.commonScore}", context),
+                          const SizedBox(height: 10),
+                          TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+                              onPressed: () async {
+                                await model.getReitList(item.startDate, item.endDate, item.semester);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RosDetailView(
+                                            reitList: model.reitList,
+                                            semester: item.semester != null ? item.semester! : 1,
+                                          )),
+                                );
+                              },
+                              child: const Text("Подробнее", style: TextStyle(color: Colors.white)))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }
