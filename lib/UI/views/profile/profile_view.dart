@@ -8,7 +8,7 @@ import 'package:kemsu_app/UI/views/rating_of_students/views/ros_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
-import 'package:kemsu_app/UI/views/iais/iais_view.dart';
+import 'package:kemsu_app/UI/views/iais/info_view.dart';
 import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
 import 'package:stacked/stacked.dart';
@@ -471,7 +471,7 @@ class _ProfileViewState extends State<ProfileView> {
                         )
                       : GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -514,7 +514,7 @@ class _ProfileViewState extends State<ProfileView> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 30),

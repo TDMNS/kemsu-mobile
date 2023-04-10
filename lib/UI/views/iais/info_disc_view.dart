@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ordering information/ordering_information_main_view.dart';
-import './iais_viewmodel.dart';
-import './iais_taskblock_view.dart';
-import './iais_model.dart';
+import './info_viewmodel.dart';
+import './info_taskblock_view.dart';
+import './info_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
 
-class IaisRepView extends StatelessWidget {
-  const IaisRepView({Key? key, required this.discData, required this.repList}) : super(key: key);
+class InfoOUProRepView extends StatelessWidget {
+  const InfoOUProRepView({Key? key, required this.discData, required this.repList}) : super(key: key);
   final CourseInfoOUPro discData;
   final List<ReportInfoOUPro> repList;
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<IaisViewModel>.reactive(
+    return ViewModelBuilder<InfoOUProViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => IaisViewModel(context),
+        viewModelBuilder: () => InfoOUProViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
@@ -26,14 +26,14 @@ class IaisRepView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, discData.discName),
-              body: _iaisRepView(context, model, repList, discData),
+              body: _infoOUProRepView(context, model, repList, discData),
             ),
           );
         });
   }
 }
 
-_iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
+_infoOUProRepView(BuildContext context, InfoOUProViewModel model, repList, discData) {
   return ListView(children: <Widget>[
     Padding(
       padding: const EdgeInsets.fromLTRB(10, 12, 10, 0),
@@ -62,11 +62,11 @@ _iaisRepView(BuildContext context, IaisViewModel model, repList, discData) {
       )),
     ),
     const SizedBox(height: 20),
-    Padding(padding: const EdgeInsets.only(left: 5.0, right: 5.0), child: getDiscView(repList)),
+    Padding(padding: const EdgeInsets.only(left: 5.0, right: 5.0), child: _getDiscView(repList)),
   ]);
 }
 
-Widget getDiscView(repList) {
+Widget _getDiscView(repList) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
@@ -112,13 +112,14 @@ Widget getDiscView(repList) {
                           richText("Максимальный балл: ", "${item.maxBall}", context),
                           const SizedBox(height: 10),
                           richText("Результат: ", "${item.sumBall}", context),
+                          const SizedBox(height: 10),
                           TextButton(
                               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
                               onPressed: () async {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => IaisTaskBlockView(
+                                      builder: (context) => InfoOUProTaskBlockView(
                                             repData: item.studentTaskList,
                                             blockName: item.name,
                                           )),

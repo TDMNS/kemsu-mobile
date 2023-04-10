@@ -63,7 +63,7 @@ class ReportInfoOUPro {
     }
     maxBall = json["MAX_BALL"];
     if (json["SUM_BALL"] == null) {
-      sumBall = "";
+      sumBall = "Отсутствует";
     } else {
       sumBall = json["SUM_BALL"].toString();
     }

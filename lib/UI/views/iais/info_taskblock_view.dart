@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ordering information/ordering_information_main_view.dart';
-import './iais_viewmodel.dart';
-import './iais_model.dart';
+import './info_viewmodel.dart';
+import './info_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
 
-class IaisTaskBlockView extends StatelessWidget {
-  const IaisTaskBlockView({Key? key, required this.repData, required this.blockName}) : super(key: key);
+class InfoOUProTaskBlockView extends StatelessWidget {
+  const InfoOUProTaskBlockView({Key? key, required this.repData, required this.blockName}) : super(key: key);
   final List<TaskListInfoOUPro> repData;
   final String blockName;
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<IaisViewModel>.reactive(
+    return ViewModelBuilder<InfoOUProViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => IaisViewModel(context),
+        viewModelBuilder: () => InfoOUProViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
@@ -27,21 +27,21 @@ class IaisTaskBlockView extends StatelessWidget {
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, blockName),
               //bottomNavigationBar: customBottomBar(context, model),
-              body: _iaisTaskBlockView(context, model, repData),
+              body: _infoOUProTaskBlockView(context, model, repData),
             ),
           );
         });
   }
 }
 
-_iaisTaskBlockView(BuildContext context, IaisViewModel model, repData) {
+_infoOUProTaskBlockView(BuildContext context, InfoOUProViewModel model, repData) {
   return ListView(shrinkWrap: true, physics: const ScrollPhysics(), children: <Widget>[
     const SizedBox(height: 12),
-    Padding(padding: const EdgeInsets.only(left: 5, right: 5), child: getTaskBlockView(repData))
+    Padding(padding: const EdgeInsets.only(left: 5, right: 5), child: _getTaskBlockView(repData))
   ]);
 }
 
-Widget getTaskBlockView(repData) {
+Widget _getTaskBlockView(repData) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,

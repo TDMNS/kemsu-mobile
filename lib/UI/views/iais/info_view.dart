@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ordering information/ordering_information_main_view.dart';
-import './iais_viewmodel.dart';
-import './iais_disc_view.dart';
+import './info_viewmodel.dart';
+import './info_disc_view.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
 
-class IaisView extends StatelessWidget {
-  const IaisView({Key? key}) : super(key: key);
+class InfoOUProView extends StatelessWidget {
+  const InfoOUProView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<IaisViewModel>.reactive(
+    return ViewModelBuilder<InfoOUProViewModel>.reactive(
         onModelReady: (viewModel) => viewModel.onReady(),
-        viewModelBuilder: () => IaisViewModel(context),
+        viewModelBuilder: () => InfoOUProViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
@@ -23,14 +23,14 @@ class IaisView extends StatelessWidget {
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'ИнфОУПро'),
-              body: _iaisView(context, model),
+              body: _infoOUProView(context, model),
             ),
           );
         });
   }
 }
 
-_iaisView(BuildContext context, IaisViewModel model) {
+_infoOUProView(BuildContext context, InfoOUProViewModel model) {
   return ListView(
     children: <Widget>[
       const SizedBox(height: 12),
@@ -65,19 +65,19 @@ _iaisView(BuildContext context, IaisViewModel model) {
         ],
       ),
       Center(
-        child: SingleChildScrollView(padding: const EdgeInsets.all(8.0), child: getIaisView(model)),
+        child: SingleChildScrollView(padding: const EdgeInsets.all(8.0), child: _getInfoOUProView(model)),
       ),
     ],
   );
 }
 
-Widget getIaisView(IaisViewModel model) {
+Widget _getInfoOUProView(InfoOUProViewModel model) {
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
-    itemCount: model.Course.length,
+    itemCount: model.course.length,
     itemBuilder: (context, index) {
-      final item = model.Course[index];
+      final item = model.course[index];
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -87,15 +87,16 @@ Widget getIaisView(IaisViewModel model) {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      alignment: Alignment.centerLeft),
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   onPressed: () async {
                     await model.getDiscReports(item.courseId);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => IaisRepView(discData: item, repList: model.Report)),
+                      MaterialPageRoute(builder: (context) => InfoOUProRepView(discData: item, repList: model.report)),
                     );
                   },
                   child: Padding(
@@ -103,9 +104,9 @@ Widget getIaisView(IaisViewModel model) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        richText("Дисциплина: ", "${item.discName}", context),
+                        richText("Дисциплина: ", "${item.discName}", context, isWhite: true),
                         const SizedBox(height: 10),
-                        richText("Преподаватель: ", "${item.fio}", context),
+                        richText("Преподаватель: ", "${item.fio}", context, isWhite: true),
                       ],
                     ),
                   )),
