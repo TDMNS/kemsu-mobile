@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import '../../../API/config.dart';
 import '../auth/auth_view.dart';
-import '../iais/iais_view.dart';
+import '../info/info_view.dart';
 import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
@@ -192,7 +192,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void iaisButton(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const IaisView()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
     notifyListeners();
   }
 

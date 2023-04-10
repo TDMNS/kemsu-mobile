@@ -6,32 +6,28 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../iais/iais_model.dart';
+import '../info/info_model.dart';
 import 'dart:convert';
 
-class IaisViewModel extends BaseViewModel {
-  IaisViewModel(BuildContext context);
+class InfoOUProViewModel extends BaseViewModel {
+  InfoOUProViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
-  List<CourseIais> Course = [];
+  List<CourseInfoOUPro> course = [];
 
-  List<ReportIais> Report = [];
+  List<ReportInfoOUPro> report = [];
 
-  List<TaskListIais> Task = [];
+  List<TaskListInfoOUPro> task = [];
 
   int selectedIndex = 2;
   bool isChecked = false;
 
-  List<CourseIais> parseCourseList(List response) {
-    return response
-        .map<CourseIais>((json) => CourseIais.fromJson(json))
-        .toList();
+  List<CourseInfoOUPro> parseCourseList(List response) {
+    return response.map<CourseInfoOUPro>((json) => CourseInfoOUPro.fromJson(json)).toList();
   }
 
-  List<ReportIais> parseReportList(List response) {
-    return response
-        .map<ReportIais>((json) => ReportIais.fromJson(json))
-        .toList();
+  List<ReportInfoOUPro> parseReportList(List response) {
+    return response.map<ReportInfoOUPro>((json) => ReportInfoOUPro.fromJson(json)).toList();
   }
 
   Future onReady() async {
@@ -40,14 +36,13 @@ class IaisViewModel extends BaseViewModel {
   }
 
   void appMetricaTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
-    AppMetrica.reportEvent('Iais event');
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('InfoOUPro event');
   }
 
   getDiscs(allFlag) async {
     String? token = await storage.read(key: "tokenKey");
-    var response;
+    http.Response response;
     if (allFlag == 1) {
       response = await http.get(
         Uri.parse('${Config.studCourseList}?allCourseFlag=1'),
@@ -64,7 +59,7 @@ class IaisViewModel extends BaseViewModel {
       );
     }
 
-    Course = parseCourseList(json.decode(response.body)['studentCourseList']);
+    course = parseCourseList(json.decode(response.body)['studentCourseList']);
 
     notifyListeners();
   }
@@ -78,7 +73,7 @@ class IaisViewModel extends BaseViewModel {
       },
     );
 
-    Report = parseReportList(json.decode(response.body)['studentReportList']);
+    report = parseReportList(json.decode(response.body)['studentReportList']);
 
     notifyListeners();
   }

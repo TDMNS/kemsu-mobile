@@ -151,15 +151,19 @@ Widget getListView(List<RequestReference> items) {
   );
 }
 
-RichText richText(String title, String item, context) {
+RichText richText(String title, String item, context, {bool? isWhite}) {
   return RichText(
     text: TextSpan(
       style: TextStyle(
         fontSize: 16,
-        color: Theme.of(context).primaryColorDark,
+        color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark,
       ),
       children: <TextSpan>[
-        TextSpan(text: title, style: TextStyle(color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+        TextSpan(
+            text: title,
+            style: TextStyle(
+                color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark,
+                fontWeight: FontWeight.bold)),
         TextSpan(text: item),
       ],
     ),

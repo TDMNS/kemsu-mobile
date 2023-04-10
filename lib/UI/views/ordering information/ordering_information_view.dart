@@ -5,7 +5,7 @@ import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_v
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import '../PRS/prs_model.dart';
+import '../rating_of_students/ros_model.dart';
 import 'ordering_information_main_view.dart';
 import 'ordering_information_main_viewmodel.dart';
 
