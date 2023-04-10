@@ -9,7 +9,7 @@ import '../../widgets.dart';
 
 class IaisTaskBlockView extends StatelessWidget {
   const IaisTaskBlockView({Key? key, required this.repData, required this.blockName}) : super(key: key);
-  final List<TaskListIais> repData;
+  final List<TaskListInfoOUPro> repData;
   final String blockName;
 
   @override
@@ -75,22 +75,22 @@ Widget getTaskBlockView(repData) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(item.NAME,
+                          Text(item.name,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorDark,
                                   fontFamily: "Ubuntu",
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          richText("Решение: ", "${item.SOLVE_FLAG}", context),
+                          richText("Решение: ", "${item.solveFlag}", context),
                           const SizedBox(height: 10),
-                          richText("Контрольная дата: ", "${item.TASK_CONTROL_DATE}", context),
+                          richText("Контрольная дата: ", "${item.taskControlDate}", context),
                           const SizedBox(height: 10),
-                          richText("Максимальный балл: ", "${item.MAX_BALL}", context),
+                          richText("Максимальный балл: ", "${item.maxBall}", context),
                           const SizedBox(height: 10),
-                          richText("Результат: ", "${item.SUM_BALL}", context),
+                          richText("Результат: ", "${item.sumBall}", context),
                           const SizedBox(height: 10),
-                          richText("Состояние: ", "${item.SOLUTION_STATUS}", context)
+                          richText("Состояние: ", "${item.solutionStatus}", context)
                         ],
                       ),
                     ),

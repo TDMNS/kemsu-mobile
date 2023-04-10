@@ -1,142 +1,147 @@
-class CourseIais {
-  String? DISC_NAME;
-  String? DISC_REP; //отчётность
-  String? DISC_HOURS;
-  String? FIO;
-  String? DISC_FIRST_DATE;
-  String? DISC_LAST_DATE;
-  int? DISC_MARK;
-  int? COURSE_ID;
+class CourseInfoOUPro {
+  String? discName;
+  String? discRep;
+  String? discHours;
+  String? fio;
+  String? discFirstDate;
+  String? discLastDate;
+  int? discMark;
+  int? courseId;
 
-  CourseIais(
-      {this.DISC_NAME,
-      this.DISC_REP,
-      this.DISC_HOURS,
-      this.FIO,
-      this.DISC_FIRST_DATE,
-      this.DISC_LAST_DATE,
-      this.DISC_MARK,
-      this.COURSE_ID});
+  CourseInfoOUPro(
+      {this.discName,
+      this.discRep,
+      this.discHours,
+      this.fio,
+      this.discFirstDate,
+      this.discLastDate,
+      this.discMark,
+      this.courseId});
 
-  CourseIais.fromJson(Map<String, dynamic> json) {
-    DISC_NAME = json["DISC_NAME"];
-    DISC_REP = json["DISC_REP"];
-    DISC_HOURS = json["DISC_HOURS"];
-    FIO = json["FIO"];
-    DISC_FIRST_DATE = json["DISC_FIRST_DATE"];
-    DISC_LAST_DATE = json["DISC_LAST_DATE"];
-    DISC_MARK = json["DISC_MARK"];
-    COURSE_ID = json["COURSE_ID"];
+  CourseInfoOUPro.fromJson(Map<String, dynamic> json) {
+    discName = json["DISC_NAME"];
+    discRep = json["DISC_REP"];
+    discHours = json["DISC_HOURS"];
+    fio = json["FIO"];
+    discFirstDate = json["DISC_FIRST_DATE"];
+    discLastDate = json["DISC_LAST_DATE"];
+    discMark = json["DISC_MARK"];
+    courseId = json["COURSE_ID"];
   }
 }
 
-class ReportIais {
-  int? REP_ID;
-  String? NAME;
-  int? SOLVE_FLAG;
-  String? COMMENTS;
-  String? REP_CONTROL_DATE;
-  int? MAX_BALL;
-  String? SUM_BALL;
+class ReportInfoOUPro {
+  int? repId;
+  String? name;
+  int? solveFlag;
+  String? comments;
+  String? repControlDate;
+  int? maxBall;
+  String? sumBall;
 
-  List<TaskListIais>? STUDENT_TASK_LIST;
+  List<TaskListInfoOUPro>? studentTaskList;
 
-  ReportIais(
-      {this.REP_ID,
-      this.NAME,
-      this.SOLVE_FLAG,
-      this.COMMENTS,
-      this.REP_CONTROL_DATE,
-      this.MAX_BALL,
-      this.SUM_BALL,
-      this.STUDENT_TASK_LIST});
+  ReportInfoOUPro(
+      {this.repId,
+      this.name,
+      this.solveFlag,
+      this.comments,
+      this.repControlDate,
+      this.maxBall,
+      this.sumBall,
+      this.studentTaskList});
 
-  ReportIais.fromJson(Map<String, dynamic> json) {
-    REP_ID = json["REP_ID"];
-    NAME = json["NAME"];
-    SOLVE_FLAG = json["SOLVE_FLAG"];
-    COMMENTS = json["COMMENTS"];
-    if (json["REP_CONTROL_DATE"] == null)
-      REP_CONTROL_DATE = "";
-    else
-      REP_CONTROL_DATE = json["REP_CONTROL_DATE"];
-    MAX_BALL = json["MAX_BALL"];
-    if (json["SUM_BALL"] == null)
-      SUM_BALL = "";
-    else
-      SUM_BALL = json["SUM_BALL"].toString();
-    print(SUM_BALL);
-    STUDENT_TASK_LIST = json["STUDENT_TASK_LIST"].map<TaskListIais>((json) => TaskListIais.fromJson(json)).toList();
+  ReportInfoOUPro.fromJson(Map<String, dynamic> json) {
+    repId = json["REP_ID"];
+    name = json["NAME"];
+    solveFlag = json["SOLVE_FLAG"];
+    comments = json["COMMENTS"];
+    if (json["REP_CONTROL_DATE"] == null) {
+      repControlDate = "";
+    } else {
+      repControlDate = json["REP_CONTROL_DATE"];
+    }
+    maxBall = json["MAX_BALL"];
+    if (json["SUM_BALL"] == null) {
+      sumBall = "";
+    } else {
+      sumBall = json["SUM_BALL"].toString();
+    }
+    studentTaskList =
+        json["STUDENT_TASK_LIST"].map<TaskListInfoOUPro>((json) => TaskListInfoOUPro.fromJson(json)).toList();
   }
 }
 
-class TaskListIais {
-  String? NAME;
-  int? TASK_ID;
-  String? TASK_NAME;
-  String? SOLVE_FLAG;
-  String? COMMENTS;
-  String? TASK_CONTROL_DATE;
-  int? MAX_BALL;
-  String? SUM_BALL;
-  String? SOLUTION_STATUS;
-  String? SOLUTION_STATUS_SHORT;
+class TaskListInfoOUPro {
+  String? name;
+  int? taskId;
+  String? taskName;
+  String? solveFlag;
+  String? comments;
+  String? taskControlDate;
+  int? maxBall;
+  String? sumBall;
+  String? solutionStatus;
+  String? solutionStatusShort;
 
-  int? OPTION_ID;
-  String? OPTION_NAME;
-  String? OPTION_COMMENTS;
-  String? OPTION_SOLUTION_STATUS;
+  int? optionId;
+  String? optionName;
+  String? optionComments;
+  String? optionSolutionStatus;
 
-  TaskListIais(
-      {this.NAME,
-      this.TASK_ID,
-      this.TASK_NAME,
-      this.SOLVE_FLAG,
-      this.COMMENTS,
-      this.TASK_CONTROL_DATE,
-      this.MAX_BALL,
-      this.SUM_BALL,
-      this.SOLUTION_STATUS,
-      this.SOLUTION_STATUS_SHORT,
-      this.OPTION_ID,
-      this.OPTION_NAME,
-      this.OPTION_COMMENTS,
-      this.OPTION_SOLUTION_STATUS});
+  TaskListInfoOUPro(
+      {this.name,
+      this.taskId,
+      this.taskName,
+      this.solveFlag,
+      this.comments,
+      this.taskControlDate,
+      this.maxBall,
+      this.sumBall,
+      this.solutionStatus,
+      this.solutionStatusShort,
+      this.optionId,
+      this.optionName,
+      this.optionComments,
+      this.optionSolutionStatus});
 
-  TaskListIais.fromJson(Map<String, dynamic> json) {
-    TASK_ID = json["TASK_ID"];
-    TASK_NAME = json["TASK_NAME"];
-    if (json["SOLVE_FLAG"] == 0)
-      SOLVE_FLAG = "Нет";
-    else
-      SOLVE_FLAG = "Да";
-    COMMENTS = json["COMMENTS"];
-    if (json["TASK_CONTROL_DATE"] == null)
-      TASK_CONTROL_DATE = "";
-    else
-      TASK_CONTROL_DATE = json["TASK_CONTROL_DATE"];
-    MAX_BALL = json["MAX_BALL"];
-    if (json["SUM_BALL"] == null)
-      SUM_BALL = "";
-    else
-      SUM_BALL = json["SUM_BALL"].toString();
+  TaskListInfoOUPro.fromJson(Map<String, dynamic> json) {
+    taskId = json["TASK_ID"];
+    taskName = json["TASK_NAME"];
+    if (json["SOLVE_FLAG"] == 0) {
+      solveFlag = "Нет";
+    } else {
+      solveFlag = "Да";
+    }
+    comments = json["COMMENTS"];
+    if (json["TASK_CONTROL_DATE"] == null) {
+      taskControlDate = "";
+    } else {
+      taskControlDate = json["TASK_CONTROL_DATE"];
+    }
+    maxBall = json["MAX_BALL"];
+    if (json["SUM_BALL"] == null) {
+      sumBall = "";
+    } else {
+      sumBall = json["SUM_BALL"].toString();
+    }
     if (json["STUDENT_OPTION_LIST"].length == 0) {
-      SOLUTION_STATUS = json["SOLUTION_STATUS"];
-      SOLUTION_STATUS_SHORT = json["SOLUTION_STATUS_SHORT"];
-      OPTION_ID = 0;
-      OPTION_NAME = "";
-      OPTION_SOLUTION_STATUS = "";
-      OPTION_COMMENTS = "";
+      solutionStatus = json["SOLUTION_STATUS"];
+      solutionStatusShort = json["SOLUTION_STATUS_SHORT"];
+      optionId = 0;
+      optionName = "";
+      optionSolutionStatus = "";
+      optionComments = "";
     } else {
       var option = json["STUDENT_OPTION_LIST"][0];
-      OPTION_ID = option["OPTION_ID"];
-      OPTION_NAME = option["OPTION_NAME"];
-      OPTION_SOLUTION_STATUS = option["SOLUTION_STATUS"];
-      SOLUTION_STATUS_SHORT = option["SOLUTION_STATUS_SHORT"];
-      OPTION_COMMENTS = option["COMMENTS"];
-      SOLUTION_STATUS = "";
+      optionId = option["OPTION_ID"];
+      optionName = option["OPTION_NAME"];
+      optionSolutionStatus = option["SOLUTION_STATUS"];
+      solutionStatusShort = option["SOLUTION_STATUS_SHORT"];
+      optionComments = option["COMMENTS"];
+      solutionStatus = "";
     }
-    NAME = TASK_NAME;
-    if (OPTION_NAME != "") NAME = NAME.toString() + ".\n" + OPTION_NAME.toString();
+    name = taskName;
+    if (optionName != "") name = name.toString() + ".\n" + optionName.toString();
   }
 }

@@ -92,7 +92,7 @@ Widget getIaisView(IaisViewModel model) {
                       ),
                       alignment: Alignment.centerLeft),
                   onPressed: () async {
-                    await model.getDiscReports(item.COURSE_ID);
+                    await model.getDiscReports(item.courseId);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => IaisRepView(discData: item, repList: model.Report)),
@@ -103,9 +103,9 @@ Widget getIaisView(IaisViewModel model) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        richText("Дисциплина: ", "${item.DISC_NAME}", context),
+                        richText("Дисциплина: ", "${item.discName}", context),
                         const SizedBox(height: 10),
-                        richText("Преподаватель: ", "${item.FIO}", context),
+                        richText("Преподаватель: ", "${item.fio}", context),
                       ],
                     ),
                   )),

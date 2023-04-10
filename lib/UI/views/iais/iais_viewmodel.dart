@@ -13,21 +13,21 @@ class IaisViewModel extends BaseViewModel {
   IaisViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
-  List<CourseIais> Course = [];
+  List<CourseInfoOUPro> Course = [];
 
-  List<ReportIais> Report = [];
+  List<ReportInfoOUPro> Report = [];
 
-  List<TaskListIais> Task = [];
+  List<TaskListInfoOUPro> Task = [];
 
   int selectedIndex = 2;
   bool isChecked = false;
 
-  List<CourseIais> parseCourseList(List response) {
-    return response.map<CourseIais>((json) => CourseIais.fromJson(json)).toList();
+  List<CourseInfoOUPro> parseCourseList(List response) {
+    return response.map<CourseInfoOUPro>((json) => CourseInfoOUPro.fromJson(json)).toList();
   }
 
-  List<ReportIais> parseReportList(List response) {
-    return response.map<ReportIais>((json) => ReportIais.fromJson(json)).toList();
+  List<ReportInfoOUPro> parseReportList(List response) {
+    return response.map<ReportInfoOUPro>((json) => ReportInfoOUPro.fromJson(json)).toList();
   }
 
   Future onReady() async {
