@@ -35,7 +35,7 @@ _body(context, PgasViewModel model) {
       const SizedBox(
         height: 34,
       ),
-      _pgasRequestsTitle(),
+      _pgasRequestsTitle(context),
       const SizedBox(
         height: 31,
       ),
@@ -79,16 +79,19 @@ _createRequestButton(context, PgasViewModel model) {
   );
 }
 
-_pgasRequestsTitle() {
+_pgasRequestsTitle(context) {
   return Padding(
     padding: const EdgeInsets.only(right: 20),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: const [
+      children: [
         Text(
           "Ваши заявки",
           style: TextStyle(
-              fontSize: 24, fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Color(0xFF5B5B7E)),
+              fontSize: 24,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).focusColor),
         ),
       ],
     ),
@@ -118,8 +121,11 @@ _pgasRequestsSpace(context, PgasViewModel model) {
                       children: [
                         Text(
                           "Заявка №${model.pgasList[index].requestId}",
-                          style: const TextStyle(
-                              fontFamily: "Ubuntu", fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              fontFamily: "Ubuntu",
+                              fontSize: 16,
+                              color: Theme.of(context).focusColor,
+                              fontWeight: FontWeight.w500),
                         ),
                         Row(
                           children: [
@@ -129,9 +135,9 @@ _pgasRequestsSpace(context, PgasViewModel model) {
                                       .write(key: "pgas_id", value: model.pgasList[index].requestId.toString());
                                   model.goToPgasDetail(context);
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Подробнее...",
-                                  style: TextStyle(fontSize: 16, color: Colors.blueAccent),
+                                  style: TextStyle(fontSize: 16, color: Theme.of(context).focusColor),
                                 )),
                             model.pgasList[index].approveFlag == 1
                                 ? const Icon(
@@ -139,18 +145,18 @@ _pgasRequestsSpace(context, PgasViewModel model) {
                                     color: Colors.green,
                                     size: 36,
                                   )
-                                : const Icon(
+                                : Icon(
                                     Icons.access_time_outlined,
-                                    color: Colors.black,
+                                    color: Theme.of(context).focusColor,
                                     size: 36,
                                   )
                           ],
                         )
                       ],
                     ),
-                    const Divider(
+                    Divider(
                       thickness: 2,
-                      color: Colors.black,
+                      color: Theme.of(context).focusColor,
                     )
                   ],
                 ),

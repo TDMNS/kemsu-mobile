@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
@@ -27,6 +28,9 @@ class PrepScheduleViewModel extends BaseViewModel {
   String? currentDate;
   String? currentWeek;
   int weekId = 0;
+  int? weekNumApi;
+  String? weekTypeApi;
+  String? currentDateApi;
   bool tableView = false;
   bool currentTable = false;
   bool weekType = true;
@@ -79,7 +83,7 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   void changeWeek(value) {
-    weekId = value;
+    weekType = value;
     notifyListeners();
   }
 
@@ -132,12 +136,17 @@ class PrepScheduleViewModel extends BaseViewModel {
   }
 
   getTeacher() async {
+    var dio = Dio();
     String? token = await storage.read(key: "tokenKey");
     String? fio = await storage.read(key: "FIO");
     int? type;
     String? userTypeTemp = await storage.read(key: "userType");
     userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
-
+    var getWeek = await dio.get(Config.getWeekNum, queryParameters: {"accessToken": token});
+    weekNumApi = getWeek.data['currentDay']['weekNum'];
+    weekTypeApi = getWeek.data['currentDay']['weekType'];
+    currentDateApi = getWeek.data['currentDay']['currentDate'];
+    weekTypeApi == 'четная' ? weekType = true : weekType = false;
     var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 

@@ -17,9 +17,7 @@ class CheckListView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Brightness
-                    .dark),
+                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
@@ -33,24 +31,24 @@ class CheckListView extends StatelessWidget {
 
 _checkListView(BuildContext context, CheckListViewModel model) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: ListView(
-      shrinkWrap: true,
-      children: [
-        const SizedBox(height: 12),
-        Wrap(children: [
-          Text("Список подразделений", style: Theme.of(context).textTheme.headline5),
-          const SizedBox(height: 38),
-          getListView(model.checkList)
-        ]),
-      ]
-    ),
+    padding: const EdgeInsets.only(left: 15, right: 15),
+    child: ListView(shrinkWrap: true, children: [
+      const SizedBox(height: 12),
+      Text("Список подразделений", style: Theme.of(context).textTheme.headline5),
+      const SizedBox(height: 10),
+      const Text(
+        'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь',
+        style: TextStyle(color: Colors.red),
+      ),
+      const SizedBox(height: 10),
+      getListView(model.checkList)
+    ]),
   );
 }
 
 Widget getListView(List<CheckList> items) {
   return ListView.builder(
-    physics: const NeverScrollableScrollPhysics(),
+    physics: const ScrollPhysics(),
     shrinkWrap: true,
     itemCount: items.length,
     itemBuilder: (context, index) {
@@ -61,8 +59,9 @@ Widget getListView(List<CheckList> items) {
       return ListTile(
           title: Text(departmentTitle),
           subtitle: Text(groupName + '\n' + address),
-          trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red)
-      );
+          trailing: item.debt == "Нет"
+              ? const Icon(Icons.done, color: Colors.green)
+              : const Icon(Icons.cancel, color: Colors.red));
     },
   );
 }

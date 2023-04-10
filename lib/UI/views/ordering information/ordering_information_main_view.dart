@@ -100,6 +100,7 @@ Widget getListView(List<RequestReference> items) {
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: ExpansionTile(
+                collapsedIconColor: Theme.of(context).focusColor,
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(

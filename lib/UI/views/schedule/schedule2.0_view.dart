@@ -169,22 +169,22 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Неделя ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Container(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey.withOpacity(0.5)),
                   child: Text(
                     '${model.weekNumApi}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Text(
                   ' ${model.weekTypeApi} ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),

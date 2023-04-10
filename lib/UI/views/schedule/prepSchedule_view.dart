@@ -197,13 +197,37 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                 )),
       model.teacherId == 0
           ? const SizedBox()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Неделя ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey.withOpacity(0.5)),
+                  child: Text(
+                    '${model.weekNumApi}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(
+                  ' ${model.weekTypeApi} ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+      model.teacherId == 0
+          ? const SizedBox()
           : Stack(
               children: [
                 ListTile(
                   title: const Text('четная'),
                   leading: Radio(
-                    value: 1,
-                    groupValue: model.weekId,
+                    value: true,
+                    groupValue: model.weekType,
                     onChanged: (value) {
                       model.changeWeek(value);
                     },
@@ -214,8 +238,8 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                   child: ListTile(
                     title: const Text('нечетная'),
                     leading: Radio(
-                      value: 0,
-                      groupValue: model.weekId,
+                      value: false,
+                      groupValue: model.weekType,
                       onChanged: (value) {
                         model.changeWeek(value);
                       },

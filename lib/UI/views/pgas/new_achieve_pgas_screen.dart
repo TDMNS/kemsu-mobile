@@ -125,6 +125,7 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton<ActivityTreeModel>(
+            dropdownColor: Theme.of(context).primaryColor,
             isExpanded: true,
             itemHeight: null,
             value: model.chosenActivity1,
@@ -175,6 +176,7 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
         BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
+          dropdownColor: Theme.of(context).primaryColor,
           itemHeight: null,
           isExpanded: true,
           value: model.chosenActivity2,
@@ -225,6 +227,7 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
         BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
+          dropdownColor: Theme.of(context).primaryColor,
           isExpanded: true,
           itemHeight: null,
           value: model.chosenActivity3,
@@ -273,6 +276,7 @@ _activity4DropDown(context, NewAchievePgasViewModel model) {
         BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
+          dropdownColor: Theme.of(context).primaryColor,
           isExpanded: true,
           itemHeight: null,
           value: model.chosenActivity4,
@@ -325,6 +329,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
       ),
       DropdownButtonHideUnderline(
         child: DropdownButton<YearModel>(
+            dropdownColor: Theme.of(context).primaryColor,
             isExpanded: true,
             value: model.chosenYear,
             items: model.years.map<DropdownMenuItem<YearModel>>((e) {
@@ -355,6 +360,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
         height: 60,
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
+              dropdownColor: Theme.of(context).primaryColor,
               isExpanded: true,
               value: model.chosenMonth == null ? null : model.months[model.chosenMonth!],
               items: model.months

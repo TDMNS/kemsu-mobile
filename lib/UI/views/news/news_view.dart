@@ -318,8 +318,13 @@ class _NewsViewState extends State<NewsView> {
                       direction: DismissDirection.vertical,
                       onDismissed: (_) => Navigator.pop(context),
                       child: PhotoView(
+                        loadingBuilder: (context, event) => Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.blueGrey.shade700,
+                          ),
+                        ),
                         scaleStateController: PhotoViewScaleStateController(),
-                        backgroundDecoration: BoxDecoration(color: Colors.transparent),
+                        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
                         imageProvider: model.newsImage,
                         minScale: PhotoViewComputedScale.contained * 0.8,
                         maxScale: PhotoViewComputedScale.covered * 2,
@@ -330,7 +335,7 @@ class _NewsViewState extends State<NewsView> {
               }));
             },
             child: Container(
-              margin: EdgeInsets.all(15),
+              margin: const EdgeInsets.all(15),
               child: Image.memory(
                 Uint8List.fromList(model.tempPic!),
                 fit: BoxFit.contain,
