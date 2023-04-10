@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ordering information/ordering_information_main_view.dart';
 import './info_viewmodel.dart';
-import './info_taskblock_view.dart';
+import './info_task_block_view.dart';
 import './info_model.dart';
 import 'package:stacked/stacked.dart';
 

@@ -6,7 +6,7 @@ import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
 import '../../../API/config.dart';
-import '../iais/info_model.dart';
+import '../info/info_model.dart';
 import 'dart:convert';
 
 class InfoOUProViewModel extends BaseViewModel {

@@ -20,13 +20,11 @@ class InfoOUProTaskBlockView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
+                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, blockName),
-              //bottomNavigationBar: customBottomBar(context, model),
               body: _infoOUProTaskBlockView(context, model, repData),
             ),
           );
