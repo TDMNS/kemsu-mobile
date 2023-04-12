@@ -178,12 +178,6 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
-                      model.indexDay == 7
-                          ? const Text(
-                              'Воскресенье',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                            )
-                          : const Text(''),
                       IconButton(
                           onPressed: () {
                             model.choiceDay('next');
@@ -283,8 +277,6 @@ _choiceDay(model, context) {
     return _scheduleTable(model, context, 4);
   } else if (model.indexDay == 6) {
     return _scheduleTable(model, context, 5);
-  } else if (model.indexDay == 7) {
-    return _tableDay7(model);
   }
 }
 

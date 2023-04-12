@@ -118,11 +118,12 @@ class PrepScheduleViewModel extends BaseViewModel {
   void choiceDay(action) {
     if (action == 'next') {
       indexDay++;
-      indexDay == 8 ? indexDay = 1 : indexDay == 1;
+      indexDay == 7 ? indexDay = 1 : indexDay == 1;
     } else if (action == 'back') {
       indexDay--;
-      indexDay == 0 ? indexDay = 7 : indexDay == 7;
+      indexDay == 0 ? indexDay = 6 : indexDay == 6;
     }
+    print(indexDay);
     notifyListeners();
   }
 

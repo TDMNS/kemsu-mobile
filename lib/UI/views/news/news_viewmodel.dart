@@ -157,6 +157,11 @@ class NewsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void tempAudioNull() {
+    tempSound = null;
+    notifyListeners();
+  }
+
   void testMessage(index) async {
     mimeType = null;
 
@@ -216,6 +221,8 @@ class NewsViewModel extends BaseViewModel {
 
     final getFile = await http.get(Uri.parse('$fileURL&thumbSize=y'), headers: {'x-access-token': token!});
     tempSound = getFile.bodyBytes;
+    fileLoader = false;
+    notifyListeners();
   }
 
   getPicture(partialFileUrl) async {

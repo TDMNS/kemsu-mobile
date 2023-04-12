@@ -234,44 +234,55 @@ class _NewsViewState extends State<NewsView> {
   }
 
   _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        IconButton(
-            onPressed: () async {
-              model.stopOrPause == true
-                  ? await model.player.play(BytesSource(model.tempSound!))
-                  : await model.player.resume();
-            },
-            icon: Icon(
-              Icons.play_circle,
-              size: 40,
-              color: Theme.of(context).primaryColorDark,
-            )),
-        IconButton(
-            onPressed: () async {
-              await model.player.pause();
-              model.pauseOrStop(false);
+    return model.fileLoader == true
+        ? Container(
+            margin: EdgeInsets.only(
+                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
+            height: 50,
+            child: CircularProgressIndicator(
+              color: Colors.blueGrey.shade700,
+            ))
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                  onPressed: () async {
+                    await model.player.audioCache.clearAll();
+                    model.tempSound == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : model.stopOrPause == false
+                            ? await model.player.play(BytesSource(model.tempSound!))
+                            : await model.player.resume();
+                  },
+                  icon: Icon(
+                    Icons.play_circle,
+                    size: 40,
+                    color: Theme.of(context).primaryColorDark,
+                  )),
+              IconButton(
+                  onPressed: () async {
+                    await model.player.pause();
+                    model.pauseOrStop(true);
 
-              //await model.player.resume();
-            },
-            icon: Icon(
-              Icons.pause_circle,
-              size: 40,
-              color: Theme.of(context).primaryColorDark,
-            )),
-        IconButton(
-            onPressed: () async {
-              await model.player.stop();
-              model.pauseOrStop(true);
-            },
-            icon: Icon(
-              Icons.stop_circle,
-              size: 40,
-              color: Theme.of(context).primaryColorDark,
-            )),
-      ],
-    );
+                    //await model.player.resume();
+                  },
+                  icon: Icon(
+                    Icons.pause_circle,
+                    size: 40,
+                    color: Theme.of(context).primaryColorDark,
+                  )),
+              IconButton(
+                  onPressed: () async {
+                    await model.player.stop();
+                    model.pauseOrStop(false);
+                  },
+                  icon: Icon(
+                    Icons.stop_circle,
+                    size: 40,
+                    color: Theme.of(context).primaryColorDark,
+                  )),
+            ],
+          );
   }
 
   _imageTest(BuildContext context, NewsViewModel model, newsIndex) {
