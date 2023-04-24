@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_academy_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
-import '../ordering information/ordering information main/ordering_information_main_view.dart';
+import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import './debts_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';

@@ -3,7 +3,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/ordering%20information/ordering%20information%20subview/ordering_information_model.dart';
+import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../../API/config.dart';
