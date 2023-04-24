@@ -39,19 +39,18 @@ class RequestReference {
   int? countReferences;
   String? requestDate;
 
-  RequestReference({
-    this.lastName,
-    this.firstName,
-    this.patronymic,
-    this.instituteName,
-    this.courseNumber,
-    this.educationLevel,
-    this.groupName,
-    this.basic,
-    this.period,
-    this.countReferences,
-    this.requestDate
-  });
+  RequestReference(
+      {this.lastName,
+      this.firstName,
+      this.patronymic,
+      this.instituteName,
+      this.courseNumber,
+      this.educationLevel,
+      this.groupName,
+      this.basic,
+      this.period,
+      this.countReferences,
+      this.requestDate});
 
   RequestReference.fromJson(Map<String, dynamic> json) {
     lastName = json["SURNAME"];
@@ -66,4 +65,9 @@ class RequestReference {
     countReferences = json["REF_CNT"];
     requestDate = json["REQUEST_DATE"];
   }
+}
+
+class TrainingCertificate {
+  static String get callCertificate => "Справка вызов";
+  static String get trainingCertificate => "Справка об обучении";
 }

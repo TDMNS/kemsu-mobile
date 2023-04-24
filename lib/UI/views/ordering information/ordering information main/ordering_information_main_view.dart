@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/views/ordering%20information/ordering%20information
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 import 'ordering_information_main_viewmodel.dart';
-import '../ordering_information_model.dart';
+import '../ordering information subview/ordering_information_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
   const OrderingInformationMainView({Key? key}) : super(key: key);
@@ -45,18 +45,56 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
     shrinkWrap: true,
     children: <Widget>[
       const SizedBox(height: 10),
+      const SizedBox(height: 10),
       Center(
-        child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: ElevatedButton(
-                onPressed: () async {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
+        child: Card(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<String>(
+                dropdownColor: Theme.of(context).primaryColor,
+                itemHeight: 70.0,
+                hint: const Text(
+                  '- Выбрать тип заказываемой справки -',
+                ),
+                onChanged: (value) {
+                  model.trainingCertificate = value;
+                  model.notifyListeners();
                 },
-                child: const Text("Заказать новую справку"))),
+                isExpanded: true,
+                value: model.trainingCertificate,
+                items: model.trainingCertificates.map<DropdownMenuItem<String>>((e) {
+                  return DropdownMenuItem<String>(
+                    child: Text(e),
+                    value: e,
+                  );
+                }).toList(),
+              )),
+        ),
       ),
-      Center(
-        child: _checkListView(context, model),
-      )
+      const SizedBox(height: 10),
+      model.trainingCertificate == TrainingCertificate.trainingCertificate
+          ? Column(
+              children: [
+                Center(
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
+                          },
+                          child: const Text("Заказать новую справку"))),
+                ),
+                Center(
+                  child: _checkListView(context, model),
+                )
+              ],
+            )
+          :
+
+          /// тут будет справка вызов
+          const SizedBox(height: 100),
     ],
   );
 }
