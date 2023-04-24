@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
-import '../ordering_information_subview/ordering_information_model.dart';
+import '../ordering_information_model.dart';
 import 'ordering_information_main_viewmodel.dart';
 
 class OrderingInformationMainView extends StatefulWidget {

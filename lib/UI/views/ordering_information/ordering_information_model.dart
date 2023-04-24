@@ -71,3 +71,23 @@ class TrainingCertificate {
   static String get callCertificate => "Справка вызов";
   static String get trainingCertificate => "Справка об обучении";
 }
+
+class CallCertificate {
+  int? groupTermId;
+  String? groupName;
+  String? studyYear;
+  String? startDate;
+  String? endDate;
+  String? sessionType;
+
+  CallCertificate({this.groupTermId, this.groupName, this.studyYear, this.startDate, this.endDate, this.sessionType});
+
+  CallCertificate.fromJson(Map<String, dynamic> json) {
+    groupTermId = json["groupTermId"];
+    groupName = json["groupName"];
+    studyYear = json["studyYear"];
+    startDate = json["startDate"];
+    endDate = json["endDate"];
+    sessionType = json["sessionType"];
+  }
+}
