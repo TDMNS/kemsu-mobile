@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_main_view.dart';
+import 'package:kemsu_app/UI/views/ordering%20information/ordering%20information%20main/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';

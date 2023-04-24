@@ -4,10 +4,9 @@ import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_m
 import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../widgets.dart';
-import '../rating_of_students/ros_model.dart';
-import 'ordering_information_main_view.dart';
-import 'ordering_information_main_viewmodel.dart';
+import '../../../widgets.dart';
+import '../../rating_of_students/ros_model.dart';
+import '../ordering information main/ordering_information_main_view.dart';
 
 class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
@@ -45,7 +44,6 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
 }
 
 _orderingInformationView(context, OrderingInformationViewModel model) {
-  final textController = TextEditingController();
   return ListView(
     children: <Widget>[
       const SizedBox(height: 10),

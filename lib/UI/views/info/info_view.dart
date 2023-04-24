@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../ordering information/ordering_information_main_view.dart';
+import '../ordering information/ordering information main/ordering_information_main_view.dart';
 import './info_viewmodel.dart';
 import './info_disc_view.dart';
 import 'package:stacked/stacked.dart';

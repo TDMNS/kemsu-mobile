@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_view.dart';
+import 'package:kemsu_app/UI/views/ordering%20information/ordering%20information%20subview/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
-import '../../menu.dart';
-import '../../widgets.dart';
+import '../../../widgets.dart';
 import 'ordering_information_main_viewmodel.dart';
-import 'ordering_information_model.dart';
+import '../ordering_information_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
   const OrderingInformationMainView({Key? key}) : super(key: key);
@@ -68,7 +67,7 @@ _checkListView(BuildContext context, OrderingInformationMainViewModel model) {
     child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
       const SizedBox(height: 12),
       Wrap(children: [
-        Text("Список заказанных справок", style: Theme.of(context).textTheme.headline5),
+        Text("Список заказанных справок", style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 38),
         getListView(model.receivedReferences)
       ]),

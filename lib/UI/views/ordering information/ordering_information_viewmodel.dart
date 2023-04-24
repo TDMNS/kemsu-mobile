@@ -133,8 +133,6 @@ class OrderingInformationViewModel extends BaseViewModel {
           "studentId": studentId
         }));
 
-    print(_.body);
-
     getRequestList();
     notifyListeners();
   }
