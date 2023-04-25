@@ -91,11 +91,80 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
                 )
               ],
             )
-          :
-
-          /// тут будет справка вызов
-          const SizedBox(height: 100),
+          : const SizedBox.shrink(),
+      model.trainingCertificate == TrainingCertificate.callCertificate
+          ? _checkCertificatesListView(context, model)
+          : const SizedBox.shrink(),
     ],
+  );
+}
+
+_checkCertificatesListView(BuildContext context, OrderingInformationMainViewModel model) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
+      const SizedBox(height: 12),
+      Wrap(children: [
+        Text("Заказать справку вызова", style: Theme.of(context).textTheme.headlineSmall),
+        const SizedBox(height: 38),
+        getCertificatesListView(model.receivedCallCertificate)
+      ]),
+    ]),
+  );
+}
+
+Widget getCertificatesListView(List<CallCertificate> items) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).primaryColorLight,
+                      blurRadius: 15,
+                      offset: const Offset(0, 15),
+                      spreadRadius: -15)
+                ]),
+            child: Theme(
+              data: ThemeData(dividerColor: Colors.transparent),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    richText("Название группы: ", "${item.groupName}", context),
+                    const SizedBox(height: 10),
+                    richText("Тип даты: ", "${item.sessionType}", context),
+                    const SizedBox(height: 10),
+                    richText("Учебный год: ", "${item.studyYear}", context),
+                    const SizedBox(height: 10),
+                    richText("Дата начала: ", "${item.startDate}", context),
+                    const SizedBox(height: 10),
+                    richText("Дата окончания: ", "${item.endDate}", context),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                        onPressed: () async {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
+                        },
+                        child: const Text("Заказать новую справку"))
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
   );
 }
 
@@ -105,7 +174,7 @@ _checkListView(BuildContext context, OrderingInformationMainViewModel model) {
     child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
       const SizedBox(height: 12),
       Wrap(children: [
-        Text("Список заказанных справок", style: Theme.of(context).textTheme.headlineSmall),
+        Text("Список справок об обучении", style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 38),
         getListView(model.receivedReferences)
       ]),
