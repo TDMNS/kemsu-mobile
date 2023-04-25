@@ -53,6 +53,7 @@ class OrderingInformationMainViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.callCertificate}?accessToken=$token'));
     receivedCallCertificate = parseCertificates(json.decode(response.body)["groupTermList"]);
+    await storage.write(key: 'groupTermId', value: "${receivedCallCertificate[0].groupTermId}");
     notifyListeners();
   }
 }

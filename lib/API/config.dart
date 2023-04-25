@@ -33,4 +33,5 @@ class Config {
   static String newsFile = 'https://api3.kemsu.ru';
   static String getWeekNum = 'https://api-next.kemsu.ru/api/schedule/integration/currentDayInfo';
   static String callCertificate = 'https://api-next.kemsu.ru/api/ref-call/mobile/groupTermList';
+  static String refCallPDF = 'https://api-next.kemsu.ru/api/ref-call/report';
 }

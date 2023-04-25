@@ -4,6 +4,7 @@ import 'package:kemsu_app/UI/views/ordering_information/ordering_information_sub
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 import '../ordering_information_model.dart';
+import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
 import 'ordering_information_main_viewmodel.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
@@ -139,7 +140,7 @@ Widget getCertificatesListView(List<CallCertificate> items) {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     richText("Название группы: ", "${item.groupName}", context),
                     const SizedBox(height: 10),
@@ -151,12 +152,16 @@ Widget getCertificatesListView(List<CallCertificate> items) {
                     const SizedBox(height: 10),
                     richText("Дата окончания: ", "${item.endDate}", context),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
-                        },
-                        child: const Text("Заказать новую справку"))
+                    Center(
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const OrderingInformationNewCertificatesView()));
+                          },
+                          child: const Text("Заказать новую справку")),
+                    )
                   ],
                 ),
               ),
