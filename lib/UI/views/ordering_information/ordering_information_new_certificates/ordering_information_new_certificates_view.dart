@@ -62,7 +62,7 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
       TextField(
         controller: model.companyName,
         decoration:
-            InputDecoration(hintText: 'ФГБОУ ВО "КемГУ" или ИП Иванов И. И.', hintStyle: TextStyle(fontSize: 14)),
+            const InputDecoration(hintText: 'ФГБОУ ВО "КемГУ" или ИП Иванов И. И.', hintStyle: TextStyle(fontSize: 14)),
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height / 16,
@@ -74,7 +74,7 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
           )),
       TextField(
         controller: model.studentName,
-        decoration: InputDecoration(hintText: 'Иванову Ивану Ивановичу', hintStyle: TextStyle(fontSize: 14)),
+        decoration: const InputDecoration(hintText: 'Иванову Ивану Ивановичу', hintStyle: TextStyle(fontSize: 14)),
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height / 16,
@@ -110,12 +110,15 @@ _downloadFinish(context) {
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Загрузка завершена'),
-      content: Text('Справка-вызов была сохранена в загрузках устройства'),
+      content: const Text('Справка-вызов была сохранена в загрузках устройства'),
       actions: <Widget>[
         TextButton(
           onPressed: () =>
               Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView())),
           child: const Text('OK'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          ),
         ),
       ],
     ),
