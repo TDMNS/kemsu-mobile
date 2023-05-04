@@ -3,12 +3,10 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
-import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
-import 'package:kemsu_app/UI/views/ordering%20information/ordering_information_model.dart';
+import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
-import '../../../API/config.dart';
+import '../../../../API/config.dart';
 
 class OrderingInformationMainViewModel extends BaseViewModel {
   OrderingInformationMainViewModel(BuildContext context);
@@ -16,18 +14,27 @@ class OrderingInformationMainViewModel extends BaseViewModel {
   final storage = const FlutterSecureStorage();
 
   int? type;
+
   List<RequestReference> receivedReferences = [];
-  RequestReference? references;
+  List<CallCertificate> receivedCallCertificate = [];
+
+  List<String> trainingCertificates = [TrainingCertificate.callCertificate, TrainingCertificate.trainingCertificate];
+  String? trainingCertificate;
 
   Future onReady() async {
     String? userTypeTemp = await storage.read(key: "userType");
     userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
     await getRequestList();
+    await getCallCertificates();
     appMetricaTest();
   }
 
   List<RequestReference> parseReferences(List response) {
     return response.map<RequestReference>((json) => RequestReference.fromJson(json)).toList();
+  }
+
+  List<CallCertificate> parseCertificates(List response) {
+    return response.map<CallCertificate>((json) => CallCertificate.fromJson(json)).toList();
   }
 
   void appMetricaTest() {
@@ -39,6 +46,14 @@ class OrderingInformationMainViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
     receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
+    notifyListeners();
+  }
+
+  getCallCertificates() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse('${Config.callCertificate}?accessToken=$token'));
+    receivedCallCertificate = parseCertificates(json.decode(response.body)["groupTermList"]);
+    await storage.write(key: 'groupTermId', value: "${receivedCallCertificate[0].groupTermId}");
     notifyListeners();
   }
 }

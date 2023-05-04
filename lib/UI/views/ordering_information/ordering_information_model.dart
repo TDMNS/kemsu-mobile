@@ -39,19 +39,18 @@ class RequestReference {
   int? countReferences;
   String? requestDate;
 
-  RequestReference({
-    this.lastName,
-    this.firstName,
-    this.patronymic,
-    this.instituteName,
-    this.courseNumber,
-    this.educationLevel,
-    this.groupName,
-    this.basic,
-    this.period,
-    this.countReferences,
-    this.requestDate
-  });
+  RequestReference(
+      {this.lastName,
+      this.firstName,
+      this.patronymic,
+      this.instituteName,
+      this.courseNumber,
+      this.educationLevel,
+      this.groupName,
+      this.basic,
+      this.period,
+      this.countReferences,
+      this.requestDate});
 
   RequestReference.fromJson(Map<String, dynamic> json) {
     lastName = json["SURNAME"];
@@ -65,5 +64,30 @@ class RequestReference {
     period = json["PERIOD"];
     countReferences = json["REF_CNT"];
     requestDate = json["REQUEST_DATE"];
+  }
+}
+
+class TrainingCertificate {
+  static String get callCertificate => "Справка вызов";
+  static String get trainingCertificate => "Справка об обучении";
+}
+
+class CallCertificate {
+  int? groupTermId;
+  String? groupName;
+  String? studyYear;
+  String? startDate;
+  String? endDate;
+  String? sessionType;
+
+  CallCertificate({this.groupTermId, this.groupName, this.studyYear, this.startDate, this.endDate, this.sessionType});
+
+  CallCertificate.fromJson(Map<String, dynamic> json) {
+    groupTermId = json["groupTermId"];
+    groupName = json["groupName"];
+    studyYear = json["studyYear"];
+    startDate = json["startDate"];
+    endDate = json["endDate"];
+    sessionType = json["sessionType"];
   }
 }
