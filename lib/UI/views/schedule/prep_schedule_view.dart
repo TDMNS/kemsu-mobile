@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/schedule/prepSchedule_viewmodel.dart';
+import 'package:kemsu_app/UI/views/schedule/prep_schedule_view_model.dart';
 
 import 'package:stacked/stacked.dart';
 

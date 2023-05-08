@@ -10,10 +10,6 @@ class TeacherList {
       TeacherList(fio: json['fio'], prepId: json['prepId']);
 }
 
-// To parse this JSON data, do
-//
-//     final prepScheduleApi = prepScheduleApiFromJson(jsonString);
-
 PrepScheduleApi prepScheduleApiFromJson(String str) =>
     PrepScheduleApi.fromJson(json.decode(str));
 
@@ -229,15 +225,98 @@ class Week {
 }
 
 class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap = {};
+  final Map<String, T> map;
+  late final Map<T, String> reverseMap;
 
-  EnumValues(this.map);
+  EnumValues(this.map) {
+    reverseMap = Map<T, String>.fromEntries(map.entries.map((e) => MapEntry(e.value, e.key)));
+  }
 
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => MapEntry(v, k));
-    }
-    return reverseMap;
+  Map<T, String> get reverse => reverseMap;
+}
+
+class ScheduleRequest {
+  int? id;
+  String? studyYear;
+  int? semesterType;
+  int? weekNum;
+  String? title;
+
+  ScheduleRequest(
+      {this.id, this.studyYear, this.semesterType, this.weekNum, this.title});
+
+  ScheduleRequest.fromJson(Map<String, dynamic> json) {
+    id = json["Id"];
+    studyYear = json["StudyYear"];
+    semesterType = json["SemesterType"];
+    weekNum = json["WeekNum"];
+    title = json["Title"];
+  }
+}
+
+class FacultyList {
+  int? id;
+  String? faculty;
+
+  FacultyList({this.id, this.faculty});
+
+  FacultyList.fromJson(Map<String, dynamic> json) {
+    id = json['Id'];
+    faculty = json['Faculty'];
+  }
+}
+
+class GroupList {
+  int? id;
+  String? groupName;
+  String? specName;
+  String? learnForm;
+
+  GroupList({this.id, this.groupName, this.specName, this.learnForm});
+
+  GroupList.fromJson(Map<String, dynamic> json) {
+    id = json['Id'];
+    groupName = json['GroupName'];
+    specName = json['specName'];
+    learnForm = json['learnForm'];
+  }
+}
+
+class WeekGetId {
+  int? id;
+  int? num;
+
+  WeekGetId({this.id, this.num});
+
+  WeekGetId.fromJson(Map<String, dynamic> json) {
+    id = json['Id'];
+    num = json['Num'];
+  }
+}
+
+
+class CurrentGroupList {
+  int? facultyId;
+  String? facultyName;
+  int? groupId;
+  String? groupName;
+  String? studyYear;
+  int? semesterId;
+
+  CurrentGroupList(
+      {this.facultyId,
+        this.facultyName,
+        this.groupId,
+        this.groupName,
+        this.semesterId,
+        this.studyYear});
+
+  CurrentGroupList.fromJson(Map<String, dynamic> json) {
+    facultyId = json["facultyId"];
+    facultyName = json["facultyName"];
+    groupId = json["groupId"];
+    groupName = json["groupName"];
+    studyYear = json["studyYear"];
+    semesterId = json["semesterId"];
   }
 }

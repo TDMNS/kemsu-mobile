@@ -3,7 +3,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule2.0_model.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
@@ -133,7 +133,6 @@ class NewScheduleViewModel extends BaseViewModel {
     weekNumApi = getWeek.data['currentDay']['weekNum'];
     weekTypeApi = getWeek.data['currentDay']['weekType'];
     currentDateApi = getWeek.data['currentDay']['currentDate'];
-    print('WEEK API:: $weekNumApi, $weekTypeApi, $currentDateApi');
     weekTypeApi == 'четная' ? weekType = true : weekType = false;
     groupId = response.data['currentGroupList'][0]['groupId'];
     currentSemester = semesterResponse.data['result'][0]['Id'];

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../loadingScreen.dart';
+import '../../loading_screen.dart';
 import 'pgas_request_info_viewmodel.dart';
 
 class PgasRequestInfoScreenRoute extends MaterialPageRoute {

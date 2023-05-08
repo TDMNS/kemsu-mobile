@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../loadingScreen.dart';
+import '../../loading_screen.dart';
 import 'edit_pgas_request_viewmodel.dart';
 import 'model/faculty.dart';
 import 'model/semester_type.dart';

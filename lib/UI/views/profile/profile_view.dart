@@ -9,7 +9,7 @@ import '../ordering_information/ordering_information_main/ordering_information_m
 import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
 import 'package:kemsu_app/UI/views/info/info_view.dart';
 import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
-import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
+import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -470,7 +470,7 @@ class _ProfileViewState extends State<ProfileView> {
                         )
                       : GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
+                            model.infoButton(context);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),

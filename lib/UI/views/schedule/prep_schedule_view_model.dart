@@ -4,10 +4,9 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/profile/profile_viewmodel.dart';
-import 'package:kemsu_app/UI/views/schedule/prepSchedule_model.dart';
+import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
+import 'package:kemsu_app/UI/views/schedule/prep_schedule_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/config.dart';

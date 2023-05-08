@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -191,7 +190,7 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void iaisButton(context) {
+  void infoButton(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
     notifyListeners();
   }
