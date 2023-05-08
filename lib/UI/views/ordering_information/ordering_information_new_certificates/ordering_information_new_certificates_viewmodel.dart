@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../API/config.dart';
+import '../../../../Configurations/config.dart';
 import '../ordering_information_main/ordering_information_main_viewmodel.dart';
 import '../ordering_information_model.dart';
 

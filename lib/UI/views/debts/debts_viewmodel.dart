@@ -7,7 +7,7 @@ import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
-import '../../../API/config.dart';
+import '../../../Configurations/config.dart';
 import 'models/debts_academy_model.dart';
 import 'dart:convert';
 

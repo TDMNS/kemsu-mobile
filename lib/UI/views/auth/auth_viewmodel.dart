@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/API/config.dart';
+import 'package:kemsu_app/Configurations/config.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 

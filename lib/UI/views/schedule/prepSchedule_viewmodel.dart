@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../API/config.dart';
+import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
 import '../../widgets.dart';
 

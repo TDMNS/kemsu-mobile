@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 
-import '../../../API/config.dart';
+import '../../../Configurations/config.dart';
 
 class ScheduleViewModel extends BaseViewModel {
   ScheduleViewModel(BuildContext context);

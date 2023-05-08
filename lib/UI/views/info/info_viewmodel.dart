@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:http/http.dart' as http;
-import '../../../API/config.dart';
+import '../../../Configurations/config.dart';
 import '../info/info_model.dart';
 import 'dart:convert';
 
