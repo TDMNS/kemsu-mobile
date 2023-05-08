@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_viewmodel.dart';
+import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../widgets.dart';

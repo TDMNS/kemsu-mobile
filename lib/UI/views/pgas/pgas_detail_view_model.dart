@@ -35,9 +35,9 @@ class PgasDetailViewModel extends BaseViewModel {
   }
 
   fetchUserAchieves() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? requestId = await storage.read(key: 'pgas_id');
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
     Map<String, dynamic> body = {"requestId": "$requestId"};
 
@@ -52,9 +52,9 @@ class PgasDetailViewModel extends BaseViewModel {
   }
 
   deleteBtnAction(context, UserAchieveModel achieveModel) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
 
-    Map<String, String> header = {"X-Access-Token": eiosAccessToken.toString()};
+    Map<String, String> header = {"X-Access-Token": accessToken.toString()};
 
     Map<String, dynamic> body = {
       "userActivityId": achieveModel.userActivityId.toString()
@@ -82,9 +82,9 @@ class PgasDetailViewModel extends BaseViewModel {
   }
 
   deletePgasFile(context, String? fileName) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
 
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
     var _ = await http.delete(
         Uri.parse(

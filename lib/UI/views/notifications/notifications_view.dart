@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
-import 'notifications_viewmodel.dart';
+import 'notifications_view_model.dart';
 
 class NotificationView extends StatelessWidget {
   const NotificationView({Key? key}) : super(key: key);
@@ -16,13 +16,10 @@ class NotificationView extends StatelessWidget {
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(
-                      context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -31,7 +28,6 @@ class NotificationView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Уведомления'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _notView(context, model),
                 ),
               ));

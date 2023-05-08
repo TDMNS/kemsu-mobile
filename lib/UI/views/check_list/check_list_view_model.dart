@@ -30,7 +30,6 @@ class CheckListViewModel extends BaseViewModel {
       },
     );
     checkList = parseCheckList(json.decode(response.body)['checkList']);
-    print("Result: ${response.body}");
     appMetricaTest();
     notifyListeners();
   }

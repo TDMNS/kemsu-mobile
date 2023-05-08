@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
-import 'auth_viewmodel.dart';
+import 'auth_view_model.dart';
 
 final loginController = TextEditingController();
 final passwordController = TextEditingController();

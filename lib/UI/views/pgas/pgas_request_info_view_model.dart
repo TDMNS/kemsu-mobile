@@ -49,9 +49,9 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   }
 
   fetchDetailPgasRequest(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
         Uri.parse(
@@ -66,9 +66,9 @@ class PgasRequestInfoViewModel extends BaseViewModel {
   }
 
   deletePgasAction(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
         Uri.parse(

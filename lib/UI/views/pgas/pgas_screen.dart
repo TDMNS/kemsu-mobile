@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kemsu_app/UI/views/pgas/pgas_viewmodel.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_view_model.dart';
 import 'package:kemsu_app/UI/widgets.dart';
 import 'package:stacked/stacked.dart';
 

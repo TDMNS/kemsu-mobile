@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
@@ -37,7 +36,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
   bool showOtherInputData = false;
 
   PlatformFile? chooseFile;
-  String? eiosFileName;
+  String? fileName;
 
   TextEditingController descController = TextEditingController();
   TextEditingController yearController = TextEditingController();
@@ -76,8 +75,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
   }
 
   fetchAchieveCategories() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList"),
@@ -89,8 +88,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
   fetchYears() async {
     String? requestId = await storage.read(key: "pgas_id");
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
     var response = await http.get(
         Uri.parse(
@@ -103,8 +102,8 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
   Future<List<ActivityTreeModel>> fetchAchieves(
       int? parentId, int? activityId) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {
       "parentId": parentId.toString(),
       "activityTypeId": activityId.toString()
@@ -120,9 +119,9 @@ class NewAchievePgasViewModel extends BaseViewModel {
   sendButtonAction(context) async {
     circle = true;
     notifyListeners();
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? requestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
     if (chosenActivity4 != null) {
       resultActivity = chosenActivity4;
@@ -143,7 +142,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "activityYear": chosenYear!.year.toString(),
       "activityMonthId": (chosenMonth! + 1).toString(),
       "activitySrc": resourceController.text,
-      "activityFile": eiosFileName
+      "activityFile": fileName
     };
 
     var response = await http.post(
@@ -173,7 +172,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
   }
 
   loadFilePgas(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
 
     FormData fd = FormData.fromMap({
       "file.${chooseFile!.extension}":
@@ -185,13 +184,13 @@ class NewAchievePgasViewModel extends BaseViewModel {
 
     Dio dio = Dio();
 
-    dio.options.headers["X-Access-Token"] = "$eiosAccessToken";
+    dio.options.headers["X-Access-Token"] = "$accessToken";
 
     var response = await dio
         .put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      eiosFileName = json.decode(json.encode(response.data["fileNames"].first));
+      fileName = json.decode(json.encode(response.data["fileNames"].first));
       notifyListeners();
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Файл загружен успешно.")));

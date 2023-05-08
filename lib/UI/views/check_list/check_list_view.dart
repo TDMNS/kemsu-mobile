@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'check_list_viewmodel.dart';
+import 'check_list_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -34,7 +34,7 @@ _checkListView(BuildContext context, CheckListViewModel model) {
     padding: const EdgeInsets.only(left: 15, right: 15),
     child: ListView(shrinkWrap: true, children: [
       const SizedBox(height: 12),
-      Text("Список подразделений", style: Theme.of(context).textTheme.headline5),
+      Text("Список подразделений", style: Theme.of(context).textTheme.headlineSmall),
       const SizedBox(height: 10),
       const Text(
         'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь',

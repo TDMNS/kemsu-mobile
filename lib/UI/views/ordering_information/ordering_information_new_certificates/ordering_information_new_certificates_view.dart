@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../widgets.dart';
 import '../ordering_information_main/ordering_information_main_view.dart';
-import 'ordering_information_new_certificates_viewmodel.dart';
+import 'ordering_information_new_certificates_view_model.dart';
 
 class OrderingInformationNewCertificatesView extends StatefulWidget {
   const OrderingInformationNewCertificatesView({Key? key}) : super(key: key);

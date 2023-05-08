@@ -52,10 +52,10 @@ class BugReportViewModel extends BaseViewModel {
   }
 
   sendAction(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     if (errorMsgController.text.isNotEmpty) {
       notifyListeners();
-      Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+      Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
       Map<String, dynamic> body = {"message": errorMsgController.text, "deviceInfo": deviceInfoParam};
 
@@ -80,8 +80,8 @@ class BugReportViewModel extends BaseViewModel {
   }
 
   fetchReports(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response =
         await http.get(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"), headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {

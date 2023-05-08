@@ -58,8 +58,8 @@ class NewPgasRequestViewModel extends BaseViewModel {
   }
 
   fetchInstitutesList() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"),
@@ -69,8 +69,8 @@ class NewPgasRequestViewModel extends BaseViewModel {
   }
 
   fetchSemesterTypeList() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"),
@@ -92,7 +92,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
   }
 
   sendButtonAction(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     if (surnameController.text.isNotEmpty &&
         firstNameController.text.isNotEmpty &&
         phoneController.text.isNotEmpty &&
@@ -102,7 +102,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
         chosenCourse!.isNotEmpty &&
         chooseSemester != null &&
         chooseFaculty != null) {
-      Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+      Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
       Map<String, dynamic> body = {
         "surname": surnameController.text,

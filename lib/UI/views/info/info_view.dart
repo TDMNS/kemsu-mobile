@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import './info_viewmodel.dart';
+import './info_view_model.dart';
 import './info_disc_view.dart';
 import 'package:stacked/stacked.dart';
 

@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import 'pgas_detail_viewmodel.dart';
+import 'pgas_detail_view_model.dart';
 
 class PgasDetailScreenRoute extends MaterialPageRoute {
   PgasDetailScreenRoute() : super(builder: (context) => const PgasDetailScreen());

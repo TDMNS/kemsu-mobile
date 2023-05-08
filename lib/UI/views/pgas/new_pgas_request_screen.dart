@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
-import 'new_pgas_request_viewmodel.dart';
+import 'new_pgas_request_view_model.dart';
 
 class NewPgasRequestScreenRoute extends MaterialPageRoute {
   NewPgasRequestScreenRoute() : super(builder: (context) => const NewPgasRequestScreen());

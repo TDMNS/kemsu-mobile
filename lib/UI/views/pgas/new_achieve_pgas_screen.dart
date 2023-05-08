@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/pgas/model/achieve_category.dart';
 import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
 import 'package:kemsu_app/UI/views/pgas/model/year.dart';
-import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_viewmodel.dart';
+import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_view_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 

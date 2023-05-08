@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'model/faculty.dart';
 import 'model/pgas_detail.dart';
 import 'model/semester_type.dart';
-import 'pgas_request_info_screen.dart';
 
 class EditPgasRequestViewModel extends BaseViewModel {
   EditPgasRequestViewModel(BuildContext context);
@@ -55,9 +54,9 @@ class EditPgasRequestViewModel extends BaseViewModel {
   }
 
   fetchDetailPgasRequest() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
         Uri.parse(
@@ -80,8 +79,8 @@ class EditPgasRequestViewModel extends BaseViewModel {
   }
 
   fetchInstitutesList() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"),
@@ -94,8 +93,8 @@ class EditPgasRequestViewModel extends BaseViewModel {
   }
 
   fetchSemesterTypeList() async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"),
@@ -121,7 +120,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
   }
 
   saveButtonAction(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
+    String? accessToken = await storage.read(key: "tokenKey");
     String? pgasRequestId = await storage.read(key: "pgas_id");
     if (surnameController.text.isNotEmpty &&
         firstNameController.text.isNotEmpty &&
@@ -132,7 +131,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
         chosenCourse!.isNotEmpty &&
         chooseSemester != null &&
         chooseFaculty != null) {
-      Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+      Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
       Map<String, dynamic> body = {
         "surname": surnameController.text,

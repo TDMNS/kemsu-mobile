@@ -53,8 +53,8 @@ class PgasViewModel extends BaseViewModel {
   }
 
   fetchPgasRequests(context) async {
-    String? eiosAccessToken = await storage.read(key: "tokenKey");
-    Map<String, String> header = {"X-Access-Token": "$eiosAccessToken"};
+    String? accessToken = await storage.read(key: "tokenKey");
+    Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
         Uri.parse(
             "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestList"),
