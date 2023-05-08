@@ -6,13 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/config.dart';
+import '../../widgets.dart';
 import '../auth/auth_view.dart';
+import '../bug_report/main_bug_report_screen.dart';
 import '../info/info_view.dart';
 import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+
+import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
+import '../pgas/pgas_screen.dart';
+import '../rating_of_students/views/ros_view.dart';
 
 class EnumUserType {
   static String get student => "обучающийся";
@@ -184,24 +191,50 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void exitButton(context) async {
+  void exit(context) async {
     await storage.write(key: "tokenKey", value: "");
     Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()));
     notifyListeners();
   }
 
-  void infoButton(context) {
+  void navigateInfoView(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
     notifyListeners();
   }
 
-  void debtsButton(context) {
+  void navigateDebtsView(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const DebtsView()));
     notifyListeners();
   }
 
-  void checklistButton(context) {
+  void navigateCheckListView(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckListView()));
+    notifyListeners();
+  }
+
+  void navigateOrderingInformationMainView(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
+    notifyListeners();
+  }
+
+  void navigateWebView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => _paymentWebView(context, model)));
+    notifyListeners();
+  }
+
+  void navigateMainBugReportScreen(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
+    notifyListeners();
+  }
+
+  void navigateRosView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const RosView()));
+    notifyListeners();
+  }
+
+  void navigatePgasScreen(context, model) {
+    Navigator.push(context,
+        MaterialPageRoute(settings: const RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
     notifyListeners();
   }
 
@@ -230,4 +263,38 @@ class ProfileViewModel extends BaseViewModel {
       },
     );
   }
+}
+
+/// Payment Web View
+_paymentWebView(BuildContext context, ProfileViewModel model) {
+  String fio = model.fio;
+  String phone = model.phone.replaceFirst('+7 ', '');
+  String email = model.email;
+  bool isLoading = true;
+  return Scaffold(
+    extendBody: false,
+    extendBodyBehindAppBar: false,
+    appBar: customAppBar(context, model, 'Оплата услуг'),
+    body: StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Stack(children: [
+          WebView(
+              initialUrl: Uri.encodeFull(
+                  'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
+                      .replaceAll(' ', '+')),
+              javascriptMode: JavascriptMode.unrestricted,
+              onPageFinished: (finish) {
+                setState(() {
+                  isLoading = false;
+                });
+              }),
+          isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.blue),
+                )
+              : Stack(),
+        ]);
+      },
+    ),
+  );
 }

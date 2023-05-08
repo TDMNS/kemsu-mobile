@@ -3,18 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kemsu_app/UI/views/rating_of_students/views/ros_view.dart';
-import 'package:kemsu_app/UI/views/debts/debts_view.dart';
-import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import 'package:kemsu_app/UI/views/pgas/pgas_screen.dart';
-import 'package:kemsu_app/UI/views/info/info_view.dart';
-import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../widgets.dart';
-import '../bug_report/main_bug_report_screen.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -394,10 +386,7 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const RosView()),
-                      );
+                      model.navigateRosView(context, model);
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 30),
@@ -432,11 +421,7 @@ class _ProfileViewState extends State<ProfileView> {
                   model.userType == EnumUserType.student
                       ? GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    settings: const RouteSettings(name: "PgasList"),
-                                    builder: (context) => const PgasScreen()));
+                            model.navigatePgasScreen(context, model);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -470,7 +455,7 @@ class _ProfileViewState extends State<ProfileView> {
                         )
                       : GestureDetector(
                           onTap: () {
-                            model.infoButton(context);
+                            model.navigateInfoView(context);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -513,7 +498,7 @@ class _ProfileViewState extends State<ProfileView> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoOUProView()));
+                            model.navigateInfoView(context);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 30),
@@ -549,7 +534,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DebtsView()));
+                            model.navigateDebtsView(context);
                           },
                           child: Container(
                             margin: const EdgeInsets.only(right: 30),
@@ -591,8 +576,7 @@ class _ProfileViewState extends State<ProfileView> {
                   ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
+                          model.navigateOrderingInformationMainView(context);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(left: 30),
@@ -628,7 +612,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckListView()));
+                          model.navigateCheckListView(context);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 30),
@@ -669,8 +653,7 @@ class _ProfileViewState extends State<ProfileView> {
                   ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => _paymentWebView(context, model)));
+                          model.navigateWebView(context, model);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(left: 30),
@@ -716,7 +699,7 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
+                  model.navigateMainBugReportScreen(context, model);
                 },
                 child: Container(
                   padding: const EdgeInsets.only(left: 30),
@@ -757,7 +740,7 @@ class _ProfileViewState extends State<ProfileView> {
                             child: const Text('Отмена')),
                         ElevatedButton(
                             onPressed: () {
-                              model.exitButton(context);
+                              model.exit(context);
                             },
                             child: const Text('Да'))
                       ],
@@ -875,39 +858,6 @@ class _MyHomePageState extends State<LoadingScreen> with SingleTickerProviderSta
       ),
     );
   }
-}
-
-_paymentWebView(BuildContext context, ProfileViewModel model) {
-  String fio = model.fio;
-  String phone = model.phone.replaceFirst('+7 ', '');
-  String email = model.email;
-  bool isLoading = true;
-  return Scaffold(
-    extendBody: false,
-    extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, 'Оплата услуг'),
-    body: StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Stack(children: [
-          WebView(
-              initialUrl: Uri.encodeFull(
-                  'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
-                      .replaceAll(' ', '+')),
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
-                setState(() {
-                  isLoading = false;
-                });
-              }),
-          isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(color: Colors.blue),
-                )
-              : Stack(),
-        ]);
-      },
-    ),
-  );
 }
 
 _updateProfile(BuildContext context, ProfileViewModel model) {
