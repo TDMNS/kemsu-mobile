@@ -43,7 +43,6 @@ class _NewsViewState extends State<NewsView> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Новости'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _newsView(context, model),
                 ),
               ));
@@ -55,25 +54,6 @@ class _NewsViewState extends State<NewsView> {
       children: [
         ListView(
           children: [
-            // GestureDetector(
-            //   onTap: () {
-            //     model.messageService();
-            //   },
-            //   child: Container(
-            //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
-            //     height: 30,
-            //     width: 30,
-            //     color: Colors.amber,
-            //   ),
-            // ),
-            // const Center(
-            //     child: Padding(
-            //   padding: EdgeInsets.only(top: 20),
-            //   child: Text(
-            //     'Новости отсутствуют',
-            //     style: TextStyle(fontSize: 16, color: Colors.grey),
-            //   ),
-            // )),
             ListView.builder(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
                 shrinkWrap: true,
