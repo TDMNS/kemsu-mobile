@@ -35,4 +35,5 @@ class Config {
   static String callCertificate = 'https://api-next.kemsu.ru/api/ref-call/mobile/groupTermList';
   static String refCallPDF = 'https://api-next.kemsu.ru/api/ref-call/report';
   static String notifications = 'https://api-next.kemsu.ru/api/noty/mobile/getUserNotificationList';
+  static String storageNotify = 'https://api-next.kemsu.ru/api/storage/notify';
 }
