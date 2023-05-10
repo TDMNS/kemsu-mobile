@@ -1,18 +1,10 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chewie/chewie.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
-import 'package:video_player/video_player.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../widgets.dart';
-import 'news_videoPlayer.dart';
 import 'news_viewmodel.dart';
-import 'news_viewmodel_test.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({Key? key}) : super(key: key);
@@ -265,31 +257,6 @@ class _NewsViewState extends State<NewsView> {
           );
   }
 
-  _imageTest(BuildContext context, NewsViewModel model, newsIndex) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return Scaffold(
-            body: Center(
-              child: PhotoView(
-                imageProvider: Image.memory(
-                  Uint8List.fromList(model.tempPic!),
-                  fit: BoxFit.contain,
-                ) as ImageProvider,
-                minScale: PhotoViewComputedScale.contained * 0.8,
-                maxScale: PhotoViewComputedScale.covered * 2,
-              ),
-            ),
-          );
-        }));
-      },
-      child: Image.memory(
-        Uint8List.fromList(model.tempPic!),
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
   _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Container(
@@ -387,28 +354,5 @@ class _NewsViewState extends State<NewsView> {
                   : Container()
             ],
           );
-  }
-
-  _videoPlayer(BuildContext context, NewsViewModel model, newsIndex) {
-    final file = model.decodeVideo;
-    print(file);
-    // _controller = VideoPlayerController.file(file!)
-    //   ..addListener(() => setState(() {}))
-    //   ..setLooping(true)
-    //   ..initialize().then((_) {
-    //     _controller.play();
-    //     setState(() {});
-    //   });
-    return Column(
-      children: [
-        const SizedBox(
-          height: 20,
-        ),
-        FloatingActionButton(onPressed: () {}, child: const Icon(Icons.play_arrow)),
-        // FloatingActionButton(onPressed: () {
-        //   model.videoController.play();
-        // })
-      ],
-    );
   }
 }

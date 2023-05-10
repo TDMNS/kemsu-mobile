@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -47,45 +48,44 @@ Widget _notView(context, NotificationViewModel model) {
           itemCount: model.userNotifications.length,
           itemBuilder: (context, index) {
             final item = model.userNotifications[index];
-            return Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () async {
-                        // ваш код
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              richText("${item.title}", "", context, isWhite: true),
-                              const SizedBox(height: 10),
-                              richText("${item.message}", "", context, isWhite: true),
-                              const SizedBox(height: 10),
-                              richText("${item.notificationDateTime}", "", context, isWhite: true),
-                              const SizedBox(height: 10),
-                              item.fileSrc != "" && item.fileSize != 0 ? _buildImage(urls[index]) : const SizedBox.shrink(), // отображаем изображение из списка
-                            ],
+            return model.userNotifications.isEmpty
+                ? const CircularProgressIndicator()
+                : Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      richText("${item.title}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      richText("${item.message}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      richText("${item.notificationDateTime}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      item.fileSrc != "" && item.fileSize != 0
+                                          ? _pictureView(context, urls[index])
+                                          : const SizedBox.shrink(), // отображаем изображение из списка
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            );
+                    ],
+                  );
           },
         );
       } else {
@@ -97,11 +97,40 @@ Widget _notView(context, NotificationViewModel model) {
   );
 }
 
-Widget _buildImage(String imageUrl) {
-  return Image.network(
-    imageUrl,
-    width: 200,
-    height: 200,
-    fit: BoxFit.cover,
+_pictureView(BuildContext context, url) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (_) {
+        return Scaffold(
+          body: Center(
+            child: Dismissible(
+              key: UniqueKey(),
+              direction: DismissDirection.vertical,
+              onDismissed: (_) => Navigator.pop(context),
+              child: PhotoView(
+                loadingBuilder: (context, event) => Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blueGrey.shade700,
+                  ),
+                ),
+                scaleStateController: PhotoViewScaleStateController(),
+                backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+                imageProvider: NetworkImage(url),
+                minScale: PhotoViewComputedScale.contained * 0.8,
+                maxScale: PhotoViewComputedScale.covered * 2,
+              ),
+            ),
+          ),
+        );
+      }));
+    },
+    child: Container(
+        margin: const EdgeInsets.all(15),
+        child: Image.network(
+          url,
+          width: 200,
+          height: 200,
+          fit: BoxFit.cover,
+        )),
   );
 }

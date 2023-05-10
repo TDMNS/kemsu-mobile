@@ -42,5 +42,4 @@ class NotificationViewModel extends BaseViewModel {
     }
     return urls;
   }
-
 }
