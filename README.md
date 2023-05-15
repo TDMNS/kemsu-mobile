@@ -42,11 +42,10 @@ to discuss what you would like to change.
 
 ## Stores
 
-<a href=”https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/app-store.png" alt=”icon | AppStore” width=”50px”/></a>
-
-<a href=”https://disk.yandex.ru/d/BUfaR-ooP8VDOQ"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/apk.png" alt=”icon | Apk” width=”50px”/></a>
-
-<a href=”https://apps.rustore.ru/app/com.kemsu.kemsu_app"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/rustore.jpg" alt=”icon | Apk” width=”50px”/></a>
+<a href="https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/app-store.png" alt="AppStore" width="100px"/></a>
+<a href="https://disk.yandex.ru/d/BUfaR-ooP8VDOQ"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/apk.png" alt="Apk" width="100px"/></a>
+<a href="https://apps.rustore.ru/app/com.kemsu.kemsu_app"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/rustore.jpg" alt="RuStore" width="100px"/></a>
+<br><br><br><br>
 
 ## License
 
