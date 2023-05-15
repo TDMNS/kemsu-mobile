@@ -11,6 +11,7 @@ Our application is written with:
 ## GitHub Stats
 
 [![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=TDMNS)](https://github.com/TDMNS)
+[![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=SeriousVenom)](https://github.com/SeriousVenom) 
 
 ## What do we have?
 
