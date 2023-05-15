@@ -38,6 +38,16 @@ Our application has:
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
+## Stores
+
+![app-store](https://github.com/TDMNS/kemsu-mobile/assets/68660020/a25a57ad-2c1f-4c18-a968-663343fdf782)
+AppStore Link: https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769
+![rustore_logo_intro 3d9813ae](https://github.com/TDMNS/kemsu-mobile/assets/68660020/00f7c596-3cf3-4216-8119-13479c693b65)
+RuStore Link: https://apps.rustore.ru/app/com.kemsu.kemsu_app
+![apk](https://github.com/TDMNS/kemsu-mobile/assets/68660020/d5d2fdfa-d912-4f80-be51-ac66a92ab317)
+Apk folder Link: https://disk.yandex.ru/d/BUfaR-ooP8VDOQ
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
