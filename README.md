@@ -12,6 +12,7 @@ Our application is written with:
 
 [![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=TDMNS)](https://github.com/TDMNS)
 [![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=SeriousVenom)](https://github.com/SeriousVenom)
+
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=TDMNS&layout=compact)](https://github.com/TDMNS)
 
 ## What do we have?
