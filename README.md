@@ -1,16 +1,43 @@
-# kemsu_app
+# kemsu-mobile
 
-A new Flutter project.
+![4SuUE4tQ-hQ](https://github.com/TDMNS/kemsu-mobile/assets/68660020/d78626f5-4cca-4b50-a4a2-ad7ff1e1f2cd)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Our application is written with:
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
 
-A few resources to get you started if this is your first Flutter project:
+## GitHub Stats
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+[![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=TDMNS)](https://github.com/TDMNS)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## What do we have?
+
+This is a mobile application for Kemerovo State University.
+Our application has:
+1. news
+2. timetable for students
+3. view the score system
+4. viewing the information support system of the educational process
+5. applying for an increased government academic scholarship
+6. debt review (academic, library, etc.)
+7. ordering various references
+8. electronic bypass sheet
+9. payment for services
+
+## Screenshots
+
+![main screen](https://github.com/TDMNS/kemsu-mobile/assets/68660020/48546740-efac-447d-93ef-a49ed2e5d2a9)
+![debts](https://github.com/TDMNS/kemsu-mobile/assets/68660020/28a428fd-be8a-4bc5-a5b3-eb22a4c8a86c)
+![increase-state-academic-scholarship](https://github.com/TDMNS/kemsu-mobile/assets/68660020/925a7de0-8fc8-4fbd-8b2c-4f5ba31ae323)
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
