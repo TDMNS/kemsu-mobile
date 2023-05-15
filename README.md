@@ -42,18 +42,11 @@ to discuss what you would like to change.
 
 ## Stores
 
-AppStore Link: https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769
+<a href=”https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/app-store.png" alt=”icon | AppStore” width=”50px”/></a>
 
-![app-store](https://github.com/TDMNS/kemsu-mobile/assets/68660020/604bca24-7e0e-4cd8-b980-a0fd82c7604d)
+<a href=”https://disk.yandex.ru/d/BUfaR-ooP8VDOQ"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/apk.png" alt=”icon | Apk” width=”50px”/></a>
 
-Apk folder Link: https://disk.yandex.ru/d/BUfaR-ooP8VDOQ
-
-![apk](https://github.com/TDMNS/kemsu-mobile/assets/68660020/d5d2fdfa-d912-4f80-be51-ac66a92ab317)
-
-RuStore Link: https://apps.rustore.ru/app/com.kemsu.kemsu_app
-
-![rustore](https://github.com/TDMNS/kemsu-mobile/assets/68660020/afd61bf8-123c-46aa-b088-ac6b914d4c9d)
-
+<a href=”https://apps.rustore.ru/app/com.kemsu.kemsu_app"><img align=”left” src=”https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/rustore.jpg" alt=”icon | Apk” width=”50px”/></a>
 
 ## License
 
