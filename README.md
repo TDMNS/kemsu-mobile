@@ -11,7 +11,8 @@ Our application is written with:
 ## GitHub Stats
 
 [![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=TDMNS)](https://github.com/TDMNS)
-[![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=SeriousVenom)](https://github.com/SeriousVenom) 
+[![Anurag’s github stats](https://github-readme-stats.vercel.app/api?username=SeriousVenom)](https://github.com/SeriousVenom)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=TDMNS&layout=compact)](https://github.com/TDMNS)
 
 ## What do we have?
 
@@ -40,12 +41,17 @@ to discuss what you would like to change.
 
 ## Stores
 
-![app-store](https://github.com/TDMNS/kemsu-mobile/assets/68660020/a25a57ad-2c1f-4c18-a968-663343fdf782)
 AppStore Link: https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769
-![rustore_logo_intro 3d9813ae](https://github.com/TDMNS/kemsu-mobile/assets/68660020/00f7c596-3cf3-4216-8119-13479c693b65)
-RuStore Link: https://apps.rustore.ru/app/com.kemsu.kemsu_app
-![apk](https://github.com/TDMNS/kemsu-mobile/assets/68660020/d5d2fdfa-d912-4f80-be51-ac66a92ab317)
+
+![app-store](https://github.com/TDMNS/kemsu-mobile/assets/68660020/604bca24-7e0e-4cd8-b980-a0fd82c7604d)
+
 Apk folder Link: https://disk.yandex.ru/d/BUfaR-ooP8VDOQ
+
+![apk](https://github.com/TDMNS/kemsu-mobile/assets/68660020/d5d2fdfa-d912-4f80-be51-ac66a92ab317)
+
+RuStore Link: https://apps.rustore.ru/app/com.kemsu.kemsu_app
+
+![rustore](https://github.com/TDMNS/kemsu-mobile/assets/68660020/afd61bf8-123c-46aa-b088-ac6b914d4c9d)
 
 
 ## License
