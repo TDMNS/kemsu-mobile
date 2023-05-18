@@ -10,6 +10,8 @@ import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
 
+import '../../../Configurations/config.dart';
+
 class BugReportViewModel extends BaseViewModel {
   BugReportViewModel(BuildContext context);
 
@@ -59,7 +61,7 @@ class BugReportViewModel extends BaseViewModel {
 
       Map<String, dynamic> body = {"message": errorMsgController.text, "deviceInfo": deviceInfoParam};
 
-      var response = await http.post(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/addReport"),
+      var response = await http.post(Uri.parse(Config.addReport),
           headers: header, body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
