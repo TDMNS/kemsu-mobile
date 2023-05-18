@@ -9,10 +9,10 @@
 *~
 
 # Files and directories created by pub
+.flutter-plugins/
+.flutter-plugins-dependencies/
 .dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
+.packages/
 .pub/
 build/
 
