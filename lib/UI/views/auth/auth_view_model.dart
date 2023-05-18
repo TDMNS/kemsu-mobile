@@ -75,8 +75,11 @@ class AuthViewModel extends BaseViewModel {
       case 401:
         errorDialog(context, 'Некорректный логин/пароль пользователя!');
         break;
+      case 500:
+        errorDialog(context, 'Ошибка сервера! Если ошибка не исчезнет обратитесь в отдел совпровождения');
+        break;
       default:
-        errorDialog(context, 'Проблема с провайдером! Попробуйте изменить вашу сеть.');
+        errorDialog(context, 'Непредвиденная ошибка! Если ошибка не исчезнет обратитесь в отдел совпровождения');
         break;
     }
     notifyListeners();
