@@ -1,5 +1,15 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
+# Project files
+*.iml
+*.lock
+*.log
+*.log.*
+*.sqlite
+*.png
+*.jpg
+*.jpeg
+
 # IDE files
 .idea/
 .vscode/
