@@ -1,0 +1,12 @@
+# Project files
+*.iml       binary
+*.lock      binary
+*.log       binary
+*.log.*     binary
+*.sqlite    binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+
+# Ignore line endings conversion for specific files
+*.txt       text eol=lf
