@@ -22,8 +22,12 @@ class CheckList {
       commentary = "";
     }
     debt="";
-    if (json["noDebtFlag"] == 1) debt = "Нет";
-    if (json["debtFlag"] == 1) debt = "Есть";
+    if (json["noDebtFlag"] == 1) {
+      debt = "Нет";
+    }
+    if (json["debtFlag"] == 1) {
+      debt = "Есть";
+    }
     address = json["address"];
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/pgas/model/user_achieve.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../Configurations/config.dart';
 import 'pgas_request_info_screen.dart';
 
 class PgasDetailViewModel extends BaseViewModel {
@@ -42,8 +43,7 @@ class PgasDetailViewModel extends BaseViewModel {
     Map<String, dynamic> body = {"requestId": "$requestId"};
 
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getUserActivityList"),
+        Uri.parse(Config.pgasGetUserActivityList),
         headers: header,
         body: body);
 
@@ -65,8 +65,7 @@ class PgasDetailViewModel extends BaseViewModel {
     }
 
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteUserActivity"),
+        Uri.parse(Config.pgasDeleteUserActivity),
         headers: header,
         body: body);
 
@@ -88,7 +87,7 @@ class PgasDetailViewModel extends BaseViewModel {
 
     var _ = await http.delete(
         Uri.parse(
-            "https://api-next.kemsu.ru/api/storage/pgas-mobile/${fileName.toString()}"),
+            "${Config.pgasStorage}/${fileName.toString()}"),
         headers: header);
   }
 

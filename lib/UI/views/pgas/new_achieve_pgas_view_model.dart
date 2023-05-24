@@ -10,6 +10,7 @@ import 'package:open_file/open_file.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/config.dart';
 import 'model/achieve_category.dart';
 
 class NewAchievePgasViewModel extends BaseViewModel {
@@ -78,8 +79,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList"),
+        Uri.parse(Config.pgasGetActivityTypeList),
         headers: header);
     achieveCategories =
         parseAchieveCategories(json.decode(response.body)["result"]);
@@ -92,8 +92,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
 
     var response = await http.get(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/activityYearList?requestId=$requestId"),
+        Uri.parse("${Config.pgas}/activityYearList?requestId=$requestId"),
         headers: header);
 
     years = parseYears(json.decode(response.body)["result"]);
@@ -109,8 +108,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "activityTypeId": activityId.toString()
     };
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityList"),
+        Uri.parse(Config.pgasGetActivityList),
         headers: header,
         body: body);
     return parseActivities(json.decode(response.body)["result"]);
@@ -146,8 +144,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     };
 
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity"),
+        Uri.parse(Config.pgasAddUserActivity),
         headers: header,
         body: body);
 
@@ -187,7 +184,7 @@ class NewAchievePgasViewModel extends BaseViewModel {
     dio.options.headers["X-Access-Token"] = "$accessToken";
 
     var response = await dio
-        .put("https://api-next.kemsu.ru/api/storage/pgas-mobile", data: fd);
+        .put(Config.pgas, data: fd);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       fileName = json.decode(json.encode(response.data["fileNames"].first));

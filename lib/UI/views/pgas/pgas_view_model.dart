@@ -9,6 +9,7 @@ import 'package:kemsu_app/UI/views/pgas/pgas_detail_screen.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/config.dart';
 import 'model/short_pgas_request.dart';
 import 'new_pgas_request_screen.dart';
 
@@ -56,8 +57,7 @@ class PgasViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestList"),
+        Uri.parse(Config.pgasGetRequestList),
         headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       pgasList = parsePgasRequests(json.decode(response.body)["result"]);

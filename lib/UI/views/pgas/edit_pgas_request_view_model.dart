@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/config.dart';
 import 'model/faculty.dart';
 import 'model/pgas_detail.dart';
 import 'model/semester_type.dart';
@@ -59,8 +60,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"),
+        Uri.parse(Config.pgasGetRequestInfo),
         headers: header,
         body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -82,8 +82,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"),
+        Uri.parse(Config.pgasGetFacultyList),
         headers: header);
     facultiesList = parseFaculties(json.decode(response.body)["result"]);
     chooseFaculty = facultiesList
@@ -96,8 +95,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"),
+        Uri.parse(Config.pgasGetSemesterTypeList),
         headers: header);
     semestersList = parseSemesterTypes(json.decode(response.body)["result"]);
     chooseSemester = semestersList
@@ -147,8 +145,7 @@ class EditPgasRequestViewModel extends BaseViewModel {
       };
 
       var response = await http.post(
-          Uri.parse(
-              "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest"),
+          Uri.parse(Config.pgasEditRequest),
           headers: header,
           body: body);
 

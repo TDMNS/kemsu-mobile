@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/config.dart';
 import 'model/faculty.dart';
 import 'model/semester_type.dart';
 
@@ -61,8 +62,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList"),
+        Uri.parse(Config.pgasGetFacultyList),
         headers: header);
     facultiesList = parseFaculties(json.decode(response.body)["result"]);
     notifyListeners();
@@ -72,8 +72,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList"),
+        Uri.parse(Config.pgasGetSemesterTypeList),
         headers: header);
     semestersList = parseSemesterTypes(json.decode(response.body)["result"]);
     notifyListeners();
@@ -117,8 +116,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
       };
 
       var response = await http.post(
-          Uri.parse(
-              "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addRequest"),
+          Uri.parse(Config.pgasAddRequest),
           headers: header,
           body: body);
 

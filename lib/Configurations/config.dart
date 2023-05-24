@@ -37,4 +37,19 @@ class Config {
   static String notifications = 'https://api-next.kemsu.ru/api/noty/mobile/getUserNotificationList';
   static String storageNotify = 'https://api-next.kemsu.ru/api/storage/notify';
   static String addReport = 'https://api-next.kemsu.ru/api/bugreport/main/addReport';
+  static String pgas = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile';
+  static String pgasStorage = 'https://api-next.kemsu.ru/api/storage/pgas-mobile';
+  static String pgasGetRequestInfo = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo';
+  static String pgasGetFacultyList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getFacultyList';
+  static String pgasGetSemesterTypeList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getSemesterTypeList';
+  static String pgasGetRequestList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestList';
+  static String pgasDeleteRequest = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteRequest';
+  static String pgasDeleteUserActivity = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteUserActivity';
+  static String pgasGetUserActivityList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getUserActivityList';
+  static String pgasAddRequest = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addRequest';
+  static String pgasAddUserActivity = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/addUserActivity';
+  static String pgasGetActivityList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityList';
+  static String pgasEditRequest = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest';
+  static String pgasGetActivityTypeList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList';
+  static String bugReport = 'https://api-next.kemsu.ru/api/bugreport/main/reportList';
 }

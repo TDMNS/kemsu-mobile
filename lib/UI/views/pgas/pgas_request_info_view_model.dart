@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/config.dart';
 import 'edit_pgas_request_screen.dart';
 import 'model/pgas_detail.dart';
 
@@ -54,8 +55,7 @@ class PgasRequestInfoViewModel extends BaseViewModel {
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getRequestInfo"),
+        Uri.parse(Config.pgasGetRequestInfo),
         headers: header,
         body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -71,8 +71,7 @@ class PgasRequestInfoViewModel extends BaseViewModel {
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     Map<String, dynamic> body = {"requestId": pgasRequestId};
     var response = await http.post(
-        Uri.parse(
-            "https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/deleteRequest"),
+        Uri.parse(Config.pgasDeleteRequest),
         headers: header,
         body: body);
     if (response.statusCode == 200 || response.statusCode == 201) {

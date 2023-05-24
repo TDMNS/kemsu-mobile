@@ -85,7 +85,7 @@ class BugReportViewModel extends BaseViewModel {
     String? accessToken = await storage.read(key: "tokenKey");
     Map<String, String> header = {"X-Access-Token": "$accessToken"};
     var response =
-        await http.get(Uri.parse("https://api-next.kemsu.ru/api/bugreport/main/reportList"), headers: header);
+        await http.get(Uri.parse(Config.bugReport), headers: header);
     if (response.statusCode == 200 || response.statusCode == 201) {
       reportList = parseReports(json.decode(response.body)["result"]);
       notifyListeners();
