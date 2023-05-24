@@ -1,5 +1,11 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
+# Project files
+*.iml
+*.lock
+*.log
+*.log.*
+
 # IDE files
 .idea/
 .vscode/
@@ -9,8 +15,9 @@
 *~
 
 # Files and directories created by pub
-.flutter-plugins/
-.flutter-plugins-dependencies/
+.DS_Store
+.flutter-plugins
+.flutter-plugins-dependencies
 .dart_tool/
 .packages/
 .pub/
