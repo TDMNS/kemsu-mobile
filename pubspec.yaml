@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  stacked: ^2.3.0
+  stacked: ^3.2.8
   mask_text_input_formatter: ^2.1.0
   flutter_svg: ^1.0.3
   dio: ^4.0.4
