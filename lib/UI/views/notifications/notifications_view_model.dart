@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:stacked/stacked_annotations.dart';
 import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +14,7 @@ class NotificationViewModel extends BaseViewModel {
 
   Future onReady() async {
     await getUserNotifications();
+    await socketIO();
   }
 
   List<UserNotifications> userNotifications = [];
@@ -30,12 +30,12 @@ class NotificationViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  socketTest() async {
+  socketIO() async {
     String? token = await storage.read(key: "tokenKey");
 
     IO.Socket socket = IO.io('wss://api-next.kemsu.ru', <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': false, // Set this to true if you want to connect immediately
+      'autoConnect': true, // Set this to true if you want to connect immediately
       'path': '/socket.io/notifications',
       'auth': {'accessToken': token},
     });

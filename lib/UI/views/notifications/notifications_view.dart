@@ -45,53 +45,48 @@ Widget _notView(context, NotificationViewModel model) {
           builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
             if (snapshot.hasData) {
               List<String> urls = snapshot.data ?? [""];
-              return Column(
-                children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: model.userNotifications.length,
-                    itemBuilder: (context, index) {
-                      final item = model.userNotifications[index];
-                      return Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: GestureDetector(
-                                onTap: () {},
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: model.userNotifications.length,
+                itemBuilder: (context, index) {
+                  final item = model.userNotifications[index];
+                  return Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
                                 child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(12)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6),
-                                    child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          richText("${item.title}", "", context, isWhite: true),
-                                          const SizedBox(height: 10),
-                                          richText("${item.message}", "", context, isWhite: true),
-                                          const SizedBox(height: 10),
-                                          richText("${item.notificationDateTime}", "", context, isWhite: true),
-                                          const SizedBox(height: 10),
-                                          item.fileSrc != "" && item.fileSize != 0
-                                              ? _pictureView(context, urls[index])
-                                              : const SizedBox.shrink(), // отображаем изображение из списка
-                                        ],
-                                      ),
-                                    ),
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      richText("${item.title}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      richText("${item.message}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      richText("${item.notificationDateTime}", "", context, isWhite: true),
+                                      const SizedBox(height: 10),
+                                      item.fileSrc != "" && item.fileSize != 0
+                                          ? _pictureView(context, urls[index])
+                                          : const SizedBox.shrink(), // отображаем изображение из списка
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               );
             } else {
               return const Center(
