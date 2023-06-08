@@ -5,6 +5,8 @@ import 'package:kemsu_app/UI/views/schedule/prep_schedule_view_model.dart';
 
 import 'package:stacked/stacked.dart';
 
+import '../../../Configurations/localizable.dart';
+import '../../common_views/primary_button.dart';
 import '../../widgets.dart';
 
 List<DropdownMenuItem<String>> dropdownItems = [];
@@ -86,35 +88,18 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
         ),
       ),
       Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: GestureDetector(
-            onTap: () {
-              model.getTeacher();
-              model.changeTeacher("");
-              model.notifyListeners();
-            },
-            child: Container(
-              height: 50,
-              width: 200,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context).primaryColorLight,
-                    blurRadius: 15,
-                    offset: const Offset(0, 15),
-                    spreadRadius: -15)
-              ]),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const Center(
-                    child: Text(
-                  'Сбросить',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                )),
-              ),
-            ),
-          )),
+        padding: const EdgeInsets.only(top: 15),
+        child: mainButton(
+          context,
+          onPressed: () {
+            model.getTeacher();
+            model.changeTeacher("");
+            model.notifyListeners();
+          },
+          title: Localizable.reset,
+          isPrimary: false,
+        ),
+      ),
       model.teacherId != 0
           ? Center(
               child: Padding(

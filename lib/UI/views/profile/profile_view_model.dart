@@ -65,6 +65,7 @@ class ProfileViewModel extends BaseViewModel {
   File? localImage;
   bool darkTheme = false;
   String? avatar;
+  bool isExpanded = false;
 
   saveImage() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -292,7 +293,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
               ? const Center(
                   child: CircularProgressIndicator(color: Colors.blue),
                 )
-              : Stack(),
+              : const Stack(),
         ]);
       },
     ),
