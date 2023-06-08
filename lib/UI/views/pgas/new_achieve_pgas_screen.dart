@@ -13,7 +13,7 @@ class NewAchievePgasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewAchievePgasViewModel>.reactive(
         viewModelBuilder: () => NewAchievePgasViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
             appBar: customAppBar(context, model, "Прикрепление"),
@@ -27,15 +27,6 @@ _body(context, NewAchievePgasViewModel model) {
   return SingleChildScrollView(
     child: Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _title(context),
-            ],
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.all(8),
           child: _achieveCategoryDropDown(context, model),
@@ -63,11 +54,6 @@ _body(context, NewAchievePgasViewModel model) {
       ],
     ),
   );
-}
-
-_title(context) {
-  return const Text("Прикрепление достижения",
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blueAccent));
 }
 
 _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
@@ -468,10 +454,10 @@ _fileContainer(context, NewAchievePgasViewModel model) {
                 color: Colors.transparent,
                 border: Border.all(color: Colors.grey),
                 borderRadius: const BorderRadius.all(Radius.circular(15))),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   "+",
                   textAlign: TextAlign.center,

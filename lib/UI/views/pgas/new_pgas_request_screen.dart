@@ -17,7 +17,7 @@ class NewPgasRequestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewPgasRequestViewModel>.reactive(
         viewModelBuilder: () => NewPgasRequestViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
             appBar: customAppBar(context, model, "Новая заявка"),
@@ -31,15 +31,6 @@ _body(context, NewPgasRequestViewModel model) {
   return SingleChildScrollView(
     child: Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _title(context),
-            ],
-          ),
-        ),
         const SizedBox(
           height: 22,
         ),
@@ -279,9 +270,4 @@ _sendButton(context, NewPgasRequestViewModel model) {
           ),
         )),
   );
-}
-
-_title(context) {
-  return const Text("Новая заявка на ПГАС",
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.blueAccent));
 }
