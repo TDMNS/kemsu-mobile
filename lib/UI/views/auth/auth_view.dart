@@ -154,7 +154,7 @@ class AuthView extends StatelessWidget {
           padding: const EdgeInsets.only(top: 35),
           child: GestureDetector(
             onTap: () {
-              authAlert(context);
+              _authAlert(context);
             },
             child: const Text(
               'Проблемы с входом?',
@@ -166,7 +166,7 @@ class AuthView extends StatelessWidget {
     );
   }
 
-  void authAlert(BuildContext context) {
+  void _authAlert(BuildContext context) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(

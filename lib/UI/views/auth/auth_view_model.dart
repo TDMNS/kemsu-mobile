@@ -24,31 +24,33 @@ class AuthViewModel extends BaseViewModel {
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future onReady() async {
+  Future<void> onReady() async {
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
     String? check = await storage.read(key: "rememberCheck");
-    check == 'true' ? rememberMe = true : rememberMe = false;
+    rememberMe = check == 'true';
     rememberMe ? loginController.text = login! : loginController.text = '';
     rememberMe ? passwordController.text = password! : passwordController.text = '';
     notifyListeners();
   }
 
-  rememberFunc(value) async {
-    rememberMe = value;
+  void rememberFunc(bool? value) async {
+    rememberMe = value ?? false;
     await storage.write(key: "rememberCheck", value: "$rememberMe");
     notifyListeners();
   }
 
-  void authButton(context) async {
-    final response = await http
-        .post(Uri.parse(Config.apiHost), body: {"login": loginController.text, "password": passwordController.text});
+  Future<void> authButton(BuildContext context) async {
+    final response = await http.post(
+      Uri.parse(Config.apiHost),
+      body: {"login": loginController.text, "password": passwordController.text},
+    );
     final tempToken = json.decode(response.body)['accessToken'];
 
     if (response.statusCode == 200) {
       var userData = json.decode(response.body)['userInfo'];
       userType = userData["userType"];
-      userType == 'сотрудник' ? userProfile = 1 : userProfile = 0;
+      userProfile = userType == 'сотрудник' ? 1 : 0;
 
       await storage.write(key: "tokenKey", value: tempToken);
       await storage.write(key: "login", value: loginController.text);
@@ -58,18 +60,20 @@ class AuthViewModel extends BaseViewModel {
       lastName = userData['lastName'];
       firstName = userData['firstName'];
       middleName = userData['middleName'];
-      fio = ('$lastName $firstName $middleName');
+      fio = '$lastName $firstName $middleName';
       await storage.write(key: "FIO", value: fio);
     }
 
     switch (response.statusCode) {
       case 200:
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MainMenu(
-                      type: userProfile,
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainMenu(
+              type: userProfile,
+            ),
+          ),
+        );
         break;
       case 400:
         errorDialog(context, 'Требуется логин/пароль пользователя!');
@@ -78,21 +82,17 @@ class AuthViewModel extends BaseViewModel {
         errorDialog(context, 'Некорректный логин/пароль пользователя!');
         break;
       case 500:
-        errorDialog(context, 'Ошибка сервера! Если ошибка не исчезнет обратитесь в отдел совпровождения');
+        errorDialog(context, 'Ошибка сервера! Если ошибка не исчезнет обратитесь в отдел сопровождения');
         break;
       default:
-        errorDialog(context, 'Непредвиденная ошибка! Если ошибка не исчезнет обратитесь в отдел совпровождения');
+        errorDialog(context, 'Непредвиденная ошибка! Если ошибка не исчезнет обратитесь в отдел сопровождения');
         break;
     }
     notifyListeners();
   }
 
   void isVisiblePassword() {
-    if (isObscure) {
-      isObscure = false;
-    } else {
-      isObscure = true;
-    }
+    isObscure = !isObscure;
     notifyListeners();
   }
 }
