@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 import '../../menu.dart';
 import '../../widgets.dart';
-import 'auth_view.dart';
 
 class AuthViewModel extends BaseViewModel {
   AuthViewModel(BuildContext context);
@@ -21,6 +20,9 @@ class AuthViewModel extends BaseViewModel {
   String middleName = '';
   bool rememberMe = false;
   final storage = const FlutterSecureStorage();
+
+  final loginController = TextEditingController();
+  final passwordController = TextEditingController();
 
   Future onReady() async {
     String? login = await storage.read(key: "login");
