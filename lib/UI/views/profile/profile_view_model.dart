@@ -102,7 +102,13 @@ class ProfileViewModel extends BaseViewModel {
   Future onReady(BuildContext context) async {
     prolongToken(context);
     String? img = await storage.read(key: "avatar");
-    img != null ? file = File(img) : file;
+    img != null ? file = File(img) : file = null;
+
+    bool fileExists = await file?.exists() ?? false; // Проверяем, существует ли файл
+
+    if (!fileExists) {
+      file = null;
+    }
 
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
@@ -291,9 +297,9 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
               }),
           isLoading
               ? const Center(
-                  child: CircularProgressIndicator(color: Colors.blue),
-                )
-              : const Stack(),
+            child: CircularProgressIndicator(color: Colors.blue),
+          )
+              : Stack(),
         ]);
       },
     ),

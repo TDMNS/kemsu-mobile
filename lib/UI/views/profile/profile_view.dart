@@ -59,7 +59,6 @@ class _ProfileViewState extends State<ProfileView> {
                 GestureDetector(
                   onTap: () {
                     _getFromGallery(model);
-
                     Navigator.pop(context, 'OK');
                   },
                   child: const Text(
@@ -130,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
       child: Column(
         children: [
           Container(
-            height: model.isExpanded ? 500 : 300,
+            height: model.isExpanded ? 525 : 325,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -152,7 +151,7 @@ class _ProfileViewState extends State<ProfileView> {
                   left: 0,
                   child: Column(
                     children: [
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 75),
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40,
@@ -163,8 +162,8 @@ class _ProfileViewState extends State<ProfileView> {
                           child: ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.imageFile != null
-                                ? Image.file(model.imageFile!,
+                            child: model.file != null
+                                ? Image.file(model.file!,
                                     fit: BoxFit.cover, width: 80, height: 80)
                                 : const Icon(Icons.person,
                                     size: 80, color: Colors.grey),
