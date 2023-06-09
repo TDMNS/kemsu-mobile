@@ -125,10 +125,10 @@ class _ProfileViewState extends State<ProfileView> {
           Container(
             height: model.isExpanded ? 525 : 325,
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.pinkAccent, Colors.blueAccent, Colors.white],
-                stops: [0.5, 0.95, 1.0], // Добавлены значения stops для указания позиций цветов
+                colors: [Colors.pinkAccent, Colors.blueAccent, Theme.of(context).colorScheme.background],
+                stops: const [0.5, 0.95, 1.0],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
