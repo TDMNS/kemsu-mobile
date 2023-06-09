@@ -64,10 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
                   },
                   child: const Text(
                     'Галерея',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 const SizedBox(
@@ -80,10 +77,7 @@ class _ProfileViewState extends State<ProfileView> {
                   },
                   child: const Text(
                     'Камера',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
                 const SizedBox(
@@ -134,11 +128,7 @@ class _ProfileViewState extends State<ProfileView> {
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Colors.pinkAccent,
-                  Colors.blueAccent,
-                  Colors.white
-                ],
+                colors: [Colors.pinkAccent, Colors.blueAccent, Colors.white],
                 stops: [0.5, 0.95, 1.0], // Добавлены значения stops для указания позиций цветов
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -161,43 +151,27 @@ class _ProfileViewState extends State<ProfileView> {
                             avatarChoice(context, model);
                           },
                           child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.imageFile != null
-                                ? Image.file(model.imageFile!,
-                                    fit: BoxFit.cover, width: 80, height: 80)
-                                : const Icon(Icons.person,
-                                    size: 80, color: Colors.grey),
+                            borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                            child: model.file != null
+                                ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80)
+                                : const Icon(Icons.person, size: 80, color: Colors.grey),
                           ),
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         '${model.lastName ?? ''} ${model.firstName ?? ''} ${model.middleName ?? ''}',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        model.userType == EnumUserType.student
-                            ? 'Студент'
-                            : 'Преподаватель',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
+                        model.userType == EnumUserType.student ? 'Студент' : 'Преподаватель',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        model.userType == EnumUserType.student
-                            ? model.group ?? ''
-                            : model.faculty ?? '',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
+                        model.userType == EnumUserType.student ? model.group ?? '' : model.faculty ?? '',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       const SizedBox(height: 50),
                       Visibility(
@@ -278,17 +252,13 @@ class _ProfileViewState extends State<ProfileView> {
                           model.isExpanded ? Icons.expand_less : Icons.expand_more,
                           color: Colors.white,
                           size: 24.0,
-                          semanticLabel:
-                              'Text to announce in accessibility modes',
+                          semanticLabel: 'Text to announce in accessibility modes',
                         ),
                       ),
                       const SizedBox(height: 5),
                       const Text(
                         'Подробнее',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
                       ),
                     ],
                   ),
@@ -342,8 +312,7 @@ class _ProfileViewState extends State<ProfileView> {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Предупреждение'),
-                  content: const Text(
-                      'Вы действительно хотите выйти из мобильного приложения?'),
+                  content: const Text('Вы действительно хотите выйти из мобильного приложения?'),
                   actions: [
                     ElevatedButton(
                         onPressed: () {
