@@ -50,35 +50,26 @@ class _ProfileViewState extends State<ProfileView> {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        ),
         title: const Text('Выбор фотографии'),
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
             child: Column(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _getFromGallery(model);
-                    Navigator.pop(context, 'OK');
-                  },
-                  child: const Text(
-                    'Галерея',
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
+                mainButton(context, onPressed: () {
+                  _getFromGallery(model);
+                  Navigator.pop(context, 'OK');
+                }, title: 'Галерея', isPrimary: true),
                 const SizedBox(
                   height: 15,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _getFromCamera(model);
-                    Navigator.pop(context, 'OK');
-                  },
-                  child: const Text(
-                    'Камера',
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
+                mainButton(context, onPressed: () {
+                  _getFromCamera(model);
+                  Navigator.pop(context, 'OK');
+                }, title: 'Камера', isPrimary: false),
                 const SizedBox(
                   height: 15,
                 ),
@@ -100,8 +91,8 @@ class _ProfileViewState extends State<ProfileView> {
       setState(() {
         model.imageFile = File(pickedFile.path);
       });
+      model.saveImage();
     }
-    model.saveImage();
   }
 
   _getFromCamera(ProfileViewModel model) async {
@@ -114,8 +105,8 @@ class _ProfileViewState extends State<ProfileView> {
       setState(() {
         model.imageFile = File(pickedFile.path);
       });
+      model.saveImage();
     }
-    model.saveImage();
   }
 
   _profileView(BuildContext context, ProfileViewModel model) {
@@ -310,19 +301,28 @@ class _ProfileViewState extends State<ProfileView> {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Предупреждение'),
-                  content: const Text('Вы действительно хотите выйти из мобильного приложения?'),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Отмена')),
-                    ElevatedButton(
-                        onPressed: () {
-                          model.exit(context);
-                        },
-                        child: const Text('Да'))
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  ),
+                  title: const Text('Вы действительно хотите выйти из мобильного приложения?', textAlign: TextAlign.center),
+                  actions: <Widget>[
+                    Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: <Widget>[
+                          mainButton(context, onPressed: () {
+                            Navigator.pop(context);
+                          }, title: 'Отмена', isPrimary: true),
+                          const SizedBox(height: 15),
+                          mainButton(context, onPressed: () {
+                            model.exit(context);
+                          }, title: 'Да', isPrimary: false),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               );
