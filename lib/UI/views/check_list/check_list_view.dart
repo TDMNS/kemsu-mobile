@@ -12,7 +12,7 @@ class CheckListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CheckListViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => CheckListViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -30,20 +30,24 @@ class CheckListView extends StatelessWidget {
 }
 
 _checkListView(BuildContext context, CheckListViewModel model) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 15, right: 15),
-    child: ListView(shrinkWrap: true, children: [
-      const SizedBox(height: 12),
-      Text("Список подразделений", style: Theme.of(context).textTheme.headlineSmall),
-      const SizedBox(height: 10),
-      const Text(
+  return ListView(shrinkWrap: true, children: [
+    const SizedBox(height: 12),
+    Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Text("Список подразделений", style: Theme.of(context).textTheme.headlineSmall),
+    ),
+    const SizedBox(height: 10),
+    const Padding(
+      padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+      child: Text(
         'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь',
         style: TextStyle(color: Colors.red),
+        textAlign: TextAlign.end,
       ),
-      const SizedBox(height: 10),
-      getListView(model.checkList)
-    ]),
-  );
+    ),
+    const SizedBox(height: 10),
+    getListView(model.checkList)
+  ]);
 }
 
 Widget getListView(List<CheckList> items) {
