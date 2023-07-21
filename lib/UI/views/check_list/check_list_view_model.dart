@@ -17,6 +17,8 @@ class CheckListViewModel extends BaseViewModel {
 
   int selectedIndex = 2;
 
+  bool circle = true;
+
   List<CheckList> parseCheckList(List response) {
     return response.map<CheckList>((json) => CheckList.fromJson(json)).toList();
   }
@@ -32,6 +34,7 @@ class CheckListViewModel extends BaseViewModel {
     checkList = parseCheckList(json.decode(response.body)['checkList']);
     appMetricaTest();
     notifyListeners();
+    circle = false;
   }
 
   void appMetricaTest() {

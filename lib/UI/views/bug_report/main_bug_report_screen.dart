@@ -14,7 +14,7 @@ class MainBugReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<BugReportViewModel>.reactive(
         viewModelBuilder: () => BugReportViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(context),
+        onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
           return model.circle
               ? Container(

@@ -18,7 +18,17 @@ class CheckListView extends StatelessWidget {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-            child: Scaffold(
+            child: model.circle
+                ? Container(
+              color: Theme.of(context).primaryColor,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            )
+            : Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, 'Обходной лист'),
@@ -63,9 +73,7 @@ Widget getListView(List<CheckList> items) {
       return ListTile(
           title: Text(departmentTitle),
           subtitle: Text(groupName + '\n' + address),
-          trailing: item.debt == "Нет"
-              ? const Icon(Icons.done, color: Colors.green)
-              : const Icon(Icons.cancel, color: Colors.red));
+          trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red));
     },
   );
 }
