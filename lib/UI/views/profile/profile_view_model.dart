@@ -10,7 +10,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/config.dart';
 import '../../widgets.dart';
 import '../auth/auth_view.dart';
-import '../bug_report/main_bug_report_screen.dart';
+import '../bug_report/bug_report_view.dart';
 import '../info/info_view.dart';
 import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
@@ -104,7 +104,7 @@ class ProfileViewModel extends BaseViewModel {
     String? img = await storage.read(key: "avatar");
     img != null ? file = File(img) : file = null;
 
-    bool fileExists = await file?.exists() ?? false; // Проверяем, существует ли файл
+    bool fileExists = await file?.exists() ?? false;
 
     if (!fileExists) {
       file = null;
@@ -299,7 +299,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
               ? const Center(
             child: CircularProgressIndicator(color: Colors.blue),
           )
-              : Stack(),
+              : const Stack(),
         ]);
       },
     ),

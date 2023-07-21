@@ -5,7 +5,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
-import 'package:kemsu_app/UI/views/bug_report/report.dart';
+import 'package:kemsu_app/UI/views/bug_report/bug_report_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
@@ -23,11 +23,10 @@ class BugReportViewModel extends BaseViewModel {
 
   Future onReady(context) async {
     await fetchReports(context);
-    circle = false;
-
     getDeviceInfo();
     appMetricaTest();
     notifyListeners();
+    circle = false;
   }
 
   void appMetricaTest() {

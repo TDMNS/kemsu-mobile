@@ -59,7 +59,7 @@ _body(context, BugReportViewModel model) {
 
 _errorMessagesTitle(context) {
   return Padding(
-    padding: const EdgeInsets.only(right: 20),
+    padding: const EdgeInsets.only(right: 15),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -77,47 +77,44 @@ _errorMessagesTitle(context) {
 }
 
 _reportSpace(context, BugReportViewModel model) {
-  return Padding(
-    padding: const EdgeInsets.all(8),
-    child: model.reportList.isEmpty
-        ? const Center(
-            child: Text("Нет отправленных обращений.",
-                style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
-        : ListView.builder(
-            physics: const ScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: model.reportList.length,
-            itemBuilder: (context, index) {
-              final reportList = model.reportList[index].reportStatus;
-              return ExpansionTile(
-                title: Text(model.reportList[index].message.toString()),
-                subtitle: Text(reportList ?? "Заявка не обработана",
-                    style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColorDark),
-                            children: <TextSpan>[
-                              const TextSpan(text: 'Дата обращения: '),
-                              TextSpan(
-                                  text: model.reportList[index].messageDate.toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
-                            ],
-                          ),
+  return model.reportList.isEmpty
+      ? const Center(
+          child: Text("Нет отправленных обращений.",
+              style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
+      : ListView.builder(
+          physics: const ScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: model.reportList.length,
+          itemBuilder: (context, index) {
+            final reportList = model.reportList[index].reportStatus;
+            return ExpansionTile(
+              title: Text(model.reportList[index].message.toString()),
+              subtitle: Text(reportList ?? "Заявка не обработана",
+                  style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColorDark),
+                          children: <TextSpan>[
+                            const TextSpan(text: 'Дата обращения: '),
+                            TextSpan(
+                                text: model.reportList[index].messageDate.toString(),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              );
-            }),
-  );
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          });
 }
 
 newMessageDialog(context, BugReportViewModel model) {
