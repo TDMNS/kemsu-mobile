@@ -74,12 +74,15 @@ class AuthView extends StatelessWidget {
           margin: const EdgeInsets.only(right: 30, left: 30, bottom: 30, top: 8),
           color: Colors.grey.withOpacity(0.05),
           child: TextFormField(
+            onChanged: (letters) {
+              model.notifyListeners();
+            },
             decoration: InputDecoration(
               suffixIcon: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  model.passwordController.text != ''
+                  model.passwordController.text.isNotEmpty
                       ? IconButton(
                     onPressed: () {
                       model.isVisiblePassword();
@@ -97,7 +100,7 @@ class AuthView extends StatelessWidget {
               hintText: '••••••',
               hintStyle: const TextStyle(letterSpacing: 5.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
             ),
-            style: const TextStyle(letterSpacing: 5.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+            style: TextStyle(letterSpacing: model.isObscure ? 5.0 : 0.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
             controller: model.passwordController,
             obscureText: model.isObscure,
           ),

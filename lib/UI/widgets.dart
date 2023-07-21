@@ -20,6 +20,9 @@ errorDialog(context, textContent) {
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
           child: const Text('OK'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
         ),
       ],
     ),

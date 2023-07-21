@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomThemes {
@@ -17,11 +18,9 @@ class CustomThemes {
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white))),
       primaryColorDark: Colors.white,
       primaryColorLight: Colors.blueGrey.shade900.withOpacity(0.3),
-      elevatedButtonTheme:
-          ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue))),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue))),
       canvasColor: Colors.white,
-      appBarTheme:
-          AppBarTheme(backgroundColor: Colors.grey.shade900, titleTextStyle: const TextStyle(color: Colors.white)),
+      appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade900, titleTextStyle: const TextStyle(color: Colors.white)),
       cardColor: Colors.grey.shade900,
       expansionTileTheme: const ExpansionTileThemeData(
         textColor: Colors.blue,
@@ -29,8 +28,8 @@ class CustomThemes {
         iconColor: Colors.blue,
       ),
       colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.black),
-      textSelectionTheme: const TextSelectionThemeData(
-          selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue));
+      textSelectionTheme: const TextSelectionThemeData(selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue),
+      cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: Colors.blue));
 
   static final lightTheme = ThemeData(
       brightness: Brightness.light,
@@ -48,8 +47,7 @@ class CustomThemes {
           fillColor: Colors.black,
           focusColor: Colors.black,
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black))),
-      elevatedButtonTheme:
-          ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue))),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue))),
       canvasColor: Colors.grey.shade600,
       appBarTheme: const AppBarTheme(backgroundColor: Colors.white, titleTextStyle: TextStyle(color: Colors.black)),
       cardColor: Colors.white,
@@ -59,6 +57,7 @@ class CustomThemes {
         iconColor: Colors.blue,
       ),
       colorScheme: const ColorScheme.light().copyWith(secondary: Colors.white),
-      textSelectionTheme: const TextSelectionThemeData(
-          selectionHandleColor: Colors.blue, selectionColor: Colors.blue, cursorColor: Colors.blue));
+      textSelectionTheme:
+          const TextSelectionThemeData(selectionColor: Colors.transparent, cursorColor: Colors.blue, selectionHandleColor: Colors.blue),
+      cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: Colors.blue));
 }

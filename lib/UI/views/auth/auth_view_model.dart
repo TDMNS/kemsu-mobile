@@ -45,6 +45,7 @@ class AuthViewModel extends BaseViewModel {
       Uri.parse(Config.apiHost),
       body: {"login": loginController.text, "password": passwordController.text},
     );
+    print("HERE YOUR PASSWORD CONTROLLER TEXT = ${passwordController.text}");
     final tempToken = json.decode(response.body)['accessToken'];
 
     if (response.statusCode == 200) {

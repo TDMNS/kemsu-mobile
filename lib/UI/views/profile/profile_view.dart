@@ -150,7 +150,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '${model.lastName ?? ''} ${model.firstName ?? ''} ${model.middleName ?? ''}',
+                        '${model.lastName} ${model.firstName} ${model.middleName}',
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
                       ),
                       const SizedBox(height: 5),
