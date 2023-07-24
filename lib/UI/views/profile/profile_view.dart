@@ -37,7 +37,7 @@ class _ProfileViewState extends State<ProfileView> {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, 'Главная'),
+              appBar: customAppBar(context, model, Localizable.mainTitle),
               body: _profileView(context, model),
             ),
           ),
@@ -53,7 +53,7 @@ class _ProfileViewState extends State<ProfileView> {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
-        title: const Text('Выбор фотографии'),
+        title: Text(Localizable.mainChoosePhoto),
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
@@ -61,15 +61,15 @@ class _ProfileViewState extends State<ProfileView> {
               children: <Widget>[
                 mainButton(context, onPressed: () {
                   _getFromGallery(model);
-                  Navigator.pop(context, 'OK');
-                }, title: 'Галерея', isPrimary: true),
+                  Navigator.pop(context, Localizable.ok);
+                }, title: Localizable.mainGallery, isPrimary: true),
                 const SizedBox(
                   height: 15,
                 ),
                 mainButton(context, onPressed: () {
                   _getFromCamera(model);
-                  Navigator.pop(context, 'OK');
-                }, title: 'Камера', isPrimary: false),
+                  Navigator.pop(context, Localizable.ok);
+                }, title: Localizable.mainCamera, isPrimary: false),
                 const SizedBox(
                   height: 15,
                 ),
@@ -155,12 +155,12 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        model.userType == EnumUserType.student ? 'Студент' : 'Преподаватель',
+                        model.userType == EnumUserType.student ? Localizable.mainStudent : Localizable.mainTeacher,
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        model.userType == EnumUserType.student ? model.group ?? '' : model.faculty ?? '',
+                        model.userType == EnumUserType.student ? model.group : model.faculty,
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                       const SizedBox(height: 50),
@@ -168,9 +168,9 @@ class _ProfileViewState extends State<ProfileView> {
                         visible: model.isExpanded,
                         child: Column(
                           children: [
-                            const Text(
-                              'ПОДРОБНОСТИ',
-                              style: TextStyle(
+                            Text(
+                              Localizable.mainDetails,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -178,7 +178,7 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              model.speciality ?? '',
+                              model.speciality,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -241,14 +241,13 @@ class _ProfileViewState extends State<ProfileView> {
                         child: Icon(
                           model.isExpanded ? Icons.expand_less : Icons.expand_more,
                           color: Colors.white,
-                          size: 24.0,
-                          semanticLabel: 'Text to announce in accessibility modes',
+                          size: 24.0
                         ),
                       ),
                       const SizedBox(height: 5),
-                      const Text(
-                        'Подробнее',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
+                      Text(
+                        Localizable.mainMore,
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
                       ),
                     ],
                   ),
@@ -269,28 +268,28 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   profileTiles(context, onPressed: () {
                     model.navigateRosView(context, model);
-                  }, title: 'БРС', imageSource: 'images/icons/search.png'),
+                  }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
                   profileTiles(context, onPressed: () {
                     model.navigatePgasScreen(context, model);
-                  }, title: 'ПГАС', imageSource: 'images/icons/invoice.png'),
+                  }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateInfoView(context);
-                  }, title: 'ИнфОУПро', imageSource: 'images/icons/book.png'),
+                  }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateDebtsView(context);
-                  }, title: 'Долги', imageSource: 'images/icons/exclamation_circle.png'),
+                  }, title: Localizable.mainDebts, imageSource: 'images/icons/exclamation_circle.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateOrderingInformationMainView(context);
-                  }, title: 'Заказ справок', imageSource: 'images/icons/group.png'),
+                  }, title: Localizable.mainOrderingInformation, imageSource: 'images/icons/group.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateCheckListView(context);
-                  }, title: 'Обходной лист', imageSource: 'images/icons/layers.png'),
+                  }, title: Localizable.mainCheckList, imageSource: 'images/icons/layers.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateWebView(context, model);
-                  }, title: 'Оплата услуг', imageSource: 'images/icons/money.png'),
+                  }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
                   profileTiles(context, onPressed: () {
                     model.navigateMainBugReportScreen(context, model);
-                  }, title: Localizable.support, imageSource: 'images/icons/shield.png'),
+                  }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png'),
                 ]),
           ),
           const SizedBox(height: 20),
@@ -304,7 +303,7 @@ class _ProfileViewState extends State<ProfileView> {
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   ),
-                  title: const Text('Вы действительно хотите выйти из мобильного приложения?', textAlign: TextAlign.center),
+                  title: Text(Localizable.mainWarning, textAlign: TextAlign.center),
                   actions: <Widget>[
                     Align(
                       alignment: Alignment.center,
@@ -312,11 +311,11 @@ class _ProfileViewState extends State<ProfileView> {
                         children: <Widget>[
                           mainButton(context, onPressed: () {
                             Navigator.pop(context);
-                          }, title: 'Отмена', isPrimary: true),
+                          }, title: Localizable.cancel, isPrimary: true),
                           const SizedBox(height: 15),
                           mainButton(context, onPressed: () {
                             model.exit(context);
-                          }, title: 'Да', isPrimary: false),
+                          }, title: Localizable.yes, isPrimary: false),
                           const SizedBox(
                             height: 15,
                           ),
@@ -327,7 +326,7 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               );
             },
-            title: Localizable.exit,
+            title: Localizable.mainExit,
             isPrimary: false,
           )),
           const SizedBox(height: 30)

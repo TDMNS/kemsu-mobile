@@ -96,7 +96,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
             model.changeTeacher("");
             model.notifyListeners();
           },
-          title: Localizable.reset,
+          title: Localizable.mainReset,
           isPrimary: false,
         ),
       ),

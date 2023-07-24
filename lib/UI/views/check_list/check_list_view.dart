@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/localizable.dart';
 import 'check_list_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -31,7 +32,7 @@ class CheckListView extends StatelessWidget {
             : Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, 'Обходной лист'),
+              appBar: customAppBar(context, model, Localizable.checkListTitle),
               body: _checkListView(context, model),
             ),
           );
@@ -44,14 +45,14 @@ _checkListView(BuildContext context, CheckListViewModel model) {
     const SizedBox(height: 12),
     Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Text("Список подразделений", style: Theme.of(context).textTheme.headlineSmall),
+      child: Text(Localizable.checkListDivisions, style: Theme.of(context).textTheme.headlineSmall),
     ),
     const SizedBox(height: 10),
-    const Padding(
-      padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
       child: Text(
-        'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь',
-        style: TextStyle(color: Colors.red),
+        Localizable.checkListDescription,
+        style: const TextStyle(color: Colors.red),
         textAlign: TextAlign.end,
       ),
     ),

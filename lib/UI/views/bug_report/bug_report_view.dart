@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_view_model.dart';
 import 'package:kemsu_app/UI/widgets.dart';
 import 'package:stacked/stacked.dart';
@@ -27,13 +28,13 @@ class MainBugReportScreen extends StatelessWidget {
                   ),
                 )
               : Scaffold(
-                  appBar: customAppBar(context, model, "Сообщения об ошибках"),
+                  appBar: customAppBar(context, model, Localizable.bugReportTitle),
                   body: _body(context, model),
                   floatingActionButton: FloatingActionButton(
                     backgroundColor: Colors.blue,
                     child: const Icon(Icons.edit, color: Colors.white),
                     onPressed: () {
-                      showDialog(context: context, builder: (_) => newMessageDialog(context, model));
+                      showDialog(context: context, builder: (_) => _newMessageDialog(context, model));
                     },
                   ),
                 );
@@ -64,7 +65,7 @@ _errorMessagesTitle(context) {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
-          "Ваши обращения",
+          Localizable.bugReportYour,
           style: TextStyle(
               fontSize: 24,
               fontStyle: FontStyle.normal,
@@ -78,9 +79,10 @@ _errorMessagesTitle(context) {
 
 _reportSpace(context, BugReportViewModel model) {
   return model.reportList.isEmpty
-      ? const Center(
-          child: Text("Нет отправленных обращений.",
-              style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
+      ? Center(
+          child: Text(
+              Localizable.bugReportEmpty,
+              style: const TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
       : ListView.builder(
           physics: const ScrollPhysics(),
           shrinkWrap: true,
@@ -89,7 +91,7 @@ _reportSpace(context, BugReportViewModel model) {
             final reportList = model.reportList[index].reportStatus;
             return ExpansionTile(
               title: Text(model.reportList[index].message.toString()),
-              subtitle: Text(reportList ?? "Заявка не обработана",
+              subtitle: Text(reportList ?? Localizable.bugReportNotProcessed,
                   style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
               children: <Widget>[
                 Padding(
@@ -101,7 +103,7 @@ _reportSpace(context, BugReportViewModel model) {
                         text: TextSpan(
                           style: TextStyle(fontSize: 16, color: Theme.of(context).primaryColorDark),
                           children: <TextSpan>[
-                            const TextSpan(text: 'Дата обращения: '),
+                            TextSpan(text: Localizable.bugReportDate),
                             TextSpan(
                                 text: model.reportList[index].messageDate.toString(),
                                 style: TextStyle(
@@ -117,14 +119,14 @@ _reportSpace(context, BugReportViewModel model) {
           });
 }
 
-newMessageDialog(context, BugReportViewModel model) {
+_newMessageDialog(context, BugReportViewModel model) {
   return AlertDialog(
-    title: const Text("Создать обращение"),
+    title: Text(Localizable.bugReportCreate),
     content: TextField(
       cursorColor: Colors.blue,
       controller: model.errorMsgController,
-      decoration: const InputDecoration(
-        hintText: 'Введите сообщение',
+      decoration: InputDecoration(
+        hintText: Localizable.bugReportEnterMessage,
       ),
       maxLines: null,
     ),
@@ -136,7 +138,7 @@ newMessageDialog(context, BugReportViewModel model) {
           onPressed: () async {
             model.sendAction(context);
           },
-          child: const Text("Отправить"))
+          child: Text(Localizable.bugReportSend))
     ],
   );
 }
