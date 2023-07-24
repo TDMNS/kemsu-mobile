@@ -19,6 +19,14 @@ static String odd = 'нечетная';
 static String time = 'Время';
 static String classes = 'Пары';
 static String show = 'Показать';
+static String lastName = 'Фамилия';
+static String firstName = 'Имя';
+static String patronymic = 'Отчество';
+static String instituteName = 'Название института';
+static String courseNumber = 'Курс';
+static String educationLevel = 'Уровень образования';
+static String groupName = 'Группа';
+static String basic = 'Форма обучения';
   /// Main
 static String mainTitle = 'Главная';
 static String mainChoosePhoto = 'Выбор фотографии';
@@ -58,4 +66,20 @@ static String bugReportDate = 'Дата обращения';
 static String bugReportCreate = 'Создать обращение';
 static String bugReportEnterMessage = 'Введите сообщение';
 static String bugReportSend = 'Отправить';
+  /// Ordering information
+static String orderingInformationTitle = 'Заказ справок';
+static String orderingInformationButton = 'Заказать новую справку';
+static String orderingInformationType = 'Выбрать тип заказываемой справки';
+static String orderingInformationRequestHelpCall = 'Заказать справку-вызов';
+static String orderingInformationGroupName = 'Название группы: ';
+static String orderingInformationTypeDate = 'Тип даты: ';
+static String orderingInformationStudyYear = 'Учебный год: ';
+static String orderingInformationDateStart = 'Дата начала: ';
+static String orderingInformationDateEnd = 'Дата окончания: ';
+static String orderingInformationNewCall = 'Заказать новую справку';
+static String orderingInformationListReferencesAboutTraining = 'Список справок об обучении';
+static String orderingInformationCall = 'Справка';
+static String orderingInformationPeriod = 'Период';
+static String orderingInformationCountReferences = 'Количество справок';
+static String orderingInformationRequestDate = 'Дата запроса';
 }

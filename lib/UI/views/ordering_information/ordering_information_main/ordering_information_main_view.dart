@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/common_views/primary_button.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../ordering_information_model.dart';
 import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
@@ -18,12 +20,11 @@ class _OrderingInformationMainViewState extends State<OrderingInformationMainVie
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrderingInformationMainViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => OrderingInformationMainViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -34,7 +35,7 @@ class _OrderingInformationMainViewState extends State<OrderingInformationMainVie
                 child: Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, 'Заказ справок'),
+                    appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
                     body: _orderingInformationView(context, model)),
               ));
         });
@@ -55,8 +56,8 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
               child: DropdownButton<String>(
                 dropdownColor: Theme.of(context).primaryColor,
                 itemHeight: 70.0,
-                hint: const Text(
-                  '- Выбрать тип заказываемой справки -',
+                hint: Text(
+                  Localizable.orderingInformationType,
                 ),
                 onChanged: (value) {
                   model.trainingCertificate = value;
@@ -80,12 +81,9 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
                 Center(
                   child: Padding(
                       padding: const EdgeInsets.only(top: 20.0),
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
-                          },
-                          child: const Text("Заказать новую справку"))),
+                      child: mainButton(context, onPressed: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationView()));
+                      }, title: Localizable.orderingInformationButton, isPrimary: true)),
                 ),
                 Center(
                   child: _checkListView(context, model),
@@ -93,9 +91,7 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
               ],
             )
           : const SizedBox.shrink(),
-      model.trainingCertificate == TrainingCertificate.callCertificate
-          ? _checkCertificatesListView(context, model)
-          : const SizedBox.shrink(),
+      model.trainingCertificate == TrainingCertificate.callCertificate ? _checkCertificatesListView(context, model) : const SizedBox.shrink(),
     ],
   );
 }
@@ -106,7 +102,7 @@ _checkCertificatesListView(BuildContext context, OrderingInformationMainViewMode
     child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
       const SizedBox(height: 12),
       Wrap(children: [
-        Text("Заказать справку вызова", style: Theme.of(context).textTheme.headlineSmall),
+        Text(Localizable.orderingInformationRequestHelpCall, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 38),
         getCertificatesListView(model.receivedCallCertificate)
       ]),
@@ -128,13 +124,7 @@ Widget getCertificatesListView(List<CallCertificate> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Padding(
@@ -142,25 +132,22 @@ Widget getCertificatesListView(List<CallCertificate> items) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    richText("Название группы: ", "${item.groupName}", context),
+                    richText(Localizable.orderingInformationGroupName, "${item.groupName}", context),
                     const SizedBox(height: 10),
-                    richText("Тип даты: ", "${item.sessionType}", context),
+                    richText(Localizable.orderingInformationTypeDate, "${item.sessionType}", context),
                     const SizedBox(height: 10),
-                    richText("Учебный год: ", "${item.studyYear}", context),
+                    richText(Localizable.orderingInformationStudyYear, "${item.studyYear}", context),
                     const SizedBox(height: 10),
-                    richText("Дата начала: ", "${item.startDate}", context),
+                    richText(Localizable.orderingInformationDateStart, "${item.startDate}", context),
                     const SizedBox(height: 10),
-                    richText("Дата окончания: ", "${item.endDate}", context),
+                    richText(Localizable.orderingInformationDateEnd, "${item.endDate}", context),
                     const SizedBox(height: 10),
                     Center(
                       child: ElevatedButton(
                           onPressed: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const OrderingInformationNewCertificatesView()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationNewCertificatesView()));
                           },
-                          child: const Text("Заказать новую справку")),
+                          child: Text(Localizable.orderingInformationNewCall)),
                     )
                   ],
                 ),
@@ -175,11 +162,11 @@ Widget getCertificatesListView(List<CallCertificate> items) {
 
 _checkListView(BuildContext context, OrderingInformationMainViewModel model) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(15.0),
     child: ListView(physics: const NeverScrollableScrollPhysics(), shrinkWrap: true, children: [
       const SizedBox(height: 12),
       Wrap(children: [
-        Text("Список справок об обучении", style: Theme.of(context).textTheme.headlineSmall),
+        Text(Localizable.orderingInformationListReferencesAboutTraining, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 38),
         getListView(model.receivedReferences)
       ]),
@@ -201,13 +188,7 @@ Widget getListView(List<RequestReference> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: ExpansionTile(
@@ -215,12 +196,8 @@ Widget getListView(List<RequestReference> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  'Справка №${index + 1}',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                  Localizable.orderingInformationCall + ' №${index + 1}',
+                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
                   Padding(
@@ -228,27 +205,27 @@ Widget getListView(List<RequestReference> items) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        richText("Фамилия: ", "${item.lastName}", context),
+                        richText("${Localizable.lastName}: ", "${item.lastName}", context),
                         const SizedBox(height: 10),
-                        richText("Имя: ", "${item.firstName}", context),
+                        richText("${Localizable.firstName}: ", "${item.firstName}", context),
                         const SizedBox(height: 10),
-                        richText("Отчество: ", "${item.patronymic}", context),
+                        richText("${Localizable.patronymic}: ", "${item.patronymic}", context),
                         const SizedBox(height: 10),
-                        richText("Название института: ", "${item.instituteName}", context),
+                        richText("${Localizable.instituteName}: ", "${item.instituteName}", context),
                         const SizedBox(height: 10),
-                        richText("Курс: ", "${item.courseNumber}", context),
+                        richText("${Localizable.courseNumber}: ", "${item.courseNumber}", context),
                         const SizedBox(height: 10),
-                        richText("Уровень образования: ", "${item.educationLevel}", context),
+                        richText("${Localizable.educationLevel}: ", "${item.educationLevel}", context),
                         const SizedBox(height: 10),
-                        richText("Группа: ", "${item.groupName}", context),
+                        richText("${Localizable.groupName}: ", "${item.groupName}", context),
                         const SizedBox(height: 10),
-                        richText("Форма обучения: ", "${item.basic}", context),
+                        richText("${Localizable.basic}: ", "${item.basic}", context),
                         const SizedBox(height: 10),
-                        richText("Период: ", "${item.period}", context),
+                        richText("${Localizable.orderingInformationPeriod}: ", "${item.period}", context),
                         const SizedBox(height: 10),
-                        richText("Количество справок: ", "${item.countReferences}", context),
+                        richText("${Localizable.orderingInformationCountReferences}: ", "${item.countReferences}", context),
                         const SizedBox(height: 10),
-                        richText("Дата запроса: ", "${item.requestDate}", context),
+                        richText("${Localizable.orderingInformationRequestDate}: ", "${item.requestDate}", context),
                         const SizedBox(height: 10),
                       ],
                     ),
@@ -273,9 +250,7 @@ RichText richText(String title, String item, context, {bool? isWhite}) {
       children: <TextSpan>[
         TextSpan(
             text: title,
-            style: TextStyle(
-                color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark,
-                fontWeight: FontWeight.bold)),
+            style: TextStyle(color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
         TextSpan(text: item),
       ],
     ),
