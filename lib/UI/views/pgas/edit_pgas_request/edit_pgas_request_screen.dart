@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../common_models/faculty_model.dart';
+import '../common_models/semester_type_model.dart';
 import 'edit_pgas_request_view_model.dart';
-import 'model/faculty.dart';
-import 'model/semester_type.dart';
 
 class EditPgasRequestScreenRoute extends MaterialPageRoute {
   EditPgasRequestScreenRoute() : super(builder: (context) => const EditPgasRequestScreen());
@@ -16,7 +16,7 @@ class EditPgasRequestScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<EditPgasRequestViewModel>.reactive(
         viewModelBuilder: () => EditPgasRequestViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
               body: NestedScrollView(

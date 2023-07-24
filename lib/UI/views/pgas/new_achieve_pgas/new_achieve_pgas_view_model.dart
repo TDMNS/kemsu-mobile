@@ -4,14 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
-import 'package:kemsu_app/UI/views/pgas/model/year.dart';
 import 'package:open_file/open_file.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../Configurations/config.dart';
-import 'model/achieve_category.dart';
+import '../../../../Configurations/config.dart';
+import 'models/achieve_category_model.dart';
+import 'models/activity_tree_model.dart';
+import 'year_model.dart';
 
 class NewAchievePgasViewModel extends BaseViewModel {
   NewAchievePgasViewModel(BuildContext context);

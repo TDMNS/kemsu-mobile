@@ -7,9 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../Configurations/config.dart';
-import 'edit_pgas_request_screen.dart';
-import 'model/pgas_detail.dart';
+import '../../../../Configurations/config.dart';
+import '../edit_pgas_request/edit_pgas_request_screen.dart';
+import '../common_models/pgas_detail_model.dart';
 
 class PgasRequestInfoViewModel extends BaseViewModel {
   PgasRequestInfoViewModel(BuildContext context);

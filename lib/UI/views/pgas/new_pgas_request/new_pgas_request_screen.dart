@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../widgets.dart';
-import 'model/faculty.dart';
-import 'model/semester_type.dart';
+import '../../../widgets.dart';
+import '../common_models/faculty_model.dart';
+import '../common_models/semester_type_model.dart';
 import 'new_pgas_request_view_model.dart';
 
 class NewPgasRequestScreenRoute extends MaterialPageRoute {

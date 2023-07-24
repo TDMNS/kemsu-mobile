@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_screen.dart';
+import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas/new_achieve_pgas_screen.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_detail/pgas_detail_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../widgets.dart';
-import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import 'pgas_detail_view_model.dart';
+import '../../../widgets.dart';
+import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 
 class PgasDetailScreenRoute extends MaterialPageRoute {
   PgasDetailScreenRoute() : super(builder: (context) => const PgasDetailScreen());
@@ -18,7 +18,7 @@ class PgasDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PgasDetailViewModel>.reactive(
         viewModelBuilder: () => PgasDetailViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
             appBar: customAppBar(context, model, "Достижения"),
@@ -194,9 +194,9 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                                     onPressed: () async {
                                       await model.deleteBtnAction(context, model.userAchievesList[index]);
                                     },
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Icon(
                                           Icons.delete,
                                           color: Colors.white,

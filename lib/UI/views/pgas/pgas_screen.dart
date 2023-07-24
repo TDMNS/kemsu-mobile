@@ -14,7 +14,7 @@ class PgasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PgasViewModel>.reactive(
         viewModelBuilder: () => PgasViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(context),
+        onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
           return Scaffold(
             appBar: customAppBar(context, model, "ПГАС"),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_request_info/pgas_request_info_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../loading_screen.dart';
-import 'pgas_request_info_view_model.dart';
+import '../../../loading_screen.dart';
 
 class PgasRequestInfoScreenRoute extends MaterialPageRoute {
   PgasRequestInfoScreenRoute() : super(builder: (context) => const PgasRequestInfoScreen());
@@ -15,7 +15,7 @@ class PgasRequestInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PgasRequestInfoViewModel>.reactive(
         viewModelBuilder: () => PgasRequestInfoViewModel(context),
-        onModelReady: (viewModel) => viewModel.onReady(context),
+        onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
           return model.circle
               ? const Center(child: LoadingScreen())

@@ -4,11 +4,11 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/pgas/model/user_achieve.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_detail/user_achieve_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../Configurations/config.dart';
-import 'pgas_request_info_screen.dart';
+import '../../../../Configurations/config.dart';
+import '../pgas_request_info/pgas_request_info_screen.dart';
 
 class PgasDetailViewModel extends BaseViewModel {
   PgasDetailViewModel(BuildContext context);

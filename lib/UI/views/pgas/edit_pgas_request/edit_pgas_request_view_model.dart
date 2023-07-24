@@ -6,10 +6,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../Configurations/config.dart';
-import 'model/faculty.dart';
-import 'model/pgas_detail.dart';
-import 'model/semester_type.dart';
+import '../../../../Configurations/config.dart';
+import '../common_models/faculty_model.dart';
+import '../common_models/semester_type_model.dart';
+import '../common_models/pgas_detail_model.dart';
 
 class EditPgasRequestViewModel extends BaseViewModel {
   EditPgasRequestViewModel(BuildContext context);

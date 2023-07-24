@@ -5,13 +5,13 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
-import 'package:kemsu_app/UI/views/pgas/pgas_detail_screen.dart';
+import 'package:kemsu_app/UI/views/pgas/pgas_detail/pgas_detail_screen.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Configurations/config.dart';
-import 'model/short_pgas_request.dart';
-import 'new_pgas_request_screen.dart';
+import 'short_pgas_request_model.dart';
+import 'new_pgas_request/new_pgas_request_screen.dart';
 
 class PgasViewModel extends BaseViewModel {
   PgasViewModel(BuildContext context);

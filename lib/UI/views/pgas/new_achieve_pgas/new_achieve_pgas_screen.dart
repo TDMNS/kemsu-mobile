@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kemsu_app/UI/views/pgas/model/achieve_category.dart';
-import 'package:kemsu_app/UI/views/pgas/model/activity_tree.dart';
-import 'package:kemsu_app/UI/views/pgas/model/year.dart';
-import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas_view_model.dart';
 import 'package:stacked/stacked.dart';
-import '../../widgets.dart';
+import '../../../widgets.dart';
+import 'models/achieve_category_model.dart';
+import 'models/activity_tree_model.dart';
+import 'year_model.dart';
+import 'new_achieve_pgas_view_model.dart';
 
 class NewAchievePgasScreen extends StatelessWidget {
   const NewAchievePgasScreen({Key? key}) : super(key: key);
