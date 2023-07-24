@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/schedule/prep_schedule_view_model.dart';
+import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view_model.dart';
 
 import 'package:stacked/stacked.dart';
 
@@ -22,7 +22,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PrepScheduleViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => PrepScheduleViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -73,7 +73,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           popupProps: const PopupProps.menu(showSearchBox: true),
           dropdownDecoratorProps: DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
-            labelText: 'Выбор преподавателя',
+            labelText: Localizable.prepScheduleChooseTeacher,
             labelStyle: TextStyle(
               color: Color(Theme.of(context).primaryColorDark.value),
             ),
@@ -128,39 +128,39 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                             size: 20,
                           )),
                       model.indexDay == 1
-                          ? const Text(
-                              'Понедельник',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.monday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 2
-                          ? const Text(
-                              'Вторник',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.tuesday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 3
-                          ? const Text(
-                              'Среда',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.wednesday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 4
-                          ? const Text(
-                              'Четверг',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.thursday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 5
-                          ? const Text(
-                              'Пятница',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.friday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 6
-                          ? const Text(
-                              'Суббота',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ? Text(
+                              Localizable.saturday,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       IconButton(
@@ -179,9 +179,9 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Неделя ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  Localizable.week,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Container(
                   padding: const EdgeInsets.all(4),
@@ -203,7 +203,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
           : Stack(
               children: [
                 ListTile(
-                  title: const Text('четная'),
+                  title: Text(Localizable.even),
                   leading: Radio(
                     value: true,
                     groupValue: model.weekType,
@@ -215,7 +215,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                 Padding(
                   padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
-                    title: const Text('нечетная'),
+                    title: Text(Localizable.odd),
                     leading: Radio(
                       value: false,
                       groupValue: model.weekType,
@@ -290,19 +290,19 @@ _scheduleTable(PrepScheduleViewModel model, context, dayIndex) {
               color: Theme.of(context).canvasColor,
             ),
             children: [
-              const TableRow(children: [
+              TableRow(children: [
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Время',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    Localizable.time,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Пары',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    Localizable.classes,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 )
               ]),

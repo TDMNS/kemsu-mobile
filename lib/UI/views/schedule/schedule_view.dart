@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_views/primary_button.dart';
-import 'package:kemsu_app/UI/views/schedule/prep_schedule_view.dart';
+import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -20,20 +20,20 @@ class _NewScheduleViewState extends State<NewScheduleView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewScheduleViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => NewScheduleViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
                   statusBarIconBrightness: Brightness
-                      .dark), //прозрачность statusbar и установка тёмных иконок
+                      .dark),
               child: WillPopScope(
                 onWillPop: () async => false,
                 child: GestureDetector(
                   onTap: () {
                     FocusScopeNode currentFocus = FocusScope.of(
-                        context); //расфокус textfield при нажатии на экран
+                        context);
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
                     }
@@ -51,9 +51,7 @@ class _NewScheduleViewState extends State<NewScheduleView> {
                       : Scaffold(
                           extendBody: true,
                           extendBodyBehindAppBar: true,
-                          //backgroundColor: Colors.white,
-                          appBar: customAppBar(context, model, 'Расписание'),
-                          //bottomNavigationBar: customBottomBar(context, model),
+                          appBar: customAppBar(context, model, Localizable.pageSchedule),
                           body: model.currentTable == true
                               ? _scheduleViewAll(context, model)
                               : _scheduleViewStudent(context, model)),
@@ -80,7 +78,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                     MaterialPageRoute(builder: (context) => const PrepScheduleView()),
                   );
                 },
-                title: Localizable.scheduleOfTeachers,
+                title: Localizable.prepScheduleTitle,
                 isPrimary: true,
               ),
             ),
@@ -111,44 +109,44 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                             size: 20,
                           )),
                       model.indexDay == 0
-                          ? const Text(
-                              'Понедельник',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.monday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 1
-                          ? const Text(
-                              'Вторник',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.tuesday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 2
-                          ? const Text(
-                              'Среда',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.wednesday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 3
-                          ? const Text(
-                              'Четверг',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.thursday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 4
-                          ? const Text(
-                              'Пятница',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.friday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 5
-                          ? const Text(
-                              'Суббота',
-                              style: TextStyle(
+                          ? Text(
+                              Localizable.saturday,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
@@ -168,9 +166,9 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Неделя ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  Localizable.week + ' ',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Container(
                   padding: const EdgeInsets.all(4),
@@ -191,7 +189,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
             Stack(
               children: [
                 ListTile(
-                  title: const Text('четная'),
+                  title: Text(Localizable.even),
                   leading: Radio(
                     value: true,
                     groupValue: model.weekType,
@@ -204,7 +202,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                   padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
-                    title: const Text('нечетная'),
+                    title: Text(Localizable.odd),
                     leading: Radio(
                       value: false,
                       groupValue: model.weekType,
@@ -256,8 +254,8 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButton<FacultyList>(
                       dropdownColor: Theme.of(context).primaryColor,
-                      hint: const Text(
-                        'Выбрать институт',
+                      hint: Text(
+                        Localizable.scheduleChooseInstitute,
                       ),
                       onChanged: (value) {
                         model.changeFaculty(value);
@@ -282,8 +280,8 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButton<GroupList>(
                       dropdownColor: Theme.of(context).primaryColor,
-                      hint: const Text(
-                        'Выбрать группу',
+                      hint: Text(
+                        Localizable.scheduleChooseGroup,
                       ),
                       onChanged: (value) {
                         model.changeGroup(value);
@@ -321,10 +319,10 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                             offset: const Offset(0, 15),
                             spreadRadius: -15)
                       ]),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Показать',
-                      style: TextStyle(
+                      Localizable.show,
+                      style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
@@ -348,44 +346,44 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                               size: 20,
                             )),
                         model.indexDay == 0
-                            ? const Text(
-                                'Понедельник',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.monday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 1
-                            ? const Text(
-                                'Вторник',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.tuesday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 2
-                            ? const Text(
-                                'Среда',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.wednesday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 3
-                            ? const Text(
-                                'Четверг',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.thursday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 4
-                            ? const Text(
-                                'Пятница',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.friday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 5
-                            ? const Text(
-                                'Суббота',
-                                style: TextStyle(
+                            ? Text(
+                                Localizable.saturday,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
@@ -419,7 +417,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                         padding: EdgeInsets.only(
                             left: MediaQuery.of(context).size.width / 2),
                         child: ListTile(
-                          title: const Text('нечетная'),
+                          title: Text(Localizable.odd),
                           leading: Radio(
                             value: false,
                             groupValue: model.weekType,
@@ -442,9 +440,9 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
 
 _scheduleTable(BuildContext context, NewScheduleViewModel model) {
   List<TableRow> rows = [];
-  rows.add(const TableRow(children: [
-    Text('Время'),
-    Text('Пары'),
+  rows.add(TableRow(children: [
+    Text(Localizable.time),
+    Text(Localizable.classes),
   ]));
   for (int i = 0; i < 7; i++) {
     rows.add(TableRow(children: [

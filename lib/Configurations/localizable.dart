@@ -1,8 +1,24 @@
 class Localizable {
+  /// Pages
+static String pageNews = 'Новости';
+static String pageMain = 'Главная';
+static String pageSchedule = 'Расписание';
   /// Common
 static String ok = 'OK';
 static String yes = 'Да';
 static String cancel = 'Отмена';
+static String monday = 'Понедельник';
+static String tuesday = 'Вторник';
+static String wednesday = 'Среда';
+static String thursday = 'Четверг';
+static String friday = 'Пятница';
+static String saturday = 'Суббота';
+static String week = 'Неделя';
+static String even = 'четная';
+static String odd = 'нечетная';
+static String time = 'Время';
+static String classes = 'Пары';
+static String show = 'Показать';
   /// Main
 static String mainTitle = 'Главная';
 static String mainChoosePhoto = 'Выбор фотографии';
@@ -24,7 +40,11 @@ static String mainOrderingInformation = 'Заказ справок';
 static String mainCheckList = 'Обходной лист';
 static String mainPayment = 'Оплата услуг';
   /// Schedule
-static String scheduleOfTeachers = 'Расписание преподавателей';
+static String scheduleChooseInstitute = 'Выбрать институт';
+static String scheduleChooseGroup = 'Выбрать группу';
+  /// Prep Schedule
+static String prepScheduleTitle = 'Расписание преподавателей';
+static String prepScheduleChooseTeacher = 'Выбор преподавателя';
   /// Check list
 static String checkListTitle = 'Обходной лист';
 static String checkListDivisions = 'Список подразделений';
