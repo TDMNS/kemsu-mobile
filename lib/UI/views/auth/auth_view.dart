@@ -16,9 +16,7 @@ class AuthView extends StatelessWidget {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Theme.of(context).primaryColor == Colors.grey.shade900
-                ? Brightness.light
-                : Brightness.dark,
+            statusBarIconBrightness: Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
           ),
           child: GestureDetector(
             onTap: () {
@@ -45,26 +43,32 @@ class AuthView extends StatelessWidget {
       children: <Widget>[
         Theme.of(context).primaryColor == Colors.grey.shade900
             ? Image.asset(
-          'images/logo_dark.png',
-          height: 120,
-        )
+                'images/logo_dark.png',
+                height: 120,
+              )
             : Image.asset(
-          'images/logo_light.png',
-          height: 120,
-        ),
+                'images/logo_light.png',
+                height: 120,
+              ),
         const SizedBox(height: 50),
         Container(
-          margin: const EdgeInsets.only(right: 30, left: 30, bottom: 30, top: 8),
-          color: Colors.grey.withOpacity(0.05),
+          margin: const EdgeInsets.only(right: 30, left: 30, bottom: 8, top: 8),
           child: TextFormField(
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(left: 15, top: 15),
-              suffixIcon: Icon(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(left: 15, top: 15),
+              suffixIcon: const Icon(
                 Icons.person,
               ),
-              focusColor: Colors.black,
               hintText: 'Логин',
-              hintStyle: TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
+              hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: const BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: const BorderSide(color: Colors.blue),
+              )
             ),
             style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
             controller: model.loginController,
@@ -84,11 +88,11 @@ class AuthView extends StatelessWidget {
                 children: <Widget>[
                   model.passwordController.text.isNotEmpty
                       ? IconButton(
-                    onPressed: () {
-                      model.isVisiblePassword();
-                    },
-                    icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
-                  )
+                          onPressed: () {
+                            model.isVisiblePassword();
+                          },
+                          icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
+                        )
                       : const SizedBox(),
                   const Icon(
                     Icons.vpn_key,
@@ -97,10 +101,18 @@ class AuthView extends StatelessWidget {
                 ],
               ),
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
-              hintText: '••••••',
-              hintStyle: const TextStyle(letterSpacing: 5.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+              hintText: 'Введите пароль',
+              hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: const BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.0),
+                borderSide: const BorderSide(color: Colors.blue),
+              )
             ),
-            style: TextStyle(letterSpacing: model.isObscure ? 5.0 : 0.0, fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+            style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
             controller: model.passwordController,
             obscureText: model.isObscure,
           ),
