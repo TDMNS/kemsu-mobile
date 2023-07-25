@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/common_views/primary_button.dart';
 import 'package:stacked/stacked.dart';
 
 import 'auth_view_model.dart';
@@ -52,13 +53,17 @@ class AuthView extends StatelessWidget {
               ),
         const SizedBox(height: 50),
         Container(
-          margin: const EdgeInsets.only(right: 30, left: 30, bottom: 8, top: 8),
+          margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
           child: TextFormField(
+            onChanged: (letters) {
+              model.notifyListeners();
+            },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
-              suffixIcon: const Icon(
-                Icons.person,
-              ),
+              suffixIcon: model.loginController.text.isNotEmpty ? IconButton(icon: const Icon(Icons.cancel), onPressed: () {
+                model.loginController.clear();
+                model.notifyListeners();
+              }) : null,
               hintText: 'Логин',
               hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
               enabledBorder: OutlineInputBorder(
@@ -75,7 +80,7 @@ class AuthView extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(right: 30, left: 30, bottom: 30, top: 8),
+          margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
           color: Colors.grey.withOpacity(0.05),
           child: TextFormField(
             onChanged: (letters) {
@@ -93,11 +98,7 @@ class AuthView extends StatelessWidget {
                           },
                           icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
                         )
-                      : const SizedBox(),
-                  const Icon(
-                    Icons.vpn_key,
-                  ),
-                  const SizedBox(width: 5),
+                      : const SizedBox()
                 ],
               ),
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
@@ -118,7 +119,7 @@ class AuthView extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20, bottom: 10),
+          padding: const EdgeInsets.only(left: 3, bottom: 8),
           child: Row(
             children: <Widget>[
               Checkbox(
@@ -135,36 +136,9 @@ class AuthView extends StatelessWidget {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            model.authButton(context);
-          },
-          child: Container(
-            height: 50,
-            width: 200,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 15,
-                  offset: const Offset(0, 15),
-                  spreadRadius: -15,
-                ),
-              ],
-            ),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const Center(
-                child: Text(
-                  'Войти',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
-            ),
-          ),
-        ),
+        mainButton(context, onPressed: () {
+          model.authButton(context);
+        }, title: 'Войти', isPrimary: true),
         Padding(
           padding: const EdgeInsets.only(top: 35),
           child: GestureDetector(
