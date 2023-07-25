@@ -10,7 +10,7 @@ class CustomThemes {
       primaryColor: Colors.grey.shade900,
       focusColor: Colors.white,
       inputDecorationTheme: const InputDecorationTheme(
-          suffixIconColor: Colors.blue,
+          suffixIconColor: Colors.grey,
           iconColor: Colors.white,
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           fillColor: Colors.white,
@@ -41,7 +41,7 @@ class CustomThemes {
       primaryColorLight: Colors.grey.withOpacity(0.4),
       focusColor: Colors.black,
       inputDecorationTheme: const InputDecorationTheme(
-          suffixIconColor: Colors.blue,
+          suffixIconColor: Colors.grey,
           iconColor: Colors.black,
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           fillColor: Colors.black,

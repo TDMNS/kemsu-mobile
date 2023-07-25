@@ -82,6 +82,10 @@ class AuthView extends StatelessWidget {
               ),
               style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
               controller: model.loginController,
+              autocorrect: false,
+              enableSuggestions: false,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done
             ),
           ),
           Container(
@@ -120,6 +124,10 @@ class AuthView extends StatelessWidget {
               style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
               controller: model.passwordController,
               obscureText: model.isObscure,
+              autocorrect: false,
+              enableSuggestions: false,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done
             ),
           ),
           Padding(
@@ -170,14 +178,12 @@ class AuthView extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             child: const Text('OK'),
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.blue,
             ),
-          ),
+          )
         ],
       ),
     );
