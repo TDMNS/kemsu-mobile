@@ -57,7 +57,7 @@ class CustomThemes {
         iconColor: Colors.blue,
       ),
       colorScheme: const ColorScheme.light().copyWith(secondary: Colors.white),
-      textSelectionTheme:
-          const TextSelectionThemeData(selectionColor: Colors.transparent, cursorColor: Colors.blue, selectionHandleColor: Colors.blue),
+      textSelectionTheme: TextSelectionThemeData(
+          selectionColor: Colors.lightBlueAccent.withOpacity(0.5), cursorColor: Colors.blue, selectionHandleColor: Colors.blue),
       cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: Colors.blue));
 }
