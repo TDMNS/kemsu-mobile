@@ -10,6 +10,7 @@ class AuthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
     return ViewModelBuilder<AuthViewModel>.reactive(
       onViewModelReady: (viewModel) => viewModel.onReady(),
       viewModelBuilder: () => AuthViewModel(context),
@@ -21,7 +22,6 @@ class AuthView extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
               if (!currentFocus.hasPrimaryFocus) {
                 currentFocus.unfocus();
               }
@@ -39,9 +39,8 @@ class AuthView extends StatelessWidget {
   }
 
   Widget _buildAuthView(BuildContext context, AuthViewModel model) {
-    return ListView(
-      children: [
-        Column(
+    return ListView(children: [
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 30),
@@ -60,75 +59,76 @@ class AuthView extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
             child: TextFormField(
-              onChanged: (letters) {
-                model.notifyListeners();
-              },
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(left: 15, top: 15),
-                suffixIcon: model.loginController.text.isNotEmpty ? IconButton(icon: const Icon(Icons.cancel), onPressed: () {
-                  model.loginController.clear();
+                focusNode: model.loginFocus,
+                onChanged: (letters) {
                   model.notifyListeners();
-                }) : null,
-                hintText: 'Логин',
-                hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.blue),
-                )
-              ),
-              style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
-              controller: model.loginController,
-              autocorrect: false,
-              enableSuggestions: false,
-              keyboardType: TextInputType.visiblePassword,
-              textInputAction: TextInputAction.done
-            ),
+                },
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(left: 15, top: 15),
+                    suffixIcon: model.loginController.text.isNotEmpty && model.loginFocus.hasFocus
+                        ? IconButton(
+                            icon: const Icon(Icons.cancel),
+                            onPressed: () {
+                              model.loginController.clear();
+                              model.notifyListeners();
+                            })
+                        : null,
+                    hintText: 'Логин',
+                    hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(color: Colors.blue),
+                    )),
+                style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+                controller: model.loginController,
+                autocorrect: false,
+                enableSuggestions: false,
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: TextInputAction.done),
           ),
           Container(
             margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
             child: TextFormField(
-              onChanged: (letters) {
-                model.notifyListeners();
-              },
-              decoration: InputDecoration(
-                suffixIcon: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    model.passwordController.text.isNotEmpty
-                        ? IconButton(
-                            onPressed: () {
-                              model.isVisiblePassword();
-                            },
-                            icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
-                          )
-                        : const SizedBox()
-                  ],
-                ),
-                contentPadding: const EdgeInsets.only(left: 15, top: 15),
-                hintText: 'Введите пароль',
-                hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: const BorderSide(color: Colors.blue),
-                )
-              ),
-              style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
-              controller: model.passwordController,
-              obscureText: model.isObscure,
-              autocorrect: false,
-              enableSuggestions: false,
-              keyboardType: TextInputType.visiblePassword,
-              textInputAction: TextInputAction.done
-            ),
+                onChanged: (letters) {
+                  model.notifyListeners();
+                },
+                decoration: InputDecoration(
+                    suffixIcon: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        model.passwordController.text.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  model.isVisiblePassword();
+                                },
+                                icon: Icon(model.isObscure ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
+                    contentPadding: const EdgeInsets.only(left: 15, top: 15),
+                    hintText: 'Введите пароль',
+                    hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: const BorderSide(color: Colors.blue),
+                    )),
+                style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
+                controller: model.passwordController,
+                obscureText: model.isObscure,
+                autocorrect: false,
+                enableSuggestions: false,
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: TextInputAction.done),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 3, bottom: 8),

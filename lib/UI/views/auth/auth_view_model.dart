@@ -23,6 +23,7 @@ class AuthViewModel extends BaseViewModel {
 
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
+  final loginFocus = FocusNode();
 
   Future<void> onReady() async {
     String? login = await storage.read(key: "login");
