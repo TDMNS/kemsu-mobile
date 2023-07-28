@@ -88,12 +88,15 @@ class AuthView extends StatelessWidget {
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => FocusScope.of(context).unfocus()),
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (v) {
+                  FocusScope.of(context).requestFocus(model.passwordFocus);
+                }),
           ),
           Container(
             margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
             child: TextFormField(
+                focusNode: model.passwordFocus,
                 onChanged: (letters) {
                   model.notifyListeners();
                 },
