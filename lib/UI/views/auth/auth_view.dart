@@ -88,7 +88,8 @@ class AuthView extends StatelessWidget {
                 autocorrect: false,
                 enableSuggestions: false,
                 keyboardType: TextInputType.visiblePassword,
-                textInputAction: TextInputAction.done),
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => FocusScope.of(context).unfocus()),
           ),
           Container(
             margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
