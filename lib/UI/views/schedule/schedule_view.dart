@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
-import 'package:kemsu_app/UI/common_views/primary_button.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_model.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_view_model.dart';

@@ -8,7 +8,7 @@ import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../common_views/primary_button.dart';
+import '../../common_views/main_button.dart';
 import '../../common_views/profile_tiles.dart';
 import '../../widgets.dart';
 

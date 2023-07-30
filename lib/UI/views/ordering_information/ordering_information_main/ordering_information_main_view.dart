@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/common_views/primary_button.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';

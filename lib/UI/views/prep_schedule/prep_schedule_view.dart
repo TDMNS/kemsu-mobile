@@ -6,7 +6,7 @@ import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../common_views/primary_button.dart';
+import '../../common_views/main_button.dart';
 import '../../widgets.dart';
 
 List<DropdownMenuItem<String>> dropdownItems = [];
