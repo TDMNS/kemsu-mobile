@@ -5,13 +5,19 @@ class Localizable {
   static String pageSchedule = 'Расписание';
 
   /// Auth
-  static String applicationLogin = 'Войти в КемГУ';
-  static String login = 'Логин';
-  static String enterPassword = 'Введите пароль';
-  static String rememberMe = 'Запомнить меня';
-  static String troubleLoggingInHeader = 'Проблемы с входом?';
-  static String troubleLoggingInBody =
+  static String authApplicationLogin = 'Войти в КемГУ';
+  static String authLogin = 'Логин';
+  static String authEnterPassword = 'Введите пароль';
+  static String authRememberMe = 'Запомнить меня';
+  static String authTroubleLoggingInHeader = 'Проблемы с входом?';
+  static String authTroubleLoggingInBody =
       'Если у вас наблюдаются проблемы с входом попробуйте использовать Wi-Fi КемГУ, изменить сотового оператора, либо использовать VPN. Мы уже исправляем эту проблему. В данный момент не работают сотовые операторы "Мегафон" и "Yota"';
+
+  /// Auth errors
+  static String authError400 = 'Требуется логин/пароль пользователя!';
+  static String authError401 = 'Некорректный логин/пароль пользователя!';
+  static String authError500 = 'Ошибка сервера! Если ошибка не исчезнет обратитесь в отдел сопровождения';
+  static String authErrorDefault = 'Непредвиденная ошибка! Если ошибка не исчезнет обратитесь в отдел сопровождения';
 
   /// Common
   static String ok = 'OK';

@@ -55,7 +55,7 @@ class AuthView extends StatelessWidget {
                   height: 120,
                 ),
           const SizedBox(height: 30),
-          Text(Localizable.applicationLogin,
+          Text(Localizable.authApplicationLogin,
               style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           _customTextField(
@@ -117,7 +117,7 @@ class AuthView extends StatelessWidget {
                   },
                 ),
                 Text(
-                  Localizable.rememberMe,
+                  Localizable.authRememberMe,
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
@@ -129,7 +129,7 @@ class AuthView extends StatelessWidget {
           const SizedBox(height: 20),
           mainButton(context, onPressed: () {
             _customAlert(context);
-          }, title: Localizable.troubleLoggingInHeader, isPrimary: false)
+          }, title: Localizable.authTroubleLoggingInHeader, isPrimary: false)
         ],
       ),
     ]);
@@ -150,7 +150,7 @@ class AuthView extends StatelessWidget {
           decoration: InputDecoration(
               suffixIcon: suffixIcon,
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
-              hintText: Localizable.enterPassword,
+              hintText: Localizable.authEnterPassword,
               hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -178,9 +178,9 @@ class AuthView extends StatelessWidget {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(Localizable.troubleLoggingInHeader),
+        title: Text(Localizable.authTroubleLoggingInHeader),
         content: Text(
-          Localizable.troubleLoggingInBody,
+          Localizable.authTroubleLoggingInBody,
         ),
         actions: <Widget>[
           TextButton(

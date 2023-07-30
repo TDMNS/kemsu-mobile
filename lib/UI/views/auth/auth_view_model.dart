@@ -6,6 +6,7 @@ import 'package:kemsu_app/Configurations/config.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../Configurations/localizable.dart';
 import '../../menu.dart';
 import '../../widgets.dart';
 
@@ -79,16 +80,16 @@ class AuthViewModel extends BaseViewModel {
         );
         break;
       case 400:
-        errorDialog(context, 'Требуется логин/пароль пользователя!');
+        errorDialog(context, Localizable.authError400);
         break;
       case 401:
-        errorDialog(context, 'Некорректный логин/пароль пользователя!');
+        errorDialog(context, Localizable.authError401);
         break;
       case 500:
-        errorDialog(context, 'Ошибка сервера! Если ошибка не исчезнет обратитесь в отдел сопровождения');
+        errorDialog(context, Localizable.authError500);
         break;
       default:
-        errorDialog(context, 'Непредвиденная ошибка! Если ошибка не исчезнет обратитесь в отдел сопровождения');
+        errorDialog(context, Localizable.authErrorDefault);
         break;
     }
     notifyListeners();
