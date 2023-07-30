@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../Configurations/localizable.dart';
 import 'auth_view_model.dart';
 
 class AuthView extends StatelessWidget {
@@ -55,7 +55,8 @@ class AuthView extends StatelessWidget {
                   height: 120,
                 ),
           const SizedBox(height: 30),
-          Text('Войти в КемГУ', style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+          Text(Localizable.applicationLogin,
+              style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Container(
             margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
@@ -77,7 +78,7 @@ class AuthView extends StatelessWidget {
                               model.notifyListeners();
                             })
                         : null,
-                    hintText: 'Логин',
+                    hintText: Localizable.login,
                     hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -125,7 +126,7 @@ class AuthView extends StatelessWidget {
                       ],
                     ),
                     contentPadding: const EdgeInsets.only(left: 15, top: 15),
-                    hintText: 'Введите пароль',
+                    hintText: Localizable.enterPassword,
                     hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -158,9 +159,9 @@ class AuthView extends StatelessWidget {
                     model.rememberFunc(value);
                   },
                 ),
-                const Text(
-                  'Запомнить меня',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                Text(
+                  Localizable.rememberMe,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
             ),
@@ -171,7 +172,7 @@ class AuthView extends StatelessWidget {
           const SizedBox(height: 20),
           mainButton(context, onPressed: () {
             _authAlert(context);
-          }, title: 'Проблемы с входом?', isPrimary: false)
+          }, title: Localizable.troubleLoggingInHeader, isPrimary: false)
         ],
       ),
     ]);
@@ -181,14 +182,14 @@ class AuthView extends StatelessWidget {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Проблемы со входом?'),
-        content: const Text(
-          'Если у вас наблюдаются проблемы с входом попробуйте использовать Wi-Fi КемГУ, изменить сотового оператора, либо использовать VPN. Мы уже исправляем эту проблему. В данный момент не работают сотовые операторы "Мегафон" и "Yota"',
+        title: Text(Localizable.troubleLoggingInHeader),
+        content: Text(
+          Localizable.troubleLoggingInBody,
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(Localizable.ok),
             style: TextButton.styleFrom(
               foregroundColor: Colors.blue,
             ),
