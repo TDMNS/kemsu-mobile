@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/primary_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -167,18 +168,10 @@ class AuthView extends StatelessWidget {
           mainButton(context, onPressed: () {
             model.authButton(context);
           }, title: 'Войти', isPrimary: true),
-          Padding(
-            padding: const EdgeInsets.only(top: 35),
-            child: GestureDetector(
-              onTap: () {
-                _authAlert(context);
-              },
-              child: const Text(
-                'Проблемы с входом?',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.blue),
-              ),
-            ),
-          ),
+          const SizedBox(height: 20),
+          mainButton(context, onPressed: () {
+            _authAlert(context);
+          }, title: 'Проблемы с входом?', isPrimary: false)
         ],
       ),
     ]);
