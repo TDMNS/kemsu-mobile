@@ -63,6 +63,9 @@ class AuthView extends StatelessWidget {
                 onChanged: (letters) {
                   model.notifyListeners();
                 },
+                onTap: () {
+                  model.notifyListeners();
+                },
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(left: 15, top: 15),
                     suffixIcon: model.loginController.text.isNotEmpty && model.loginFocus.hasFocus
@@ -91,6 +94,7 @@ class AuthView extends StatelessWidget {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (v) {
                   FocusScope.of(context).requestFocus(model.passwordFocus);
+                  model.notifyListeners();
                 },
                 textCapitalization: TextCapitalization.none),
           ),
@@ -99,6 +103,9 @@ class AuthView extends StatelessWidget {
             child: TextFormField(
                 focusNode: model.passwordFocus,
                 onChanged: (letters) {
+                  model.notifyListeners();
+                },
+                onTap: () {
                   model.notifyListeners();
                 },
                 decoration: InputDecoration(
@@ -134,6 +141,9 @@ class AuthView extends StatelessWidget {
                 enableSuggestions: false,
                 keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.done,
+                onFieldSubmitted: (v) {
+                  model.notifyListeners();
+                },
                 textCapitalization: TextCapitalization.none),
           ),
           Padding(
