@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
+import 'package:kemsu_app/main.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
@@ -28,11 +29,14 @@ class AuthView extends StatelessWidget {
                 currentFocus.unfocus();
               }
             },
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              extendBody: true,
-              extendBodyBehindAppBar: true,
-              body: _buildAuthView(context, model),
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: Theme.of(context).primaryColor == Colors.grey.shade900 ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                extendBody: true,
+                extendBodyBehindAppBar: true,
+                body: _buildAuthView(context, model),
+              ),
             ),
           ),
         );
