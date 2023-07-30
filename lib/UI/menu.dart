@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/news/news_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-import 'package:kemsu_app/UI/views/schedule/prepSchedule_view.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule2.0_view.dart';
+import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
+import 'package:kemsu_app/UI/views/schedule/schedule_view.dart';
+
+import '../Configurations/localizable.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key, required this.type}) : super(key: key);
@@ -41,18 +43,18 @@ class _MainMenuState extends State<MainMenu> {
                 Theme.of(context).canvasColor, //<-- Unselected text
             type: BottomNavigationBarType.fixed,
             onTap: _onItemTapped,
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.newspaper),
-                label: 'Новости',
+                icon: const Icon(Icons.newspaper),
+                label: Localizable.pageNews,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Главная',
+                icon: const Icon(Icons.home),
+                label: Localizable.pageMain,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.schedule),
-                label: 'Расписание',
+                icon: const Icon(Icons.schedule),
+                label: Localizable.pageSchedule,
               ),
             ]));
   }

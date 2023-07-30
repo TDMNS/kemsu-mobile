@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_viewmodel.dart';
+import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../widgets.dart';
@@ -19,12 +20,11 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrderingInformationViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => OrderingInformationViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -132,18 +132,14 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
                       onPressed: () async {
-                        DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2100));
+                        DateTime? newDate =
+                            await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2100));
                         model.startDate = newDate;
                         model.notifyListeners();
                       },
                       child: model.startDate == DateTime(0, 0, 0)
                           ? const Text("Выбрать начальную дату")
-                          : Text(
-                              "Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+                          : Text("Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
@@ -166,8 +162,11 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               ),
             ))
           : const SizedBox.shrink(),
+      const SizedBox(height: 20),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
-          ? applyButton(context, model)
+          ? mainButton(context, onPressed: () {
+              _orderInfo(context, model);
+            }, title: 'Подать заявку', isPrimary: false)
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? Center(
@@ -175,18 +174,14 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
                       onPressed: () async {
-                        DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime(2100));
+                        DateTime? newDate =
+                            await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime(2100));
                         model.endDate = newDate;
                         model.notifyListeners();
                       },
                       child: model.endDate == DateTime(0, 0, 0)
                           ? const Text("Выбрать конечную дату")
-                          : Text(
-                              "Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
+                          : Text("Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
@@ -209,53 +204,22 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               ),
             ))
           : const SizedBox.shrink(),
+      const SizedBox(height: 20),
       model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
-          ? applyButton(context, model)
+          ? mainButton(context, onPressed: () {
+              _orderInfo(context, model);
+            }, title: 'Подать заявку', isPrimary: false)
           : const SizedBox.shrink()
     ],
   );
 }
 
-Center applyButton(context, OrderingInformationViewModel model) {
-  return Center(
-    child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: GestureDetector(
-          onTap: () {
-            orderInfo(context, model);
-          },
-          child: Container(
-            height: 50,
-            width: 200,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Theme.of(context).primaryColorLight,
-                  blurRadius: 15,
-                  offset: const Offset(0, 15),
-                  spreadRadius: -15)
-            ]),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: const Center(
-                  child: Text(
-                'Подать заявку',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              )),
-            ),
-          ),
-        )),
-  );
-}
-
-orderInfo(context, OrderingInformationViewModel model) {
+_orderInfo(context, OrderingInformationViewModel model) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Заявка успешно создана!'),
-      content: const Text(
-          'Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+      content: const Text('Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
           ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
           'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
           'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.'),

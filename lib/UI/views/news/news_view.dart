@@ -1,18 +1,10 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chewie/chewie.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
-import 'package:video_player/video_player.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../widgets.dart';
-import 'news_videoPlayer.dart';
-import 'news_viewmodel.dart';
-import 'news_viewmodel_test.dart';
+import 'news_view_model.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({Key? key}) : super(key: key);
@@ -25,16 +17,16 @@ class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NewsViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => NewsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
               value: const SystemUiOverlayStyle(
                   statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark), //прозрачность statusbar и установка тёмных иконок
+                  statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context); //расфокус textfield при нажатии на экран
+                  FocusScopeNode currentFocus = FocusScope.of(context);
                   if (!currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
@@ -43,7 +35,6 @@ class _NewsViewState extends State<NewsView> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Новости'),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: _newsView(context, model),
                 ),
               ));
@@ -55,31 +46,11 @@ class _NewsViewState extends State<NewsView> {
       children: [
         ListView(
           children: [
-            // GestureDetector(
-            //   onTap: () {
-            //     model.messageService();
-            //   },
-            //   child: Container(
-            //     margin: EdgeInsets.only(left: 50, right: 50, top: 50),
-            //     height: 30,
-            //     width: 30,
-            //     color: Colors.amber,
-            //   ),
-            // ),
-            // const Center(
-            //     child: Padding(
-            //   padding: EdgeInsets.only(top: 20),
-            //   child: Text(
-            //     'Новости отсутствуют',
-            //     style: TextStyle(fontSize: 16, color: Colors.grey),
-            //   ),
-            // )),
             ListView.builder(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 100),
                 shrinkWrap: true,
                 physics: const ScrollPhysics(),
                 itemCount: model.textList.length,
-                // itemCount: 0,
                 reverse: false,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -116,7 +87,6 @@ class _NewsViewState extends State<NewsView> {
                               height: 50,
                               width: 50,
                               child: Icon(
-                                // Icons.add,
                                 model.newsIcons[index],
                                 color: Colors.blueGrey,
                               ),
@@ -137,15 +107,6 @@ class _NewsViewState extends State<NewsView> {
                     ),
                   );
                 }),
-            // GestureDetector(
-            //   onTap: () {
-            //     model.appMetricaTest();
-            //   },
-            //   child: Container(
-            //     color: Colors.red,
-            //     height: 100,
-            //   ),
-            // ),
           ],
         ),
         model.showNews == true ? _currentNewsView(context, model, model.newsIndex) : const SizedBox()
@@ -239,8 +200,8 @@ class _NewsViewState extends State<NewsView> {
             margin: EdgeInsets.only(
                 top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
-            child: CircularProgressIndicator(
-              color: Colors.blueGrey.shade700,
+            child: const CircularProgressIndicator(
+              color: Colors.blue,
             ))
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -249,7 +210,7 @@ class _NewsViewState extends State<NewsView> {
                   onPressed: () async {
                     await model.player.audioCache.clearAll();
                     model.tempSound == null
-                        ? const Center(child: CircularProgressIndicator())
+                        ? const Center(child: CircularProgressIndicator(color: Colors.blue))
                         : model.stopOrPause == false
                             ? await model.player.play(BytesSource(model.tempSound!))
                             : await model.player.resume();
@@ -285,39 +246,14 @@ class _NewsViewState extends State<NewsView> {
           );
   }
 
-  _imageTest(BuildContext context, NewsViewModel model, newsIndex) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return Scaffold(
-            body: Center(
-              child: PhotoView(
-                imageProvider: Image.memory(
-                  Uint8List.fromList(model.tempPic!),
-                  fit: BoxFit.contain,
-                ) as ImageProvider,
-                minScale: PhotoViewComputedScale.contained * 0.8,
-                maxScale: PhotoViewComputedScale.covered * 2,
-              ),
-            ),
-          );
-        }));
-      },
-      child: Image.memory(
-        Uint8List.fromList(model.tempPic!),
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
   _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Container(
             margin: EdgeInsets.only(
                 top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
-            child: CircularProgressIndicator(
-              color: Colors.blueGrey.shade700,
+            child: const CircularProgressIndicator(
+              color: Colors.blue,
             ))
         : GestureDetector(
             onTap: () {
@@ -329,9 +265,9 @@ class _NewsViewState extends State<NewsView> {
                       direction: DismissDirection.vertical,
                       onDismissed: (_) => Navigator.pop(context),
                       child: PhotoView(
-                        loadingBuilder: (context, event) => Center(
+                        loadingBuilder: (context, event) => const Center(
                           child: CircularProgressIndicator(
-                            color: Colors.blueGrey.shade700,
+                            color: Colors.blue,
                           ),
                         ),
                         scaleStateController: PhotoViewScaleStateController(),
@@ -361,8 +297,8 @@ class _NewsViewState extends State<NewsView> {
             margin: EdgeInsets.only(
                 top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
-            child: CircularProgressIndicator(
-              color: Colors.blueGrey.shade700,
+            child: const CircularProgressIndicator(
+              color: Colors.blue,
             ))
         : Stack(
             children: [
@@ -407,28 +343,5 @@ class _NewsViewState extends State<NewsView> {
                   : Container()
             ],
           );
-  }
-
-  _videoPlayer(BuildContext context, NewsViewModel model, newsIndex) {
-    final file = model.decodeVideo;
-    print(file);
-    // _controller = VideoPlayerController.file(file!)
-    //   ..addListener(() => setState(() {}))
-    //   ..setLooping(true)
-    //   ..initialize().then((_) {
-    //     _controller.play();
-    //     setState(() {});
-    //   });
-    return Column(
-      children: [
-        const SizedBox(
-          height: 20,
-        ),
-        FloatingActionButton(onPressed: () {}, child: const Icon(Icons.play_arrow)),
-        // FloatingActionButton(onPressed: () {
-        //   model.videoController.play();
-        // })
-      ],
-    );
   }
 }

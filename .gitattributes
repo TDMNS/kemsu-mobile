@@ -1,0 +1,5 @@
+# Project files
+*.sqlite    binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary

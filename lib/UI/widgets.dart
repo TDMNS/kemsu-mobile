@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 
 class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";
@@ -19,6 +20,9 @@ errorDialog(context, textContent) {
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
           child: const Text('OK'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
         ),
       ],
     ),
@@ -52,6 +56,22 @@ customAppBar(context, model, name) {
               Icons.arrow_back_outlined,
               color: Colors.blue,
             )),
+    actions: [
+      name == EnumScreensWithoutPopArrow.news ||
+          name == EnumScreensWithoutPopArrow.profile ||
+          name == EnumScreensWithoutPopArrow.schedule ||
+          name == EnumScreensWithoutPopArrow.prepScheduleEmp
+      ?
+      IconButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
+          },
+          icon: const Icon(
+            Icons.notifications,
+            color: Colors.blue,
+          ))
+          : Container()
+    ],
   );
 }
 

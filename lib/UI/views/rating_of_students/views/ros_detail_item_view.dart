@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import '../ros_viewmodel.dart';
+import '../ros_view_model.dart';
 
 class RosDetailItemView extends StatelessWidget {
   const RosDetailItemView({Key? key, required this.reitItemList, required this.discipline}) : super(key: key);

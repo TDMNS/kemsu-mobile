@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-import 'UI/CustomThemes.dart';
+import 'UI/custom_themes.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
-import 'UI/views/schedule/schedule2.0_view.dart';
+import 'UI/views/schedule/schedule_view.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white));
+        statusBarColor: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

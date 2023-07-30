@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'check_list_viewmodel.dart';
+import 'package:kemsu_app/Configurations/localizable.dart';
+import 'check_list_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../widgets.dart';
@@ -12,16 +13,26 @@ class CheckListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CheckListViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => CheckListViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-            child: Scaffold(
+            child: model.circle
+                ? Container(
+              color: Theme.of(context).primaryColor,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            )
+            : Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, 'Обходной лист'),
+              appBar: customAppBar(context, model, Localizable.checkListTitle),
               body: _checkListView(context, model),
             ),
           );
@@ -30,20 +41,24 @@ class CheckListView extends StatelessWidget {
 }
 
 _checkListView(BuildContext context, CheckListViewModel model) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 15, right: 15),
-    child: ListView(shrinkWrap: true, children: [
-      const SizedBox(height: 12),
-      Text("Список подразделений", style: Theme.of(context).textTheme.headline5),
-      const SizedBox(height: 10),
-      const Text(
-        'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь',
-        style: TextStyle(color: Colors.red),
+  return ListView(shrinkWrap: true, children: [
+    const SizedBox(height: 12),
+    Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Text(Localizable.checkListDivisions, style: Theme.of(context).textTheme.headlineSmall),
+    ),
+    const SizedBox(height: 10),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
+      child: Text(
+        Localizable.checkListDescription,
+        style: const TextStyle(color: Colors.red),
+        textAlign: TextAlign.end,
       ),
-      const SizedBox(height: 10),
-      getListView(model.checkList)
-    ]),
-  );
+    ),
+    const SizedBox(height: 10),
+    getListView(model.checkList)
+  ]);
 }
 
 Widget getListView(List<CheckList> items) {
@@ -59,9 +74,7 @@ Widget getListView(List<CheckList> items) {
       return ListTile(
           title: Text(departmentTitle),
           subtitle: Text(groupName + '\n' + address),
-          trailing: item.debt == "Нет"
-              ? const Icon(Icons.done, color: Colors.green)
-              : const Icon(Icons.cancel, color: Colors.red));
+          trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red));
     },
   );
 }
