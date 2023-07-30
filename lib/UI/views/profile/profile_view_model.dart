@@ -29,6 +29,8 @@ class EnumUserType {
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
 
+  bool circle = true;
+
   int selectedIndex = 1;
 
   void onTapBottomBar(int index) {
@@ -92,9 +94,7 @@ class ProfileViewModel extends BaseViewModel {
   prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
     final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
-    responseToken.statusCode == 401
-        ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()))
-        : null;
+    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView())) : null;
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
@@ -180,6 +180,7 @@ class ProfileViewModel extends BaseViewModel {
       _showAlertDialog(context);
     }
     appMetricaTest();
+    circle = false;
     notifyListeners();
   }
 
@@ -240,8 +241,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void navigatePgasScreen(context, model) {
-    Navigator.push(context,
-        MaterialPageRoute(settings: const RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
+    Navigator.push(context, MaterialPageRoute(settings: const RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
     notifyListeners();
   }
 
@@ -286,9 +286,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
       builder: (BuildContext context, StateSetter setState) {
         return Stack(children: [
           WebView(
-              initialUrl: Uri.encodeFull(
-                  'https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'
-                      .replaceAll(' ', '+')),
+              initialUrl: Uri.encodeFull('https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'.replaceAll(' ', '+')),
               javascriptMode: JavascriptMode.unrestricted,
               onPageFinished: (finish) {
                 setState(() {
@@ -297,8 +295,8 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
               }),
           isLoading
               ? const Center(
-            child: CircularProgressIndicator(color: Colors.blue),
-          )
+                  child: CircularProgressIndicator(color: Colors.blue),
+                )
               : const Stack(),
         ]);
       },

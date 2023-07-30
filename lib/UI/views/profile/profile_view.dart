@@ -35,12 +35,22 @@ class _ProfileViewState extends State<ProfileView> {
           },
           child: WillPopScope(
             onWillPop: () async => false,
-            child: Scaffold(
-              extendBody: true,
-              extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, Localizable.mainTitle),
-              body: _profileView(context, model),
-            ),
+            child: model.circle
+                ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                : Scaffold(
+                    extendBody: true,
+                    extendBodyBehindAppBar: true,
+                    appBar: customAppBar(context, model, Localizable.mainTitle),
+                    body: _profileView(context, model),
+                  ),
           ),
         );
       },
@@ -239,11 +249,7 @@ class _ProfileViewState extends State<ProfileView> {
                             model.isExpanded = !model.isExpanded;
                           });
                         },
-                        child: Icon(
-                          model.isExpanded ? Icons.expand_less : Icons.expand_more,
-                          color: Colors.white,
-                          size: 24.0
-                        ),
+                        child: Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
                       ),
                       const SizedBox(height: 5),
                       Text(
