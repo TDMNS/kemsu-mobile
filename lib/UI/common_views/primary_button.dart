@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kemsu_app/Configurations/hex.dart';
 
 mainButton(context, {required VoidCallback onPressed, required String title, required bool isPrimary}) {
   return Padding(
@@ -15,7 +16,7 @@ mainButton(context, {required VoidCallback onPressed, required String title, req
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isPrimary ? [const Color(0xFF00C2FF), Colors.blueAccent] : [Colors.pinkAccent, const Color(0xffcd246d)],
+            colors: isPrimary ? [const Color(0xFF00C2FF), Colors.blueAccent] : [HexColor("#fc3f7b"), HexColor("#DC1554")],
           ),
         ),
         child: TextButton(

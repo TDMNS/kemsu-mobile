@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/capitalize_first_letter.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -118,7 +119,7 @@ class _ProfileViewState extends State<ProfileView> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.pinkAccent, Colors.blueAccent, Theme.of(context).colorScheme.background],
+                colors: [HexColor("#DC1554"), Colors.blueAccent, Theme.of(context).colorScheme.background],
                 stops: const [0.5, 0.95, 1.0],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
