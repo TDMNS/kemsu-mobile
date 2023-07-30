@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:stacked/stacked.dart';
 
@@ -148,6 +149,8 @@ class AuthView extends StatelessWidget {
             onTap();
           },
           decoration: InputDecoration(
+              fillColor: MediaQuery.of(context).platformBrightness == Brightness.dark ? HexColor('#232325') : HexColor('#f2f3f5'),
+              filled: true,
               suffixIcon: suffixIcon,
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
               hintText: Localizable.authEnterPassword,
