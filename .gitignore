@@ -1,9 +1,28 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
+# Project files
+*.iml
+*.lock
+*.log
+*.log.*
+
+# IDE files
+.idea/
+.vscode/
+
+# Temp files
+*.swp
+*~
+
 # Files and directories created by pub
+.DS_Store
+.flutter-plugins
+.flutter-plugins-dependencies
 .dart_tool/
-.packages
+.packages/
+.pub/
 build/
+
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 

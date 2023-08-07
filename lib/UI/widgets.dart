@@ -1,39 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/bug_report/main_bug_report_screen.dart';
+import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 
 class EnumScreensWithoutPopArrow {
-  static String get profile => "Профиль";
+  static String get profile => "Главная";
   static String get news => "Новости";
   static String get schedule => "Расписание";
+  static String get prepScheduleEmp => "Расписание преподавателя";
+  static String get prepScheduleStud => "Расписание преподавателей";
 }
 
-errorDialog1(context) {
+errorDialog(context, textContent) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Ошибка'),
-      content: const Text('Требуется логин/пароль пользователя!'),
+      content: Text(textContent),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
           child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-errorDialog2(context) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Ошибка'),
-      content: const Text('Некорректный логин/пароль пользователя!'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
         ),
       ],
     ),
@@ -44,38 +33,45 @@ customAppBar(context, model, name) {
   return AppBar(
     title: Text(
       name,
-      style: TextStyle(color: Colors.blueGrey.shade800),
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
-    actions:
-      name == "Сообщения об ошибках" ? null : <Widget> [
-        IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
-            },
-            icon: Icon(
-              Icons.report,
-              color: Colors.indigo.shade700,
-              size: 32,
-            )
-        ),
-      ],
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
-    systemOverlayStyle: const SystemUiOverlayStyle(
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
+    systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness:
+          Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
     ),
-    backgroundColor: Colors.white,
     shadowColor: Colors.black.withOpacity(0.2),
-    leading: name == EnumScreensWithoutPopArrow.news || name == EnumScreensWithoutPopArrow.profile || name == EnumScreensWithoutPopArrow.schedule ? Container() : IconButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      icon: Icon(
-        Icons.arrow_back_outlined,
-        color: Colors.indigo.shade700,
-      )),
+    leading: name == EnumScreensWithoutPopArrow.news ||
+            name == EnumScreensWithoutPopArrow.profile ||
+            name == EnumScreensWithoutPopArrow.schedule ||
+            name == EnumScreensWithoutPopArrow.prepScheduleEmp
+        ? Container()
+        : IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.blue,
+            )),
+    actions: [
+      name == EnumScreensWithoutPopArrow.news ||
+          name == EnumScreensWithoutPopArrow.profile ||
+          name == EnumScreensWithoutPopArrow.schedule ||
+          name == EnumScreensWithoutPopArrow.prepScheduleEmp
+      ?
+      IconButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
+          },
+          icon: const Icon(
+            Icons.notifications,
+            color: Colors.blue,
+          ))
+          : Container()
+    ],
   );
 }
 
@@ -119,10 +115,7 @@ customBottomBar(BuildContext context, model) {
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
@@ -135,26 +128,20 @@ customBottomBar(BuildContext context, model) {
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
-              child: const Icon(Icons.person),
+              child: const Icon(Icons.home),
             ),
-            icon: const Icon(Icons.person),
-            label: 'Профиль',
+            icon: const Icon(Icons.home),
+            label: 'Главная',
           ),
           BottomNavigationBarItem(
             activeIcon: ShaderMask(
               shaderCallback: (Rect bounds) {
                 return const LinearGradient(
-                  colors: <Color>[
-                    Color.fromRGBO(0, 89, 165, 1),
-                    Color.fromRGBO(1, 160, 226, 1)
-                  ],
+                  colors: <Color>[Color.fromRGBO(0, 89, 165, 1), Color.fromRGBO(1, 160, 226, 1)],
                   tileMode: TileMode.repeated,
                 ).createShader(bounds);
               },
