@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
-import 'package:kemsu_app/main.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
