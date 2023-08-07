@@ -31,9 +31,10 @@ Our application has:
 
 ## Screenshots
 
-![main screen](https://github.com/TDMNS/kemsu-mobile/assets/68660020/48546740-efac-447d-93ef-a49ed2e5d2a9)
-![debts](https://github.com/TDMNS/kemsu-mobile/assets/68660020/28a428fd-be8a-4bc5-a5b3-eb22a4c8a86c)
-![increase-state-academic-scholarship](https://github.com/TDMNS/kemsu-mobile/assets/68660020/925a7de0-8fc8-4fbd-8b2c-4f5ba31ae323)
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/7a303e1c-ddb5-4b0f-a018-e1f462ec573e" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/13369efb-fbdb-4563-a8c4-cf67c1fb73fa" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/24c04e00-47ee-4720-9d09-d943befa6c26" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/9dc18de3-e0e9-4e4d-8c31-bd1a9e2be2ba" width="245px">
 
 ## Contributing
 
@@ -44,7 +45,7 @@ to discuss what you would like to change.
 
 <a href="https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/app-store.png" alt="AppStore" width="100px"/></a>
 <a href="https://disk.yandex.ru/d/BUfaR-ooP8VDOQ"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/apk.png" alt="Apk" width="100px"/></a>
-<a href="https://apps.rustore.ru/app/com.kemsu.kemsu_app"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/rustore.jpg" alt="RuStore" width="100px"/></a>
+<a href="https://apps.rustore.ru/app/com.kemsu.kemsu_app"><img align="left" src="https://raw.githubusercontent.com/TDMNS/kemsu-mobile/main/assets/stores/rustore.jpg" alt="RuStore" width="100px" alt="100px" height = "100px" style="border-radius:50%"/></a>
 <br><br><br><br>
 
 ## License
