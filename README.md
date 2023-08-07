@@ -33,6 +33,10 @@ Our application has:
 <img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/13369efb-fbdb-4563-a8c4-cf67c1fb73fa" width="245px">
 <img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/24c04e00-47ee-4720-9d09-d943befa6c26" width="245px">
 <img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/9dc18de3-e0e9-4e4d-8c31-bd1a9e2be2ba" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/5782ae7d-2099-493d-9840-e4556758a2c5" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/52341438-938e-4b32-9eb5-1379b1d9d17f" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/19a3e245-0561-47f6-b777-d40fcffcf379" width="245px">
+<img src="https://github.com/TDMNS/kemsu-mobile/assets/68660020/863e7c1b-a363-454d-9f48-51a76212c71b" width="245px">
 
 ## Contributing
 
