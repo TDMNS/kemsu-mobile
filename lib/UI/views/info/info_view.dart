@@ -67,6 +67,9 @@ _infoOUProView(BuildContext context, InfoOUProViewModel model) {
       Center(
         child: SingleChildScrollView(padding: const EdgeInsets.all(8.0), child: _getInfoOUProView(model)),
       ),
+      Center(
+        child: model.course.isEmpty ? const Text("У вас нет прикрепленных дисциплин", style: TextStyle(fontSize: 16)) : const SizedBox()
+      )
     ],
   );
 }
