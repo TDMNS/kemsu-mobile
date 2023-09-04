@@ -135,7 +135,7 @@ class NewScheduleViewModel extends BaseViewModel {
     currentDateApi = getWeek.data['currentDay']['currentDate'];
     weekTypeApi == 'четная' ? weekType = true : weekType = false;
     groupId = response.data['currentGroupList'][0]['groupId'];
-    currentSemester = semesterResponse.data['result'][1]['Id'];
+    currentSemester = semesterResponse.data['result'][0]['Id'];
     var weekResponse = await dio.get('${Config.weekList}?semesterId=$currentSemester');
     currentWeek = weekResponse.data['result'][0]['Id'];
     currentTable == true ? groupId = groupIdChoice : groupId = response.data['currentGroupList'][0]['groupId'];
