@@ -73,6 +73,7 @@ class AuthView extends StatelessWidget {
                         model.notifyListeners();
                       })
                   : const SizedBox()),
+              Localizable.authLogin,
               model.loginController,
               false,
               TextInputAction.next, () {
@@ -100,6 +101,7 @@ class AuthView extends StatelessWidget {
                       : const SizedBox()
                 ],
               ),
+              Localizable.authEnterPassword,
               model.passwordController,
               model.isObscure,
               TextInputAction.done, () {
@@ -139,7 +141,8 @@ class AuthView extends StatelessWidget {
     ]);
   }
 
-  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, TextEditingController textEditingController, bool isObscure,
+  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, String hintText, TextEditingController textEditingController, bool
+  isObscure,
       TextInputAction textInputAction, onChanged, onTap, onFieldSubmitted) {
     return Container(
       margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
@@ -156,7 +159,7 @@ class AuthView extends StatelessWidget {
               filled: true,
               suffixIcon: suffixIcon,
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
-              hintText: Localizable.authEnterPassword,
+              hintText: hintText,
               hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
