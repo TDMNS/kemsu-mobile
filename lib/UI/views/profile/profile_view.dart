@@ -121,6 +121,40 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   _profileView(BuildContext context, ProfileViewModel model) {
+    List<Widget> tiles = [];
+    tiles = [
+      profileTiles(context, onPressed: () {
+        model.navigateRosView(context, model);
+      }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
+      profileTiles(context, onPressed: () {
+        model.navigateInfoView(context);
+      }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+    ];
+    if (model.userType == EnumUserType.student) {
+      tiles += [
+        profileTiles(context, onPressed: () {
+          model.navigatePgasScreen(context, model);
+        }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateDebtsView(context);
+        }, title: Localizable.mainDebts, imageSource: 'images/icons/exclamation_circle.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateOrderingInformationMainView(context);
+        }, title: Localizable.mainOrderingInformation, imageSource: 'images/icons/group.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateCheckListView(context);
+        }, title: Localizable.mainCheckList, imageSource: 'images/icons/layers.png')
+      ];
+    }
+    tiles += [
+      profileTiles(context, onPressed: () {
+        model.navigateWebView(context, model);
+      }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
+      profileTiles(context, onPressed: () {
+        model.navigateMainBugReportScreen(context, model);
+      }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png')
+    ];
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -153,9 +187,7 @@ class _ProfileViewState extends State<ProfileView> {
                           },
                           child: ClipRRect(
                             borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.file != null
-                                ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80)
-                                : const Icon(Icons.person, size: 80, color: Colors.grey),
+                            child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80) : const Icon(Icons.person, size: 80, color: Colors.grey),
                           ),
                         ),
                       ),
@@ -198,15 +230,15 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             const SizedBox(height: 5),
                             if (model.learnForm.isNotEmpty)
-                            Text(
-                              '${model.learnForm} форма обучения',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
+                              Text(
+                                '${model.learnForm} форма обучения',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
                             const SizedBox(height: 5),
                             if (model.finForm.isNotEmpty)
                               Text(
@@ -288,32 +320,7 @@ class _ProfileViewState extends State<ProfileView> {
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  profileTiles(context, onPressed: () {
-                    model.navigateRosView(context, model);
-                  }, title: Localizable.mainRos, imageSource: 'images/icons/search.png', isActive: true),
-                  profileTiles(context, onPressed: () {
-                    model.navigatePgasScreen(context, model);
-                  }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png', isActive: model.userType == EnumUserType.student),
-                  profileTiles(context, onPressed: () {
-                    model.navigateInfoView(context);
-                  }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png', isActive: true),
-                  profileTiles(context, onPressed: () {
-                    model.navigateDebtsView(context);
-                  }, title: Localizable.mainDebts, imageSource: 'images/icons/exclamation_circle.png', isActive: model.userType == EnumUserType.student),
-                  profileTiles(context, onPressed: () {
-                    model.navigateOrderingInformationMainView(context);
-                  }, title: Localizable.mainOrderingInformation, imageSource: 'images/icons/group.png', isActive: model.userType == EnumUserType.student),
-                  profileTiles(context, onPressed: () {
-                    model.navigateCheckListView(context);
-                  }, title: Localizable.mainCheckList, imageSource: 'images/icons/layers.png', isActive: model.userType == EnumUserType.student),
-                  profileTiles(context, onPressed: () {
-                    model.navigateWebView(context, model);
-                  }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png', isActive: model.userType == EnumUserType.student),
-                  profileTiles(context, onPressed: () {
-                    model.navigateMainBugReportScreen(context, model);
-                  }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png', isActive: model.userType == EnumUserType.student),
-                ]),
+                children: tiles),
           ),
           const SizedBox(height: 20),
           Center(
