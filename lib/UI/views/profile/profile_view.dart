@@ -155,6 +155,95 @@ class _ProfileViewState extends State<ProfileView> {
       }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png')
     ];
 
+    List<Widget> moreViews = [];
+
+    moreViews += [
+      Text(Localizable.mainDetails,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+          textAlign: TextAlign.center),
+      const SizedBox(height: 5),
+    ];
+    if (model.userType == EnumUserType.student) {
+      moreViews += [
+        Text(model.speciality,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 5),
+        Text(model.faculty,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 5),
+      ];
+    }
+    moreViews += [
+      if (model.learnForm.isNotEmpty)
+        Text(
+          '${model.learnForm} форма обучения',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      const SizedBox(height: 5),
+      if (model.finForm.isNotEmpty)
+        Text(
+          '${capitalizeFirstLetter(model.finForm)} форма финансирования',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      if (model.department.isNotEmpty)
+        SizedBox(
+          width: 300,
+          child: Text(
+            model.department,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      const SizedBox(height: 5),
+      Text(
+        model.email,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: 5),
+      Text(
+        model.phone,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
+        ),
+        textAlign: TextAlign.center,
+      )
+    ];
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -192,95 +281,19 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        '${model.lastName} ${model.firstName} ${model.middleName}',
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
-                      ),
+                      Text('${model.lastName} ${model.firstName} ${model.middleName}',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22), textAlign: TextAlign.center),
                       const SizedBox(height: 5),
-                      Text(
-                        model.userType == EnumUserType.student ? Localizable.mainStudent : Localizable.mainTeacher,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
+                      Text(model.userType == EnumUserType.student ? Localizable.mainStudent : Localizable.mainTeacher,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
                       const SizedBox(height: 5),
-                      Text(
-                        model.userType == EnumUserType.student ? model.group : model.faculty,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
+                      Text(model.userType == EnumUserType.student ? model.group : model.faculty,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
                       const SizedBox(height: 50),
                       Visibility(
                         visible: model.isExpanded,
                         child: Column(
-                          children: [
-                            Text(
-                              Localizable.mainDetails,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.speciality,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            if (model.learnForm.isNotEmpty)
-                              Text(
-                                '${model.learnForm} форма обучения',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            const SizedBox(height: 5),
-                            if (model.finForm.isNotEmpty)
-                              Text(
-                                '${capitalizeFirstLetter(model.finForm)} форма финансирования',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            if (model.department.isNotEmpty)
-                              Text(
-                                model.department,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.email,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.phone,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                          children: moreViews,
                         ),
                       )
                     ],
