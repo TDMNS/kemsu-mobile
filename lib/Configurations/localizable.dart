@@ -44,6 +44,9 @@ class Localizable {
   static String groupName = 'Группа';
   static String basic = 'Форма обучения';
 
+  /// Notifications
+  static String notificationsTitle = 'Уведомления';
+
   /// Main
   static String mainTitle = 'Главная';
   static String mainChoosePhoto = 'Выбор фотографии';

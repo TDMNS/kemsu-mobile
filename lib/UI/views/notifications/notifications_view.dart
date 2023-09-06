@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import 'notifications_view_model.dart';
@@ -13,12 +14,11 @@ class NotificationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NotificationViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => NotificationViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -29,7 +29,7 @@ class NotificationView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Уведомления'),
+                  appBar: customAppBar(context, model, Localizable.notificationsTitle),
                   body: _notView(context, model),
                 ),
               ));
@@ -69,13 +69,13 @@ Widget _notView(context, NotificationViewModel model) {
                                     children: [
                                       richText("${item.title}", "", context, isWhite: true),
                                       const SizedBox(height: 10),
-                                      richText("${item.message}", "", context, isWhite: true),
+                                      Text("${item.message}", style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.normal)),
                                       const SizedBox(height: 10),
-                                      richText("${item.notificationDateTime}", "", context, isWhite: true),
+                                      item.fileSrc != "" && item.fileSize != 0 ? _pictureView(context, urls[index]) : const SizedBox.shrink(),
                                       const SizedBox(height: 10),
-                                      item.fileSrc != "" && item.fileSize != 0
-                                          ? _pictureView(context, urls[index])
-                                          : const SizedBox.shrink(), // отображаем изображение из списка
+                                      Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Text("${item.notificationDateTime}", style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.normal)))
                                     ],
                                   ),
                                 ),
