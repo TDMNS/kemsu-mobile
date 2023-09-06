@@ -115,4 +115,14 @@ class Localizable {
   static String orderingInformationPeriod = 'Период';
   static String orderingInformationCountReferences = 'Количество справок';
   static String orderingInformationRequestDate = 'Дата запроса';
+
+  /// New cert
+  static String newCertName = 'Справка-вызов';
+  static String newCertBossName = 'Полное наименование организации-работодателя/ фамилия, имя, отчество работодателя - физического лица:';
+  static String newCertSignature = 'ФГБОУ ВО "КемГУ" или ИП Иванов И. И.';
+  static String newCertStudentName = 'Полное Ф.И.О. обучающегося в дательном падеже:';
+  static String newCertPlaceholder = 'Иванову Ивану Ивановичу';
+  static String newCertDownload = 'Скачать';
+  static String newCertLoaded = 'Загрузка завершена';
+  static String newCertSaveOnDeviceDescription = 'Справка-вызов была сохранена в загрузках устройства';
 }
