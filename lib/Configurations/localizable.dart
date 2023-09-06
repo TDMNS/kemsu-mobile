@@ -64,6 +64,14 @@ class Localizable {
   static String mainOrderingInformation = 'Заказ справок';
   static String mainCheckList = 'Обходной лист';
   static String mainPayment = 'Оплата услуг';
+  static String mainThanks = 'Спасибо';
+  static String mainHappyNewYearTitle = 'С новым годом!';
+  static String mainHappyNewYearBody =
+      'Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. '
+      'Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них.';
+
+  /// Payment
+  static String paymentTitle = 'Оплата услуг';
 
   /// Schedule
   static String scheduleChooseInstitute = 'Выбрать институт';
@@ -76,8 +84,7 @@ class Localizable {
   /// Check list
   static String checkListTitle = 'Обходной лист';
   static String checkListDivisions = 'Список подразделений';
-  static String checkListDescription =
-      'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
+  static String checkListDescription = 'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
 
   /// Bug report
   static String bugReportTitle = 'Сообщения об ошибках';

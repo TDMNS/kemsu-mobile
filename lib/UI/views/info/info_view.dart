@@ -13,7 +13,7 @@ class InfoOUProView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<InfoOUProViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => InfoOUProViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(

@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/config.dart';
+import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
@@ -247,7 +248,7 @@ class ProfileViewModel extends BaseViewModel {
 
   _showAlertDialog(BuildContext context) {
     Widget okButton = TextButton(
-      child: const Text("Спасибо"),
+      child: Text(Localizable.mainThanks),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -255,9 +256,8 @@ class ProfileViewModel extends BaseViewModel {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("С новым годом!"),
-      content: const Text(
-          "Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них."),
+      title: Text(Localizable.mainHappyNewYearTitle),
+      content: Text(Localizable.mainHappyNewYearBody),
       actions: [
         okButton,
       ],
@@ -275,13 +275,13 @@ class ProfileViewModel extends BaseViewModel {
 /// Payment Web View
 _paymentWebView(BuildContext context, ProfileViewModel model) {
   String fio = model.fio;
-  String phone = model.phone.replaceFirst('+7 ', '');
+  String phone = model.userType == EnumUserType.student ? model.phone.replaceFirst('+7', '') : model.phone.replaceFirst('+7 ', '');
   String email = model.email;
   bool isLoading = true;
   return Scaffold(
     extendBody: false,
     extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, 'Оплата услуг'),
+    appBar: customAppBar(context, model, Localizable.paymentTitle),
     body: StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return Stack(children: [
