@@ -5,6 +5,7 @@ import 'package:kemsu_app/UI/views/ordering_information/ordering_information_mod
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view_model.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../rating_of_students/ros_model.dart';
 import '../ordering_information_main/ordering_information_main_view.dart';
@@ -35,7 +36,7 @@ class _OrderingInformationViewState extends State<OrderingInformationView> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Заказ справок'),
+                  appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
                   body: _orderingInformationView(context, model),
                 ),
               ));
@@ -55,8 +56,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
               child: DropdownButton<StudyCard>(
                 dropdownColor: Theme.of(context).primaryColor,
                 itemHeight: 70.0,
-                hint: const Text(
-                  '- Выбрать учебную карту -',
+                hint: Text(
+                  Localizable.orderingInformationMainChooseStudyCard,
                 ),
                 onChanged: (value) {
                   model.changeCard(value);
@@ -81,8 +82,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                     child: DropdownButton<BasisOfEducation>(
                       dropdownColor: Theme.of(context).primaryColor,
                       itemHeight: 70.0,
-                      hint: const Text(
-                        '- Выбрать основу обучения -',
+                      hint: Text(
+                        Localizable.orderingInformationMainStudyBasis,
                       ),
                       onChanged: (value) {
                         model.changeBasic(value);
@@ -108,8 +109,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                     child: DropdownButton<PeriodList>(
                       dropdownColor: Theme.of(context).primaryColor,
                       itemHeight: 70.0,
-                      hint: const Text(
-                        '- Период за который требуется справка -',
+                      hint: Text(
+                        Localizable.orderingInformationPeriod,
                       ),
                       onChanged: (value) {
                         model.changePeriod(value);
@@ -138,8 +139,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                         model.notifyListeners();
                       },
                       child: model.startDate == DateTime(0, 0, 0)
-                          ? const Text("Выбрать начальную дату")
-                          : Text("Начальная дата: ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
+                          ? Text(Localizable.orderingInformationMainChooseStartDate)
+                          : Text("${Localizable.orderingInformationMainStartDate} ${model.startDate?.day}.${model.startDate?.month}.${model.startDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
@@ -150,9 +151,9 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: model.count,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Количество справок (по умолчанию 1)",
+                    hintText: Localizable.orderingInformationMainAmountCerts,
                     fillColor: Colors.white,
                     //filled: true,
                   ),
@@ -166,7 +167,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? mainButton(context, onPressed: () {
               _orderInfo(context, model);
-            }, title: 'Подать заявку', isPrimary: false)
+            }, title: Localizable.orderingInformationMainSendRequest, isPrimary: false)
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? Center(
@@ -180,8 +181,8 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                         model.notifyListeners();
                       },
                       child: model.endDate == DateTime(0, 0, 0)
-                          ? const Text("Выбрать конечную дату")
-                          : Text("Конечная дата: ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
+                          ? Text(Localizable.orderingInformationMainChooseEndDate)
+                          : Text("${Localizable.orderingInformationMainEndDate} ${model.endDate?.day}.${model.endDate?.month}.${model.endDate?.year}"))),
             )
           : const SizedBox.shrink(),
       model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
@@ -192,9 +193,9 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: model.count,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Количество справок (по умолчанию 1)",
+                    hintText: Localizable.orderingInformationMainAmountCerts,
                     fillColor: Colors.white,
                     //filled: true,
                   ),
@@ -208,7 +209,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? mainButton(context, onPressed: () {
               _orderInfo(context, model);
-            }, title: 'Подать заявку', isPrimary: false)
+            }, title: Localizable.orderingInformationMainSendRequest, isPrimary: false)
           : const SizedBox.shrink()
     ],
   );
@@ -218,18 +219,15 @@ _orderInfo(context, OrderingInformationViewModel model) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: const Text('Заявка успешно создана!'),
-      content: const Text('Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
-          ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
-          'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
-          'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.'),
+      title: Text(Localizable.orderingInformationMainRequestSuccessCreated),
+      content: Text(Localizable.orderingInformationMainInfo),
       actions: <Widget>[
         TextButton(
           onPressed: () {
             model.sendReferences();
             Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
           },
-          child: const Text('OK'),
+          child: Text(Localizable.ok),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           ),
