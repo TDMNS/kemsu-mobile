@@ -46,6 +46,9 @@ class Localizable {
   static String close = 'Закрыть';
   static String photo = 'Фото';
   static String video = 'Видео';
+  static String institute = 'Институт';
+  static String semester = 'Семестр';
+  static String send = 'Отправить';
 
   /// Notifications
   static String notificationsTitle = 'Уведомления';
@@ -147,4 +150,12 @@ class Localizable {
 
   /// News
   static String newsTitle = 'Новости';
+
+  /// New request
+  static String newRequestTitle = 'Новая заявка';
+  static String newRequestInstitute = 'Новая заявка';
+  static String newRequestPhoneFormat = 'Номер телефона в любом формате';
+  static String newRequestGroupName = 'Название группы (пример: М-185)';
+  static String newRequestStudyYear = 'Учебный год';
+  static String newRequestCourseNumber = 'Номер курса';
 }
