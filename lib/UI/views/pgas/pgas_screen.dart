@@ -18,7 +18,17 @@ class PgasScreen extends StatelessWidget {
         builder: (context, model, child) {
           return Scaffold(
             appBar: customAppBar(context, model, "ПГАС"),
-            body: _body(context, model),
+            body: model.circle
+                ? Container(
+              color: Theme.of(context).primaryColor,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            )
+                : _body(context, model),
           );
         });
   }
