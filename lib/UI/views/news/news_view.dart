@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:photo_view/photo_view.dart';
+import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import 'news_view_model.dart';
 
@@ -21,9 +22,7 @@ class _NewsViewState extends State<NewsView> {
         viewModelBuilder: () => NewsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -34,7 +33,7 @@ class _NewsViewState extends State<NewsView> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Новости'),
+                  appBar: customAppBar(context, model, Localizable.newsTitle),
                   body: _newsView(context, model),
                 ),
               ));
@@ -65,16 +64,9 @@ class _NewsViewState extends State<NewsView> {
                       margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(10),
                       width: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Theme.of(context).primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15),
-                                spreadRadius: -15),
-                          ]),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColor, boxShadow: [
+                        BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15),
+                      ]),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -97,9 +89,7 @@ class _NewsViewState extends State<NewsView> {
                           ),
                           Expanded(
                               child: Text(
-                            model.textList[index].length > 65
-                                ? '${model.textList[index].substring(0, 65)}...'
-                                : model.textList[index],
+                            model.textList[index].length > 65 ? '${model.textList[index].substring(0, 65)}...' : model.textList[index],
                             style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark),
                           ))
                         ],
@@ -122,13 +112,8 @@ class _NewsViewState extends State<NewsView> {
         ),
         Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).size.width / 3, left: 15, right: 15, bottom: 40),
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColor, boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).primaryColorLight,
-                blurRadius: 15,
-                offset: const Offset(0, 15),
-                spreadRadius: -15),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColor, boxShadow: [
+            BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15),
           ]),
           child: Stack(
             children: [
@@ -157,21 +142,13 @@ class _NewsViewState extends State<NewsView> {
                     },
                     child: Container(
                       height: 30,
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width / 3, right: MediaQuery.of(context).size.width / 3),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Theme.of(context).primaryColorDark,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Theme.of(context).primaryColorLight,
-                                blurRadius: 15,
-                                offset: const Offset(0, 15),
-                                spreadRadius: -15),
-                          ]),
+                      margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 3, right: MediaQuery.of(context).size.width / 3),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Theme.of(context).primaryColorDark, boxShadow: [
+                        BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15),
+                      ]),
                       child: Center(
                           child: Text(
-                        'Закрыть',
+                        Localizable.close,
                         style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
                       )),
                     ),
@@ -197,8 +174,7 @@ class _NewsViewState extends State<NewsView> {
   _audioPlayer(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Container(
-            margin: EdgeInsets.only(
-                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
+            margin: EdgeInsets.only(top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
             height: 50,
             child: const CircularProgressIndicator(
               color: Colors.blue,
@@ -248,17 +224,22 @@ class _NewsViewState extends State<NewsView> {
 
   _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
-        ? Container(
-            margin: EdgeInsets.only(
-                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
+        ? Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
+          child: const SizedBox(
             height: 50,
-            child: const CircularProgressIndicator(
+            width: 50,
+            child: CircularProgressIndicator(
               color: Colors.blue,
-            ))
+            ),
+          ),
+        ))
         : GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
                 return Scaffold(
+                  appBar: customAppBar(context, model, Localizable.photo),
                   body: Center(
                     child: Dismissible(
                       key: UniqueKey(),
@@ -293,13 +274,17 @@ class _NewsViewState extends State<NewsView> {
 
   _videoPreviewView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
-        ? Container(
-            margin: EdgeInsets.only(
-                top: 10, left: MediaQuery.of(context).size.width / 2.5, right: MediaQuery.of(context).size.width / 2.5),
+        ? Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
+          child: const SizedBox(
             height: 50,
-            child: const CircularProgressIndicator(
+            width: 50,
+            child: CircularProgressIndicator(
               color: Colors.blue,
-            ))
+            ),
+          ),
+        ))
         : Stack(
             children: [
               Container(

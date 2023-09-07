@@ -43,6 +43,9 @@ class Localizable {
   static String educationLevel = 'Уровень образования';
   static String groupName = 'Группа';
   static String basic = 'Форма обучения';
+  static String close = 'Закрыть';
+  static String photo = 'Фото';
+  static String video = 'Видео';
 
   /// Notifications
   static String notificationsTitle = 'Уведомления';
@@ -141,4 +144,7 @@ class Localizable {
   static String newCertDownload = 'Скачать';
   static String newCertLoaded = 'Загрузка завершена';
   static String newCertSaveOnDeviceDescription = 'Справка-вызов была сохранена в загрузках устройства';
+
+  /// News
+  static String newsTitle = 'Новости';
 }

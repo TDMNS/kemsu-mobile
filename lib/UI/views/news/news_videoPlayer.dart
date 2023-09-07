@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:video_player/video_player.dart';
+import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import 'news_view_model.dart';
 
@@ -46,7 +47,7 @@ class _VideoAppState extends State<VideoApp> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, ''),
+                  appBar: customAppBar(context, model, Localizable.video),
                   //bottomNavigationBar: customBottomBar(context, model),
                   body: MaterialApp(
                     home: Scaffold(
