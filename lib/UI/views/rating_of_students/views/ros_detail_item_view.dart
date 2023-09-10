@@ -15,7 +15,7 @@ class RosDetailItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RosViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -32,7 +32,17 @@ class RosDetailItemView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, discipline),
-                  body: _rosDetailItemView(context, model, reitItemList),
+                  body:  model.circle
+                      ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                      : _rosDetailItemView(context, model, reitItemList),
                 ),
               ));
         });

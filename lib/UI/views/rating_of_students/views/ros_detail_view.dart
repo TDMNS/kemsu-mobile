@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_item_view.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
@@ -16,7 +17,7 @@ class RosDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RosViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -33,7 +34,17 @@ class RosDetailView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, 'Семестр $semester'),
-                  body: _rosDetailView(context, model, reitList),
+                  body:  model.circle
+                      ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                      : _rosDetailView(context, model, reitList),
                 ),
               ));
         });
@@ -102,19 +113,16 @@ Widget getListView(RosViewModel model, reitList) {
                           const SizedBox(height: 10),
                           richText("Оценка: ", item.mark != null ? "${item.mark}" : "нет оценки", context),
                           const SizedBox(height: 10),
-                          TextButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-                              onPressed: () async {
-                                await model.getReitItemList(item.studyId);
-                                String safelyDiscipline = item.discipline ?? "";
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RosDetailItemView(
-                                          reitItemList: model.reitItemList, discipline: safelyDiscipline)),
-                                );
-                              },
-                              child: const Text("Подробнее", style: TextStyle(color: Colors.white)))
+                          mainButton(context, onPressed: () async {
+                            await model.getReitItemList(item.studyId);
+                            String safelyDiscipline = item.discipline ?? "";
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RosDetailItemView(
+                                      reitItemList: model.reitItemList, discipline: safelyDiscipline)),
+                            );
+                          }, title: "Подробнее", isPrimary: true)
                         ],
                       ),
                     ),

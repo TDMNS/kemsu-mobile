@@ -1,11 +1,13 @@
 class StudyCard {
   String? speciality;
+  String? groupName;
   int? id;
 
   StudyCard({this.speciality, this.id});
 
   StudyCard.fromJson(Map<String, dynamic> json) {
     speciality = json["SPECIALITY"];
+    groupName = json["GROUP_NAME"];
     id = json["ID"];
   }
 }

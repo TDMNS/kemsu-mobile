@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
-import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../ordering_information_model.dart';
 import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
+import '../ordering_information_view/ordering_information_view.dart';
 import 'ordering_information_main_view_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
@@ -55,7 +55,7 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<String>(
                 dropdownColor: Theme.of(context).primaryColor,
-                itemHeight: 70.0,
+                itemHeight: 70,
                 hint: Text(
                   Localizable.orderingInformationType,
                 ),

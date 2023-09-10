@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
-import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../rating_of_students/ros_model.dart';
 import '../ordering_information_main/ordering_information_main_view.dart';
+import 'ordering_information_view_model.dart';
 
 class OrderingInformationView extends StatefulWidget {
   const OrderingInformationView({Key? key}) : super(key: key);
