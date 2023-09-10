@@ -4,6 +4,7 @@ import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_item_view.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import '../ros_view_model.dart';
@@ -33,7 +34,7 @@ class RosDetailView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'Семестр $semester'),
+                  appBar: customAppBar(context, model, '${Localizable.semester} $semester'),
                   body:  model.circle
                       ? Container(
                     color: Theme.of(context).primaryColor,
@@ -103,15 +104,15 @@ Widget getListView(RosViewModel model, reitList) {
                                 fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
-                          richText("Форма промежуточной аттестации: ", "${item.intermediateAttestationForm}", context),
+                          richText(Localizable.rosDetailInterimCertificationForm, "${item.intermediateAttestationForm}", context),
                           const SizedBox(height: 10),
-                          richText("Текущий балл: ", "${item.currentScore}", context),
+                          richText(Localizable.rosDetailCurrentScore, "${item.currentScore}", context),
                           const SizedBox(height: 10),
-                          richText("Аттестационный балл: ", "${item.frontScore}", context),
+                          richText(Localizable.rosDetailCertScore, "${item.frontScore}", context),
                           const SizedBox(height: 10),
-                          richText("Общий балл: ", "${item.commonScore}", context),
+                          richText(Localizable.rosDetailCommonScore, "${item.commonScore}", context),
                           const SizedBox(height: 10),
-                          richText("Оценка: ", item.mark != null ? "${item.mark}" : "нет оценки", context),
+                          richText(Localizable.rosDetailMark, item.mark != null ? "${item.mark}" : Localizable.rosDetailNoMark, context),
                           const SizedBox(height: 10),
                           mainButton(context, onPressed: () async {
                             await model.getReitItemList(item.studyId);
@@ -122,7 +123,7 @@ Widget getListView(RosViewModel model, reitList) {
                                   builder: (context) => RosDetailItemView(
                                       reitItemList: model.reitItemList, discipline: safelyDiscipline)),
                             );
-                          }, title: "Подробнее", isPrimary: true)
+                          }, title: Localizable.mainMore, isPrimary: true)
                         ],
                       ),
                     ),

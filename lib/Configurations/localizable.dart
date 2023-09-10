@@ -158,4 +158,21 @@ class Localizable {
   static String newRequestGroupName = 'Название группы (пример: М-185)';
   static String newRequestStudyYear = 'Учебный год';
   static String newRequestCourseNumber = 'Номер курса';
+
+  /// ROS
+  static String rosTitle = 'БРС';
+  static String rosRating = 'Рейтинг: ';
+
+  /// ROS detail
+  static String rosDetailInterimCertificationForm = 'Форма промежуточной аттестации: ';
+  static String rosDetailCurrentScore = 'Текущий балл: ';
+  static String rosDetailCertScore = 'Аттестационный балл: ';
+  static String rosDetailCommonScore = 'Общий балл: ';
+  static String rosDetailMark = 'Оценка: ';
+  static String rosDetailNoMark = 'нет оценки';
+
+  /// ROS detail item
+  static String rosDetailItemAmount = 'Количество: ';
+  static String rosDetailItemMaxScore = 'Максимальный балл: ';
+  static String rosDetailItemYourScore = 'Ваш балл: ';
 }

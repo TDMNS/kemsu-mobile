@@ -5,6 +5,7 @@ import 'package:kemsu_app/UI/common_views/main_dropdown.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/views/ros_detail_view.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import '../../prep_schedule/prep_schedule_view.dart';
@@ -31,7 +32,7 @@ class RosView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, 'БРС'),
+                  appBar: customAppBar(context, model, Localizable.rosTitle),
                   body: model.circle
                       ? Container(
                           color: Theme.of(context).primaryColor,
@@ -73,7 +74,7 @@ _rosView(context, RosViewModel model) {
               value: e,
             );
           }).toList(),
-          textHint: "Выбрать учебную карту", onChanged: (value) {
+          textHint: Localizable.orderingInformationMainChooseStudyCard, onChanged: (value) {
         model.circle = true;
         model.notifyListeners();
         model.changeCard(value);
@@ -107,7 +108,7 @@ Widget getListView(RosViewModel model) {
                 initiallyExpanded: index == 0 ? true : false,
                 expandedAlignment: Alignment.centerRight,
                 title: Text(
-                  "Семестр: ${item.semester}",
+                  "${Localizable.semester}: ${item.semester}",
                   style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
@@ -118,9 +119,9 @@ Widget getListView(RosViewModel model) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          richText("Учебный год: ", "${item.startDate}-${item.endDate}", context),
+                          richText(Localizable.orderingInformationStudyYear, "${item.startDate}-${item.endDate}", context),
                           const SizedBox(height: 10),
-                          richText("Рейтинг: ", "${item.commonScore}", context),
+                          richText(Localizable.rosRating, "${item.commonScore}", context),
                           const SizedBox(height: 10),
                           mainButton(context, onPressed: () async {
                             await model.getReitList(item.startDate, item.endDate, item.semester);
@@ -132,7 +133,7 @@ Widget getListView(RosViewModel model) {
                                         semester: item.semester != null ? item.semester! : 1,
                                       )),
                             );
-                          }, title: "Подробнее", isPrimary: true)
+                          }, title: Localizable.mainMore, isPrimary: true)
                         ],
                       ),
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import '../ros_view_model.dart';
@@ -99,11 +100,11 @@ Widget getListView(reitItemList) {
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          richText("Количество: ", "${item.count}", context),
+                          richText(Localizable.rosDetailItemAmount, "${item.count}", context),
                           const SizedBox(height: 10),
-                          richText("Максимальный балл: ", "${item.maxBall}", context),
+                          richText(Localizable.rosDetailItemMaxScore, "${item.maxBall}", context),
                           const SizedBox(height: 10),
-                          richText("Ваш балл: ", "${item.ball}", context)
+                          richText(Localizable.rosDetailItemYourScore, "${item.ball}", context)
                         ],
                       ),
                     ),
