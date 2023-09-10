@@ -17,20 +17,22 @@ class MainBugReportScreen extends StatelessWidget {
         viewModelBuilder: () => BugReportViewModel(context),
         onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle
-              ? Container(
-                  color: Theme.of(context).primaryColor,
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blue,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                )
-              : Scaffold(
+          return Scaffold(
                   appBar: customAppBar(context, model, Localizable.bugReportTitle),
-                  body: _body(context, model),
-                  floatingActionButton: FloatingActionButton(
+                  body: model.circle
+                      ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                      : _body(context, model),
+                  floatingActionButton: model.circle
+                  ? Container()
+                  : FloatingActionButton(
                     backgroundColor: Colors.blue,
                     child: const Icon(Icons.edit, color: Colors.white),
                     onPressed: () {

@@ -17,23 +17,22 @@ class CheckListView extends StatelessWidget {
         viewModelBuilder: () => CheckListViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-            child: model.circle
-                ? Container(
-              color: Theme.of(context).primaryColor,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                  backgroundColor: Colors.white,
-                ),
-              ),
-            )
-            : Scaffold(
+            value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+            child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
               appBar: customAppBar(context, model, Localizable.checkListTitle),
-              body: _checkListView(context, model),
+              body: model.circle
+                  ? Container(
+                      color: Theme.of(context).primaryColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                    )
+                  : _checkListView(context, model),
             ),
           );
         });
