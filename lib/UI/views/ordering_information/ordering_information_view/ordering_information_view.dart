@@ -142,11 +142,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       const SizedBox(height: 20),
       model.isSelected == true && model.lastParagraph != model.selectedPeriod
           ? mainButton(context, onPressed: () {
-              if (model.count.value.text.isEmpty) {
-                _warning(context);
-              } else {
-                _orderInfo(context, model);
-              }
+              _orderInfo(context, model);
             }, title: Localizable.orderingInformationMainSendRequest, isPrimary: false)
           : const SizedBox.shrink(),
       model.startDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
@@ -188,11 +184,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
       const SizedBox(height: 20),
       model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
           ? mainButton(context, onPressed: () {
-              if (model.count.value.text.isEmpty) {
-                _warning(context);
-              } else {
-                _orderInfo(context, model);
-              }
+              _orderInfo(context, model);
             }, title: Localizable.orderingInformationMainSendRequest, isPrimary: false)
           : const SizedBox.shrink()
     ],
