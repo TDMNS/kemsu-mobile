@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import './info_view_model.dart';
-import './info_disc_view.dart';
+import '../../../../Configurations/localizable.dart';
+import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
+import '../info_view_model.dart';
+import 'info_disc_view.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../widgets.dart';
+import '../../../widgets.dart';
 
 class InfoOUProView extends StatelessWidget {
   const InfoOUProView({Key? key}) : super(key: key);
@@ -17,12 +18,11 @@ class InfoOUProView extends StatelessWidget {
         viewModelBuilder: () => InfoOUProViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+            value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, 'ИнфОУПро'),
+              appBar: customAppBar(context, model, Localizable.infoTitle),
               body: _infoOUProView(context, model),
             ),
           );
@@ -39,9 +39,9 @@ _infoOUProView(BuildContext context, InfoOUProViewModel model) {
           const SizedBox(
             width: 10,
           ),
-          const Text(
-            'Показать все ',
-            style: TextStyle(fontSize: 17.0),
+          Text(
+            Localizable.infoShowAll,
+            style: const TextStyle(fontSize: 17.0),
           ),
           const SizedBox(width: 10), //SizedBox
           Checkbox(
@@ -67,9 +67,7 @@ _infoOUProView(BuildContext context, InfoOUProViewModel model) {
       Center(
         child: SingleChildScrollView(padding: const EdgeInsets.all(8.0), child: _getInfoOUProView(model)),
       ),
-      Center(
-        child: model.course.isEmpty ? const Text("У вас нет прикрепленных дисциплин", style: TextStyle(fontSize: 16)) : const SizedBox()
-      )
+      Center(child: model.course.isEmpty ? Text(Localizable.infoWithoutDisciplines, style: const TextStyle(fontSize: 16)) : const SizedBox())
     ],
   );
 }
@@ -107,9 +105,9 @@ Widget _getInfoOUProView(InfoOUProViewModel model) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        richText("Дисциплина: ", "${item.discName}", context, isWhite: true),
+                        richText(Localizable.infoDiscipline, "${item.discName}", context, isWhite: true),
                         const SizedBox(height: 10),
-                        richText("Преподаватель: ", "${item.fio}", context, isWhite: true),
+                        richText(Localizable.infoTeacher, "${item.fio}", context, isWhite: true),
                       ],
                     ),
                   )),

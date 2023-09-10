@@ -175,4 +175,29 @@ class Localizable {
   static String rosDetailItemAmount = 'Количество: ';
   static String rosDetailItemMaxScore = 'Максимальный балл: ';
   static String rosDetailItemYourScore = 'Ваш балл: ';
+
+  /// Info
+  static String infoTitle = 'ИнфОУПро';
+  static String infoShowAll = 'Показать все ';
+  static String infoWithoutDisciplines = 'У вас нет прикрепленных дисциплин';
+  static String infoDiscipline = 'Дисциплина: ';
+  static String infoTeacher = 'Преподаватель: ';
+
+  /// Info task block
+  static String infoTaskBlockSolution = 'Решение: ';
+  static String infoTaskBlockKeyDate = 'Контрольная дата: ';
+  static String infoTaskBlockResult = 'Результат: ';
+  static String infoTaskBlockMaxScore = 'Максимальный балл: ';
+  static String infoTaskBlockState = 'Состояние: : ';
+
+  /// Info disc
+  static String infoDiscDiscipline = 'Дисциплина: ';
+  static String infoDiscReport = 'Отчётность: ';
+  static String infoDiscHours = 'Часы: ';
+  static String infoDiscPeriod = 'Период проведения: ';
+  static String infoDiscTeacher = 'Преподаватель: ';
+  static String infoDiscAmountScores = 'Количество балов: ';
+  static String infoDiscKeyDate = 'Контрольная дата: ';
+  static String infoDiscMaxScore = 'Максимальный балл: ';
+  static String infoDiscResult = 'Результат: ';
 }

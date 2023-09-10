@@ -12,7 +12,7 @@ import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
-import '../info/info_view.dart';
+import '../info/views/info_view.dart';
 import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
