@@ -182,7 +182,7 @@ _orderingInformationView(context, OrderingInformationViewModel model) {
             )
           : const SizedBox.shrink(),
       const SizedBox(height: 20),
-      model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph
+      model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph && model.startDate?.day != null && model.endDate?.day != null
           ? mainButton(context, onPressed: () {
               _orderInfo(context, model);
             }, title: Localizable.orderingInformationMainSendRequest, isPrimary: false)
@@ -202,27 +202,6 @@ _orderInfo(context, OrderingInformationViewModel model) {
           onPressed: () {
             model.sendReferences();
             Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
-          },
-          child: Text(Localizable.ok),
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-_warning(context) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: Text("Внимание!"),
-      content: Text("Вам нужно указать количество справок!"),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
           },
           child: Text(Localizable.ok),
           style: ButtonStyle(
