@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-mainDropdown(context, {required value, required items, required String textHint, required onChanged}) {
+mainDropdown(context, {required value, double? itemHeight, required items, required String textHint, required onChanged}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
     child: Container(
@@ -10,6 +10,7 @@ mainDropdown(context, {required value, required items, required String textHint,
         child: DropdownButton(
             dropdownColor: Theme.of(context).primaryColor,
             isExpanded: true,
+            itemHeight: itemHeight,
             value: value,
             items: items,
             hint: Center(
