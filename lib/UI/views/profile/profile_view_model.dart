@@ -103,7 +103,7 @@ class ProfileViewModel extends BaseViewModel {
   Future onReady(BuildContext context) async {
     prolongToken(context);
     String? img = await storage.read(key: "avatar");
-    img != null ? file = File(img) : file = null;
+    file = img != null ? File(img) : null;
 
     bool fileExists = await file?.exists() ?? false;
 
@@ -125,8 +125,8 @@ class ProfileViewModel extends BaseViewModel {
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
 
-    userData["email"] != null ? email = userData["email"] : email = '';
-    userData["phone"] != null ? phone = userData["phone"] : phone = '';
+    email = userData["email"] ?? '';
+    phone = userData["phone"] ?? '';
     String emailTemp = email;
     String phoneTemp = phone;
     emailController?.text = emailTemp;
@@ -134,19 +134,19 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
 
     if (userType == EnumUserType.student) {
-      firstName = userData["firstName"];
-      lastName = userData["lastName"];
-      middleName = userData["middleName"];
+      firstName = userData["firstName"] ?? '';
+      lastName = userData["lastName"] ?? '';
+      middleName = userData["middleName"] ?? '';
       final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
 
-      var studentCard = responseStudent.data[0];
-      group = studentCard["GROUP_NAME"];
-      speciality = studentCard["SPECIALITY"];
-      faculty = studentCard["FACULTY"];
-      qualification = studentCard["QUALIFICATION"];
-      learnForm = studentCard["LEARN_FORM"];
-      statusSTR = studentCard["STATUS_STR"];
-      finForm = studentCard["FINFORM"];
+      var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
+      group = studentCard["GROUP_NAME"] ?? '';
+      speciality = studentCard["SPECIALITY"] ?? '';
+      faculty = studentCard["FACULTY"] ?? '';
+      qualification = studentCard["QUALIFICATION"] ?? '';
+      learnForm = studentCard["LEARN_FORM"] ?? '';
+      statusSTR = studentCard["STATUS_STR"] ?? '';
+      finForm = studentCard["FINFORM"] ?? '';
 
       await storage.write(key: "firstName", value: firstName);
       await storage.write(key: "lastName", value: lastName);
@@ -155,12 +155,12 @@ class ProfileViewModel extends BaseViewModel {
     } else if (userType == EnumUserType.employee) {
       final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
 
-      var employeeCard = responseEmployee.data["empList"][0];
-      firstName = employeeCard["FIRST_NAME"];
-      lastName = employeeCard["LAST_NAME"];
-      middleName = employeeCard["MIDDLE_NAME"];
-      jobTitle = employeeCard["POST_NAME"];
-      department = employeeCard["DEP"];
+      var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
+      firstName = employeeCard["FIRST_NAME"] ?? '';
+      lastName = employeeCard["LAST_NAME"] ?? '';
+      middleName = employeeCard["MIDDLE_NAME"] ?? '';
+      jobTitle = employeeCard["POST_NAME"] ?? '';
+      department = employeeCard["DEP"] ?? '';
 
       await storage.write(key: "firstName", value: firstName);
       await storage.write(key: "lastName", value: lastName);
@@ -184,7 +184,7 @@ class ProfileViewModel extends BaseViewModel {
     circle = false;
     notifyListeners();
   }
-
+  
   void appMetricaTest() {
     AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Main screen (profile) event');
