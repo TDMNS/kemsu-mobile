@@ -201,7 +201,7 @@ _orderInfo(context, OrderingInformationViewModel model) {
         TextButton(
           onPressed: () {
             model.sendReferences();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView()));
+            Navigator.of(context).popUntil(ModalRoute.withName("/menu"));
           },
           child: Text(Localizable.ok),
           style: ButtonStyle(

@@ -107,7 +107,7 @@ _downloadFinish(context) {
       content: Text(Localizable.newCertSaveOnDeviceDescription),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationMainView())),
+          onPressed: () => Navigator.of(context).popUntil(ModalRoute.withName("/menu")),
           child: Text(Localizable.ok),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),

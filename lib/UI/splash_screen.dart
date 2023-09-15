@@ -21,8 +21,7 @@ class _MyHomePageState extends State<LoadingView> with SingleTickerProviderState
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark));
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Image.asset(
@@ -49,8 +48,10 @@ getUserType(context) async {
               ))
       : Timer(
           const Duration(milliseconds: 2800),
-          () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainMenu(type: type!)),
+          () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  settings: const RouteSettings(name: "/menu"),
+                  builder: (context) => MainMenu(type: type!),
+                ),
               ));
 }
