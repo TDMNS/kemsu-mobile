@@ -11,6 +11,8 @@ import '../../../../Configurations/config.dart';
 class OrderingInformationMainViewModel extends BaseViewModel {
   OrderingInformationMainViewModel(BuildContext context);
 
+  bool circle = true;
+
   final storage = const FlutterSecureStorage();
 
   int? type;
@@ -26,6 +28,7 @@ class OrderingInformationMainViewModel extends BaseViewModel {
     userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
     await getRequestList();
     await getCallCertificates();
+    circle = false;
     appMetricaTest();
   }
 

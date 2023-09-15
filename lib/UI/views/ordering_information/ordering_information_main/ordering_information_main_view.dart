@@ -37,7 +37,17 @@ class _OrderingInformationMainViewState extends State<OrderingInformationMainVie
                     extendBody: true,
                     extendBodyBehindAppBar: true,
                     appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
-                    body: _orderingInformationView(context, model)),
+                    body: model.circle
+                        ? Container(
+                            color: Theme.of(context).primaryColor,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
+                          )
+                        : _orderingInformationView(context, model)),
               ));
         });
   }
