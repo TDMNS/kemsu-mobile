@@ -4,7 +4,6 @@ import 'package:stacked/stacked.dart';
 
 import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
-import '../ordering_information_main/ordering_information_main_view.dart';
 import 'ordering_information_new_certificates_view_model.dart';
 
 class OrderingInformationNewCertificatesView extends StatefulWidget {
@@ -58,7 +57,7 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
           )),
       TextField(
         controller: model.companyName,
-        decoration: InputDecoration(hintText: Localizable.newCertSignature, hintStyle: TextStyle(fontSize: 14)),
+        decoration: InputDecoration(hintText: Localizable.newCertSignature, hintStyle: const TextStyle(fontSize: 14)),
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height / 16,
@@ -70,7 +69,10 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
           )),
       TextField(
         controller: model.studentName,
-        decoration: InputDecoration(hintText: Localizable.newCertPlaceholder, hintStyle: TextStyle(fontSize: 14)),
+        decoration: InputDecoration(hintText: Localizable.newCertPlaceholder, hintStyle: const TextStyle(fontSize: 14)),
+        onChanged: (_) {
+          model.notifyListeners();
+        },
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height / 16,
@@ -78,7 +80,12 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
       GestureDetector(
         onTap: () {
           model.companyName.text.isEmpty || model.studentName.text.isEmpty ? null : model.sendCallCertificates(context);
-          _downloadFinish(context);
+          if (model.studentName.text.isNotEmpty) {
+            if (model.companyName.text.isEmpty) {
+              model.companyName.text = 'ФГБОУ ВО "КемГУ"';
+            }
+            _downloadFinish(context);
+          }
         },
         child: Container(
           height: MediaQuery.of(context).size.height / 16,
@@ -86,7 +93,7 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
             left: MediaQuery.of(context).size.width / 3.5,
             right: MediaQuery.of(context).size.width / 3.5,
           ),
-          decoration: BoxDecoration(color: model.companyName.text.isEmpty || model.studentName.text.isEmpty ? Colors.grey : Colors.blue, borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: model.studentName.text.isEmpty ? Colors.grey : Colors.blue, borderRadius: BorderRadius.circular(10)),
           child: Center(
             child: Text(
               Localizable.newCertDownload,

@@ -17,11 +17,10 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
   sendCallCertificates(context) async {
     String? groupTermId = await storage.read(key: 'groupTermId');
     Dio dio = Dio();
-    await getApplicationDocumentsDirectory();
     String? token = await storage.read(key: "tokenKey");
     await dio.download(
       '${Config.refCallPDF}/$groupTermId?employer=${companyName.text}&employeeFio=${studentName.text}',
-      '/storage/emulated/0/Download/help_call.pdf',
+      (await getTemporaryDirectory()).path + 'call.pdf',
       options: Options(
         headers: {'x-access-token': token},
         method: 'GET',
