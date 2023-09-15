@@ -83,6 +83,7 @@ class OrderingInformationViewModel extends BaseViewModel {
   }
 
   changeBasic(value) async {
+    selectedPeriod = null;
     selectedBasic = value;
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));
