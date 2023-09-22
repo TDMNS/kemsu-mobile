@@ -116,7 +116,7 @@ class Localizable {
   static String orderingInformationDateStart = 'Дата начала: ';
   static String orderingInformationDateEnd = 'Дата окончания: ';
   static String orderingInformationNewCall = 'Заказать новую справку';
-  static String orderingInformationListReferencesAboutTraining = 'Список справок об обучении';
+  static String orderingInformationListReferencesAboutTraining = 'Список справок о доходах';
   static String orderingInformationCall = 'Справка';
   static String orderingInformationPeriod = 'Период';
   static String orderingInformationCountReferences = 'Количество справок';
