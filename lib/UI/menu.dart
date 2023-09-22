@@ -3,6 +3,7 @@ import 'package:kemsu_app/UI/views/news/news_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule/schedule_view.dart';
+import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
 import '../Configurations/localizable.dart';
 
@@ -27,20 +28,13 @@ class _MainMenuState extends State<MainMenu> {
     return Scaffold(
         body: IndexedStack(
           index: _selectedIndex,
-          children: [
-            const NewsView(),
-            const ProfileView(),
-            widget.type == 0
-                ? const NewScheduleView()
-                : const PrepScheduleView()
-          ],
+          children: [const NewsView(), const ProfileView(), widget.type == 0 ? const ScheduleScreen() : const PrepScheduleView()],
         ),
         bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Theme.of(context).primaryColor,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue,
-            unselectedItemColor:
-                Theme.of(context).canvasColor, //<-- Unselected text
+            unselectedItemColor: Theme.of(context).canvasColor, //<-- Unselected text
             type: BottomNavigationBarType.fixed,
             onTap: _onItemTapped,
             items: <BottomNavigationBarItem>[

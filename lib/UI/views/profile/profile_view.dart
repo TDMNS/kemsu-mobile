@@ -247,7 +247,8 @@ class _ProfileViewState extends State<ProfileView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
             height: model.isExpanded ? 525 : 325,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
@@ -302,22 +303,20 @@ class _ProfileViewState extends State<ProfileView> {
                 Positioned(
                   right: 10,
                   bottom: 20,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            model.isExpanded = !model.isExpanded;
-                          });
-                        },
-                        child: Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        Localizable.mainMore,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
-                      ),
-                    ],
+                  child: InkWell(
+                    onTap: () => setState(() {
+                      model.isExpanded = !model.isExpanded;
+                    }),
+                    child: Column(
+                      children: [
+                        Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
+                        const SizedBox(height: 5),
+                        Text(
+                          Localizable.mainMore,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
