@@ -302,24 +302,33 @@ class _ProfileViewState extends State<ProfileView> {
                 Positioned(
                   right: 10,
                   bottom: 20,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            model.isExpanded = !model.isExpanded;
-                          });
-                        },
-                        child: Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        Localizable.mainMore,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
-                      ),
-                    ],
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        model.isExpanded = !model.isExpanded;
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(24.0),
+                    child: Column(
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            model.isExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: Colors.white,
+                            size: 24.0,
+                            key: ValueKey<bool>(model.isExpanded),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          Localizable.mainMore,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),
