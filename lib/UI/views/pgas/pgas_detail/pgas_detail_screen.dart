@@ -58,18 +58,15 @@ _body(context, PgasDetailViewModel model) {
 _pgasAchieveTitle(context) {
   return Padding(
     padding: const EdgeInsets.only(right: 20),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text(
-          "Прикрепленные достижения",
-          style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).focusColor),
-        ),
-      ],
+    child: Text(
+      "Прикрепленные достижения",
+      style: TextStyle(
+          fontSize: 24,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w500,
+          color: Theme.of(context).focusColor),
+      textAlign: TextAlign.center,
+      softWrap: true,
     ),
   );
 }
