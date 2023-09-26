@@ -124,7 +124,7 @@ Widget getCertificatesListView(List<CallCertificate> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight.withOpacity(0.5), blurRadius: 35, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Padding(

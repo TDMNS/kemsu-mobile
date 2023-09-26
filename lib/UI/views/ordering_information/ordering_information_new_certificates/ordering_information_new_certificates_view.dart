@@ -79,11 +79,11 @@ _orderingInformationView(BuildContext context, OrderingInformationNewCertificate
       ),
       GestureDetector(
         onTap: () {
-          model.companyName.text.isEmpty || model.studentName.text.isEmpty ? null : model.sendCallCertificates(context);
           if (model.studentName.text.isNotEmpty) {
             if (model.companyName.text.isEmpty) {
               model.companyName.text = 'ФГБОУ ВО "КемГУ"';
             }
+            model.sendCallCertificates(context);
             _downloadFinish(context);
           }
         },
