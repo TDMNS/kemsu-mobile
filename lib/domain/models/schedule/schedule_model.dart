@@ -177,6 +177,22 @@ class WeekDay extends Equatable {
   @JsonKey(name: 'coupleOdd7_str')
   final String coupleOdd7Str;
 
+  String get oddCouple1 => getOddCoupleStr(coupleAll1Str, coupleOdd1Str);
+  String get oddCouple2 => getOddCoupleStr(coupleAll2Str, coupleOdd2Str);
+  String get oddCouple3 => getOddCoupleStr(coupleAll3Str, coupleOdd3Str);
+  String get oddCouple4 => getOddCoupleStr(coupleAll4Str, coupleOdd4Str);
+  String get oddCouple5 => getOddCoupleStr(coupleAll5Str, coupleOdd5Str);
+  String get oddCouple6 => getOddCoupleStr(coupleAll6Str, coupleOdd6Str);
+  String get oddCouple7 => getOddCoupleStr(coupleAll7Str, coupleOdd7Str);
+
+  String get evenCouple1 => getEvenCoupleStr(coupleAll1Str, coupleEven1Str);
+  String get evenCouple2 => getEvenCoupleStr(coupleAll2Str, coupleEven2Str);
+  String get evenCouple3 => getEvenCoupleStr(coupleAll3Str, coupleEven3Str);
+  String get evenCouple4 => getEvenCoupleStr(coupleAll4Str, coupleEven4Str);
+  String get evenCouple5 => getEvenCoupleStr(coupleAll5Str, coupleEven5Str);
+  String get evenCouple6 => getEvenCoupleStr(coupleAll6Str, coupleEven6Str);
+  String get evenCouple7 => getEvenCoupleStr(coupleAll7Str, coupleEven7Str);
+
   const WeekDay({
     required this.coupleAll1,
     required this.coupleAll1Str,
@@ -270,6 +286,20 @@ class WeekDay extends Equatable {
         coupleOdd7,
         coupleOdd7Str,
       ];
+}
+
+String getOddCoupleStr(coupleAll, coupleOdd) {
+  List<String> parts = [];
+  if (coupleAll.isNotEmpty) parts.add(coupleAll);
+  if (coupleOdd.isNotEmpty) parts.add(coupleOdd);
+  return parts.join(',\n');
+}
+
+String getEvenCoupleStr(coupleAll, coupleEven) {
+  List<String> parts = [];
+  if (coupleAll.isNotEmpty) parts.add(coupleAll);
+  if (coupleEven.isNotEmpty) parts.add(coupleEven);
+  return parts.join(',\n');
 }
 
 @JsonSerializable()

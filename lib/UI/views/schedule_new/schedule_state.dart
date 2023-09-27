@@ -1,29 +1,29 @@
 part of 'schedule_bloc.dart';
 
-abstract class ScheduleState extends Equatable {
+class ScheduleState extends Equatable {
   const ScheduleState();
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
 }
 
 class ScheduleInitial extends ScheduleState {
-  final ScheduleModel? currentGroup;
-
-  const ScheduleInitial({this.currentGroup});
-
-  ScheduleInitial copyWith({
-    ScheduleModel? currentGroup,
-  }) {
-    return ScheduleInitial(
-      currentGroup: currentGroup ?? this.currentGroup,
-    );
-  }
-
   @override
-  List<Object?> get props => [currentGroup];
+  List<Object?> get props => [];
 }
 
 class CurrentGroupLoaded extends ScheduleState {
-  const CurrentGroupLoaded(this.currentGroup);
-  final ScheduleModel currentGroup;
+  final ScheduleModel? currentGroup;
+  final WeekType weekType;
+
+  const CurrentGroupLoaded({
+    this.currentGroup,
+    this.weekType = WeekType.even,
+  });
+
   @override
-  List<Object> get props => [currentGroup];
+  List<Object?> get props => [currentGroup, weekType];
 }
+
+enum WeekType { even, odd }
