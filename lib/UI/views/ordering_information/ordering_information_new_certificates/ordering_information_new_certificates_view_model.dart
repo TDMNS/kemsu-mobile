@@ -23,7 +23,6 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
 
       if (Platform.isAndroid) {
         dir = '/storage/emulated/0/Download';
-        print('TEST:: $dir');
       } else if (Platform.isIOS) {
         dir = (await getApplicationDocumentsDirectory()).path;
       }
