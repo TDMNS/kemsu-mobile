@@ -19,7 +19,14 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
     try {
       String? groupTermId = await storage.read(key: 'groupTermId');
       String? token = await storage.read(key: "tokenKey") ?? '';
-      String dir = (await getApplicationDocumentsDirectory()).path;
+      String dir = '';
+
+      if (Platform.isAndroid) {
+        dir = '/storage/emulated/0/Download';
+        print('TEST:: $dir');
+      } else if (Platform.isIOS) {
+        dir = (await getApplicationDocumentsDirectory()).path;
+      }
 
       int callNumber = 1;
       String filename = 'Call #$callNumber.pdf';
