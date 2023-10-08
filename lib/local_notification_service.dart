@@ -1,6 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:http/http.dart' as http;
+import 'Configurations/config.dart';
 import 'UI/splash_screen.dart';
+import 'UI/views/notifications/notifications_view_model.dart';
 import 'main.dart';
 
 class LocalNotificationService {
@@ -36,23 +39,11 @@ class LocalNotificationService {
       'auth': {'accessToken': token},
     });
 
-    socket.on('connect', (_) {
-      print('Connected');
-    });
-
-    socket.on('disconnect', (_) {
-      print('Disconnected');
-    });
-
-    socket.on('error', (data) {
-      print('Error: $data');
-    });
-
-    socket.on("notification", (data) {
-      print('Notification: $data');
+    socket.on("notification", (data) async {
+      var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
       localNotificationService.showLocalNotification(
-          "Уведомление",
-          "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу."
+          userNotification[0].title ?? "Уведомление",
+          userNotification[0].message ?? "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу."
       );
     });
 

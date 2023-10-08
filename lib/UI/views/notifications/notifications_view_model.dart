@@ -20,10 +20,6 @@ class NotificationViewModel extends BaseViewModel {
 
   List<UserNotifications> userNotifications = [];
 
-  List<UserNotifications> parseUserNotifications(List response) {
-    return response.map<UserNotifications>((json) => UserNotifications.fromJson(json)).toList();
-  }
-
   getUserNotifications() async {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
@@ -43,5 +39,15 @@ class NotificationViewModel extends BaseViewModel {
       urls.add(imageUrl);
     }
     return urls;
+  }
+
+  static List<UserNotifications> parseUserNotifications(List response) {
+    return response.map<UserNotifications>((json) => UserNotifications.fromJson(json)).toList();
+  }
+
+  static Future<List<UserNotifications>> getUserNotificationsFromAny() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
+    return parseUserNotifications(json.decode(response.body)["userNotificationList"]);
   }
 }
