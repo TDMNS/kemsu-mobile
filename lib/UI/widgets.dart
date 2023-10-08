@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
+import 'package:badges/badges.dart' as badges;
+
+import '../local_notification_service.dart';
 
 class EnumScreensWithoutPopArrow {
   static String get profile => "Главная";
@@ -62,14 +65,23 @@ customAppBar(context, model, name) {
           name == EnumScreensWithoutPopArrow.schedule ||
           name == EnumScreensWithoutPopArrow.prepScheduleEmp
       ?
-      IconButton(
+      badges.Badge(
+        position: badges.BadgePosition.topEnd(top: 0, end: 3),
+        showBadge: LocalNotificationService.unreadMessages > 0 ? true : false,
+        badgeContent: Text(
+          LocalNotificationService.unreadMessages.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
+        child: IconButton(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
           },
           icon: const Icon(
             Icons.notifications,
             color: Colors.blue,
-          ))
+          ),
+        ),
+      )
           : Container()
     ],
   );

@@ -7,6 +7,7 @@ import 'UI/views/notifications/notifications_view_model.dart';
 import 'main.dart';
 
 class LocalNotificationService {
+  static var unreadMessages = 0;
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> setup() async {
@@ -41,7 +42,8 @@ class LocalNotificationService {
 
     socket.on('connect', (_) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
-      if ((userNotification[0].newNotificationFlag ?? 0) > 0) {
+      unreadMessages = userNotification[0].newNotificationFlag ?? 0;
+      if ((unreadMessages) > 0) {
         localNotificationService.showLocalNotification(
             userNotification[0].title ?? "Уведомление",
             userNotification[0].message ?? "У вас есть непросмотренные оповещения!"
