@@ -42,8 +42,7 @@ customAppBar(context, model, name) {
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness:
-          Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness: Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
     ),
     shadowColor: Colors.black.withOpacity(0.2),
     leading: name == EnumScreensWithoutPopArrow.news ||
@@ -61,27 +60,26 @@ customAppBar(context, model, name) {
             )),
     actions: [
       name == EnumScreensWithoutPopArrow.news ||
-          name == EnumScreensWithoutPopArrow.profile ||
-          name == EnumScreensWithoutPopArrow.schedule ||
-          name == EnumScreensWithoutPopArrow.prepScheduleEmp
-      ?
-      badges.Badge(
-        position: badges.BadgePosition.topEnd(top: 0, end: 3),
-        showBadge: LocalNotificationService.unreadMessages > 0 ? true : false,
-        badgeContent: Text(
-          LocalNotificationService.unreadMessages.toString(),
-          style: const TextStyle(color: Colors.white),
-        ),
-        child: IconButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
-          },
-          icon: const Icon(
-            Icons.notifications,
-            color: Colors.blue,
-          ),
-        ),
-      )
+              name == EnumScreensWithoutPopArrow.profile ||
+              name == EnumScreensWithoutPopArrow.schedule ||
+              name == EnumScreensWithoutPopArrow.prepScheduleEmp
+          ? badges.Badge(
+              position: badges.BadgePosition.topEnd(top: 0, end: 3),
+              showBadge: LocalNotificationService.unreadMessages > 0 ? true : false,
+              badgeContent: Text(
+                LocalNotificationService.unreadMessages.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
+                },
+                icon: const Icon(
+                  Icons.notifications,
+                  color: Colors.blue,
+                ),
+              ),
+            )
           : Container()
     ],
   );
