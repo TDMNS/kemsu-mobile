@@ -39,6 +39,16 @@ class LocalNotificationService {
       'auth': {'accessToken': token},
     });
 
+    socket.on('connect', (_) async {
+      var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
+      if ((userNotification[0].newNotificationFlag ?? 0) > 0) {
+        localNotificationService.showLocalNotification(
+            userNotification[0].title ?? "Уведомление",
+            userNotification[0].message ?? "У вас есть непросмотренные оповещения!"
+        );
+      }
+    });
+
     socket.on("notification", (data) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
       localNotificationService.showLocalNotification(
