@@ -1,10 +1,9 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:http/http.dart' as http;
-import 'Configurations/config.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'UI/splash_screen.dart';
 import 'UI/views/notifications/notifications_view_model.dart';
-import 'main.dart';
+
+final localNotificationService = LocalNotificationService();
 
 class LocalNotificationService {
   static var unreadMessages = 0;
@@ -33,7 +32,7 @@ class LocalNotificationService {
   socketIO() async {
     String? token = await storage.read(key: "tokenKey");
 
-    IO.Socket socket = IO.io('wss://api-next.kemsu.ru', <String, dynamic>{
+    socket_io.Socket socket = socket_io.io('wss://api-next.kemsu.ru', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': true,
       'path': '/socket.io/notifications',

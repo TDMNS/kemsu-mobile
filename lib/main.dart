@@ -8,8 +8,6 @@ import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule_view.dart';
 import 'local_notification_service.dart';
 
-final localNotificationService = LocalNotificationService();
-
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
