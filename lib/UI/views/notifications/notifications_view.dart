@@ -30,7 +30,17 @@ class NotificationView extends StatelessWidget {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, Localizable.notificationsTitle),
-                  body: _notView(context, model),
+                  body: model.circle
+                      ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                      : _notView(context, model),
                 ),
               ));
         });

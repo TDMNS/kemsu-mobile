@@ -6,9 +6,15 @@ import 'UI/custom_themes.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
 import 'UI/views/schedule/schedule_view.dart';
+import 'local_notification_service.dart';
 
-void main() {
+final localNotificationService = LocalNotificationService();
+
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await localNotificationService.setup();
+  await localNotificationService.socketIO();
   runApp(const App());
 }
 
