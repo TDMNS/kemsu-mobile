@@ -51,8 +51,8 @@ class LocalNotificationService {
     socket.on("notification", (data) {
       print('Notification: $data');
       localNotificationService.showLocalNotification(
-        "Уведомление",
-        data,
+          "Уведомление",
+          "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу."
       );
     });
 
