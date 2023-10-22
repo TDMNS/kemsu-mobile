@@ -52,4 +52,5 @@ class Config {
   static String pgasEditRequest = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest';
   static String pgasGetActivityTypeList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList';
   static String bugReport = 'https://api-next.kemsu.ru/api/bugreport/main/reportList';
+  static String checkMobileAppVersion = 'https://api-next.kemsu.ru/api/bugreport/main/checkMobileAppVersion';
 }
