@@ -2,7 +2,7 @@ name: kemsu_app
 description: A new Flutter project.
 
 publish_to: 'none'
-version: 1.0.0+1
+version: 2.0.5+1
 
 environment:
   sdk: ">=2.17.0-69.2.beta <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   http: ^0.13.4
   json_annotation: ^4.7.0
   url_launcher: ^6.1.2
-  file_picker: ^4.6.0
+  file_picker: ^6.0.0
   open_file: ^3.2.1
   flutter_typeahead: ^4.0.0
   html: ^0.15.0
@@ -40,6 +40,7 @@ dependencies:
   socket_io_client: ^2.0.2
   flutter_local_notifications: ^12.0.2
   badges: ^3.1.2
+  package_info_plus: ^4.2.0
   device_info_plus:
 
 dev_dependencies:

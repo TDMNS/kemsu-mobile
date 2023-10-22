@@ -4,8 +4,10 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
@@ -97,6 +99,7 @@ class ProfileViewModel extends BaseViewModel {
     await _getProfileImage();
     await _getAuthRequest();
     _showNewYearGreetings(context);
+    _showUpdate(context);
     appMetricaTest();
     circle = false;
     notifyListeners();
@@ -161,11 +164,11 @@ class ProfileViewModel extends BaseViewModel {
     return userData;
   }
 
-  Future<void> _writeStudentData(userData, Dio dio, String? token2) async {
+  Future<void> _writeStudentData(userData, Dio dio, String? recordedToken) async {
     firstName = userData["firstName"] ?? '';
     lastName = userData["lastName"] ?? '';
     middleName = userData["middleName"] ?? '';
-    final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
+    final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": recordedToken});
 
     var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
     group = studentCard["GROUP_NAME"] ?? '';
@@ -182,8 +185,8 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "group", value: group);
   }
 
-  Future<void> _writeEmployeeData(Dio dio, String? token2) async {
-    final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
+  Future<void> _writeEmployeeData(Dio dio, String? recordedToken) async {
+    final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": recordedToken});
 
     var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
     firstName = employeeCard["FIRST_NAME"] ?? '';
@@ -199,15 +202,43 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "department", value: department);
   }
 
+  Future<void> _showUpdate(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    final responseMobileAppVersion = await dio.post(Config.checkMobileAppVersion, queryParameters: {"accessToken": token}, data: {"clientVersion": packageInfo.version});
+    var valueForShowUpdateAlert = responseMobileAppVersion.data['versionEqualFlag'];
+    if (valueForShowUpdateAlert == 0) {
+      String downloadLink = 'https://www.kemsu.ru/education/app-kemsu/';
+      if (Platform.isIOS) {
+        downloadLink = 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769';
+      }
+      Uri url = Uri.parse(downloadLink);
+      _showAlertDialog(context,
+          title: Localizable.mainUpdateTitle,
+          content: Localizable.mainUpdateContent,
+          buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
+        Navigator.pop(context);
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url);
+        } else {
+          throw 'Could not launch $url';
+        }
+      });
+    }
+  }
+
   void _showNewYearGreetings(BuildContext context) {
     final now = DateTime.now();
     final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
     final currentDate = now.toString().split(' ');
     if (currentDate[0] == newYearDate[0]) {
-      _showAlertDialog(context);
+      _showAlertDialog(context, title: Localizable.mainHappyNewYearTitle, content: Localizable.mainHappyNewYearBody, buttonTitle: Localizable.mainThanks, action: () {
+        Navigator.pop(context);
+      });
     }
   }
-  
+
   void appMetricaTest() {
     AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Main screen (profile) event');
@@ -269,18 +300,17 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context, {required String title, required String content, required String buttonTitle, required Function() action}) {
     Widget okButton = TextButton(
-      child: Text(Localizable.mainThanks),
+      child: Text(buttonTitle),
       onPressed: () {
-        Navigator.pop(context);
+        action();
       },
     );
 
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text(Localizable.mainHappyNewYearTitle),
-      content: Text(Localizable.mainHappyNewYearBody),
+      title: Text(title),
+      content: Text(content),
       actions: [
         okButton,
       ],
