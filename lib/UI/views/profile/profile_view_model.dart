@@ -130,7 +130,22 @@ class ProfileViewModel extends BaseViewModel {
     final responseProlongToken = await dio.post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
-    String? token2 = await storage.read(key: "tokenKey");
+    String? recordedToken = await storage.read(key: "tokenKey");
+    var userData = await _getUserData(dio, login, password);
+
+    if (userType == EnumUserType.student) {
+      await _writeStudentData(userData, dio, recordedToken);
+    } else if (userType == EnumUserType.employee) {
+      await _writeEmployeeData(dio, recordedToken);
+    }
+    fio = ('$lastName $firstName $middleName');
+
+    await storage.write(key: "fio", value: fio);
+    await storage.write(key: "email", value: phone);
+    await storage.write(key: "phone", value: phone);
+  }
+
+  Future<dynamic> _getUserData(Dio dio, String? login, String? password) async {
     final responseAuth = await dio.post(Config.apiHost, data: {"login": login, "password": password});
 
     var userData = responseAuth.data['userInfo'];
@@ -143,17 +158,7 @@ class ProfileViewModel extends BaseViewModel {
     emailController?.text = emailTemp;
     phoneController?.text = phoneTemp;
     notifyListeners();
-
-    if (userType == EnumUserType.student) {
-      await _writeStudentData(userData, dio, token2);
-    } else if (userType == EnumUserType.employee) {
-      await _writeEmployeeData(dio, token2);
-    }
-    fio = ('$lastName $firstName $middleName');
-
-    await storage.write(key: "fio", value: fio);
-    await storage.write(key: "email", value: phone);
-    await storage.write(key: "phone", value: phone);
+    return userData;
   }
 
   Future<void> _writeStudentData(userData, Dio dio, String? token2) async {
