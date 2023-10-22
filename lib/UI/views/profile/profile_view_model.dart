@@ -92,7 +92,17 @@ class ProfileViewModel extends BaseViewModel {
     return darkTheme;
   }
 
-  prolongToken(context) async {
+  Future onReady(BuildContext context) async {
+    await _prolongToken(context);
+    await _getProfileImage();
+    await _getAuthRequest();
+    _showNewYearGreetings(context);
+    appMetricaTest();
+    circle = false;
+    notifyListeners();
+  }
+
+  Future<void> _prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
     final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
     responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView())) : null;
@@ -100,8 +110,7 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "tokenKey", value: newToken);
   }
 
-  Future onReady(BuildContext context) async {
-    prolongToken(context);
+  Future<void> _getProfileImage() async {
     String? img = await storage.read(key: "avatar");
     file = img != null ? File(img) : null;
 
@@ -110,7 +119,9 @@ class ProfileViewModel extends BaseViewModel {
     if (!fileExists) {
       file = null;
     }
+  }
 
+  Future<void> _getAuthRequest() async {
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
@@ -134,55 +145,62 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
 
     if (userType == EnumUserType.student) {
-      firstName = userData["firstName"] ?? '';
-      lastName = userData["lastName"] ?? '';
-      middleName = userData["middleName"] ?? '';
-      final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
-
-      var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
-      group = studentCard["GROUP_NAME"] ?? '';
-      speciality = studentCard["SPECIALITY"] ?? '';
-      faculty = studentCard["FACULTY"] ?? '';
-      qualification = studentCard["QUALIFICATION"] ?? '';
-      learnForm = studentCard["LEARN_FORM"] ?? '';
-      statusSTR = studentCard["STATUS_STR"] ?? '';
-      finForm = studentCard["FINFORM"] ?? '';
-
-      await storage.write(key: "firstName", value: firstName);
-      await storage.write(key: "lastName", value: lastName);
-      await storage.write(key: "middleName", value: middleName);
-      await storage.write(key: "group", value: group);
+      await _writeStudentData(userData, dio, token2);
     } else if (userType == EnumUserType.employee) {
-      final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
-
-      var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
-      firstName = employeeCard["FIRST_NAME"] ?? '';
-      lastName = employeeCard["LAST_NAME"] ?? '';
-      middleName = employeeCard["MIDDLE_NAME"] ?? '';
-      jobTitle = employeeCard["POST_NAME"] ?? '';
-      department = employeeCard["DEP"] ?? '';
-
-      await storage.write(key: "firstName", value: firstName);
-      await storage.write(key: "lastName", value: lastName);
-      await storage.write(key: "middleName", value: middleName);
-      await storage.write(key: "jobTitle", value: jobTitle);
-      await storage.write(key: "department", value: department);
+      await _writeEmployeeData(dio, token2);
     }
     fio = ('$lastName $firstName $middleName');
 
     await storage.write(key: "fio", value: fio);
     await storage.write(key: "email", value: phone);
     await storage.write(key: "phone", value: phone);
+  }
 
+  Future<void> _writeStudentData(userData, Dio dio, String? token2) async {
+    firstName = userData["firstName"] ?? '';
+    lastName = userData["lastName"] ?? '';
+    middleName = userData["middleName"] ?? '';
+    final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
+
+    var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
+    group = studentCard["GROUP_NAME"] ?? '';
+    speciality = studentCard["SPECIALITY"] ?? '';
+    faculty = studentCard["FACULTY"] ?? '';
+    qualification = studentCard["QUALIFICATION"] ?? '';
+    learnForm = studentCard["LEARN_FORM"] ?? '';
+    statusSTR = studentCard["STATUS_STR"] ?? '';
+    finForm = studentCard["FINFORM"] ?? '';
+
+    await storage.write(key: "firstName", value: firstName);
+    await storage.write(key: "lastName", value: lastName);
+    await storage.write(key: "middleName", value: middleName);
+    await storage.write(key: "group", value: group);
+  }
+
+  Future<void> _writeEmployeeData(Dio dio, String? token2) async {
+    final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
+
+    var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
+    firstName = employeeCard["FIRST_NAME"] ?? '';
+    lastName = employeeCard["LAST_NAME"] ?? '';
+    middleName = employeeCard["MIDDLE_NAME"] ?? '';
+    jobTitle = employeeCard["POST_NAME"] ?? '';
+    department = employeeCard["DEP"] ?? '';
+
+    await storage.write(key: "firstName", value: firstName);
+    await storage.write(key: "lastName", value: lastName);
+    await storage.write(key: "middleName", value: middleName);
+    await storage.write(key: "jobTitle", value: jobTitle);
+    await storage.write(key: "department", value: department);
+  }
+
+  void _showNewYearGreetings(BuildContext context) {
     final now = DateTime.now();
     final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
     final currentDate = now.toString().split(' ');
     if (currentDate[0] == newYearDate[0]) {
       _showAlertDialog(context);
     }
-    appMetricaTest();
-    circle = false;
-    notifyListeners();
   }
   
   void appMetricaTest() {
