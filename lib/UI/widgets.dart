@@ -64,12 +64,8 @@ customAppBar(context, model, name) {
               name == EnumScreensWithoutPopArrow.schedule ||
               name == EnumScreensWithoutPopArrow.prepScheduleEmp
           ? badges.Badge(
-              position: badges.BadgePosition.topEnd(top: 0, end: 3),
+              position: badges.BadgePosition.topEnd(top: 10, end: 8),
               showBadge: LocalNotificationService.unreadMessages > 0 ? true : false,
-              badgeContent: Text(
-                LocalNotificationService.unreadMessages.toString(),
-                style: const TextStyle(color: Colors.white),
-              ),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));

@@ -41,7 +41,9 @@ class LocalNotificationService {
 
     socket.on('connect', (_) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
-      unreadMessages = userNotification[0].newNotificationFlag ?? 0;
+      for (var notification in userNotification) {
+        unreadMessages += notification.newNotificationFlag ?? 0;
+      }
       if ((unreadMessages) > 0) {
         localNotificationService.showLocalNotification(
             userNotification[0].title ?? "Уведомление",
