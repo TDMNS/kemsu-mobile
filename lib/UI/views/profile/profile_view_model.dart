@@ -19,7 +19,7 @@ import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
-
+import 'package:uuid/uuid.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import '../pgas/pgas_screen.dart';
 import '../rating_of_students/views/ros_view.dart';
@@ -71,6 +71,8 @@ class ProfileViewModel extends BaseViewModel {
   bool darkTheme = false;
   String? avatar;
   bool isExpanded = false;
+  String imageUrl = '';
+  String token = '';
 
   saveImage() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -96,7 +98,7 @@ class ProfileViewModel extends BaseViewModel {
 
   Future onReady(BuildContext context) async {
     await _prolongToken(context);
-    await _getProfileImage();
+    await _checkFileExisting();
     await _getAuthRequest();
     _showNewYearGreetings(context);
     _showUpdate(context);
@@ -113,7 +115,7 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "tokenKey", value: newToken);
   }
 
-  Future<void> _getProfileImage() async {
+  Future<void> _checkFileExisting() async {
     String? img = await storage.read(key: "avatar");
     file = img != null ? File(img) : null;
 
@@ -146,6 +148,8 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "fio", value: fio);
     await storage.write(key: "email", value: phone);
     await storage.write(key: "phone", value: phone);
+
+    await _getUserImage(dio, recordedToken);
   }
 
   Future<dynamic> _getUserData(Dio dio, String? login, String? password) async {
@@ -225,6 +229,29 @@ class ProfileViewModel extends BaseViewModel {
           throw 'Could not launch $url';
         }
       });
+    }
+  }
+
+  Future<void> _getUserImage(Dio dio, String? recordedToken) async {
+    final imageResponse = await dio.get(Config.userInfo, queryParameters: {"accessToken": recordedToken});
+    if (imageResponse.data['success'] == true) {
+      var imageUrl = imageResponse.data['userInfo']['PHOTO_URL'];
+      final String fileName = '${const Uuid().v1()}.jpg';
+      try {
+        final Dio dio = Dio();
+        final Directory appDocDir = await getApplicationDocumentsDirectory();
+        final String appDocPath = appDocDir.path;
+        if (imageUrl != null) {
+          final Response response = await dio.get(imageUrl, queryParameters: {"accessToken": recordedToken}, options: Options(responseType: ResponseType.bytes));
+          file = File('$appDocPath/$fileName');
+          await file?.writeAsBytes(response.data);
+        } else {
+          file = null;
+        }
+        notifyListeners();
+      } catch (e) {
+        rethrow;
+      }
     }
   }
 

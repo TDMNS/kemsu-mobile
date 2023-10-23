@@ -267,17 +267,18 @@ class _ProfileViewState extends State<ProfileView> {
                   left: 0,
                   child: Column(
                     children: [
-                      const SizedBox(height: 75),
+                      const SizedBox(height: 50),
                       CircleAvatar(
                         backgroundColor: Colors.white,
-                        radius: 40,
+                        radius: 55,
                         child: InkWell(
                           onTap: () {
                             avatarChoice(context, model);
                           },
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                            borderRadius: const BorderRadius.all(Radius.circular(55.0)),
+                            child:
+                                model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
                           ),
                         ),
                       ),
