@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:kemsu_app/local_notification_service.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
@@ -14,16 +15,24 @@ class NotificationViewModel extends BaseViewModel {
   bool circle = true;
 
   Future onReady() async {
-    await getUserNotifications();
+    await _getUserNotifications();
+    await _setReadStatusUserNotification();
     circle = false;
   }
 
   List<UserNotifications> userNotifications = [];
 
-  getUserNotifications() async {
+  _getUserNotifications() async {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
     userNotifications = parseUserNotifications(json.decode(response.body)["userNotificationList"]);
+    notifyListeners();
+  }
+
+  _setReadStatusUserNotification() async {
+    String? token = await storage.read(key: "tokenKey");
+    await http.post(Uri.parse('${Config.setReadStatusUserNotification}?accessToken=$token'));
+    LocalNotificationService.unreadMessages.value = 0;
     notifyListeners();
   }
 

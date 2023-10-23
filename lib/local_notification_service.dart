@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'UI/splash_screen.dart';
@@ -6,7 +7,7 @@ import 'UI/views/notifications/notifications_view_model.dart';
 final localNotificationService = LocalNotificationService();
 
 class LocalNotificationService {
-  static var unreadMessages = 0;
+  static ValueNotifier<int> unreadMessages = ValueNotifier(0);
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> setup() async {
@@ -24,7 +25,7 @@ class LocalNotificationService {
     const iosNotificationDetail = DarwinNotificationDetails();
     const notificationDetails = NotificationDetails(
       iOS: iosNotificationDetail,
-      android: androidNotificationDetail,
+      android: androidNotificationDetail
     );
     _flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails);
   }
@@ -42,9 +43,9 @@ class LocalNotificationService {
     socket.on('connect', (_) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
       for (var notification in userNotification) {
-        unreadMessages += notification.newNotificationFlag ?? 0;
+        unreadMessages.value += notification.newNotificationFlag ?? 0;
       }
-      if ((unreadMessages) > 0) {
+      if (unreadMessages.value > 0) {
         localNotificationService.showLocalNotification(
             userNotification[0].title ?? "Уведомление",
             userNotification[0].message ?? "У вас есть непросмотренные оповещения!"
@@ -54,12 +55,13 @@ class LocalNotificationService {
 
     socket.on("notification", (data) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
+      unreadMessages.value += userNotification[0].newNotificationFlag ?? 0;
       localNotificationService.showLocalNotification(
           userNotification[0].title ?? "Уведомление",
           userNotification[0].message ?? "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу."
       );
     });
 
-    socket.connect(); // Connect to the server
+    socket.connect();
   }
 }
