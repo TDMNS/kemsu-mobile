@@ -48,7 +48,6 @@ class _VideoAppState extends State<VideoApp> {
                   extendBody: true,
                   extendBodyBehindAppBar: true,
                   appBar: customAppBar(context, model, Localizable.video),
-                  //bottomNavigationBar: customBottomBar(context, model),
                   body: MaterialApp(
                     home: Scaffold(
                       backgroundColor: Colors.grey.shade900,

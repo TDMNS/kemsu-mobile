@@ -125,7 +125,7 @@ class _ProfileViewState extends State<ProfileView> {
     List<Widget> tiles = [];
     tiles = [
       profileTiles(context, onPressed: () {
-        model.navigateRosView(context, model);
+        model.navigateRosScreen(context);
       }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
       profileTiles(context, onPressed: () {
         model.navigateInfoView(context);
@@ -134,7 +134,7 @@ class _ProfileViewState extends State<ProfileView> {
     if (model.userType == EnumUserType.student) {
       tiles += [
         profileTiles(context, onPressed: () {
-          model.navigatePgasScreen(context, model);
+          model.navigatePgasScreen(context);
         }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
         profileTiles(context, onPressed: () {
           model.navigateDebtsView(context);
@@ -152,7 +152,7 @@ class _ProfileViewState extends State<ProfileView> {
         model.navigateWebView(context, model);
       }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
       profileTiles(context, onPressed: () {
-        model.navigateMainBugReportScreen(context, model);
+        model.navigateMainBugReportScreen(context);
       }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png')
     ];
 
@@ -268,19 +268,39 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Column(
                     children: [
                       const SizedBox(height: 50),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 55,
-                        child: InkWell(
-                          onTap: () {
-                            avatarChoice(context, model);
-                          },
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(55.0)),
-                            child:
-                                model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                      Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 55,
+                            child: InkWell(
+                              onTap: () {
+                                // avatarChoice(context, model);
+                                model.navigateEditScreen(context);
+                              },
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(55.0)),
+                                child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                              ),
+                            ),
                           ),
-                        ),
+                          InkWell(
+                            onTap: () {
+                              // avatarChoice(context, model);
+                              model.navigateEditScreen(context);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 14,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.blue,
+                                size: 14,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
                       Text('${model.lastName} ${model.firstName} ${model.middleName}',
@@ -291,7 +311,7 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(height: 5),
                       Text(model.userType == EnumUserType.student ? model.group : model.faculty,
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 30),
                       Visibility(
                         visible: model.isExpanded,
                         child: Column(

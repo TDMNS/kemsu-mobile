@@ -4,6 +4,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
@@ -146,7 +147,7 @@ class ProfileViewModel extends BaseViewModel {
     fio = ('$lastName $firstName $middleName');
 
     await storage.write(key: "fio", value: fio);
-    await storage.write(key: "email", value: phone);
+    await storage.write(key: "email", value: email);
     await storage.write(key: "phone", value: phone);
 
     await _getUserImage(dio, recordedToken);
@@ -312,18 +313,23 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void navigateMainBugReportScreen(context, model) {
+  void navigateMainBugReportScreen(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
     notifyListeners();
   }
 
-  void navigateRosView(context, model) {
+  void navigateRosScreen(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const RosView()));
     notifyListeners();
   }
 
-  void navigatePgasScreen(context, model) {
+  void navigatePgasScreen(context) {
     Navigator.push(context, MaterialPageRoute(settings: const RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
+    notifyListeners();
+  }
+
+  void navigateEditScreen(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditView()));
     notifyListeners();
   }
 

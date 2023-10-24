@@ -8,7 +8,6 @@ import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../rating_of_students/ros_model.dart';
-import '../ordering_information_main/ordering_information_main_view.dart';
 import 'ordering_information_view_model.dart';
 
 class OrderingInformationView extends StatefulWidget {
