@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Configurations/config.dart';
+import '../../../Configurations/localizable.dart';
 
 enum EditTextFieldType { oldPassword, newPassword, confirmPassword }
 
@@ -105,17 +106,17 @@ class EditViewModel extends BaseViewModel {
     switch (editTextFieldType) {
       case EditTextFieldType.oldPassword:
         if (!isValidatedOldPassword) {
-          return "Старый пароль введен не верно";
+          return Localizable.editOldPasswordError;
         }
         break;
       case EditTextFieldType.newPassword:
         if (newPasswordController.text == oldPasswordController.text) {
-          return "Введенный пароль соответствует старому паролю";
+          return Localizable.editNewPasswordError;
         }
         break;
       case EditTextFieldType.confirmPassword:
         if (newPasswordController.text != confirmPasswordController.text) {
-          return "Пароли не совпадают";
+          return Localizable.editConfirmPasswordError;
         }
         break;
     }

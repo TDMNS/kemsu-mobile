@@ -84,6 +84,20 @@ class Localizable {
   static String mainUpdateContent = 'Вам необходимо обновить приложение для того, чтобы дальше использовать его без ошибок.';
   static String mainUpdateButtonTitle = 'Скачать';
 
+  /// Edit info
+  static String editTitle = 'Редактировать';
+  static String editEmail = 'Email';
+  static String editPhoneNumber = 'Номер телефона';
+  static String editChangePasswordTitle = 'Сменить пароль';
+  static String editChangePasswordDescription = 'Пароль должен содержать только символы латинского алфавита';
+  static String editOldPassword = 'Старый пароль';
+  static String editNewPassword = 'Новый пароль';
+  static String editConfirmNewPassword = 'Подтвердите новый пароль';
+  static String editPasswordChangedSuccessfully = 'Ваш пароль успешно изменен!';
+  static String editOldPasswordError = 'Старый пароль введен не верно';
+  static String editNewPasswordError = 'Введенный пароль соответствует старому паролю';
+  static String editConfirmPasswordError = 'Пароли не совпадают';
+
   /// Payment
   static String paymentTitle = 'Оплата услуг';
 

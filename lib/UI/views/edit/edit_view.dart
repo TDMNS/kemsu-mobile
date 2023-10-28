@@ -38,7 +38,7 @@ class _EditViewState extends State<EditView> {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, "Редактировать"),
+              appBar: customAppBar(context, model, Localizable.editTitle),
               body: model.circle
                   ? Container(
                       color: Theme.of(context).primaryColor,
@@ -104,7 +104,7 @@ Widget _editView(BuildContext context, EditViewModel model) {
           ),
           const SizedBox(height: 16),
           TextField(
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: InputDecoration(labelText: Localizable.editEmail),
             controller: model.emailController,
             onSubmitted: (newEmail) {
               model.updateEmail(newEmail);
@@ -112,7 +112,7 @@ Widget _editView(BuildContext context, EditViewModel model) {
           ),
           const SizedBox(height: 16),
           TextField(
-            decoration: const InputDecoration(labelText: 'Номер телефона'),
+            decoration: InputDecoration(labelText: Localizable.editPhoneNumber),
             controller: model.phoneController,
             onSubmitted: (newPhoneNumber) {
               model.updatePhoneNumber(newPhoneNumber);
@@ -122,12 +122,12 @@ Widget _editView(BuildContext context, EditViewModel model) {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Align(alignment: Alignment.centerLeft, child: Text("Сменить пароль", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20.0))),
+              Align(alignment: Alignment.centerLeft, child: Text(Localizable.editChangePasswordTitle, style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 20.0))),
               const SizedBox(height: 16),
-              const Text("Пароль должен содержать только символы латинского алфавита", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16)),
+              Text(Localizable.editChangePasswordDescription, style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16)),
               const SizedBox(height: 16),
               _textFieldEditor(
-                  textHeader: "Старый пароль",
+                  textHeader: Localizable.editOldPassword,
                   controller: model.oldPasswordController,
                   textInputAction: TextInputAction.next,
                   onChanged: () {
@@ -141,7 +141,7 @@ Widget _editView(BuildContext context, EditViewModel model) {
                   visibleCondition: !model.isValidatedOldPassword && model.oldPasswordController.text.isNotEmpty,
                   textBody: model.getDynamicTextError(EditTextFieldType.oldPassword)),
               _textFieldEditor(
-                  textHeader: "Новый пароль",
+                  textHeader: Localizable.editNewPassword,
                   controller: model.newPasswordController,
                   focusNode: model.newPasswordFocus,
                   textInputAction: TextInputAction.next,
@@ -178,7 +178,7 @@ Widget _editView(BuildContext context, EditViewModel model) {
                   visibleCondition: model.newPasswordController.text == model.oldPasswordController.text && model.newPasswordController.text.isNotEmpty,
                   textBody: model.getDynamicTextError(EditTextFieldType.newPassword)),
               _textFieldEditor(
-                  textHeader: "Подтвердите новый пароль",
+                  textHeader: Localizable.editConfirmNewPassword,
                   controller: model.confirmPasswordController,
                   textInputAction: TextInputAction.done,
                   onTap: () {
@@ -199,9 +199,9 @@ Widget _editView(BuildContext context, EditViewModel model) {
               if (model.allValidateConditionsAreMet())
                 mainButton(context, onPressed: () {
                   model.changePassword();
-                  showSnackBar(context, "Ваш пароль успешно изменен!");
+                  showSnackBar(context, Localizable.editPasswordChangedSuccessfully);
                   Navigator.pop(context);
-                }, title: "Сменить пароль", isPrimary: false)
+                }, title: Localizable.editChangePasswordTitle, isPrimary: false)
             ],
           ),
         ],
