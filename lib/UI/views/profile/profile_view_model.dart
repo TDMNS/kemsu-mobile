@@ -5,8 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
+import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -100,7 +102,7 @@ class ProfileViewModel extends BaseViewModel {
   Future onReady(BuildContext context) async {
     await _prolongToken(context);
     await _checkFileExisting();
-    await _getAuthRequest();
+    await _getAuthRequest(context);
     _showNewYearGreetings(context);
     _showUpdate(context);
     appMetricaTest();
@@ -127,7 +129,7 @@ class ProfileViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> _getAuthRequest() async {
+  Future<void> _getAuthRequest(context) async {
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
@@ -137,7 +139,7 @@ class ProfileViewModel extends BaseViewModel {
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
     String? recordedToken = await storage.read(key: "tokenKey");
-    var userData = await _getUserData(dio, login, password);
+    var userData = await _getUserData(context, dio, login, password);
 
     if (userType == EnumUserType.student) {
       await _writeStudentData(userData, dio, recordedToken);
@@ -153,7 +155,7 @@ class ProfileViewModel extends BaseViewModel {
     await _getUserImage(dio, recordedToken);
   }
 
-  Future<dynamic> _getUserData(Dio dio, String? login, String? password) async {
+  Future<dynamic> _getUserData(context, Dio dio, String? login, String? password) async {
     final responseAuth = await dio.post(Config.apiHost, data: {"login": login, "password": password});
 
     var userData = responseAuth.data['userInfo'];
@@ -161,6 +163,11 @@ class ProfileViewModel extends BaseViewModel {
 
     email = userData["email"] ?? '';
     phone = userData["phone"] ?? '';
+
+    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    userProfileProvider.updateEmail(email);
+    userProfileProvider.updatePhone(phone);
+
     String emailTemp = email;
     String phoneTemp = phone;
     emailController?.text = emailTemp;

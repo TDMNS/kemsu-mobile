@@ -27,20 +27,13 @@ class _MainMenuState extends State<MainMenu> {
     return Scaffold(
         body: IndexedStack(
           index: _selectedIndex,
-          children: [
-            const NewsView(),
-            const ProfileView(),
-            widget.type == 0
-                ? const NewScheduleView()
-                : const PrepScheduleView()
-          ],
+          children: [const NewsView(), const ProfileView(), widget.type == 0 ? const NewScheduleView() : const PrepScheduleView()],
         ),
         bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Theme.of(context).primaryColor,
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blue,
-            unselectedItemColor:
-                Theme.of(context).canvasColor, //<-- Unselected text
+            unselectedItemColor: Theme.of(context).canvasColor, //<-- Unselected text
             type: BottomNavigationBarType.fixed,
             onTap: _onItemTapped,
             items: <BottomNavigationBarItem>[

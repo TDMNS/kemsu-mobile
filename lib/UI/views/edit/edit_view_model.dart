@@ -5,10 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
+import '../profile/profile_provider.dart';
 
 enum EditTextFieldType { oldPassword, newPassword, confirmPassword }
 
@@ -71,16 +73,22 @@ class EditViewModel extends BaseViewModel {
     phoneController.text = userData["phone"] ?? '';
   }
 
-  Future<void> updateEmail(newEmail) async {
+  Future<void> updateEmail(context, newEmail) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController.text});
+    await storage.write(key: "email", value: emailController.text);
+    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    userProfileProvider.updateEmail(emailController.text);
   }
 
-  Future<void> updatePhoneNumber(newPhoneNumber) async {
+  Future<void> updatePhoneNumber(context, newPhoneNumber) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController.text});
+    await storage.write(key: "phone", value: phoneController.text);
+    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    userProfileProvider.updatePhone(phoneController.text);
   }
 
   Future<void> validateOldPassword() async {

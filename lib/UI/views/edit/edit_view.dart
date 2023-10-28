@@ -107,7 +107,10 @@ Widget _editView(BuildContext context, EditViewModel model) {
             decoration: InputDecoration(labelText: Localizable.editEmail),
             controller: model.emailController,
             onSubmitted: (newEmail) {
-              model.updateEmail(newEmail);
+              model.updateEmail(context, newEmail);
+            },
+            onTapOutside: (newEmail) {
+              model.updateEmail(context, newEmail);
             },
           ),
           const SizedBox(height: 16),
@@ -115,7 +118,10 @@ Widget _editView(BuildContext context, EditViewModel model) {
             decoration: InputDecoration(labelText: Localizable.editPhoneNumber),
             controller: model.phoneController,
             onSubmitted: (newPhoneNumber) {
-              model.updatePhoneNumber(newPhoneNumber);
+              model.updatePhoneNumber(context, newPhoneNumber);
+            },
+            onTapOutside: (newPhoneNumber) {
+              model.updatePhoneNumber(context, newPhoneNumber);
             },
           ),
           const SizedBox(height: 32),

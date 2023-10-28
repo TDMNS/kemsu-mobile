@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
+import 'package:provider/provider.dart';
 import 'UI/custom_themes.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
+import 'UI/views/profile/profile_provider.dart';
 import 'UI/views/schedule/schedule_view.dart';
 import 'local_notification_service.dart';
 
@@ -13,7 +15,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await localNotificationService.setup();
   await localNotificationService.socketIO();
-  runApp(const App());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProfileProvider(),
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {

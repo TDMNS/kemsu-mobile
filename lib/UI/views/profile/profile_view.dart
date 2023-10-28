@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/capitalize_first_letter.dart';
+import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../../local_notification_service.dart';
 import '../../common_views/main_button.dart';
 import '../../common_views/profile_tiles.dart';
 import '../../widgets.dart';
@@ -224,24 +225,32 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
       const SizedBox(height: 5),
-      Text(
-        model.email,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.normal,
-          fontSize: 14,
-        ),
-        textAlign: TextAlign.center,
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.email.isNotEmpty ? userProfileProvider.email : "Почта не указана",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
       ),
       const SizedBox(height: 5),
-      Text(
-        model.phone,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.normal,
-          fontSize: 14,
-        ),
-        textAlign: TextAlign.center,
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.phone.isNotEmpty ? userProfileProvider.phone : "Номер телефона не указан",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
       )
     ];
 
