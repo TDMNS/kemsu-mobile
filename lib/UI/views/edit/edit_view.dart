@@ -67,7 +67,7 @@ Widget _editView(BuildContext context, EditViewModel model) {
         children: [
           GestureDetector(
             onTap: () {
-              // Реализуйте функциональность смены аватара
+              // avatarChoice(context, model);
             },
             child: Stack(
               alignment: Alignment.topRight,
@@ -126,39 +126,26 @@ Widget _editView(BuildContext context, EditViewModel model) {
               const SizedBox(height: 16),
               const Text("Пароль должен содержать только символы латинского алфавита", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16)),
               const SizedBox(height: 16),
-              TextField(
-                  decoration: const InputDecoration(labelText: "Старый пароль"),
+              _textFieldEditor(
+                  textHeader: "Старый пароль",
                   controller: model.oldPasswordController,
-                  obscureText: true,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
-                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9!@#$%^&*()_+{}|:;<>,.?~\-=[\]\\]'))],
-                  onChanged: (_) {
+                  onChanged: () {
                     model.validateOldPassword();
                   },
                   onTap: () {
-                    model.notifyListeners();
+                    model.validateOldPassword();
                   }),
               const SizedBox(height: 16),
-              Visibility(
-                  visible: !model.isValidatedOldPassword && model.oldPasswordController.text.isNotEmpty,
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child:
-                          Text(model.getDynamicTextError(EditTextFieldType.oldPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
-              TextField(
-                  decoration: const InputDecoration(labelText: "Новый пароль"),
+              _errorHints(
+                  visibleCondition: !model.isValidatedOldPassword && model.oldPasswordController.text.isNotEmpty,
+                  textBody: model.getDynamicTextError(EditTextFieldType.oldPassword)),
+              _textFieldEditor(
+                  textHeader: "Новый пароль",
                   controller: model.newPasswordController,
                   focusNode: model.newPasswordFocus,
-                  obscureText: true,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
-                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9!@#$%^&*()_+{}|:;<>,.?~\-=[\]\\]'))],
-                  onTapOutside: (_) {
+                  onTapOutside: () {
                     model.validateOldPassword();
                   },
                   onTap: () {
@@ -187,25 +174,17 @@ Widget _editView(BuildContext context, EditViewModel model) {
                 ),
               ),
               const SizedBox(height: 16),
-              Visibility(
-                  visible: model.newPasswordController.text == model.oldPasswordController.text && model.newPasswordController.text.isNotEmpty,
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child:
-                          Text(model.getDynamicTextError(EditTextFieldType.newPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
-              TextField(
-                  decoration: const InputDecoration(labelText: "Подтвердите новый пароль"),
+              _errorHints(
+                  visibleCondition: model.newPasswordController.text == model.oldPasswordController.text && model.newPasswordController.text.isNotEmpty,
+                  textBody: model.getDynamicTextError(EditTextFieldType.newPassword)),
+              _textFieldEditor(
+                  textHeader: "Подтвердите новый пароль",
                   controller: model.confirmPasswordController,
-                  obscureText: true,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
-                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9!@#$%^&*()_+{}|:;<>,.?~\-=[\]\\]'))],
                   onTap: () {
                     model.validateOldPassword();
                   },
-                  onChanged: (_) {
+                  onChanged: () {
                     model.notifyListeners();
                   },
                   onEditingComplete: () {
@@ -213,12 +192,9 @@ Widget _editView(BuildContext context, EditViewModel model) {
                     model.notifyListeners();
                   }),
               const SizedBox(height: 16),
-              Visibility(
-                  visible: model.newPasswordController.text != model.confirmPasswordController.text && model.confirmPasswordController.text.isNotEmpty,
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(model.getDynamicTextError(EditTextFieldType.confirmPassword),
-                          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
+              _errorHints(
+                  visibleCondition: model.newPasswordController.text != model.confirmPasswordController.text && model.confirmPasswordController.text.isNotEmpty,
+                  textBody: model.getDynamicTextError(EditTextFieldType.confirmPassword)),
               SizedBox(height: model.allValidateConditionsAreMet() ? 16 : 48),
               if (model.allValidateConditionsAreMet())
                 mainButton(context, onPressed: () {
@@ -232,4 +208,37 @@ Widget _editView(BuildContext context, EditViewModel model) {
       ),
     ]),
   );
+}
+
+_textFieldEditor({
+  required String textHeader,
+  required controller,
+  FocusNode? focusNode,
+  required TextInputAction textInputAction,
+  VoidCallback? onTap,
+  VoidCallback? onTapOutside,
+  VoidCallback? onChanged,
+  VoidCallback? onEditingComplete,
+}) {
+  return TextField(
+    decoration: InputDecoration(labelText: textHeader),
+    controller: controller,
+    focusNode: focusNode,
+    obscureText: true,
+    autocorrect: false,
+    enableSuggestions: false,
+    keyboardType: TextInputType.visiblePassword,
+    textInputAction: textInputAction,
+    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9!@#$%^&*()_+{}|:;<>,.?~\-=[\]\\]'))],
+    onTap: onTap != null ? () => onTap() : null,
+    onTapOutside: onTapOutside != null ? (_) => onTapOutside() : null,
+    onChanged: onChanged != null ? (_) => onChanged() : null,
+    onEditingComplete: onEditingComplete != null ? () => onEditingComplete() : null,
+  );
+}
+
+_errorHints({required visibleCondition, required textBody}) {
+  return Visibility(
+      visible: visibleCondition,
+      child: Align(alignment: Alignment.centerLeft, child: Text(textBody, style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red))));
 }
