@@ -140,14 +140,14 @@ Widget _editView(BuildContext context, EditViewModel model) {
                   },
                   onTap: () {
                     model.notifyListeners();
-                  }
-              ),
+                  }),
               const SizedBox(height: 16),
               Visibility(
                   visible: !model.isValidatedOldPassword && model.oldPasswordController.text.isNotEmpty,
                   child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(model.getDynamicTextError(EditTextFieldType.oldPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
+                      child:
+                          Text(model.getDynamicTextError(EditTextFieldType.oldPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
               TextField(
                   decoration: const InputDecoration(labelText: "Новый пароль"),
                   controller: model.newPasswordController,
@@ -187,6 +187,12 @@ Widget _editView(BuildContext context, EditViewModel model) {
                 ),
               ),
               const SizedBox(height: 16),
+              Visibility(
+                  visible: model.newPasswordController.text == model.oldPasswordController.text && model.newPasswordController.text.isNotEmpty,
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child:
+                          Text(model.getDynamicTextError(EditTextFieldType.newPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
               TextField(
                   decoration: const InputDecoration(labelText: "Подтвердите новый пароль"),
                   controller: model.confirmPasswordController,
@@ -211,7 +217,8 @@ Widget _editView(BuildContext context, EditViewModel model) {
                   visible: model.newPasswordController.text != model.confirmPasswordController.text && model.confirmPasswordController.text.isNotEmpty,
                   child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(model.getDynamicTextError(EditTextFieldType.confirmPassword), style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
+                      child: Text(model.getDynamicTextError(EditTextFieldType.confirmPassword),
+                          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16, color: Colors.red)))),
               SizedBox(height: model.allValidateConditionsAreMet() ? 16 : 48),
               if (model.allValidateConditionsAreMet())
                 mainButton(context, onPressed: () {

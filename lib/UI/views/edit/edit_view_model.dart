@@ -90,13 +90,15 @@ class EditViewModel extends BaseViewModel {
   Future<void> changePassword() async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.changePassword, queryParameters: {"accessToken": token}, data: {"newPassword": newPasswordController.text, "oldPassword":
-    oldPasswordController.text});
+    await dio.post(Config.changePassword, queryParameters: {"accessToken": token}, data: {"newPassword": newPasswordController.text, "oldPassword": oldPasswordController.text});
     await storage.write(key: "password", value: newPasswordController.text);
   }
 
   allValidateConditionsAreMet() {
-    return isPasswordFieldSuccess && newPasswordController.text == confirmPasswordController.text && isValidatedOldPassword;
+    return isPasswordFieldSuccess &&
+        newPasswordController.text != oldPasswordController.text &&
+        newPasswordController.text == confirmPasswordController.text &&
+        isValidatedOldPassword;
   }
 
   getDynamicTextError(editTextFieldType) {
@@ -107,8 +109,8 @@ class EditViewModel extends BaseViewModel {
         }
         break;
       case EditTextFieldType.newPassword:
-        if (!isPasswordFieldSuccess) {
-          return "Введенный пароль не соответствеует требованиям";
+        if (newPasswordController.text == oldPasswordController.text) {
+          return "Введенный пароль соответствует старому паролю";
         }
         break;
       case EditTextFieldType.confirmPassword:
