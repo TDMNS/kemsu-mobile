@@ -1,3 +1,5 @@
+import 'package:flutter_pw_validator/Resource/Strings.dart';
+
 class Localizable {
   /// Pages
   static String pageNews = 'Новости';
@@ -203,4 +205,20 @@ class Localizable {
   static String infoDiscKeyDate = 'Контрольная дата: ';
   static String infoDiscMaxScore = 'Максимальный балл: ';
   static String infoDiscResult = 'Результат: ';
+}
+
+/// Strings for edit password validator
+class RussianStrings implements FlutterPwValidatorStrings {
+  @override
+  final String atLeast = "Не менее - символов";
+  @override
+  final String uppercaseLetters = "- символ верх. регистр";
+  @override
+  final String normalLetters = "- символ";
+  @override
+  final String lowercaseLetters = "- символ ниж. регистр";
+  @override
+  final String numericCharacters = "- цифра";
+  @override
+  final String specialCharacters = "- спец. символ";
 }

@@ -55,4 +55,5 @@ class Config {
   static String checkMobileAppVersion = 'https://api-next.kemsu.ru/api/bugreport/main/checkMobileAppVersion';
   static String setReadStatusUserNotification = 'https://api-next.kemsu.ru/api/noty/mobile/setReadStatusUserNotification';
   static String userInfo = 'https://api-next.kemsu.ru/api/personal-office/integration/userInfo';
+  static String changePassword = 'https://api-next.kemsu.ru/api/personal-office/integration/changePassword';
 }

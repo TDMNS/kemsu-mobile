@@ -9,13 +9,24 @@ import 'package:stacked/stacked.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Configurations/config.dart';
 
+enum EditTextFieldType { oldPassword, newPassword, confirmPassword }
+
 class EditViewModel extends BaseViewModel {
   EditViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
-  TextEditingController? emailController = TextEditingController();
-  TextEditingController? phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  final newPasswordFocus = FocusNode();
 
   bool circle = true;
+  bool isPasswordFieldSuccess = false;
+  bool isPasswordValidatorVisible = true;
+  bool isValidatedOldPassword = false;
+
   String password = '';
   String avatarUrl = '';
   File? file;
@@ -55,19 +66,57 @@ class EditViewModel extends BaseViewModel {
     final Dio dio = Dio();
     final responseAuth = await dio.post(Config.apiHost, data: {"login": await storage.read(key: "login") ?? '', "password": await storage.read(key: "password") ?? ''});
     var userData = responseAuth.data['userInfo'];
-    emailController?.text = userData["email"] ?? '';
-    phoneController?.text = userData["phone"] ?? '';
+    emailController.text = userData["email"] ?? '';
+    phoneController.text = userData["phone"] ?? '';
   }
 
   Future<void> updateEmail(newEmail) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController?.text});
+    await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController.text});
   }
 
   Future<void> updatePhoneNumber(newPhoneNumber) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController?.text});
+    await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController.text});
+  }
+
+  Future<void> validateOldPassword() async {
+    isValidatedOldPassword = oldPasswordController.text == await storage.read(key: "password");
+    notifyListeners();
+  }
+
+  Future<void> changePassword() async {
+    final Dio dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    await dio.post(Config.changePassword, queryParameters: {"accessToken": token}, data: {"newPassword": newPasswordController.text, "oldPassword":
+    oldPasswordController.text});
+    await storage.write(key: "password", value: newPasswordController.text);
+  }
+
+  allValidateConditionsAreMet() {
+    return isPasswordFieldSuccess && newPasswordController.text == confirmPasswordController.text && isValidatedOldPassword;
+  }
+
+  getDynamicTextError(editTextFieldType) {
+    switch (editTextFieldType) {
+      case EditTextFieldType.oldPassword:
+        if (!isValidatedOldPassword) {
+          return "Старый пароль введен не верно";
+        }
+        break;
+      case EditTextFieldType.newPassword:
+        if (!isPasswordFieldSuccess) {
+          return "Введенный пароль не соответствеует требованиям";
+        }
+        break;
+      case EditTextFieldType.confirmPassword:
+        if (newPasswordController.text != confirmPasswordController.text) {
+          return "Пароли не совпадают";
+        }
+        break;
+    }
+    return '';
   }
 }
