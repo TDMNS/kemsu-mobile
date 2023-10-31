@@ -11,10 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
 import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
 import '../info/views/info_view.dart';
@@ -23,7 +21,9 @@ import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
+import '../moodle/moodle.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
+import '../payment/payment.dart';
 import '../pgas/pgas_screen.dart';
 import '../rating_of_students/views/ros_view.dart';
 
@@ -315,8 +315,13 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void navigateWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => _paymentWebView(context, model)));
+  void navigatePaymentWebView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => paymentWebView(context, model)));
+    notifyListeners();
+  }
+
+  void navigateMoodleWebView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => moodleWebView(context, model)));
     notifyListeners();
   }
 
@@ -363,36 +368,4 @@ class ProfileViewModel extends BaseViewModel {
       },
     );
   }
-}
-
-/// Payment Web View
-_paymentWebView(BuildContext context, ProfileViewModel model) {
-  String fio = model.fio;
-  String phone = model.userType == EnumUserType.student ? model.phone.replaceFirst('+7', '') : model.phone.replaceFirst('+7 ', '');
-  String email = model.email;
-  bool isLoading = true;
-  return Scaffold(
-    extendBody: false,
-    extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, Localizable.paymentTitle),
-    body: StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Stack(children: [
-          WebView(
-              initialUrl: Uri.encodeFull('https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'.replaceAll(' ', '+')),
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
-                setState(() {
-                  isLoading = false;
-                });
-              }),
-          isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(color: Colors.blue),
-                )
-              : const Stack(),
-        ]);
-      },
-    ),
-  );
 }

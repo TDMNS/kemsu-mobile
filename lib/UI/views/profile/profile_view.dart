@@ -126,14 +126,17 @@ class _ProfileViewState extends State<ProfileView> {
     List<Widget> tiles = [];
     tiles = [
       profileTiles(context, onPressed: () {
-        model.navigateRosScreen(context);
-      }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
-      profileTiles(context, onPressed: () {
-        model.navigateInfoView(context);
-      }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+        model.navigateMoodleWebView(context, model);
+      }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
     ];
     if (model.userType == EnumUserType.student) {
       tiles += [
+        profileTiles(context, onPressed: () {
+          model.navigateRosScreen(context);
+        }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateInfoView(context);
+        }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
         profileTiles(context, onPressed: () {
           model.navigatePgasScreen(context);
         }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
@@ -150,7 +153,7 @@ class _ProfileViewState extends State<ProfileView> {
     }
     tiles += [
       profileTiles(context, onPressed: () {
-        model.navigateWebView(context, model);
+        model.navigatePaymentWebView(context, model);
       }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
       profileTiles(context, onPressed: () {
         model.navigateMainBugReportScreen(context);
@@ -258,7 +261,7 @@ class _ProfileViewState extends State<ProfileView> {
       child: Column(
         children: [
           Container(
-            height: model.isExpanded ? 525 : 325,
+            height: model.isExpanded ? 550 : 350,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -276,7 +279,7 @@ class _ProfileViewState extends State<ProfileView> {
                   left: 0,
                   child: Column(
                     children: [
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 75),
                       Stack(
                         alignment: Alignment.topRight,
                         children: [

@@ -68,6 +68,7 @@ class Localizable {
   static String mainDetails = 'ПОДРОБНОСТИ';
   static String mainMore = 'Подробнее';
   static String mainWarning = 'Вы действительно хотите выйти из мобильного приложения?';
+  static String mainMoodle = "Moodle";
   static String mainRos = "БРС";
   static String mainPgas = 'ПГАС';
   static String mainInfo = 'ИнфОУПро';
