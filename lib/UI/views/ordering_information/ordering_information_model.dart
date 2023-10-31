@@ -68,7 +68,7 @@ class RequestReference {
 }
 
 class TrainingCertificate {
-  static String get callCertificate => "Справка вызов";
+  static String get callCertificate => "Справка-вызов";
   static String get trainingCertificate => "Справка о доходах";
 }
 
