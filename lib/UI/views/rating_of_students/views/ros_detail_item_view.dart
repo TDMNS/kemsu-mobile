@@ -20,8 +20,7 @@ class RosDetailItemView extends StatelessWidget {
         viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -32,17 +31,17 @@ class RosDetailItemView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, discipline),
-                  body:  model.circle
+                  appBar: customAppBar(context, discipline),
+                  body: model.circle
                       ? Container(
-                    color: Theme.of(context).primaryColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                  )
+                          color: Theme.of(context).primaryColor,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
                       : _rosDetailItemView(context, model, reitItemList),
                 ),
               ));
@@ -52,10 +51,7 @@ class RosDetailItemView extends StatelessWidget {
 
 _rosDetailItemView(context, RosViewModel model, reitItemList) {
   return ListView(
-    children: <Widget>[
-      const SizedBox(height: 10),
-      Padding(padding: const EdgeInsets.all(8.0), child: getListView(reitItemList))
-    ],
+    children: <Widget>[const SizedBox(height: 10), Padding(padding: const EdgeInsets.all(8.0), child: getListView(reitItemList))],
   );
 }
 
@@ -74,13 +70,7 @@ Widget getListView(reitItemList) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Column(
@@ -94,11 +84,7 @@ Widget getListView(reitItemList) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(item.comment != null ? "${item.activityName} (${item.comment})" : "${item.activityName}",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontFamily: "Ubuntu",
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold)),
+                              style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
                           richText(Localizable.rosDetailItemAmount, "${item.count}", context),
                           const SizedBox(height: 10),

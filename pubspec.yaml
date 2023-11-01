@@ -43,7 +43,7 @@ dependencies:
   get_it: ^7.6.4
   device_info_plus:
 
-dev_dependencies:
+dev_dependencies :
   flutter_test:
     sdk: flutter
   build_runner: ^2.1.8

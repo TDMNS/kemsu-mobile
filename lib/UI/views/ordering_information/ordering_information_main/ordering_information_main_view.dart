@@ -36,7 +36,7 @@ class _OrderingInformationMainViewState extends State<OrderingInformationMainVie
                 child: Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
+                    appBar: customAppBar(context, Localizable.orderingInformationTitle),
                     body: model.circle
                         ? Container(
                             color: Theme.of(context).primaryColor,

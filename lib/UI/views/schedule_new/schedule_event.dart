@@ -16,3 +16,28 @@ class ChangeWeekType extends ScheduleEvent {
   @override
   List<Object> get props => [weekType];
 }
+
+class GetTeacherList extends ScheduleEvent {
+  GetTeacherList();
+
+  @override
+  List<Object> get props => [];
+}
+
+class TeacherSearch extends ScheduleEvent {
+  TeacherSearch({required this.isTeacherSearching});
+
+  final bool isTeacherSearching;
+
+  @override
+  List<Object> get props => [isTeacherSearching];
+}
+
+class TeacherChoice extends ScheduleEvent {
+  TeacherChoice({required this.teacherID});
+
+  final int teacherID;
+
+  @override
+  List<Object> get props => [teacherID];
+}

@@ -29,7 +29,7 @@ class NotificationView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, Localizable.notificationsTitle),
+                  appBar: customAppBar(context, Localizable.notificationsTitle),
                   body: _notView(context, model),
                 ),
               ));

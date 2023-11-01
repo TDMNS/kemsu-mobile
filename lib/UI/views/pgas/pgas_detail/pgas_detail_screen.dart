@@ -21,7 +21,7 @@ class PgasDetailScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, "Достижения"),
+            appBar: customAppBar(context, "Достижения"),
             body: _body(context, model),
           );
         });
@@ -53,11 +53,7 @@ _pgasAchieveTitle(context) {
       children: [
         Text(
           "Прикрепленные достижения",
-          style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).focusColor),
+          style: TextStyle(fontSize: 24, fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Theme.of(context).focusColor),
         ),
       ],
     ),
@@ -71,10 +67,7 @@ _createAchieveButton(context, PgasDetailViewModel model) {
         width: double.maxFinite,
         height: 46,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
-          ],
+          boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)],
           borderRadius: BorderRadius.circular(10),
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
@@ -84,8 +77,7 @@ _createAchieveButton(context, PgasDetailViewModel model) {
         ),
         child: TextButton(
           onPressed: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewAchievePgasScreen()))
-                .then((value) => model.onGoBack(context));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewAchievePgasScreen())).then((value) => model.onGoBack(context));
           },
           child: const Text(
             "Прикрепить достижение",
@@ -104,9 +96,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
   return Padding(
       padding: const EdgeInsets.all(8),
       child: model.userAchievesList.isEmpty
-          ? Center(
-              child: Text("Нет прикрепленных достижений.",
-                  style: TextStyle(fontSize: 12, color: Theme.of(context).focusColor, fontWeight: FontWeight.w500)))
+          ? Center(child: Text("Нет прикрепленных достижений.", style: TextStyle(fontSize: 12, color: Theme.of(context).focusColor, fontWeight: FontWeight.w500)))
           : ListView.builder(
               physics: const ScrollPhysics(),
               shrinkWrap: true,
@@ -127,8 +117,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           const SizedBox(
                             height: 10,
                           ),
-                          richText('Полное название достижения: ', '${model.userAchievesList[index].fullActivityName}',
-                              context),
+                          richText('Полное название достижения: ', '${model.userAchievesList[index].fullActivityName}', context),
                           const SizedBox(
                             height: 10,
                           ),
@@ -136,18 +125,15 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           const SizedBox(
                             height: 10,
                           ),
-                          richText(
-                              'Год получения достижения: ', '${model.userAchievesList[index].activityYear}', context),
+                          richText('Год получения достижения: ', '${model.userAchievesList[index].activityYear}', context),
                           const SizedBox(
                             height: 10,
                           ),
-                          richText('Месяц получения достижения: ', '${model.userAchievesList[index].activityMonth}',
-                              context),
+                          richText('Месяц получения достижения: ', '${model.userAchievesList[index].activityMonth}', context),
                           const SizedBox(
                             height: 10,
                           ),
-                          richText(
-                              'Подтверждение достижения: ', '${model.userAchievesList[index].activitySrc}', context),
+                          richText('Подтверждение достижения: ', '${model.userAchievesList[index].activitySrc}', context),
                           const SizedBox(
                             height: 10,
                           ),
@@ -155,13 +141,11 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                           const SizedBox(
                             height: 10,
                           ),
-                          richText('Достижение утверждено: ',
-                              model.userAchievesList[index].approveFlag == 0 ? "Нет" : "Да", context),
+                          richText('Достижение утверждено: ', model.userAchievesList[index].approveFlag == 0 ? "Нет" : "Да", context),
                           const SizedBox(
                             height: 10,
                           ),
-                          richText('Достижение является групповым: ',
-                              model.userAchievesList[index].groupActivityFlag == 0 ? "Нет" : "Да", context),
+                          richText('Достижение является групповым: ', model.userAchievesList[index].groupActivityFlag == 0 ? "Нет" : "Да", context),
                           const SizedBox(
                             height: 10,
                           ),
@@ -176,13 +160,7 @@ _pgasAchievesSpace(context, PgasDetailViewModel model) {
                                   width: 200,
                                   height: 36,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Theme.of(context).primaryColorLight,
-                                          offset: const Offset(0, 6),
-                                          spreadRadius: -1,
-                                          blurRadius: 5)
-                                    ],
+                                    boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)],
                                     borderRadius: BorderRadius.circular(20),
                                     gradient: const LinearGradient(
                                       begin: Alignment.topCenter,

@@ -184,7 +184,7 @@ class ProfileViewModel extends BaseViewModel {
     circle = false;
     notifyListeners();
   }
-  
+
   void appMetricaTest() {
     AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Main screen (profile) event');
@@ -281,7 +281,7 @@ _paymentWebView(BuildContext context, ProfileViewModel model) {
   return Scaffold(
     extendBody: false,
     extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, Localizable.paymentTitle),
+    appBar: customAppBar(context, Localizable.paymentTitle),
     body: StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return Stack(children: [

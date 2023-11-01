@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/news/news_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
-import 'package:kemsu_app/UI/views/schedule/schedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
 import '../Configurations/localizable.dart';

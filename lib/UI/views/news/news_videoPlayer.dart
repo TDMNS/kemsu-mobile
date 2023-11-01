@@ -34,9 +34,7 @@ class _VideoAppState extends State<VideoApp> {
         viewModelBuilder: () => NewsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -47,7 +45,7 @@ class _VideoAppState extends State<VideoApp> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, Localizable.video),
+                  appBar: customAppBar(context, Localizable.video),
                   //bottomNavigationBar: customBottomBar(context, model),
                   body: MaterialApp(
                     home: Scaffold(

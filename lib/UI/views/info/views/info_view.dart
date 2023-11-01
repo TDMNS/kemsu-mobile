@@ -22,7 +22,7 @@ class InfoOUProView extends StatelessWidget {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, Localizable.infoTitle),
+              appBar: customAppBar(context, Localizable.infoTitle),
               body: _infoOUProView(context, model),
             ),
           );

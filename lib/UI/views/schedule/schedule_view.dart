@@ -24,16 +24,12 @@ class _NewScheduleViewState extends State<NewScheduleView> {
         viewModelBuilder: () => NewScheduleViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness
-                      .dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: WillPopScope(
                 onWillPop: () async => false,
                 child: GestureDetector(
                   onTap: () {
-                    FocusScopeNode currentFocus = FocusScope.of(
-                        context);
+                    FocusScopeNode currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {
                       currentFocus.unfocus();
                     }
@@ -51,10 +47,8 @@ class _NewScheduleViewState extends State<NewScheduleView> {
                       : Scaffold(
                           extendBody: true,
                           extendBodyBehindAppBar: true,
-                          appBar: customAppBar(context, model, Localizable.pageSchedule),
-                          body: model.currentTable == true
-                              ? _scheduleViewAll(context, model)
-                              : _scheduleViewStudent(context, model)),
+                          appBar: customAppBar(context, Localizable.pageSchedule),
+                          body: model.currentTable == true ? _scheduleViewAll(context, model) : _scheduleViewStudent(context, model)),
                 ),
               ));
         });
@@ -111,43 +105,37 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                       model.indexDay == 0
                           ? Text(
                               Localizable.monday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 1
                           ? Text(
                               Localizable.tuesday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 2
                           ? Text(
                               Localizable.wednesday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 3
                           ? Text(
                               Localizable.thursday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 4
                           ? Text(
                               Localizable.friday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       model.indexDay == 5
                           ? Text(
                               Localizable.saturday,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                             )
                           : const Text(''),
                       IconButton(
@@ -172,9 +160,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                 ),
                 Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.grey.withOpacity(0.5)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey.withOpacity(0.5)),
                   child: Text(
                     '${model.weekNumApi}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -199,8 +185,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 2),
+                  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                   child: ListTile(
                     title: Text(Localizable.odd),
                     leading: Radio(
@@ -214,9 +199,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
                 )
               ],
             ),
-            Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30),
-                child: _scheduleTable(context, model)),
+            Padding(padding: const EdgeInsets.only(left: 30, right: 30, bottom: 30), child: _scheduleTable(context, model)),
           ],
         );
 }
@@ -262,12 +245,8 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                       },
                       isExpanded: true,
                       value: model.scheduleFaculty,
-                      items: model.facultyList
-                          .map<DropdownMenuItem<FacultyList>>((e) {
-                        return DropdownMenuItem<FacultyList>(
-                            child: Text(e.faculty.toString(),
-                                style: const TextStyle(color: Colors.black)),
-                            value: e);
+                      items: model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
+                        return DropdownMenuItem<FacultyList>(child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)), value: e);
                       }).toList(),
                     )),
               ),
@@ -288,8 +267,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                       },
                       isExpanded: true,
                       value: model.scheduleGroup,
-                      items:
-                          model.groupList.map<DropdownMenuItem<GroupList>>((e) {
+                      items: model.groupList.map<DropdownMenuItem<GroupList>>((e) {
                         return DropdownMenuItem<GroupList>(
                           child: Text(e.groupName.toString()),
                           value: e,
@@ -308,24 +286,13 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   height: 50,
                   decoration: BoxDecoration(
-                      color: model.scheduleGroup == null
-                          ? Colors.grey
-                          : Colors.red,
+                      color: model.scheduleGroup == null ? Colors.grey : Colors.red,
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Theme.of(context).primaryColorLight,
-                            blurRadius: 15,
-                            offset: const Offset(0, 15),
-                            spreadRadius: -15)
-                      ]),
+                      boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
                   child: Center(
                     child: Text(
                       Localizable.show,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                 ),
@@ -348,43 +315,37 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                         model.indexDay == 0
                             ? Text(
                                 Localizable.monday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 1
                             ? Text(
                                 Localizable.tuesday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 2
                             ? Text(
                                 Localizable.wednesday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 3
                             ? Text(
                                 Localizable.thursday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 4
                             ? Text(
                                 Localizable.friday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         model.indexDay == 5
                             ? Text(
                                 Localizable.saturday,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                               )
                             : const Text(''),
                         IconButton(
@@ -414,8 +375,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 2),
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
                         child: ListTile(
                           title: Text(Localizable.odd),
                           leading: Radio(
@@ -429,11 +389,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                       )
                     ],
                   ),
-            Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50),
-                child: model.tableView == false
-                    ? const SizedBox()
-                    : _scheduleTable(context, model))
+            Padding(padding: const EdgeInsets.only(left: 30, right: 30, bottom: 50), child: model.tableView == false ? const SizedBox() : _scheduleTable(context, model))
           ],
         );
 }
@@ -450,12 +406,10 @@ _scheduleTable(BuildContext context, NewScheduleViewModel model) {
       model.weekType == true
           ? model.indexDay == 6
               ? const Text('')
-              : Text(
-                  '${model.coupleAllList![i]}\r\n${model.coupleEvenList![i]}')
+              : Text('${model.coupleAllList![i]}\r\n${model.coupleEvenList![i]}')
           : model.indexDay == 6
               ? const Text('')
-              : Text(
-                  '${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
+              : Text('${model.coupleAllList![i]}\r\n${model.coupleOddList![i]}'),
     ]));
   }
   return Dismissible(

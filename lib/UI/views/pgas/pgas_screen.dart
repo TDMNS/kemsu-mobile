@@ -17,17 +17,17 @@ class PgasScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, "ПГАС"),
+            appBar: customAppBar(context, "ПГАС"),
             body: model.circle
                 ? Container(
-              color: Theme.of(context).primaryColor,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                  backgroundColor: Colors.white,
-                ),
-              ),
-            )
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
                 : _body(context, model),
           );
         });
@@ -61,10 +61,7 @@ _createRequestButton(context, PgasViewModel model) {
         width: double.maxFinite,
         height: 46,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
-          ],
+          boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)],
           borderRadius: BorderRadius.circular(10),
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
@@ -97,11 +94,7 @@ _pgasRequestsTitle(context) {
       children: [
         Text(
           "Ваши заявки",
-          style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).focusColor),
+          style: TextStyle(fontSize: 24, fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Theme.of(context).focusColor),
         ),
       ],
     ),
@@ -112,9 +105,7 @@ _pgasRequestsSpace(context, PgasViewModel model) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: model.pgasList.isEmpty
-        ? const Center(
-            child: Text("Нет заявок на ПГАС.",
-                style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
+        ? const Center(child: Text("Нет заявок на ПГАС.", style: TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
         : ListView.builder(
             shrinkWrap: true,
             itemCount: model.pgasList.length,
@@ -131,18 +122,13 @@ _pgasRequestsSpace(context, PgasViewModel model) {
                       children: [
                         Text(
                           "Заявка №${model.pgasList[index].requestId}",
-                          style: TextStyle(
-                              fontFamily: "Ubuntu",
-                              fontSize: 16,
-                              color: Theme.of(context).focusColor,
-                              fontWeight: FontWeight.w500),
+                          style: TextStyle(fontFamily: "Ubuntu", fontSize: 16, color: Theme.of(context).focusColor, fontWeight: FontWeight.w500),
                         ),
                         Row(
                           children: [
                             TextButton(
                                 onPressed: () async {
-                                  await model.storage
-                                      .write(key: "pgas_id", value: model.pgasList[index].requestId.toString());
+                                  await model.storage.write(key: "pgas_id", value: model.pgasList[index].requestId.toString());
                                   model.goToPgasDetail(context);
                                 },
                                 child: Text(

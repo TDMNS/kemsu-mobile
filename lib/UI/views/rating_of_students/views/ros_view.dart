@@ -32,7 +32,7 @@ class RosView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, Localizable.rosTitle),
+                  appBar: customAppBar(context, Localizable.rosTitle),
                   body: model.circle
                       ? Container(
                           color: Theme.of(context).primaryColor,

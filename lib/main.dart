@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
-import 'package:kemsu_app/domain/repositories/schedule/schedule_repository.dart';
+import 'package:kemsu_app/domain/di_initial.dart';
 import 'UI/custom_themes.dart';
 import 'UI/splash_screen.dart';
 import 'UI/views/news/news_view.dart';
@@ -13,8 +10,7 @@ import 'UI/views/schedule/schedule_view.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  final dio = Dio();
-  GetIt.I.registerLazySingleton<AbstractScheduleRepository>(() => ScheduleRepository(dio: dio));
+  diRegister();
   runApp(const App());
 }
 

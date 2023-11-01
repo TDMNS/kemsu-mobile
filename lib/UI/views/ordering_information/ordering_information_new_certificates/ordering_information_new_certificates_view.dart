@@ -32,7 +32,7 @@ class _OrderingInformationMainViewState extends State<OrderingInformationNewCert
                 child: Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
+                    appBar: customAppBar(context, Localizable.orderingInformationTitle),
                     body: _orderingInformationView(context, model)),
               ));
         });

@@ -22,7 +22,7 @@ class NewPgasRequestScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, Localizable.newRequestTitle),
+            appBar: customAppBar(context, Localizable.newRequestTitle),
             body: model.circle
                 ? Container(
                     color: Theme.of(context).primaryColor,

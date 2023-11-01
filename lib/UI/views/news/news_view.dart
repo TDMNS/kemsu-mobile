@@ -33,7 +33,7 @@ class _NewsViewState extends State<NewsView> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, Localizable.newsTitle),
+                  appBar: customAppBar(context, Localizable.newsTitle),
                   body: _newsView(context, model),
                 ),
               ));
@@ -225,21 +225,21 @@ class _NewsViewState extends State<NewsView> {
   _pictureView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
-          child: const SizedBox(
-            height: 50,
-            width: 50,
-            child: CircularProgressIndicator(
-              color: Colors.blue,
+            child: Padding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
+            child: const SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ),
             ),
-          ),
-        ))
+          ))
         : GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
                 return Scaffold(
-                  appBar: customAppBar(context, model, Localizable.photo),
+                  appBar: customAppBar(context, Localizable.photo),
                   body: Center(
                     child: Dismissible(
                       key: UniqueKey(),
@@ -275,16 +275,16 @@ class _NewsViewState extends State<NewsView> {
   _videoPreviewView(BuildContext context, NewsViewModel model, newsIndex) {
     return model.fileLoader == true
         ? Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
-          child: const SizedBox(
-            height: 50,
-            width: 50,
-            child: CircularProgressIndicator(
-              color: Colors.blue,
+            child: Padding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10),
+            child: const SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ),
             ),
-          ),
-        ))
+          ))
         : Stack(
             children: [
               Container(

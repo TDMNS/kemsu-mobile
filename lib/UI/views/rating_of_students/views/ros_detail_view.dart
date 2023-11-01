@@ -22,8 +22,7 @@ class RosDetailView extends StatelessWidget {
         viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -34,17 +33,17 @@ class RosDetailView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, '${Localizable.semester} $semester'),
-                  body:  model.circle
+                  appBar: customAppBar(context, '${Localizable.semester} $semester'),
+                  body: model.circle
                       ? Container(
-                    color: Theme.of(context).primaryColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                  )
+                          color: Theme.of(context).primaryColor,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
                       : _rosDetailView(context, model, reitList),
                 ),
               ));
@@ -54,10 +53,7 @@ class RosDetailView extends StatelessWidget {
 
 _rosDetailView(context, RosViewModel model, reitList) {
   return ListView(
-    children: <Widget>[
-      const SizedBox(height: 10),
-      Padding(padding: const EdgeInsets.all(8.0), child: getListView(model, reitList))
-    ],
+    children: <Widget>[const SizedBox(height: 10), Padding(padding: const EdgeInsets.all(8.0), child: getListView(model, reitList))],
   );
 }
 
@@ -76,13 +72,7 @@ Widget getListView(RosViewModel model, reitList) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Column(
@@ -97,11 +87,7 @@ Widget getListView(RosViewModel model, reitList) {
                         children: <Widget>[
                           Text(
                             "${item.discipline}",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorDark,
-                                fontFamily: "Ubuntu",
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           richText(Localizable.rosDetailInterimCertificationForm, "${item.intermediateAttestationForm}", context),
@@ -119,9 +105,7 @@ Widget getListView(RosViewModel model, reitList) {
                             String safelyDiscipline = item.discipline ?? "";
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => RosDetailItemView(
-                                      reitItemList: model.reitItemList, discipline: safelyDiscipline)),
+                              MaterialPageRoute(builder: (context) => RosDetailItemView(reitItemList: model.reitItemList, discipline: safelyDiscipline)),
                             );
                           }, title: Localizable.mainMore, isPrimary: true)
                         ],

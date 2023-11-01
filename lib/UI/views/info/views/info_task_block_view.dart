@@ -24,7 +24,7 @@ class InfoOUProTaskBlockView extends StatelessWidget {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, blockName),
+              appBar: customAppBar(context, blockName),
               body: _infoOUProTaskBlockView(context, model, repData),
             ),
           );

@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
                 : Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, Localizable.mainTitle),
+                    appBar: customAppBar(context, Localizable.mainTitle),
                     body: _profileView(context, model),
                   ),
           ),

@@ -21,7 +21,7 @@ class CheckListView extends StatelessWidget {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, Localizable.checkListTitle),
+              appBar: customAppBar(context, Localizable.checkListTitle),
               body: model.circle
                   ? Container(
                       color: Theme.of(context).primaryColor,

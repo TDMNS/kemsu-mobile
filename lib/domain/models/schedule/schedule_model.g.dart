@@ -6,20 +6,28 @@ part of 'schedule_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ScheduleModel _$ScheduleModelFromJson(Map<String, dynamic> json) => ScheduleModel(
+ScheduleModel _$ScheduleModelFromJson(Map<String, dynamic> json) =>
+    ScheduleModel(
       success: json['success'] as bool,
       result: Result.fromJson(json['result'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$ScheduleModelToJson(ScheduleModel instance) => <String, dynamic>{
+Map<String, dynamic> _$ScheduleModelToJson(ScheduleModel instance) =>
+    <String, dynamic>{
       'success': instance.success,
       'result': instance.result,
     };
 
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
-      weekList: (json['WeekList'] as List<dynamic>).map((e) => WeekList.fromJson(e as Map<String, dynamic>)).toList(),
-      coupleList: (json['CoupleList'] as List<dynamic>).map((e) => CoupleList.fromJson(e as Map<String, dynamic>)).toList(),
-      weekTypeList: (json['WeekTypeList'] as List<dynamic>).map((e) => WeekTypeList.fromJson(e as Map<String, dynamic>)).toList(),
+      weekList: (json['WeekList'] as List<dynamic>)
+          .map((e) => WeekList.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      coupleList: (json['CoupleList'] as List<dynamic>)
+          .map((e) => CoupleList.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      weekTypeList: (json['WeekTypeList'] as List<dynamic>)
+          .map((e) => WeekTypeList.fromJson(e as Map<String, dynamic>))
+          .toList(),
       table: Table.fromJson(json['Table'] as Map<String, dynamic>),
     );
 
@@ -36,7 +44,8 @@ CoupleList _$CoupleListFromJson(Map<String, dynamic> json) => CoupleList(
       description: json['Description'] as String,
     );
 
-Map<String, dynamic> _$CoupleListToJson(CoupleList instance) => <String, dynamic>{
+Map<String, dynamic> _$CoupleListToJson(CoupleList instance) =>
+    <String, dynamic>{
       'Id': instance.id,
       'Num': instance.num,
       'Description': instance.description,
@@ -87,21 +96,33 @@ WeekDay _$WeekDayFromJson(Map<String, dynamic> json) => WeekDay(
       coupleOdd4Str: json['coupleOdd4_str'] as String,
       coupleAll5: json['coupleAll5'] as List<dynamic>,
       coupleAll5Str: json['coupleAll5_str'] as String,
-      coupleEven5: (json['coupleEven5'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleEven5: (json['coupleEven5'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleEven5Str: json['coupleEven5_str'] as String,
-      coupleOdd5: (json['coupleOdd5'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleOdd5: (json['coupleOdd5'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleOdd5Str: json['coupleOdd5_str'] as String,
       coupleAll6: json['coupleAll6'] as List<dynamic>,
       coupleAll6Str: json['coupleAll6_str'] as String,
-      coupleEven6: (json['coupleEven6'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleEven6: (json['coupleEven6'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleEven6Str: json['coupleEven6_str'] as String,
-      coupleOdd6: (json['coupleOdd6'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleOdd6: (json['coupleOdd6'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleOdd6Str: json['coupleOdd6_str'] as String,
       coupleAll7: json['coupleAll7'] as List<dynamic>,
       coupleAll7Str: json['coupleAll7_str'] as String,
-      coupleEven7: (json['coupleEven7'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleEven7: (json['coupleEven7'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleEven7Str: json['coupleEven7_str'] as String,
-      coupleOdd7: (json['coupleOdd7'] as List<dynamic>).map((e) => Couple.fromJson(e as Map<String, dynamic>)).toList(),
+      coupleOdd7: (json['coupleOdd7'] as List<dynamic>)
+          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .toList(),
       coupleOdd7Str: json['coupleOdd7_str'] as String,
     );
 
@@ -201,7 +222,8 @@ WeekTypeList _$WeekTypeListFromJson(Map<String, dynamic> json) => WeekTypeList(
       name: json['Name'] as String,
     );
 
-Map<String, dynamic> _$WeekTypeListToJson(WeekTypeList instance) => <String, dynamic>{
+Map<String, dynamic> _$WeekTypeListToJson(WeekTypeList instance) =>
+    <String, dynamic>{
       'Id': instance.id,
       'Name': instance.name,
     };

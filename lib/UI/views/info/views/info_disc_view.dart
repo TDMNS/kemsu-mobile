@@ -26,7 +26,7 @@ class InfoOUProRepView extends StatelessWidget {
             child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, discData.discName),
+              appBar: customAppBar(context, discData.discName),
               body: _infoOUProRepView(context, model, repList, discData),
             ),
           );
