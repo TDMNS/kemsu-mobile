@@ -58,5 +58,3 @@ class ScheduleState extends Equatable {
 //   @override
 //   List<Object?> get props => [currentGroup, weekType];
 // }
-
-enum WeekType { even, odd }

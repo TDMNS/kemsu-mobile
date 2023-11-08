@@ -9,7 +9,7 @@ import 'news_view_model.dart';
 
 class VideoApp extends StatefulWidget {
   final File? file;
-  const VideoApp({Key? key, @required this.file}) : super(key: key);
+  const VideoApp({super.key, @required this.file});
 
   @override
   _VideoAppState createState() => _VideoAppState();

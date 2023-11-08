@@ -37,7 +37,7 @@ TeacherScheduleModel _$TeacherScheduleModelFromJson(
         Map<String, dynamic> json) =>
     TeacherScheduleModel(
       success: json['success'] as bool,
-      result: Result.fromJson(json['result'] as Map<String, dynamic>),
+      result: TeacherResult.fromJson(json['result'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TeacherScheduleModelToJson(
@@ -47,31 +47,35 @@ Map<String, dynamic> _$TeacherScheduleModelToJson(
       'result': instance.result,
     };
 
-Result _$ResultFromJson(Map<String, dynamic> json) => Result(
+TeacherResult _$TeacherResultFromJson(Map<String, dynamic> json) =>
+    TeacherResult(
       weekList: (json['weekList'] as List<dynamic>)
-          .map((e) => Week.fromJson(e as Map<String, dynamic>))
+          .map((e) => TeacherWeek.fromJson(e as Map<String, dynamic>))
           .toList(),
       coupleList: (json['coupleList'] as List<dynamic>)
-          .map((e) => Couple.fromJson(e as Map<String, dynamic>))
+          .map((e) => TeacherCouple.fromJson(e as Map<String, dynamic>))
           .toList(),
       prepScheduleTable: (json['prepScheduleTable'] as List<dynamic>)
           .map((e) => PrepScheduleTable.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+Map<String, dynamic> _$TeacherResultToJson(TeacherResult instance) =>
+    <String, dynamic>{
       'weekList': instance.weekList,
       'coupleList': instance.coupleList,
       'prepScheduleTable': instance.prepScheduleTable,
     };
 
-Couple _$CoupleFromJson(Map<String, dynamic> json) => Couple(
+TeacherCouple _$TeacherCoupleFromJson(Map<String, dynamic> json) =>
+    TeacherCouple(
       id: json['Id'] as int,
       num: json['Num'] as int,
       description: json['Description'] as String,
     );
 
-Map<String, dynamic> _$CoupleToJson(Couple instance) => <String, dynamic>{
+Map<String, dynamic> _$TeacherCoupleToJson(TeacherCouple instance) =>
+    <String, dynamic>{
       'Id': instance.id,
       'Num': instance.num,
       'Description': instance.description,
@@ -79,9 +83,9 @@ Map<String, dynamic> _$CoupleToJson(Couple instance) => <String, dynamic>{
 
 PrepScheduleTable _$PrepScheduleTableFromJson(Map<String, dynamic> json) =>
     PrepScheduleTable(
-      weekDay: Week.fromJson(json['weekDay'] as Map<String, dynamic>),
+      weekDay: TeacherWeek.fromJson(json['weekDay'] as Map<String, dynamic>),
       ceilList: (json['ceilList'] as List<dynamic>)
-          .map((e) => CeilList.fromJson(e as Map<String, dynamic>))
+          .map((e) => TeacherCeilList.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -91,17 +95,19 @@ Map<String, dynamic> _$PrepScheduleTableToJson(PrepScheduleTable instance) =>
       'ceilList': instance.ceilList,
     };
 
-CeilList _$CeilListFromJson(Map<String, dynamic> json) => CeilList(
-      couple: Couple.fromJson(json['couple'] as Map<String, dynamic>),
-      ceil: Ceil.fromJson(json['ceil'] as Map<String, dynamic>),
+TeacherCeilList _$TeacherCeilListFromJson(Map<String, dynamic> json) =>
+    TeacherCeilList(
+      couple: TeacherCouple.fromJson(json['couple'] as Map<String, dynamic>),
+      ceil: PrepCeil.fromJson(json['ceil'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$CeilListToJson(CeilList instance) => <String, dynamic>{
+Map<String, dynamic> _$TeacherCeilListToJson(TeacherCeilList instance) =>
+    <String, dynamic>{
       'couple': instance.couple,
       'ceil': instance.ceil,
     };
 
-Ceil _$CeilFromJson(Map<String, dynamic> json) => Ceil(
+PrepCeil _$PrepCeilFromJson(Map<String, dynamic> json) => PrepCeil(
       uneven: (json['uneven'] as List<dynamic>)
           .map((e) => TeacherCeil.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -110,7 +116,7 @@ Ceil _$CeilFromJson(Map<String, dynamic> json) => Ceil(
           .toList(),
     );
 
-Map<String, dynamic> _$CeilToJson(Ceil instance) => <String, dynamic>{
+Map<String, dynamic> _$PrepCeilToJson(PrepCeil instance) => <String, dynamic>{
       'uneven': instance.uneven,
       'even': instance.even,
     };
@@ -138,14 +144,15 @@ Map<String, dynamic> _$TeacherCeilToJson(TeacherCeil instance) =>
       'selectFlag': instance.selectFlag,
     };
 
-Week _$WeekFromJson(Map<String, dynamic> json) => Week(
+TeacherWeek _$TeacherWeekFromJson(Map<String, dynamic> json) => TeacherWeek(
       id: json['Id'] as int,
       dayNum: json['DayNum'] as int,
       dayName: json['DayName'] as String,
       dayNameShort: json['DayNameShort'] as String,
     );
 
-Map<String, dynamic> _$WeekToJson(Week instance) => <String, dynamic>{
+Map<String, dynamic> _$TeacherWeekToJson(TeacherWeek instance) =>
+    <String, dynamic>{
       'Id': instance.id,
       'DayNum': instance.dayNum,
       'DayName': instance.dayName,

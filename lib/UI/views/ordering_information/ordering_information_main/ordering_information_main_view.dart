@@ -11,7 +11,7 @@ import '../ordering_information_view/ordering_information_view.dart';
 import 'ordering_information_main_view_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
-  const OrderingInformationMainView({Key? key}) : super(key: key);
+  const OrderingInformationMainView({super.key});
 
   @override
   State<OrderingInformationMainView> createState() => _OrderingInformationMainViewState();
@@ -63,11 +63,11 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
           value: model.trainingCertificate,
           items: model.trainingCertificates.map<DropdownMenuItem<String>>((e) {
             return DropdownMenuItem<String>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(e),
               ),
-              value: e,
             );
           }).toList(),
           textHint: Localizable.orderingInformationType, onChanged: (value) {
@@ -192,7 +192,7 @@ Widget getListView(List<RequestReference> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  Localizable.orderingInformationCall + ' №${index + 1}',
+                  '${Localizable.orderingInformationCall} №${index + 1}',
                   style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[

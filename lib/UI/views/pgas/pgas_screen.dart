@@ -8,7 +8,7 @@ class PgasScreenRoute extends MaterialPageRoute {
 }
 
 class PgasScreen extends StatelessWidget {
-  const PgasScreen({Key? key}) : super(key: key);
+  const PgasScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

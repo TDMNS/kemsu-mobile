@@ -12,7 +12,7 @@ import '../../prep_schedule/prep_schedule_view.dart';
 import '../ros_view_model.dart';
 
 class RosView extends StatelessWidget {
-  const RosView({Key? key}) : super(key: key);
+  const RosView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +67,11 @@ _rosView(context, RosViewModel model) {
           value: model.studyCard,
           items: model.receivedStudyCard.map<DropdownMenuItem<StudyCard>>((e) {
             return DropdownMenuItem<StudyCard>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(e.groupName.toString()),
               ),
-              value: e,
             );
           }).toList(),
           textHint: Localizable.orderingInformationMainChooseStudyCard, onChanged: (value) {

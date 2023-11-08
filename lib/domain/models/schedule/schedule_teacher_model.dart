@@ -52,7 +52,7 @@ class TeacherScheduleModel {
   @JsonKey(name: "success")
   final bool success;
   @JsonKey(name: "result")
-  final Result result;
+  final TeacherResult result;
 
   TeacherScheduleModel({
     required this.success,
@@ -65,27 +65,27 @@ class TeacherScheduleModel {
 }
 
 @JsonSerializable()
-class Result {
+class TeacherResult {
   @JsonKey(name: "weekList")
-  final List<Week> weekList;
+  final List<TeacherWeek> weekList;
   @JsonKey(name: "coupleList")
-  final List<Couple> coupleList;
+  final List<TeacherCouple> coupleList;
   @JsonKey(name: "prepScheduleTable")
   final List<PrepScheduleTable> prepScheduleTable;
 
-  Result({
+  TeacherResult({
     required this.weekList,
     required this.coupleList,
     required this.prepScheduleTable,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+  factory TeacherResult.fromJson(Map<String, dynamic> json) => _$TeacherResultFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ResultToJson(this);
+  Map<String, dynamic> toJson() => _$TeacherResultToJson(this);
 }
 
 @JsonSerializable()
-class Couple {
+class TeacherCouple {
   @JsonKey(name: "Id")
   final int id;
   @JsonKey(name: "Num")
@@ -93,23 +93,23 @@ class Couple {
   @JsonKey(name: "Description")
   final String description;
 
-  Couple({
+  TeacherCouple({
     required this.id,
     required this.num,
     required this.description,
   });
 
-  factory Couple.fromJson(Map<String, dynamic> json) => _$CoupleFromJson(json);
+  factory TeacherCouple.fromJson(Map<String, dynamic> json) => _$TeacherCoupleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CoupleToJson(this);
+  Map<String, dynamic> toJson() => _$TeacherCoupleToJson(this);
 }
 
 @JsonSerializable()
 class PrepScheduleTable {
   @JsonKey(name: "weekDay")
-  final Week weekDay;
+  final TeacherWeek weekDay;
   @JsonKey(name: "ceilList")
-  final List<CeilList> ceilList;
+  final List<TeacherCeilList> ceilList;
 
   PrepScheduleTable({
     required this.weekDay,
@@ -122,37 +122,39 @@ class PrepScheduleTable {
 }
 
 @JsonSerializable()
-class CeilList {
+class TeacherCeilList {
   @JsonKey(name: "couple")
-  final Couple couple;
+  final TeacherCouple couple;
   @JsonKey(name: "ceil")
-  final Ceil ceil;
+  final PrepCeil ceil;
 
-  CeilList({
+  TeacherCeilList({
     required this.couple,
     required this.ceil,
   });
 
-  factory CeilList.fromJson(Map<String, dynamic> json) => _$CeilListFromJson(json);
+  factory TeacherCeilList.fromJson(Map<String, dynamic> json) => _$TeacherCeilListFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CeilListToJson(this);
+  Map<String, dynamic> toJson() => _$TeacherCeilListToJson(this);
 }
 
 @JsonSerializable()
-class Ceil {
+class PrepCeil {
   @JsonKey(name: "uneven")
   final List<TeacherCeil> uneven;
   @JsonKey(name: "even")
   final List<TeacherCeil> even;
 
-  Ceil({
+  String get unevenCeil => uneven.map((e) => e.fullCeil).join(', \n\n');
+  String get evenCeil => even.map((e) => e.fullCeil).join(', \n\n');
+
+  PrepCeil({
     required this.uneven,
     required this.even,
   });
 
-  factory Ceil.fromJson(Map<String, dynamic> json) => _$CeilFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CeilToJson(this);
+  factory PrepCeil.fromJson(Map<String, dynamic> json) => _$PrepCeilFromJson(json);
+  Map<String, dynamic> toJson() => _$PrepCeilToJson(this);
 }
 
 @JsonSerializable()
@@ -193,7 +195,7 @@ class TeacherCeil {
 }
 
 @JsonSerializable()
-class Week {
+class TeacherWeek {
   @JsonKey(name: "Id")
   final int id;
   @JsonKey(name: "DayNum")
@@ -203,14 +205,14 @@ class Week {
   @JsonKey(name: "DayNameShort")
   final String dayNameShort;
 
-  Week({
+  TeacherWeek({
     required this.id,
     required this.dayNum,
     required this.dayName,
     required this.dayNameShort,
   });
 
-  factory Week.fromJson(Map<String, dynamic> json) => _$WeekFromJson(json);
+  factory TeacherWeek.fromJson(Map<String, dynamic> json) => _$TeacherWeekFromJson(json);
 
-  Map<String, dynamic> toJson() => _$WeekToJson(this);
+  Map<String, dynamic> toJson() => _$TeacherWeekToJson(this);
 }

@@ -85,10 +85,19 @@ class Localizable {
   /// Schedule
   static String scheduleChooseInstitute = 'Выбрать институт';
   static String scheduleChooseGroup = 'Выбрать группу';
+  static String groupSchedule = 'Расписание групп';
+  static String facultySearch = 'Поиск института';
+  static String groupSearch = 'Поиск группы';
 
   /// Prep Schedule
   static String prepScheduleTitle = 'Расписание преподавателей';
   static String prepScheduleChooseTeacher = 'Выбор преподавателя';
+  static String prepScheduleSearch = 'Поиск преподавателя';
+
+  ///Auditor Schedule
+  static String auditorScheduleTitle = 'Расписание аудиторий';
+  static String auditorScheduleChooseAuditor = 'Выбор аудитории';
+  static String auditorScheduleSearch = 'Поиск аудитории';
 
   /// Check list
   static String checkListTitle = 'Обходной лист';

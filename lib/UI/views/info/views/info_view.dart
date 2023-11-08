@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 
 class InfoOUProView extends StatelessWidget {
-  const InfoOUProView({Key? key}) : super(key: key);
+  const InfoOUProView({super.key});
 
   @override
   Widget build(BuildContext context) {

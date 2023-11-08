@@ -121,7 +121,7 @@ class OrderingInformationViewModel extends BaseViewModel {
     String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
     int studentId = studyCard?.id ?? 0;
 
-    final _ = await http.post(Uri.parse(Config.addRequest + '?accessToken=' + safeToken),
+    final _ = await http.post(Uri.parse('${Config.addRequest}?accessToken=$safeToken'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

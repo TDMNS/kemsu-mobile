@@ -7,7 +7,7 @@ import '../../../widgets.dart';
 import 'ordering_information_new_certificates_view_model.dart';
 
 class OrderingInformationNewCertificatesView extends StatefulWidget {
-  const OrderingInformationNewCertificatesView({Key? key}) : super(key: key);
+  const OrderingInformationNewCertificatesView({super.key});
 
   @override
   State<OrderingInformationNewCertificatesView> createState() => _OrderingInformationMainViewState();
@@ -115,10 +115,10 @@ _downloadFinish(context) {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).popUntil(ModalRoute.withName("/menu")),
-          child: Text(Localizable.ok),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           ),
+          child: Text(Localizable.ok),
         ),
       ],
     ),

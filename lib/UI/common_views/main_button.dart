@@ -8,10 +8,7 @@ mainButton(context, {required VoidCallback onPressed, required String title, req
         width: double.maxFinite,
         height: 46,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
-          ],
+          boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)],
           borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
             begin: Alignment.topCenter,

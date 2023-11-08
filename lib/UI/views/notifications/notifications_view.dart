@@ -9,7 +9,7 @@ import '../ordering_information/ordering_information_main/ordering_information_m
 import 'notifications_view_model.dart';
 
 class NotificationView extends StatelessWidget {
-  const NotificationView({Key? key}) : super(key: key);
+  const NotificationView({super.key});
 
   @override
   Widget build(BuildContext context) {

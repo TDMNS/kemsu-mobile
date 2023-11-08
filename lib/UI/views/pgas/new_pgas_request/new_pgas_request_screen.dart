@@ -13,7 +13,7 @@ class NewPgasRequestScreenRoute extends MaterialPageRoute {
 }
 
 class NewPgasRequestScreen extends StatelessWidget {
-  const NewPgasRequestScreen({Key? key}) : super(key: key);
+  const NewPgasRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +60,13 @@ _body(context, NewPgasRequestViewModel model) {
                     value: model.chooseFaculty,
                     items: model.facultiesList.map<DropdownMenuItem<FacultyModel>>((e) {
                       return DropdownMenuItem<FacultyModel>(
+                        value: e,
                         child: FittedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.facultyShortTitle.toString()),
                           ),
                         ),
-                        value: e,
                       );
                     }).toList(),
                     hint: Center(
@@ -91,13 +91,13 @@ _body(context, NewPgasRequestViewModel model) {
                     value: model.chooseSemester,
                     items: model.semestersList.map<DropdownMenuItem<SemesterTypeModel>>((e) {
                       return DropdownMenuItem<SemesterTypeModel>(
+                        value: e,
                         child: FittedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.semesterTypeTitle.toString()),
                           ),
                         ),
-                        value: e,
                       );
                     }).toList(),
                     hint: Center(

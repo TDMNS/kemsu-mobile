@@ -13,7 +13,7 @@ import '../../common_views/profile_tiles.dart';
 import '../../widgets.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();

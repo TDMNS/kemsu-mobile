@@ -8,7 +8,7 @@ import '../../../Configurations/localizable.dart';
 import 'auth_view_model.dart';
 
 class AuthView extends StatelessWidget {
-  const AuthView({Key? key}) : super(key: key);
+  const AuthView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -194,10 +194,10 @@ class AuthView extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(Localizable.ok),
             style: TextButton.styleFrom(
               foregroundColor: Colors.blue,
             ),
+            child: Text(Localizable.ok),
           )
         ],
       ),

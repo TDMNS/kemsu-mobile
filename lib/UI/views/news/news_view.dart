@@ -8,7 +8,7 @@ import '../../widgets.dart';
 import 'news_view_model.dart';
 
 class NewsView extends StatefulWidget {
-  const NewsView({Key? key}) : super(key: key);
+  const NewsView({super.key});
 
   @override
   State<NewsView> createState() => _NewsViewState();

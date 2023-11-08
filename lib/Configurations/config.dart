@@ -15,6 +15,8 @@ class Config {
   static String currentGroupList = 'https://api-next.kemsu.ru/api/schedule/integration/currentGroupList';
   static String teacherList = 'https://api-next.kemsu.ru/api/schedule/integration/teacherList';
   static String prepSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/prepSheduleTable';
+  static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
+  static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';
   static String studMoneyDebt = 'https://api-next.kemsu.ru/api/debt/main/moneyDebtInfo';
   static String studDebt = 'https://api-next.kemsu.ru/api/debt/main/studyDebtList';
   static String libraryDebt = "https://api-next.kemsu.ru/api/debt/main/literatureDebtList";

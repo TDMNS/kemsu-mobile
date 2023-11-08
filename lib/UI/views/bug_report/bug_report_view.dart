@@ -9,7 +9,7 @@ class MainBugReportScreenRoute extends MaterialPageRoute {
 }
 
 class MainBugReportScreen extends StatelessWidget {
-  const MainBugReportScreen({Key? key}) : super(key: key);
+  const MainBugReportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

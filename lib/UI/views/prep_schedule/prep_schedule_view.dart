@@ -12,7 +12,7 @@ import '../../widgets.dart';
 List<DropdownMenuItem<String>> dropdownItems = [];
 
 class PrepScheduleView extends StatefulWidget {
-  const PrepScheduleView({Key? key}) : super(key: key);
+  const PrepScheduleView({super.key});
 
   @override
   State<PrepScheduleView> createState() => _ScheduleViewState();

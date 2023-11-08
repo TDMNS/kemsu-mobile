@@ -6,7 +6,7 @@ import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:flutter/services.dart';
 
 class LoadingView extends StatefulWidget {
-  const LoadingView({Key? key}) : super(key: key);
+  const LoadingView({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

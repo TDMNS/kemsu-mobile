@@ -12,7 +12,7 @@ class PgasDetailScreenRoute extends MaterialPageRoute {
 }
 
 class PgasDetailScreen extends StatelessWidget {
-  const PgasDetailScreen({Key? key}) : super(key: key);
+  const PgasDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

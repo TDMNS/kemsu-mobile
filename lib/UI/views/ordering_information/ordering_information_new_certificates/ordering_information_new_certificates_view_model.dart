@@ -20,7 +20,7 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     await dio.download(
       '${Config.refCallPDF}/$groupTermId?employer=${companyName.text}&employeeFio=${studentName.text}',
-      (await getTemporaryDirectory()).path + 'call.pdf',
+      '${(await getTemporaryDirectory()).path}call.pdf',
       options: Options(
         headers: {'x-access-token': token},
         method: 'GET',

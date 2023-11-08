@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 
 class InfoOUProRepView extends StatelessWidget {
-  const InfoOUProRepView({Key? key, required this.discData, required this.repList}) : super(key: key);
+  const InfoOUProRepView({super.key, required this.discData, required this.repList});
   final CourseInfoOUPro discData;
   final List<ReportInfoOUPro> repList;
 

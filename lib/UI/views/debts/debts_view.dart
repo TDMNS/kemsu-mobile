@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 
 class DebtsView extends StatefulWidget {
-  const DebtsView({Key? key}) : super(key: key);
+  const DebtsView({super.key});
 
   @override
   State<DebtsView> createState() => _DebtsViewState();

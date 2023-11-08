@@ -10,7 +10,7 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 
 class NewScheduleView extends StatefulWidget {
-  const NewScheduleView({Key? key}) : super(key: key);
+  const NewScheduleView({super.key});
 
   @override
   State<NewScheduleView> createState() => _NewScheduleViewState();
@@ -155,7 +155,7 @@ _scheduleViewStudent(BuildContext context, NewScheduleViewModel model) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  Localizable.week + ' ',
+                  '${Localizable.week} ',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Container(
@@ -246,7 +246,7 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                       isExpanded: true,
                       value: model.scheduleFaculty,
                       items: model.facultyList.map<DropdownMenuItem<FacultyList>>((e) {
-                        return DropdownMenuItem<FacultyList>(child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)), value: e);
+                        return DropdownMenuItem<FacultyList>(value: e, child: Text(e.faculty.toString(), style: const TextStyle(color: Colors.black)));
                       }).toList(),
                     )),
               ),
@@ -269,8 +269,8 @@ _scheduleViewAll(BuildContext context, NewScheduleViewModel model) {
                       value: model.scheduleGroup,
                       items: model.groupList.map<DropdownMenuItem<GroupList>>((e) {
                         return DropdownMenuItem<GroupList>(
-                          child: Text(e.groupName.toString()),
                           value: e,
+                          child: Text(e.groupName.toString()),
                         );
                       }).toList(),
                     )),

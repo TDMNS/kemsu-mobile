@@ -8,7 +8,7 @@ import '../../ordering_information/ordering_information_main/ordering_informatio
 import '../ros_view_model.dart';
 
 class RosDetailItemView extends StatelessWidget {
-  const RosDetailItemView({Key? key, required this.reitItemList, required this.discipline}) : super(key: key);
+  const RosDetailItemView({super.key, required this.reitItemList, required this.discipline});
 
   final String discipline;
   final List<ReitItemList> reitItemList;

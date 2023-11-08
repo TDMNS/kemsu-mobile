@@ -8,7 +8,7 @@ import '../../widgets.dart';
 import 'check_list_model.dart';
 
 class CheckListView extends StatelessWidget {
-  const CheckListView({Key? key}) : super(key: key);
+  const CheckListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ Widget getListView(List<CheckList> items) {
       final address = item.address ?? '';
       return ListTile(
           title: Text(departmentTitle),
-          subtitle: Text(groupName + '\n' + address),
+          subtitle: Text('$groupName\n$address'),
           trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red));
     },
   );

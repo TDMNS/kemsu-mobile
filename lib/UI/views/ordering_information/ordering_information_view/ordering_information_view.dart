@@ -11,7 +11,7 @@ import '../../rating_of_students/ros_model.dart';
 import 'ordering_information_view_model.dart';
 
 class OrderingInformationView extends StatefulWidget {
-  const OrderingInformationView({Key? key}) : super(key: key);
+  const OrderingInformationView({super.key});
 
   @override
   State<OrderingInformationView> createState() => _OrderingInformationViewState();
@@ -61,11 +61,11 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
         value: model.studyCard,
         items: model.receivedStudyCard.map<DropdownMenuItem<StudyCard>>((e) {
           return DropdownMenuItem<StudyCard>(
+            value: e,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(e.groupName.toString()),
             ),
-            value: e,
           );
         }).toList(),
         textHint: Localizable.orderingInformationMainChooseStudyCard,
@@ -80,11 +80,11 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
           value: model.selectedBasic,
           items: model.receivedBasicList.map<DropdownMenuItem<BasisOfEducation>>((e) {
             return DropdownMenuItem<BasisOfEducation>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(e.basic.toString()),
               ),
-              value: e,
             );
           }).toList(),
           textHint: Localizable.orderingInformationMainStudyBasis,
@@ -101,11 +101,11 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
           value: model.selectedPeriod,
           items: model.periodList.map<DropdownMenuItem<PeriodList>>((e) {
             return DropdownMenuItem<PeriodList>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(e.period.toString()),
               ),
-              value: e,
             );
           }).toList(),
           textHint: Localizable.orderingInformationPeriod,
@@ -272,10 +272,10 @@ void _orderInfo(BuildContext context, OrderingInformationViewModel model) {
             model.sendReferences();
             Navigator.of(context).popUntil(ModalRoute.withName("/menu"));
           },
-          child: Text(Localizable.ok),
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           ),
+          child: Text(Localizable.ok),
         ),
       ],
     ),

@@ -7,7 +7,7 @@ import 'year_model.dart';
 import 'new_achieve_pgas_view_model.dart';
 
 class NewAchievePgasScreen extends StatelessWidget {
-  const NewAchievePgasScreen({Key? key}) : super(key: key);
+  const NewAchievePgasScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +66,13 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenCategory,
           items: model.achieveCategories.map<DropdownMenuItem<AchieveCategoryModel>>((e) {
             return DropdownMenuItem<AchieveCategoryModel>(
+              value: e,
               child: FittedBox(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(e.activityTypeTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -115,11 +115,11 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
             value: model.chosenActivity1,
             items: model.activityList1.map<DropdownMenuItem<ActivityTreeModel>>((e) {
               return DropdownMenuItem<ActivityTreeModel>(
-                child: Container(
-                  child: Text(e.activityTitle.toString()),
-                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
-                ),
                 value: e,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
+                ),
               );
             }).toList(),
             hint: const Center(
@@ -163,14 +163,14 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity2,
           items: model.activityList2.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -211,14 +211,14 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity3,
           items: model.activityList3.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -257,14 +257,14 @@ _activity4DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity4,
           items: model.activityList4.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -305,11 +305,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
             value: model.chosenYear,
             items: model.years.map<DropdownMenuItem<YearModel>>((e) {
               return DropdownMenuItem<YearModel>(
+                value: e,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(e.year.toString()),
                 ),
-                value: e,
               );
             }).toList(),
             hint: const Center(
@@ -396,11 +396,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               },
               child: model.circle
                   ? const SizedBox(
+                      height: 14,
+                      width: 14,
                       child: CircularProgressIndicator(
                         color: Colors.white,
                       ),
-                      height: 14,
-                      width: 14,
                     )
                   : const Text(
                       "Отправить",
@@ -458,22 +458,22 @@ _fileContainer(context, NewAchievePgasViewModel model) {
                 ),
               ),
               Positioned(
+                  bottom: 110,
+                  left: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       model.chooseFile = null;
                       model.notifyListeners();
                     },
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.black,
-                    ),
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       backgroundColor: Colors.white, // <-- Button color
                     ),
-                  ),
-                  bottom: 110,
-                  left: 60)
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
+                  ))
             ],
           ),
         );

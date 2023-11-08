@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import '../../../widgets.dart';
 
 class InfoOUProTaskBlockView extends StatelessWidget {
-  const InfoOUProTaskBlockView({Key? key, required this.repData, required this.blockName}) : super(key: key);
+  const InfoOUProTaskBlockView({super.key, required this.repData, required this.blockName});
   final List<TaskListInfoOUPro> repData;
   final String blockName;
 
