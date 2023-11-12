@@ -59,13 +59,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 const SizedBox(
                   height: 12.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      const SizedBox(width: 8.0),
                       ScheduleTypeButton(
                         title: 'Преподаватель',
                         icon: Assets.iconsTeacherIcon,
@@ -75,6 +76,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(width: 8.0),
                       ScheduleTypeButton(
                         title: 'Аудитория',
                         icon: Assets.iconsCabinetIcon,
@@ -84,6 +86,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(width: 8.0),
                       ScheduleTypeButton(
                         title: 'Группа',
                         icon: Assets.iconsGroupIcon,
@@ -93,6 +96,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(width: 8.0),
                     ],
                   ),
                 ),
