@@ -40,21 +40,3 @@ class ScheduleState extends Equatable {
   @override
   List<Object?> get props => [scheduleTable, currentGroupData, teacherList, weekType, isLoading, isTeacherSearching];
 }
-
-// class ScheduleInitial extends ScheduleState {
-//   @override
-//   List<Object?> get props => [];
-// }
-//
-// class CurrentGroupLoaded extends ScheduleState {
-//   final ScheduleModel? currentGroup;
-//   final WeekType weekType;
-//
-//   const CurrentGroupLoaded({
-//     this.currentGroup,
-//     this.weekType = WeekType.even,
-//   });
-//
-//   @override
-//   List<Object?> get props => [currentGroup, weekType];
-// }
