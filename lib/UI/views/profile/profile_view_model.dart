@@ -22,9 +22,9 @@ import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
-import '../moodle/moodle.dart';
+import '../moodle_web_view/moodle.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import '../payment/payment.dart';
+import '../payment_web_view/payment.dart';
 import '../pgas/pgas_screen.dart';
 import '../rating_of_students/views/ros_view.dart';
 

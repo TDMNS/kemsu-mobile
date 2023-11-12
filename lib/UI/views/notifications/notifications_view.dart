@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
+import 'package:kemsu_app/UI/common_views/snack_bar.dart';
+import 'package:kemsu_app/UI/views/notifications/notifications_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
@@ -32,14 +36,14 @@ class NotificationView extends StatelessWidget {
                   appBar: customAppBar(context, Localizable.notificationsTitle),
                   body: model.circle
                       ? Container(
-                    color: Theme.of(context).primaryColor,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.blue,
-                        backgroundColor: Colors.white,
-                      ),
-                    ),
-                  )
+                          color: Theme.of(context).primaryColor,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
                       : _notView(context, model),
                 ),
               ));
@@ -85,7 +89,27 @@ Widget _notView(context, NotificationViewModel model) {
                                       const SizedBox(height: 10),
                                       Align(
                                           alignment: Alignment.bottomRight,
-                                          child: Text("${item.notificationDateTime}", style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.normal)))
+                                          child: Text("${item.notificationDateTime}", style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.normal))),
+                                      if (item.linkList != null && item.linkList != [])
+                                        for (LinkList linkItem in item.linkList ?? [])
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 10),
+                                            child: Center(
+                                              child: mainButton(
+                                                context,
+                                                onPressed: () async {
+                                                  final link = linkItem.linkText ?? "";
+                                                  if (model.isLink(link) && await canLaunchUrlString(link)) {
+                                                    await launchUrlString(link);
+                                                  } else {
+                                                    showSnackBar(context, "Ссылка некорректна");
+                                                  }
+                                                },
+                                                title: linkItem.linkTitle ?? "Перейти по ссылке",
+                                                isPrimary: false,
+                                              ),
+                                            ),
+                                          ),
                                     ],
                                   ),
                                 ),

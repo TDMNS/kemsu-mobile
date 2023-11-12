@@ -183,13 +183,8 @@ class ScheduleTypeButton extends StatelessWidget {
           padding: const EdgeInsets.all(6.0),
           child: Row(
             children: [
-              SvgPicture.asset(
-                icon,
-                color: Colors.black,
-              ),
-              const SizedBox(
-                width: 4.0,
-              ),
+              SvgPicture.asset(icon),
+              const SizedBox(width: 4.0),
               Text(title)
             ],
           ),
