@@ -13,6 +13,7 @@ import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
+import '../../../local_notification_service.dart';
 import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
 import '../info/views/info_view.dart';
@@ -100,6 +101,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future onReady(BuildContext context) async {
+    await localNotificationService.setup();
+    await localNotificationService.socketIO();
     await _prolongToken(context);
     await _checkFileExisting();
     await _getAuthRequest(context);
