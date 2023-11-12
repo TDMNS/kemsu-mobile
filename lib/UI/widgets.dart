@@ -64,23 +64,22 @@ customAppBar(context, name) {
               name == EnumScreensWithoutPopArrow.schedule ||
               name == EnumScreensWithoutPopArrow.prepScheduleEmp
           ? ValueListenableBuilder(
-            valueListenable: LocalNotificationService.unreadMessages,
-            builder: (BuildContext context, int value, Widget? child) {
-              return badges.Badge(
-                position: badges.BadgePosition.topEnd(top: 10, end: 8),
-                showBadge: LocalNotificationService.unreadMessages.value > 0 ? true : false,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
-                  },
-                  icon: const Icon(
-                    Icons.notifications,
-                    color: Colors.blue,
+              valueListenable: LocalNotificationService.unreadMessages,
+              builder: (BuildContext context, int value, Widget? child) {
+                return badges.Badge(
+                  position: badges.BadgePosition.topEnd(top: 10, end: 8),
+                  showBadge: LocalNotificationService.unreadMessages.value > 0 ? true : false,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationView()));
+                    },
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.blue,
+                    ),
                   ),
-                ),
-              );
-            }
-          )
+                );
+              })
           : Container()
     ],
   );
