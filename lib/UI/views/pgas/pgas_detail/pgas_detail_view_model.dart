@@ -11,6 +11,7 @@ import '../../../../Configurations/config.dart';
 import '../pgas_request_info/pgas_request_info_screen.dart';
 
 class PgasDetailViewModel extends BaseViewModel {
+  bool circle = true;
   PgasDetailViewModel(BuildContext context);
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
@@ -18,6 +19,7 @@ class PgasDetailViewModel extends BaseViewModel {
 
   Future onReady() async {
     await fetchUserAchieves();
+    circle = false;
     appMetricaTest();
   }
 

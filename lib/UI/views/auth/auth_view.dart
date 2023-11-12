@@ -59,8 +59,7 @@ class AuthView extends StatelessWidget {
                   height: 120,
                 ),
           const SizedBox(height: 30),
-          Text(Localizable.authApplicationLogin,
-              style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+          Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           _customTextField(
               context,
@@ -141,8 +140,7 @@ class AuthView extends StatelessWidget {
     ]);
   }
 
-  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, String hintText, TextEditingController textEditingController, bool
-  isObscure,
+  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, String hintText, TextEditingController textEditingController, bool isObscure,
       TextInputAction textInputAction, onChanged, onTap, onFieldSubmitted) {
     return Container(
       margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),

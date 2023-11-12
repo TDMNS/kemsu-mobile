@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/capitalize_first_letter.dart';
+import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
@@ -124,16 +126,19 @@ class _ProfileViewState extends State<ProfileView> {
     List<Widget> tiles = [];
     tiles = [
       profileTiles(context, onPressed: () {
-        model.navigateRosView(context, model);
-      }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
-      profileTiles(context, onPressed: () {
-        model.navigateInfoView(context);
-      }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+        model.navigateMoodleWebView(context, model);
+      }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
     ];
     if (model.userType == EnumUserType.student) {
       tiles += [
         profileTiles(context, onPressed: () {
-          model.navigatePgasScreen(context, model);
+          model.navigateRosScreen(context);
+        }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateInfoView(context);
+        }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+        profileTiles(context, onPressed: () {
+          model.navigatePgasScreen(context);
         }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
         profileTiles(context, onPressed: () {
           model.navigateDebtsView(context);
@@ -148,10 +153,10 @@ class _ProfileViewState extends State<ProfileView> {
     }
     tiles += [
       profileTiles(context, onPressed: () {
-        model.navigateWebView(context, model);
+        model.navigatePaymentWebView(context, model);
       }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
       profileTiles(context, onPressed: () {
-        model.navigateMainBugReportScreen(context, model);
+        model.navigateMainBugReportScreen(context);
       }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png')
     ];
 
@@ -223,24 +228,32 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
       const SizedBox(height: 5),
-      Text(
-        model.email,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.normal,
-          fontSize: 14,
-        ),
-        textAlign: TextAlign.center,
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.email.isNotEmpty ? userProfileProvider.email : "Почта не указана",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
       ),
       const SizedBox(height: 5),
-      Text(
-        model.phone,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.normal,
-          fontSize: 14,
-        ),
-        textAlign: TextAlign.center,
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.phone.isNotEmpty ? userProfileProvider.phone : "Номер телефона не указан",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
       )
     ];
 
@@ -249,8 +262,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: model.isExpanded ? 525 : 325,
-            width: MediaQuery.of(context).size.width,
+            height: model.isExpanded ? 550 : 350,            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [HexColor("#DC1554"), Colors.blueAccent, Theme.of(context).colorScheme.background],
@@ -268,18 +280,39 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Column(
                     children: [
                       const SizedBox(height: 75),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: InkWell(
-                          onTap: () {
-                            avatarChoice(context, model);
-                          },
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                      Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 55,
+                            child: InkWell(
+                              onTap: () {
+                                // avatarChoice(context, model);
+                                model.navigateEditScreen(context);
+                              },
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(55.0)),
+                                child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                              ),
+                            ),
                           ),
-                        ),
+                          InkWell(
+                            onTap: () {
+                              // avatarChoice(context, model);
+                              model.navigateEditScreen(context);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 14,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.blue,
+                                size: 14,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
                       Text('${model.lastName} ${model.firstName} ${model.middleName}',
@@ -290,7 +323,7 @@ class _ProfileViewState extends State<ProfileView> {
                       const SizedBox(height: 5),
                       Text(model.userType == EnumUserType.student ? model.group : model.faculty,
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 30),
                       Visibility(
                         visible: model.isExpanded,
                         child: Column(
@@ -304,12 +337,23 @@ class _ProfileViewState extends State<ProfileView> {
                   right: 10,
                   bottom: 20,
                   child: InkWell(
-                    onTap: () => setState(() {
-                      model.isExpanded = !model.isExpanded;
-                    }),
+                    onTap: () {
+                      setState(() {
+                        model.isExpanded = !model.isExpanded;
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(24.0),
                     child: Column(
                       children: [
-                        Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            model.isExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: Colors.white,
+                            size: 24.0,
+                            key: ValueKey<bool>(model.isExpanded),
+                          ),
+                        ),
                         const SizedBox(height: 5),
                         Text(
                           Localizable.mainMore,
@@ -318,7 +362,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),

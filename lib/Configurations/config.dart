@@ -15,8 +15,6 @@ class Config {
   static String currentGroupList = 'https://api-next.kemsu.ru/api/schedule/integration/currentGroupList';
   static String teacherList = 'https://api-next.kemsu.ru/api/schedule/integration/teacherList';
   static String prepSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/prepSheduleTable';
-  static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
-  static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';
   static String studMoneyDebt = 'https://api-next.kemsu.ru/api/debt/main/moneyDebtInfo';
   static String studDebt = 'https://api-next.kemsu.ru/api/debt/main/studyDebtList';
   static String libraryDebt = "https://api-next.kemsu.ru/api/debt/main/literatureDebtList";
@@ -54,4 +52,8 @@ class Config {
   static String pgasEditRequest = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/editRequest';
   static String pgasGetActivityTypeList = 'https://api-next.kemsu.ru/api/student-depatment/pgas-mobile/getActivityTypeList';
   static String bugReport = 'https://api-next.kemsu.ru/api/bugreport/main/reportList';
-}
+  static String checkMobileAppVersion = 'https://api-next.kemsu.ru/api/bugreport/main/checkMobileAppVersion';
+  static String setReadStatusUserNotification = 'https://api-next.kemsu.ru/api/noty/mobile/setReadStatusUserNotification';
+  static String userInfo = 'https://api-next.kemsu.ru/api/personal-office/integration/userInfo';
+  static String changePassword = 'https://api-next.kemsu.ru/api/personal-office/integration/changePassword';  static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
+  static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';}

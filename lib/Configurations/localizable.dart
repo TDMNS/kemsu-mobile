@@ -1,3 +1,5 @@
+import 'package:flutter_pw_validator/Resource/Strings.dart';
+
 class Localizable {
   /// Pages
   static String pageNews = 'Новости';
@@ -66,6 +68,7 @@ class Localizable {
   static String mainDetails = 'ПОДРОБНОСТИ';
   static String mainMore = 'Подробнее';
   static String mainWarning = 'Вы действительно хотите выйти из мобильного приложения?';
+  static String mainMoodle = "Moodle";
   static String mainRos = "БРС";
   static String mainPgas = 'ПГАС';
   static String mainInfo = 'ИнфОУПро';
@@ -78,6 +81,23 @@ class Localizable {
   static String mainHappyNewYearBody =
       'Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. '
       'Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них.';
+  static String mainUpdateTitle = 'Обновите приложение!';
+  static String mainUpdateContent = 'Вам необходимо обновить приложение для того, чтобы дальше использовать его без ошибок.';
+  static String mainUpdateButtonTitle = 'Скачать';
+
+  /// Edit info
+  static String editTitle = 'Редактировать';
+  static String editEmail = 'Email';
+  static String editPhoneNumber = 'Номер телефона';
+  static String editChangePasswordTitle = 'Сменить пароль';
+  static String editChangePasswordDescription = 'Пароль должен содержать только символы латинского алфавита';
+  static String editOldPassword = 'Старый пароль';
+  static String editNewPassword = 'Новый пароль';
+  static String editConfirmNewPassword = 'Подтвердите новый пароль';
+  static String editPasswordChangedSuccessfully = 'Ваш пароль успешно изменен!';
+  static String editOldPasswordError = 'Старый пароль введен не верно';
+  static String editNewPasswordError = 'Введенный пароль соответствует старому паролю';
+  static String editConfirmPasswordError = 'Пароли не совпадают';
 
   /// Payment
   static String paymentTitle = 'Оплата услуг';
@@ -125,7 +145,7 @@ class Localizable {
   static String orderingInformationDateStart = 'Дата начала: ';
   static String orderingInformationDateEnd = 'Дата окончания: ';
   static String orderingInformationNewCall = 'Заказать новую справку';
-  static String orderingInformationListReferencesAboutTraining = 'Список справок об обучении';
+  static String orderingInformationListReferencesAboutTraining = 'Список справок о доходах';
   static String orderingInformationCall = 'Справка';
   static String orderingInformationPeriod = 'Период';
   static String orderingInformationCountReferences = 'Количество справок';
@@ -209,4 +229,20 @@ class Localizable {
   static String infoDiscKeyDate = 'Контрольная дата: ';
   static String infoDiscMaxScore = 'Максимальный балл: ';
   static String infoDiscResult = 'Результат: ';
+}
+
+/// Strings for edit password validator
+class RussianStrings implements FlutterPwValidatorStrings {
+  @override
+  final String atLeast = "Не менее - символов";
+  @override
+  final String uppercaseLetters = "- символ верх. регистр";
+  @override
+  final String normalLetters = "- символ";
+  @override
+  final String lowercaseLetters = "- символ ниж. регистр";
+  @override
+  final String numericCharacters = "- цифра";
+  @override
+  final String specialCharacters = "- спец. символ";
 }
