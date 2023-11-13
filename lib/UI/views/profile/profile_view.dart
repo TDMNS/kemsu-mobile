@@ -262,7 +262,8 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: model.isExpanded ? 550 : 350,            width: MediaQuery.of(context).size.width,
+            height: model.isExpanded ? 600 : 400,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [HexColor("#DC1554"), Colors.blueAccent, Theme.of(context).colorScheme.background],

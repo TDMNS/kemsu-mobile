@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/local_notification_service.dart';
@@ -72,5 +73,11 @@ class NotificationViewModel extends BaseViewModel {
     );
 
     return urlRegex.hasMatch(text);
+  }
+
+  Future<void> setUserVote(int notificationId, int? voteId) async {
+    final Dio dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    await dio.post(Config.setUserVote, queryParameters: {"accessToken": token}, data: {"notificationId": notificationId, "voteId": voteId});
   }
 }

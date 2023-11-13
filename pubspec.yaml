@@ -46,7 +46,10 @@ dependencies:
   package_info_plus: ^4.2.0
   flutter_pw_validator: ^1.6.0
   provider: ^6.0.5
-  device_info_plus:
+  flutter_polls: ^0.1.5
+  uuid: ^4.2.1
+  device_info_plus:
+
 dev_dependencies :
   flutter_test:
     sdk: flutter

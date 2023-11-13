@@ -55,5 +55,8 @@ class Config {
   static String checkMobileAppVersion = 'https://api-next.kemsu.ru/api/bugreport/main/checkMobileAppVersion';
   static String setReadStatusUserNotification = 'https://api-next.kemsu.ru/api/noty/mobile/setReadStatusUserNotification';
   static String userInfo = 'https://api-next.kemsu.ru/api/personal-office/integration/userInfo';
-  static String changePassword = 'https://api-next.kemsu.ru/api/personal-office/integration/changePassword';  static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
-  static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';}
+  static String changePassword = 'https://api-next.kemsu.ru/api/personal-office/integration/changePassword';
+  static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
+  static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';
+  static String setUserVote = 'https://api-next.kemsu.ru/api/noty/mobile/setUserVote';
+}

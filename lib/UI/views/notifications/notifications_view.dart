@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_polls/flutter_polls.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/common_views/snack_bar.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
@@ -110,6 +112,30 @@ Widget _notView(context, NotificationViewModel model) {
                                               ),
                                             ),
                                           ),
+                                      if (item.voteList != null && item.voteList != [])
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child: Container(
+                                            decoration: BoxDecoration(color: Colors.black.withOpacity(0.5), borderRadius: BorderRadius.circular(12)),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: FlutterPolls(
+                                                  pollId: const Uuid().toString(),
+                                                  onVoted: (PollOption pollOption, int newTotalVotes) async {
+                                                    model.setUserVote(item.notificationId ?? 0, int.parse(pollOption.id ?? ""));
+                                                    return true;
+                                                  },
+                                                  hasVoted: item.selectedVoteId != null,
+                                                  userVotedOptionId: item.selectedVoteId?.toString(),
+                                                  pollTitle: Text(item.voteTitle ?? "Голосование", style: const TextStyle(fontSize: 18, color: Colors.white)),
+                                                  votesTextStyle: const TextStyle(color: Colors.white),
+                                                  pollOptions: item.voteList
+                                                          ?.map((option) => PollOption(id: "${option.voteId}", title: Text(option.optionText ?? ""), votes: option.voteCnt ?? 0))
+                                                          .toList() ??
+                                                      []),
+                                            ),
+                                          ),
+                                        )
                                     ],
                                   ),
                                 ),
