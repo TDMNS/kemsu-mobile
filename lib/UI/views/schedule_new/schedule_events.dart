@@ -2,8 +2,8 @@ part of 'schedule_bloc.dart';
 
 abstract class ScheduleEvent extends Equatable {}
 
-class CurrentGroupLoadedEvent extends ScheduleEvent {
-  CurrentGroupLoadedEvent();
+class GetCurrentSchedule extends ScheduleEvent {
+  GetCurrentSchedule();
   @override
   List<Object?> get props => [];
 }

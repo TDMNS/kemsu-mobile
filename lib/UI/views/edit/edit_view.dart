@@ -10,7 +10,7 @@ import '../../widgets.dart';
 import 'edit_view_model.dart';
 
 class EditView extends StatefulWidget {
-  const EditView({Key? key}) : super(key: key);
+  const EditView({super.key});
 
   @override
   State<EditView> createState() => _EditViewState();

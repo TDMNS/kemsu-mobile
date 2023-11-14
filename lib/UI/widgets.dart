@@ -22,10 +22,10 @@ errorDialog(context, textContent) {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
           style: TextButton.styleFrom(
             foregroundColor: Colors.blue,
           ),
+          child: const Text('OK'),
         ),
       ],
     ),
