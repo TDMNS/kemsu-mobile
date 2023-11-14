@@ -67,6 +67,7 @@ class ProfileViewModel extends BaseViewModel {
   String jobTitle = '';
   String department = '';
   String fio = '';
+  int userId = 0;
   File? imageFile;
   String? img64;
   File? file;
@@ -151,6 +152,7 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "fio", value: fio);
     await storage.write(key: "email", value: email);
     await storage.write(key: "phone", value: phone);
+    await storage.write(key: "userId", value: userId.toString());
 
     await _getUserImage(dio, recordedToken);
   }
@@ -163,6 +165,7 @@ class ProfileViewModel extends BaseViewModel {
 
     email = userData["email"] ?? '';
     phone = userData["phone"] ?? '';
+    userId = userData["id"] ?? '';
 
     final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
     userProfileProvider.updateEmail(email);
@@ -226,10 +229,7 @@ class ProfileViewModel extends BaseViewModel {
         downloadLink = 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769';
       }
       Uri url = Uri.parse(downloadLink);
-      _showAlertDialog(context,
-          title: Localizable.mainUpdateTitle,
-          content: Localizable.mainUpdateContent,
-          buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
+      _showAlertDialog(context, title: Localizable.mainUpdateTitle, content: Localizable.mainUpdateContent, buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
         Navigator.pop(context);
         if (await canLaunchUrl(url)) {
           await launchUrl(url);

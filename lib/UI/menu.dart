@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/news/news_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_view.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
-import 'package:kemsu_app/UI/views/schedule_new/teacher_schedule/teacher_schedule_screen.dart';
 
 import '../Configurations/localizable.dart';
 
@@ -26,30 +24,32 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: [const NewsView(), const ProfileView(), widget.type == 0 ? const ScheduleScreen() : const TeacherScheduleScreen()],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Theme.of(context).primaryColor,
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Theme.of(context).canvasColor, //<-- Unselected text
-            type: BottomNavigationBarType.fixed,
-            onTap: _onItemTapped,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.newspaper),
-                label: Localizable.pageNews,
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.home),
-                label: Localizable.pageMain,
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.schedule),
-                label: Localizable.pageSchedule,
-              ),
-            ]));
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: const [NewsView(), ProfileView(), ScheduleScreen()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Theme.of(context).canvasColor, //<-- Unselected text
+        type: BottomNavigationBarType.fixed,
+        onTap: _onItemTapped,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.newspaper),
+            label: Localizable.pageNews,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: Localizable.pageMain,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.schedule),
+            label: Localizable.pageSchedule,
+          ),
+        ],
+      ),
+    );
   }
 }

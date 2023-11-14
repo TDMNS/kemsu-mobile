@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +9,6 @@ import 'package:kemsu_app/domain/models/schedule/faculty_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/group_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/schedule_model.dart';
 import 'package:kemsu_app/domain/models/schedule/schedule_teacher_model.dart';
-import 'package:kemsu_app/domain/models/schedule/semester_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/week_list_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
@@ -37,19 +35,12 @@ class ScheduleRepository implements AbstractScheduleRepository {
     final currentGroupMap = currentGroupResponse.data as Map<String, dynamic>;
     final currentGroup = CurrentGroupModel.fromJson(currentGroupMap);
     _currentGroupData.value = currentGroup;
-    log('CURRENT GROUP:: $currentGroupMap');
     return currentGroup;
   }
 
   @override
   Future<FacultyListModel> getFacultyList() async {
-    int semesterId = currentGroupData.value.currentGroupList[0].semesterId;
-    final facultyListResponse = await dio.get(
-      Config.facultyList,
-      queryParameters: {
-        "semesterId": semesterId,
-      },
-    );
+    final facultyListResponse = await dio.get(Config.facultyList);
     final facultyListMap = facultyListResponse.data as Map<String, dynamic>;
     final facultyList = FacultyListModel.fromJson(facultyListMap);
     return facultyList;
@@ -57,11 +48,9 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<GroupListModel> getGroupList({required int facultyId}) async {
-    int semesterId = currentGroupData.value.currentGroupList[0].semesterId;
     final groupListResponse = await dio.get(
       Config.groupList,
       queryParameters: {
-        "semesterId": semesterId,
         "facultyId": facultyId,
       },
     );
@@ -72,13 +61,8 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<ScheduleModel> getSchedule({required int groupId}) async {
-    int semesterId = currentGroupData.value.currentGroupList[0].semesterId;
-
     final weekListResponse = await dio.get(
       Config.weekList,
-      queryParameters: {
-        'semesterId': semesterId,
-      },
     );
     final weekListData = weekListResponse.data as Map<String, dynamic>;
     final weekList = WeekListModel.fromJson(weekListData);
@@ -91,30 +75,16 @@ class ScheduleRepository implements AbstractScheduleRepository {
     );
     final scheduleTableData = scheduleTableResponse.data as Map<String, dynamic>;
     final scheduleTable = ScheduleModel.fromJson(scheduleTableData);
-    log("TEST:: ${scheduleTableResponse.data}");
     return scheduleTable;
   }
 
   @override
-  Future<SemesterListModel> getSemesterList() async {
-    // TODO: implement getSemesterList
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<WeekListModel> getWeekList() async {
-    // TODO: implement getWeekList
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ScheduleTeacherModel> getTeacherList({required CurrentGroupModel currentGroup}) async {
+  Future<ScheduleTeacherModel> getTeacherList() async {
     String? token = await storage.read(key: "tokenKey");
     final teacherListResponse = await dio.get(
       Config.teacherList,
       queryParameters: {
         "accessToken": token,
-        "semesterId": currentGroup.currentGroupList[0].semesterId,
       },
     );
     final teacherListData = teacherListResponse.data as Map<String, dynamic>;
@@ -123,11 +93,10 @@ class ScheduleRepository implements AbstractScheduleRepository {
   }
 
   @override
-  Future<TeacherScheduleModel> getTeacherSchedule({required CurrentGroupModel currentGroup, required int prepId}) async {
+  Future<TeacherScheduleModel> getTeacherSchedule({required int prepId}) async {
     String? token = await storage.read(key: "tokenKey");
     final teacherScheduleResponse = await dio.get(Config.prepSchedule, queryParameters: {
       "accessToken": token,
-      "semesterId": currentGroup.currentGroupList[0].semesterId,
       "prepId": prepId,
     });
     final teacherScheduleDate = teacherScheduleResponse.data as Map<String, dynamic>;

@@ -27,8 +27,7 @@ class TeacherScheduleBloc extends Bloc<TeacherScheduleEvent, TeacherScheduleStat
   }
 
   Future<void> _getTeacherList(GetTeacherList event, Emitter<TeacherScheduleState> emit) async {
-    final currentGroupData = scheduleRepository.currentGroupData.value;
-    final teacherList = await scheduleRepository.getTeacherList(currentGroup: currentGroupData);
+    final teacherList = await scheduleRepository.getTeacherList();
     emit(state.copyWith(teacherList: teacherList, isLoading: false));
   }
 
@@ -38,11 +37,9 @@ class TeacherScheduleBloc extends Bloc<TeacherScheduleEvent, TeacherScheduleStat
 
   Future<void> _teacherChoice(TeacherChoice event, Emitter<TeacherScheduleState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final currentGroupData = scheduleRepository.currentGroupData.value;
     emit(state.copyWith(selectedTeacher: event.teacher));
-    final selectedTeacherSchedule = await scheduleRepository.getTeacherSchedule(currentGroup: currentGroupData, prepId: event.teacher.prepId);
+    final selectedTeacherSchedule = await scheduleRepository.getTeacherSchedule(prepId: event.teacher.prepId);
     emit(state.copyWith(teacherSchedule: selectedTeacherSchedule, isLoading: false, isSelected: true));
-    print('TEST:: ${selectedTeacherSchedule.result.prepScheduleTable[3].ceilList[0].ceil.even[0].fullCeil}');
   }
 
   Future<void> _teacherUnselect(TeacherUnselect event, Emitter<TeacherScheduleState> emit) async {

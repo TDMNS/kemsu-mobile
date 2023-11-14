@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
+import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/schedule_new/auditor_schedule/auditor_schedule_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/group_select_schedule/group_select_schedule_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_bloc.dart';
@@ -29,7 +30,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   void initState() {
-    _scheduleBloc.add(CurrentGroupLoadedEvent());
+    _scheduleBloc.add(GetCurrentSchedule());
     super.initState();
   }
 
@@ -134,12 +135,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               topRight: Radius.circular(16.0),
                             ),
                           ),
-                          child: ScheduleListPages(
-                            weekDays: state.scheduleTableData.result.table.weekDays,
-                            times: state.scheduleTableData.result.coupleList,
-                            weekType: state.weekType,
-                            scheduleType: ScheduleType.current,
-                          ),
+                          child: state.userType == EnumUserType.student
+                              ? ScheduleListPages(
+                                  weekDays: state.scheduleTableData.result.table.weekDays,
+                                  times: state.scheduleTableData.result.coupleList,
+                                  weekType: state.weekType,
+                                  scheduleType: ScheduleType.current,
+                                )
+                              : ScheduleListPages(
+                                  weekType: state.weekType,
+                                  teacherSchedule: state.teacherSchedule!.result.prepScheduleTable,
+                                  scheduleType: ScheduleType.teacher,
+                                ),
                         ),
                       ),
                     ],
