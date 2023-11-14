@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
@@ -60,41 +61,46 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 const SizedBox(
                   height: 12.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ScheduleTypeButton(
-                        title: 'Преподаватель',
-                        icon: Assets.iconsTeacherIcon,
-                        myVoidCallback: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const TeacherScheduleScreen(),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ScheduleTypeButton(
+                          title: 'Преподаватель',
+                          icon: Assets.iconsTeacherIcon,
+                          myVoidCallback: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const TeacherScheduleScreen(),
+                            ),
                           ),
                         ),
-                      ),
-                      ScheduleTypeButton(
-                        title: 'Аудитория',
-                        icon: Assets.iconsCabinetIcon,
-                        myVoidCallback: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const AuditorScheduleScreen(),
+                        const SizedBox(width: 16),
+                        ScheduleTypeButton(
+                          title: 'Аудитория',
+                          icon: Assets.iconsCabinetIcon,
+                          myVoidCallback: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AuditorScheduleScreen(),
+                            ),
                           ),
                         ),
-                      ),
-                      ScheduleTypeButton(
-                        title: 'Группа',
-                        icon: Assets.iconsGroupIcon,
-                        myVoidCallback: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const GroupSelectScheduleScreen(),
+                        const SizedBox(width: 16),
+                        ScheduleTypeButton(
+                          title: 'Группа',
+                          icon: Assets.iconsGroupIcon,
+                          myVoidCallback: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const GroupSelectScheduleScreen(),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(

@@ -57,9 +57,13 @@ class _TeacherScheduleScreenState extends State<TeacherScheduleScreen> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          state.selectedTeacher!.fio,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                        Expanded(
+                          child: Text(
+                            state.selectedTeacher!.fio,
+                            overflow: TextOverflow.clip,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                          ),
                         ),
                         IconButton(
                           onPressed: () => _teacherScheduleBloc.add(TeacherUnselect()),
