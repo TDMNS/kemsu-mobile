@@ -24,7 +24,7 @@ class ScheduleSearchBar extends StatelessWidget {
         ),
         child: TextFormField(
           inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp("[0-9а-яА-Я ]")),
+            FilteringTextInputFormatter.allow(RegExp("[0-9а-яА-Я -]")),
           ],
           onChanged: (value) => onChanged(value),
           onFieldSubmitted: (value) => onSubmitted(value),
