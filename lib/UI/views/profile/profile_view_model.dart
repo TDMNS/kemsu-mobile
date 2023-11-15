@@ -234,9 +234,10 @@ class ProfileViewModel extends BaseViewModel {
       Uri url = Uri.parse(downloadLink);
       _showAlertDialog(context, title: Localizable.mainUpdateTitle, content: Localizable.mainUpdateContent, buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
         Navigator.pop(context);
-        if (await canLaunchUrl(url)) {
+        try {
+          print("url = $url}");
           await launchUrl(url);
-        } else {
+        } catch(e) {
           throw 'Could not launch $url';
         }
       });
