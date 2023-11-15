@@ -235,7 +235,6 @@ class ProfileViewModel extends BaseViewModel {
       _showAlertDialog(context, title: Localizable.mainUpdateTitle, content: Localizable.mainUpdateContent, buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
         Navigator.pop(context);
         try {
-          print("url = $url}");
           await launchUrl(url);
         } catch(e) {
           throw 'Could not launch $url';
