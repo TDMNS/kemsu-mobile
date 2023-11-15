@@ -41,7 +41,6 @@ class GroupSelectScheduleBloc extends Bloc<GroupSelectScheduleEvent, GroupSelect
   Future<void> _facultyChoice(FacultyChoice event, Emitter<GroupSelectScheduleState> emit) async {
     emit(state.copyWith(selectedFaculty: event.faculty, isLoading: true, isFacultySelected: true, searchQuery: ''));
     final groupList = await scheduleRepository.getGroupList(facultyId: event.faculty.id);
-    print('TEST:: $groupList');
     emit(state.copyWith(groupList: groupList, isLoading: false));
   }
 
