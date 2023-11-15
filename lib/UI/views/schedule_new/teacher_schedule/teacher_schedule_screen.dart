@@ -9,6 +9,7 @@ import 'package:kemsu_app/UI/widgets.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
 import '../../../../domain/models/schedule/schedule_teacher_model.dart';
+import '../widgets/week_type_radio.dart';
 
 class TeacherScheduleScreen extends StatefulWidget {
   const TeacherScheduleScreen({super.key});
@@ -135,19 +136,11 @@ class _TeacherScheduleScreenState extends State<TeacherScheduleScreen> {
   }
 
   _weekTypeButton(String title, WeekType weekType, state) {
-    return GestureDetector(
+    return WeekTypeRadio(
+      title: title,
+      weekType: weekType,
+      currentWeekType: state.weekType,
       onTap: () => _teacherScheduleBloc.add(ChangeTypeWeek(weekType: weekType)),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-        decoration: BoxDecoration(
-          color: state.weekType == weekType ? Colors.black : Colors.grey.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(color: state.weekType == weekType ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }
