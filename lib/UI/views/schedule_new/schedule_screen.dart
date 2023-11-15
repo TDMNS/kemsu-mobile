@@ -194,7 +194,7 @@ class ScheduleTypeButton extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 icon,
-                color: Colors.black,
+                color: Theme.of(context).primaryColorDark,
               ),
               const SizedBox(
                 width: 4.0,

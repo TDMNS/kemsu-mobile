@@ -16,12 +16,12 @@ class WeekTypeRadio extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         decoration: BoxDecoration(
-          color: currentWeekType == weekType ? Colors.black : Colors.grey.withOpacity(0.3),
+          color: currentWeekType == weekType ? Theme.of(context).primaryColorDark : Colors.grey.withOpacity(0.3),
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Text(
           title,
-          style: TextStyle(color: currentWeekType == weekType ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: currentWeekType == weekType ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark , fontWeight: FontWeight.bold),
         ),
       ),
     );
