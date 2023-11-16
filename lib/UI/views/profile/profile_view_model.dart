@@ -8,6 +8,7 @@ import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -111,6 +112,10 @@ class ProfileViewModel extends BaseViewModel {
     _showUpdate(context);
     appMetricaTest();
     circle = false;
+    PermissionStatus status = await Permission.notification.status;
+    if (!status.isGranted) {
+      status = await Permission.notification.request();
+    }
     notifyListeners();
   }
 
@@ -236,7 +241,7 @@ class ProfileViewModel extends BaseViewModel {
         Navigator.pop(context);
         try {
           await launchUrl(url);
-        } catch(e) {
+        } catch (e) {
           throw 'Could not launch $url';
         }
       });

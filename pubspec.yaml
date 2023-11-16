@@ -48,6 +48,7 @@ dependencies:
   provider: ^6.0.5
   flutter_polls: ^0.1.5
   uuid: ^4.2.1
+  permission_handler: ^11.0.1
   device_info_plus:
 
 dev_dependencies :
