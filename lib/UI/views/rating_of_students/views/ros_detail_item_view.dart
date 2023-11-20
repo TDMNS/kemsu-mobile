@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
+import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import '../ros_view_model.dart';
 
 class RosDetailItemView extends StatelessWidget {
-  const RosDetailItemView({Key? key, required this.reitItemList, required this.discipline}) : super(key: key);
+  const RosDetailItemView({super.key, required this.reitItemList, required this.discipline});
 
   final String discipline;
   final List<ReitItemList> reitItemList;
@@ -15,12 +16,11 @@ class RosDetailItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RosViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => RosViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -31,8 +31,18 @@ class RosDetailItemView extends StatelessWidget {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, discipline),
-                  body: _rosDetailItemView(context, model, reitItemList),
+                  appBar: customAppBar(context, discipline),
+                  body: model.circle
+                      ? Container(
+                          color: Theme.of(context).primaryColor,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.blue,
+                              backgroundColor: Colors.white,
+                            ),
+                          ),
+                        )
+                      : _rosDetailItemView(context, model, reitItemList),
                 ),
               ));
         });
@@ -41,10 +51,7 @@ class RosDetailItemView extends StatelessWidget {
 
 _rosDetailItemView(context, RosViewModel model, reitItemList) {
   return ListView(
-    children: <Widget>[
-      const SizedBox(height: 10),
-      Padding(padding: const EdgeInsets.all(8.0), child: getListView(reitItemList))
-    ],
+    children: <Widget>[const SizedBox(height: 10), Padding(padding: const EdgeInsets.all(8.0), child: getListView(reitItemList))],
   );
 }
 
@@ -63,13 +70,7 @@ Widget getListView(reitItemList) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Column(
@@ -83,17 +84,13 @@ Widget getListView(reitItemList) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(item.comment != null ? "${item.activityName} (${item.comment})" : "${item.activityName}",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontFamily: "Ubuntu",
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold)),
+                              style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          richText("Количество: ", "${item.count}", context),
+                          richText(Localizable.rosDetailItemAmount, "${item.count}", context),
                           const SizedBox(height: 10),
-                          richText("Максимальный балл: ", "${item.maxBall}", context),
+                          richText(Localizable.rosDetailItemMaxScore, "${item.maxBall}", context),
                           const SizedBox(height: 10),
-                          richText("Ваш балл: ", "${item.ball}", context)
+                          richText(Localizable.rosDetailItemYourScore, "${item.ball}", context)
                         ],
                       ),
                     ),

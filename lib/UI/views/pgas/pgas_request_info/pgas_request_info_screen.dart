@@ -9,7 +9,7 @@ class PgasRequestInfoScreenRoute extends MaterialPageRoute {
 }
 
 class PgasRequestInfoScreen extends StatelessWidget {
-  const PgasRequestInfoScreen({Key? key}) : super(key: key);
+  const PgasRequestInfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

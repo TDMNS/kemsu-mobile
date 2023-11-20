@@ -8,7 +8,7 @@ import '../../../Configurations/localizable.dart';
 import 'auth_view_model.dart';
 
 class AuthView extends StatelessWidget {
-  const AuthView({Key? key}) : super(key: key);
+  const AuthView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +59,7 @@ class AuthView extends StatelessWidget {
                   height: 120,
                 ),
           const SizedBox(height: 30),
-          Text(Localizable.authApplicationLogin,
-              style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+          Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           _customTextField(
               context,
@@ -73,6 +72,7 @@ class AuthView extends StatelessWidget {
                         model.notifyListeners();
                       })
                   : const SizedBox()),
+              Localizable.authLogin,
               model.loginController,
               false,
               TextInputAction.next, () {
@@ -100,6 +100,7 @@ class AuthView extends StatelessWidget {
                       : const SizedBox()
                 ],
               ),
+              Localizable.authEnterPassword,
               model.passwordController,
               model.isObscure,
               TextInputAction.done, () {
@@ -139,7 +140,7 @@ class AuthView extends StatelessWidget {
     ]);
   }
 
-  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, TextEditingController textEditingController, bool isObscure,
+  _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, String hintText, TextEditingController textEditingController, bool isObscure,
       TextInputAction textInputAction, onChanged, onTap, onFieldSubmitted) {
     return Container(
       margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
@@ -156,7 +157,7 @@ class AuthView extends StatelessWidget {
               filled: true,
               suffixIcon: suffixIcon,
               contentPadding: const EdgeInsets.only(left: 15, top: 15),
-              hintText: Localizable.authEnterPassword,
+              hintText: hintText,
               hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
@@ -191,10 +192,10 @@ class AuthView extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(Localizable.ok),
             style: TextButton.styleFrom(
               foregroundColor: Colors.blue,
             ),
+            child: Text(Localizable.ok),
           )
         ],
       ),

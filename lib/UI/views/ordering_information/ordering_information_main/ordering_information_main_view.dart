@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
-import 'package:kemsu_app/UI/views/ordering_information/ordering_information_subview/ordering_information_view.dart';
+import 'package:kemsu_app/UI/common_views/main_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';
 import '../../../widgets.dart';
 import '../ordering_information_model.dart';
 import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
+import '../ordering_information_view/ordering_information_view.dart';
 import 'ordering_information_main_view_model.dart';
 
 class OrderingInformationMainView extends StatefulWidget {
-  const OrderingInformationMainView({Key? key}) : super(key: key);
+  const OrderingInformationMainView({super.key});
 
   @override
   State<OrderingInformationMainView> createState() => _OrderingInformationMainViewState();
@@ -35,8 +36,18 @@ class _OrderingInformationMainViewState extends State<OrderingInformationMainVie
                 child: Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, Localizable.orderingInformationTitle),
-                    body: _orderingInformationView(context, model)),
+                    appBar: customAppBar(context, Localizable.orderingInformationTitle),
+                    body: model.circle
+                        ? Container(
+                            color: Theme.of(context).primaryColor,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
+                          )
+                        : _orderingInformationView(context, model)),
               ));
         });
   }
@@ -48,32 +59,21 @@ _orderingInformationView(context, OrderingInformationMainViewModel model) {
     children: <Widget>[
       const SizedBox(height: 10),
       const SizedBox(height: 10),
-      Center(
-        child: Card(
-          margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<String>(
-                dropdownColor: Theme.of(context).primaryColor,
-                itemHeight: 70.0,
-                hint: Text(
-                  Localizable.orderingInformationType,
-                ),
-                onChanged: (value) {
-                  model.trainingCertificate = value;
-                  model.notifyListeners();
-                },
-                isExpanded: true,
-                value: model.trainingCertificate,
-                items: model.trainingCertificates.map<DropdownMenuItem<String>>((e) {
-                  return DropdownMenuItem<String>(
-                    child: Text(e),
-                    value: e,
-                  );
-                }).toList(),
-              )),
-        ),
-      ),
+      mainDropdown(context,
+          value: model.trainingCertificate,
+          items: model.trainingCertificates.map<DropdownMenuItem<String>>((e) {
+            return DropdownMenuItem<String>(
+              value: e,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(e),
+              ),
+            );
+          }).toList(),
+          textHint: Localizable.orderingInformationType, onChanged: (value) {
+        model.trainingCertificate = value;
+        model.notifyListeners();
+      }),
       const SizedBox(height: 10),
       model.trainingCertificate == TrainingCertificate.trainingCertificate
           ? Column(
@@ -124,7 +124,7 @@ Widget getCertificatesListView(List<CallCertificate> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight.withOpacity(0.5), blurRadius: 35, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Padding(
@@ -142,13 +142,9 @@ Widget getCertificatesListView(List<CallCertificate> items) {
                     const SizedBox(height: 10),
                     richText(Localizable.orderingInformationDateEnd, "${item.endDate}", context),
                     const SizedBox(height: 10),
-                    Center(
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationNewCertificatesView()));
-                          },
-                          child: Text(Localizable.orderingInformationNewCall)),
-                    )
+                    mainButton(context, onPressed: () async {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderingInformationNewCertificatesView()));
+                    }, title: Localizable.orderingInformationNewCall, isPrimary: true)
                   ],
                 ),
               ),
@@ -196,7 +192,7 @@ Widget getListView(List<RequestReference> items) {
                 initiallyExpanded: true,
                 expandedAlignment: Alignment.center,
                 title: Text(
-                  Localizable.orderingInformationCall + ' №${index + 1}',
+                  '${Localizable.orderingInformationCall} №${index + 1}',
                   style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
@@ -248,9 +244,7 @@ RichText richText(String title, String item, context, {bool? isWhite}) {
         color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark,
       ),
       children: <TextSpan>[
-        TextSpan(
-            text: title,
-            style: TextStyle(color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+        TextSpan(text: title, style: TextStyle(color: isWhite != null && isWhite ? Colors.white : Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
         TextSpan(text: item),
       ],
     ),

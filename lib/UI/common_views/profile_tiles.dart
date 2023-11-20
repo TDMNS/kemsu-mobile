@@ -7,14 +7,7 @@ profileTiles(context, {required VoidCallback onPressed, required String title, r
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color: Theme.of(context).primaryColor,
-          boxShadow: [
-            BoxShadow(
-                color:
-                Theme.of(context).primaryColorLight,
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-                spreadRadius: -4)
-          ]),
+          boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 5), spreadRadius: -4)]),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -26,9 +19,7 @@ profileTiles(context, {required VoidCallback onPressed, required String title, r
           Center(
             child: Text(
               title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
         ],

@@ -26,8 +26,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
         viewModelBuilder: () => PrepScheduleViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -45,11 +44,7 @@ class _ScheduleViewState extends State<PrepScheduleView> {
                           ),
                         ),
                       )
-                    : Scaffold(
-                        extendBody: true,
-                        extendBodyBehindAppBar: true,
-                        appBar: customAppBar(context, model, model.appBarTitle),
-                        body: _prepSchedule(context, model)),
+                    : Scaffold(extendBody: true, extendBodyBehindAppBar: true, appBar: customAppBar(context, model.appBarTitle), body: _prepSchedule(context, model)),
               ));
         });
   }
@@ -185,8 +180,7 @@ _prepSchedule(BuildContext context, PrepScheduleViewModel model) {
                 ),
                 Container(
                   padding: const EdgeInsets.all(4),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey.withOpacity(0.5)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey.withOpacity(0.5)),
                   child: Text(
                     '${model.weekNumApi}',
                     style: const TextStyle(fontWeight: FontWeight.bold),

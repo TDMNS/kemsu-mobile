@@ -4,20 +4,28 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/edit/edit_view.dart';
+import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../Configurations/config.dart';
-import '../../widgets.dart';
+import '../../../Configurations/localizable.dart';
+import '../../../local_notification_service.dart';
 import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
-import '../info/info_view.dart';
+import '../info/views/info_view.dart';
 import '../debts/debts_view.dart';
 import '../check_list/check_list_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
-
+import 'package:uuid/uuid.dart';
+import '../moodle_web_view/moodle.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
+import '../payment_web_view/payment.dart';
 import '../pgas/pgas_screen.dart';
 import '../rating_of_students/views/ros_view.dart';
 
@@ -61,6 +69,7 @@ class ProfileViewModel extends BaseViewModel {
   String jobTitle = '';
   String department = '';
   String fio = '';
+  int userId = 0;
   File? imageFile;
   String? img64;
   File? file;
@@ -68,6 +77,8 @@ class ProfileViewModel extends BaseViewModel {
   bool darkTheme = false;
   String? avatar;
   bool isExpanded = false;
+  String imageUrl = '';
+  String token = '';
 
   saveImage() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -91,7 +102,24 @@ class ProfileViewModel extends BaseViewModel {
     return darkTheme;
   }
 
-  prolongToken(context) async {
+  Future onReady(BuildContext context) async {
+    await localNotificationService.setup();
+    await localNotificationService.socketIO();
+    await _prolongToken(context);
+    await _checkFileExisting();
+    await _getAuthRequest(context);
+    _showNewYearGreetings(context);
+    _showUpdate(context);
+    appMetricaTest();
+    circle = false;
+    PermissionStatus status = await Permission.notification.status;
+    if (!status.isGranted) {
+      status = await Permission.notification.request();
+    }
+    notifyListeners();
+  }
+
+  Future<void> _prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
     final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
     responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView())) : null;
@@ -99,17 +127,18 @@ class ProfileViewModel extends BaseViewModel {
     await storage.write(key: "tokenKey", value: newToken);
   }
 
-  Future onReady(BuildContext context) async {
-    prolongToken(context);
+  Future<void> _checkFileExisting() async {
     String? img = await storage.read(key: "avatar");
-    img != null ? file = File(img) : file = null;
+    file = img != null ? File(img) : null;
 
     bool fileExists = await file?.exists() ?? false;
 
     if (!fileExists) {
       file = null;
     }
+  }
 
+  Future<void> _getAuthRequest(context) async {
     String? token = await storage.read(key: "tokenKey");
     String? login = await storage.read(key: "login");
     String? password = await storage.read(key: "password");
@@ -118,70 +147,139 @@ class ProfileViewModel extends BaseViewModel {
     final responseProlongToken = await dio.post(Config.proLongToken, queryParameters: {"accessToken": token});
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
-    String? token2 = await storage.read(key: "tokenKey");
+    String? recordedToken = await storage.read(key: "tokenKey");
+    var userData = await _getUserData(context, dio, login, password);
+
+    if (userType == EnumUserType.student) {
+      await _writeStudentData(userData, dio, recordedToken);
+    } else if (userType == EnumUserType.employee) {
+      await _writeEmployeeData(dio, recordedToken);
+    }
+    fio = ('$lastName $firstName $middleName');
+
+    await storage.write(key: "fio", value: fio);
+    await storage.write(key: "email", value: email);
+    await storage.write(key: "phone", value: phone);
+    await storage.write(key: "userId", value: userId.toString());
+
+    await _getUserImage(dio, recordedToken);
+  }
+
+  Future<dynamic> _getUserData(context, Dio dio, String? login, String? password) async {
     final responseAuth = await dio.post(Config.apiHost, data: {"login": login, "password": password});
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];
 
-    userData["email"] != null ? email = userData["email"] : email = '';
-    userData["phone"] != null ? phone = userData["phone"] : phone = '';
+    email = userData["email"] ?? '';
+    phone = userData["phone"] ?? '';
+    userId = userData["id"] ?? '';
+
+    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    userProfileProvider.updateEmail(email);
+    userProfileProvider.updatePhone(phone);
+
     String emailTemp = email;
     String phoneTemp = phone;
     emailController?.text = emailTemp;
     phoneController?.text = phoneTemp;
     notifyListeners();
+    return userData;
+  }
 
-    if (userType == EnumUserType.student) {
-      firstName = userData["firstName"];
-      lastName = userData["lastName"];
-      middleName = userData["middleName"];
-      final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": token2});
+  Future<void> _writeStudentData(userData, Dio dio, String? recordedToken) async {
+    firstName = userData["firstName"] ?? '';
+    lastName = userData["lastName"] ?? '';
+    middleName = userData["middleName"] ?? '';
+    final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": recordedToken});
 
-      var studentCard = responseStudent.data[0];
-      group = studentCard["GROUP_NAME"];
-      speciality = studentCard["SPECIALITY"];
-      faculty = studentCard["FACULTY"];
-      qualification = studentCard["QUALIFICATION"];
-      learnForm = studentCard["LEARN_FORM"];
-      statusSTR = studentCard["STATUS_STR"];
-      finForm = studentCard["FINFORM"];
+    var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
+    group = studentCard["GROUP_NAME"] ?? '';
+    speciality = studentCard["SPECIALITY"] ?? '';
+    faculty = studentCard["FACULTY"] ?? '';
+    qualification = studentCard["QUALIFICATION"] ?? '';
+    learnForm = studentCard["LEARN_FORM"] ?? '';
+    statusSTR = studentCard["STATUS_STR"] ?? '';
+    finForm = studentCard["FINFORM"] ?? '';
 
-      await storage.write(key: "firstName", value: firstName);
-      await storage.write(key: "lastName", value: lastName);
-      await storage.write(key: "middleName", value: middleName);
-      await storage.write(key: "group", value: group);
-    } else if (userType == EnumUserType.employee) {
-      final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": token2});
+    await storage.write(key: "firstName", value: firstName);
+    await storage.write(key: "lastName", value: lastName);
+    await storage.write(key: "middleName", value: middleName);
+    await storage.write(key: "group", value: group);
+  }
 
-      var employeeCard = responseEmployee.data["empList"][0];
-      firstName = employeeCard["FIRST_NAME"];
-      lastName = employeeCard["LAST_NAME"];
-      middleName = employeeCard["MIDDLE_NAME"];
-      jobTitle = employeeCard["POST_NAME"];
-      department = employeeCard["DEP"];
+  Future<void> _writeEmployeeData(Dio dio, String? recordedToken) async {
+    final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": recordedToken});
 
-      await storage.write(key: "firstName", value: firstName);
-      await storage.write(key: "lastName", value: lastName);
-      await storage.write(key: "middleName", value: middleName);
-      await storage.write(key: "jobTitle", value: jobTitle);
-      await storage.write(key: "department", value: department);
+    var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
+    firstName = employeeCard["FIRST_NAME"] ?? '';
+    lastName = employeeCard["LAST_NAME"] ?? '';
+    middleName = employeeCard["MIDDLE_NAME"] ?? '';
+    jobTitle = employeeCard["POST_NAME"] ?? '';
+    department = employeeCard["DEP"] ?? '';
+
+    await storage.write(key: "firstName", value: firstName);
+    await storage.write(key: "lastName", value: lastName);
+    await storage.write(key: "middleName", value: middleName);
+    await storage.write(key: "jobTitle", value: jobTitle);
+    await storage.write(key: "department", value: department);
+  }
+
+  Future<void> _showUpdate(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    final responseMobileAppVersion = await dio.post(Config.checkMobileAppVersion, queryParameters: {"accessToken": token}, data: {"clientVersion": packageInfo.version});
+    var valueForShowUpdateAlert = responseMobileAppVersion.data['versionEqualFlag'];
+    if (valueForShowUpdateAlert == 0) {
+      String downloadLink = 'https://www.kemsu.ru/education/app-kemsu/';
+      if (Platform.isIOS) {
+        downloadLink = 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769';
+      }
+      Uri url = Uri.parse(downloadLink);
+      _showAlertDialog(context, title: Localizable.mainUpdateTitle, content: Localizable.mainUpdateContent, buttonTitle: Localizable.mainUpdateButtonTitle, action: () async {
+        Navigator.pop(context);
+        try {
+          await launchUrl(url);
+        } catch (e) {
+          throw 'Could not launch $url';
+        }
+      });
     }
-    fio = ('$lastName $firstName $middleName');
+  }
 
-    await storage.write(key: "fio", value: fio);
-    await storage.write(key: "email", value: phone);
-    await storage.write(key: "phone", value: phone);
+  Future<void> _getUserImage(Dio dio, String? recordedToken) async {
+    final imageResponse = await dio.get(Config.userInfo, queryParameters: {"accessToken": recordedToken});
+    if (imageResponse.data['success'] == true) {
+      var imageUrl = imageResponse.data['userInfo']['PHOTO_URL'];
+      final String fileName = '${const Uuid().v1()}.jpg';
+      try {
+        final Dio dio = Dio();
+        final Directory appDocDir = await getApplicationDocumentsDirectory();
+        final String appDocPath = appDocDir.path;
+        if (imageUrl != null) {
+          final Response response = await dio.get(imageUrl, queryParameters: {"accessToken": recordedToken}, options: Options(responseType: ResponseType.bytes));
+          file = File('$appDocPath/$fileName');
+          await file?.writeAsBytes(response.data);
+        } else {
+          file = null;
+        }
+        notifyListeners();
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
 
+  void _showNewYearGreetings(BuildContext context) {
     final now = DateTime.now();
     final newYearDate = DateTime(now.year, DateTime.january, 3).toString().split(' ');
     final currentDate = now.toString().split(' ');
     if (currentDate[0] == newYearDate[0]) {
-      _showAlertDialog(context);
+      _showAlertDialog(context, title: Localizable.mainHappyNewYearTitle, content: Localizable.mainHappyNewYearBody, buttonTitle: Localizable.mainThanks, action: () {
+        Navigator.pop(context);
+      });
     }
-    appMetricaTest();
-    circle = false;
-    notifyListeners();
   }
 
   void appMetricaTest() {
@@ -225,39 +323,47 @@ class ProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void navigateWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => _paymentWebView(context, model)));
+  void navigatePaymentWebView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => paymentWebView(context, model)));
     notifyListeners();
   }
 
-  void navigateMainBugReportScreen(context, model) {
+  void navigateMoodleWebView(context, model) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => moodleWebView(context, model)));
+    notifyListeners();
+  }
+
+  void navigateMainBugReportScreen(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const MainBugReportScreen()));
     notifyListeners();
   }
 
-  void navigateRosView(context, model) {
+  void navigateRosScreen(context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const RosView()));
     notifyListeners();
   }
 
-  void navigatePgasScreen(context, model) {
+  void navigatePgasScreen(context) {
     Navigator.push(context, MaterialPageRoute(settings: const RouteSettings(name: "PgasList"), builder: (context) => const PgasScreen()));
     notifyListeners();
   }
 
-  _showAlertDialog(BuildContext context) {
+  void navigateEditScreen(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const EditView()));
+    notifyListeners();
+  }
+
+  void _showAlertDialog(BuildContext context, {required String title, required String content, required String buttonTitle, required Function() action}) {
     Widget okButton = TextButton(
-      child: const Text("Спасибо"),
+      child: Text(buttonTitle),
       onPressed: () {
-        Navigator.pop(context);
+        action();
       },
     );
 
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("С новым годом!"),
-      content: const Text(
-          "Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них."),
+      title: Text(title),
+      content: Text(content),
       actions: [
         okButton,
       ],
@@ -270,36 +376,4 @@ class ProfileViewModel extends BaseViewModel {
       },
     );
   }
-}
-
-/// Payment Web View
-_paymentWebView(BuildContext context, ProfileViewModel model) {
-  String fio = model.fio;
-  String phone = model.phone.replaceFirst('+7 ', '');
-  String email = model.email;
-  bool isLoading = true;
-  return Scaffold(
-    extendBody: false,
-    extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, model, 'Оплата услуг'),
-    body: StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Stack(children: [
-          WebView(
-              initialUrl: Uri.encodeFull('https://kemsu.ru/payment/?student_fio=$fio&payer_fio=$fio&phone=$phone&email=$email'.replaceAll(' ', '+')),
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
-                setState(() {
-                  isLoading = false;
-                });
-              }),
-          isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(color: Colors.blue),
-                )
-              : const Stack(),
-        ]);
-      },
-    ),
-  );
 }

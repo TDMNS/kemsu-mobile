@@ -1,65 +1,39 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:kemsu_app/local_notification_service.dart';
 import 'package:stacked/stacked.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
 import 'package:http/http.dart' as http;
-
 import 'notifications_model.dart';
 
 class NotificationViewModel extends BaseViewModel {
   NotificationViewModel(BuildContext context);
 
-  Future onReady() async {
-    await getUserNotifications();
-    await socketIO();
-  }
-
+  bool circle = true;
   List<UserNotifications> userNotifications = [];
 
-  List<UserNotifications> parseUserNotifications(List response) {
-    return response.map<UserNotifications>((json) => UserNotifications.fromJson(json)).toList();
+  Future onReady() async {
+    await _getUserNotifications();
+    await _setReadStatusUserNotification();
+    circle = false;
   }
 
-  getUserNotifications() async {
+  _getUserNotifications() async {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
     userNotifications = parseUserNotifications(json.decode(response.body)["userNotificationList"]);
     notifyListeners();
   }
 
-  socketIO() async {
+  _setReadStatusUserNotification() async {
     String? token = await storage.read(key: "tokenKey");
-
-    IO.Socket socket = IO.io('wss://api-next.kemsu.ru', <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': true, // Set this to true if you want to connect immediately
-      'path': '/socket.io/notifications',
-      'auth': {'accessToken': token},
-    });
-
-    socket.on('connect', (_) {
-      print('Connected');
-      // Additional logic on successful connection
-    });
-
-    socket.on('disconnect', (_) {
-      print('Disconnected');
-      // Additional logic on disconnection
-    });
-
-    socket.on('error', (data) {
-      print('Error: $data');
-      // Additional error handling logic
-    });
-
-    socket.on("notification", (data) {
-      print('Notification: $data');
-    });
-
-    socket.connect(); // Connect to the server
+    await http.post(Uri.parse('${Config.setReadStatusUserNotification}?accessToken=$token'));
+    LocalNotificationService.unreadMessages.value = 0;
+    notifyListeners();
   }
 
   Future<String> getPicture(UserNotifications userNotifications) async {
@@ -74,5 +48,36 @@ class NotificationViewModel extends BaseViewModel {
       urls.add(imageUrl);
     }
     return urls;
+  }
+
+  static List<UserNotifications> parseUserNotifications(List response) {
+    return response.map<UserNotifications>((json) => UserNotifications.fromJson(json)).toList();
+  }
+
+  static Future<List<UserNotifications>> getUserNotificationsFromAny() async {
+    String? token = await storage.read(key: "tokenKey");
+    var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
+    return parseUserNotifications(json.decode(response.body)["userNotificationList"]);
+  }
+
+  bool isLink(String text) {
+    final RegExp urlRegex = RegExp(
+      r'^(?:http|ftp)s?://'
+      r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+      r'localhost|'
+      r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'
+      r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'
+      r'(?::\d+)?'
+      r'(?:/?|[/?]\S+)$',
+      caseSensitive: false,
+    );
+
+    return urlRegex.hasMatch(text);
+  }
+
+  Future<void> setUserVote(int notificationId, int? voteId) async {
+    final Dio dio = Dio();
+    String? token = await storage.read(key: "tokenKey");
+    await dio.post(Config.setUserVote, queryParameters: {"accessToken": token}, data: {"notificationId": notificationId, "voteId": voteId});
   }
 }

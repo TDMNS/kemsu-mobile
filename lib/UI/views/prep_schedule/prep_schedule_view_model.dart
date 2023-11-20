@@ -99,7 +99,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
     var response =
-        await http.get(Uri.parse('${Config.prepSchedule}?semesterId=10&prepId=$teacherId&accessToken=$token'));
+        await http.get(Uri.parse('${Config.prepSchedule}?semesterId=11&prepId=$teacherId&accessToken=$token'));
 
     var jsonResponse = json.decode(response.body)['result'];
 
@@ -150,7 +150,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     var response2 = await http.get(Uri.parse('${Config.currentGroupList}?accessToken=$token'));
     currentGroupList = parseCurrentGroupList(json.decode(response2.body)['currentGroupList']);
 
-    var response = await http.get(Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=10'));
+    var response = await http.get(Uri.parse('${Config.teacherList}?accessToken=$token&semesterId=11'));
     teacherList = parseTeacherList(json.decode(response.body)['teacherList']);
     for (int i = 0; i < teacherList.length; i++) {
       if (teacherList[i].fio == fio) {

@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import '../../widgets.dart';
 
 class DebtsView extends StatefulWidget {
-  const DebtsView({Key? key}) : super(key: key);
+  const DebtsView({super.key});
 
   @override
   State<DebtsView> createState() => _DebtsViewState();
@@ -23,12 +23,11 @@ class _DebtsViewState extends State<DebtsView> {
         viewModelBuilder: () => DebtsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+            value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
             child: Scaffold(
                 extendBody: true,
                 extendBodyBehindAppBar: true,
-                appBar: customAppBar(context, model, 'Долги'),
+                appBar: customAppBar(context, 'Долги'),
                 body: RefreshIndicator(
                   backgroundColor: Colors.blue,
                   color: Colors.white,
@@ -59,9 +58,7 @@ _debtsView(BuildContext context, DebtsViewModel model) {
                 const SizedBox(
                   height: 30,
                 ),
-                model.academyDebts.isEmpty && model.libraryDebts.isEmpty && model.payDebts.isEmpty
-                    ? const Text("Задолженностей нет")
-                    : const SizedBox.shrink()
+                model.academyDebts.isEmpty && model.libraryDebts.isEmpty && model.payDebts.isEmpty ? const Text("Задолженностей нет") : const SizedBox.shrink()
               ],
             )),
       ),
@@ -83,13 +80,7 @@ Widget _getAcademyDebtsView(List<AcademyDebts> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: ExpansionTile(
@@ -97,11 +88,7 @@ Widget _getAcademyDebtsView(List<AcademyDebts> items) {
                 expandedAlignment: Alignment.center,
                 title: Text(
                   EnumDebts.academyDebtsTitle,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
                   Padding(
@@ -143,13 +130,7 @@ Widget _getLibraryDebtsView(List<LibraryDebts> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: ExpansionTile(
@@ -157,11 +138,7 @@ Widget _getLibraryDebtsView(List<LibraryDebts> items) {
                 expandedAlignment: Alignment.center,
                 title: Text(
                   EnumDebts.libraryDebtsTitle,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
                   Padding(
@@ -202,13 +179,7 @@ Widget _getPayDebtsView(List<PayDebts> items) {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Theme.of(context).primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                      color: Theme.of(context).primaryColorLight,
-                      blurRadius: 15,
-                      offset: const Offset(0, 15),
-                      spreadRadius: -15)
-                ]),
+                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: ExpansionTile(
@@ -216,11 +187,7 @@ Widget _getPayDebtsView(List<PayDebts> items) {
                 expandedAlignment: Alignment.center,
                 title: Text(
                   EnumDebts.payDebtsTitle,
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily: "Ubuntu",
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold),
                 ),
                 children: <Widget>[
                   Padding(

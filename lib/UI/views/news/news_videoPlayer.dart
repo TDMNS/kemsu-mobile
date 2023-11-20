@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:video_player/video_player.dart';
+import '../../../Configurations/localizable.dart';
 import '../../widgets.dart';
 import 'news_view_model.dart';
 
 class VideoApp extends StatefulWidget {
   final File? file;
-  const VideoApp({Key? key, @required this.file}) : super(key: key);
+  const VideoApp({super.key, @required this.file});
 
   @override
   _VideoAppState createState() => _VideoAppState();
@@ -33,9 +34,7 @@ class _VideoAppState extends State<VideoApp> {
         viewModelBuilder: () => NewsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-              value: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark),
+              value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
               child: GestureDetector(
                 onTap: () {
                   FocusScopeNode currentFocus = FocusScope.of(context);
@@ -46,8 +45,7 @@ class _VideoAppState extends State<VideoApp> {
                 child: Scaffold(
                   extendBody: true,
                   extendBodyBehindAppBar: true,
-                  appBar: customAppBar(context, model, ''),
-                  //bottomNavigationBar: customBottomBar(context, model),
+                  appBar: customAppBar(context, Localizable.video),
                   body: MaterialApp(
                     home: Scaffold(
                       backgroundColor: Colors.grey.shade900,

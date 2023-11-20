@@ -63,8 +63,7 @@ class NewsViewModel extends BaseViewModel {
   messageService() async {
     String? partialFileUrl;
     String? token = await storage.read(key: 'tokenKey');
-    final newsResponse =
-        await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
+    final newsResponse = await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
     tempData = json.decode(newsResponse.body);
     for (int i = 0; i < tempData!.length; i++) {
       if (tempData![i][0]['message'] == null) {
@@ -148,8 +147,7 @@ class NewsViewModel extends BaseViewModel {
 
     String? partialFileUrl;
     String? token = await storage.read(key: 'tokenKey');
-    final newsResponse =
-        await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
+    final newsResponse = await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
     tempData = json.decode(newsResponse.body);
     for (int i = 0; i < tempData!.length; i++) {
       if (tempData![i][0]['message'] == null) {
@@ -216,8 +214,7 @@ class NewsViewModel extends BaseViewModel {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     String? token = await storage.read(key: 'tokenKey');
-    final newsResponse =
-        await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
+    final newsResponse = await http.get(Uri.parse('${Config.newsMessages}?limit=$newsLimit'), headers: {'x-access-token': token!});
     tempData = json.decode(newsResponse.body);
 
     for (int i = 0; i < tempData!.length; i++) {
@@ -233,8 +230,7 @@ class NewsViewModel extends BaseViewModel {
     decodeVideo = await File("$path/video1.mp4").writeAsBytes(getFile.bodyBytes);
     videoPath = decodeVideo!.path;
     videoPlayFunc(true);
-    videoController =
-        VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
+    videoController = VideoPlayerController.networkUrl(UriData.fromString('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4').uri);
     Navigator.push(
       context,
       MaterialPageRoute(

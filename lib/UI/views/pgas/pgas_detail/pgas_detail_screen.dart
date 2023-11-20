@@ -12,7 +12,7 @@ class PgasDetailScreenRoute extends MaterialPageRoute {
 }
 
 class PgasDetailScreen extends StatelessWidget {
-  const PgasDetailScreen({Key? key}) : super(key: key);
+  const PgasDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,18 @@ class PgasDetailScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, "Достижения"),
-            body: _body(context, model),
+            appBar: customAppBar(context, "Достижения"),
+            body: model.circle
+                ? Container(
+              color: Theme.of(context).primaryColor,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            )
+                : _body(context, model),
           );
         });
   }
@@ -48,18 +58,15 @@ _body(context, PgasDetailViewModel model) {
 _pgasAchieveTitle(context) {
   return Padding(
     padding: const EdgeInsets.only(right: 20),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text(
-          "Прикрепленные достижения",
-          style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).focusColor),
-        ),
-      ],
+    child: Text(
+      "Прикрепленные достижения",
+      style: TextStyle(
+          fontSize: 24,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w500,
+          color: Theme.of(context).focusColor),
+      textAlign: TextAlign.center,
+      softWrap: true,
     ),
   );
 }
