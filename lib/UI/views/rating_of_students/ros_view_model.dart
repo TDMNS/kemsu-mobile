@@ -11,6 +11,8 @@ class RosViewModel extends BaseViewModel {
   RosViewModel(BuildContext context);
   final storage = const FlutterSecureStorage();
 
+  bool circle = true;
+
   /// first request
   List<StudyCard> receivedStudyCard = [];
   StudyCard? studyCard;
@@ -33,6 +35,7 @@ class RosViewModel extends BaseViewModel {
 
   Future onReady() async {
     await getStudCard();
+    circle = false;
     appMetricaTest();
   }
 
@@ -69,6 +72,7 @@ class RosViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
     rosSemesterList = parseRosSemesterList(json.decode(response.body)["brsSemesterList"]);
+    circle = false;
     notifyListeners();
   }
 

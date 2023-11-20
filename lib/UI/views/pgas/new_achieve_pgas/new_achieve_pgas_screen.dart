@@ -7,7 +7,7 @@ import 'year_model.dart';
 import 'new_achieve_pgas_view_model.dart';
 
 class NewAchievePgasScreen extends StatelessWidget {
-  const NewAchievePgasScreen({Key? key}) : super(key: key);
+  const NewAchievePgasScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class NewAchievePgasScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, "Прикрепление"),
+            appBar: customAppBar(context, "Прикрепление"),
             body: _body(context, model),
           );
         });
@@ -58,8 +58,7 @@ _body(context, NewAchievePgasViewModel model) {
 
 _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<AchieveCategoryModel>(
           dropdownColor: Theme.of(context).primaryColor,
@@ -67,13 +66,13 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenCategory,
           items: model.achieveCategories.map<DropdownMenuItem<AchieveCategoryModel>>((e) {
             return DropdownMenuItem<AchieveCategoryModel>(
+              value: e,
               child: FittedBox(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(e.activityTypeTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -105,8 +104,7 @@ _achieveCategoryDropDown(context, NewAchievePgasViewModel model) {
 
 _activity1DropDown(context, NewAchievePgasViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: ButtonTheme(
         alignedDropdown: true,
@@ -117,11 +115,11 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
             value: model.chosenActivity1,
             items: model.activityList1.map<DropdownMenuItem<ActivityTreeModel>>((e) {
               return DropdownMenuItem<ActivityTreeModel>(
-                child: Container(
-                  child: Text(e.activityTitle.toString()),
-                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
-                ),
                 value: e,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
+                ),
               );
             }).toList(),
             hint: const Center(
@@ -139,9 +137,7 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
               model.chosenActivity3 = null;
               model.chosenActivity4 = null;
               if (value.nodeCnt != 0) {
-                model
-                    .fetchAchieves(model.chosenActivity1!.activityId, model.chosenCategory!.activityTypeId)
-                    .then((value) {
+                model.fetchAchieves(model.chosenActivity1!.activityId, model.chosenCategory!.activityTypeId).then((value) {
                   model.activityList2 = value;
                   model.showAchieve2 = true;
                   model.notifyListeners();
@@ -158,8 +154,7 @@ _activity1DropDown(context, NewAchievePgasViewModel model) {
 
 _activity2DropDown(context, NewAchievePgasViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           dropdownColor: Theme.of(context).primaryColor,
@@ -168,14 +163,14 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity2,
           items: model.activityList2.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -191,9 +186,7 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
             model.chosenActivity3 = null;
             model.chosenActivity4 = null;
             if (value.nodeCnt != 0) {
-              model
-                  .fetchAchieves(model.chosenActivity2!.activityId, model.chosenCategory!.activityTypeId)
-                  .then((value) {
+              model.fetchAchieves(model.chosenActivity2!.activityId, model.chosenCategory!.activityTypeId).then((value) {
                 model.activityList3 = value;
                 model.showAchieve3 = true;
                 model.notifyListeners();
@@ -209,8 +202,7 @@ _activity2DropDown(context, NewAchievePgasViewModel model) {
 
 _activity3DropDown(context, NewAchievePgasViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           dropdownColor: Theme.of(context).primaryColor,
@@ -219,14 +211,14 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity3,
           items: model.activityList3.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -240,9 +232,7 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
             model.showAchieve4 = false;
             model.chosenActivity4 = null;
             if (value.nodeCnt != 0) {
-              model
-                  .fetchAchieves(model.chosenActivity3!.activityId, model.chosenCategory!.activityTypeId)
-                  .then((value) {
+              model.fetchAchieves(model.chosenActivity3!.activityId, model.chosenCategory!.activityTypeId).then((value) {
                 model.activityList4 = value;
                 model.showAchieve4 = true;
                 model.notifyListeners();
@@ -258,8 +248,7 @@ _activity3DropDown(context, NewAchievePgasViewModel model) {
 
 _activity4DropDown(context, NewAchievePgasViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
     child: DropdownButtonHideUnderline(
       child: DropdownButton<ActivityTreeModel>(
           dropdownColor: Theme.of(context).primaryColor,
@@ -268,14 +257,14 @@ _activity4DropDown(context, NewAchievePgasViewModel model) {
           value: model.chosenActivity4,
           items: model.activityList4.map<DropdownMenuItem<ActivityTreeModel>>((e) {
             return DropdownMenuItem<ActivityTreeModel>(
+              value: e,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Text(e.activityTitle.toString()),
                   padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 6.0),
+                  child: Text(e.activityTitle.toString()),
                 ),
               ),
-              value: e,
             );
           }).toList(),
           hint: const Center(
@@ -302,12 +291,8 @@ _otherInputData(context, NewAchievePgasViewModel model) {
           controller: model.descController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
               hintText: "Описание достижения (не требуется для достижения 'Отличная учеба')",
               hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.grey, fontSize: 14))),
       const SizedBox(
@@ -320,11 +305,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
             value: model.chosenYear,
             items: model.years.map<DropdownMenuItem<YearModel>>((e) {
               return DropdownMenuItem<YearModel>(
+                value: e,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(e.year.toString()),
                 ),
-                value: e,
               );
             }).toList(),
             hint: const Center(
@@ -341,8 +326,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
         height: 10,
       ),
       Container(
-        decoration:
-            BoxDecoration(border: Border.all(color: const Color(0xFFC4C4C4)), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(border: Border.all(color: const Color(0xFFC4C4C4)), borderRadius: BorderRadius.circular(10)),
         height: 60,
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
@@ -381,12 +365,8 @@ _otherInputData(context, NewAchievePgasViewModel model) {
           controller: model.resourceController,
           decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
               hintText: "Ссылка на внешний ресурс, подтверждающий выполнение достижения",
               hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.grey, fontSize: 14))),
       const SizedBox(
@@ -402,13 +382,7 @@ _otherInputData(context, NewAchievePgasViewModel model) {
             width: double.maxFinite,
             height: 46,
             decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context).primaryColorLight,
-                    offset: const Offset(0, 6),
-                    spreadRadius: -1,
-                    blurRadius: 5)
-              ],
+              boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)],
               borderRadius: BorderRadius.circular(10),
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,
@@ -422,11 +396,11 @@ _otherInputData(context, NewAchievePgasViewModel model) {
               },
               child: model.circle
                   ? const SizedBox(
+                      height: 14,
+                      width: 14,
                       child: CircularProgressIndicator(
                         color: Colors.white,
                       ),
-                      height: 14,
-                      width: 14,
                     )
                   : const Text(
                       "Отправить",
@@ -450,10 +424,7 @@ _fileContainer(context, NewAchievePgasViewModel model) {
           child: Container(
             width: 100,
             height: 150,
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.grey),
-                borderRadius: const BorderRadius.all(Radius.circular(15))),
+            decoration: BoxDecoration(color: Colors.transparent, border: Border.all(color: Colors.grey), borderRadius: const BorderRadius.all(Radius.circular(15))),
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -463,8 +434,7 @@ _fileContainer(context, NewAchievePgasViewModel model) {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey, fontSize: 28),
                 ),
-                Text("Выберите файл-подтверждение (до 10 МБ)",
-                    textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))
+                Text("Выберите файл-подтверждение (до 10 МБ)", textAlign: TextAlign.center, style: TextStyle(color: Colors.grey))
               ],
             ),
           ),
@@ -477,36 +447,33 @@ _fileContainer(context, NewAchievePgasViewModel model) {
               Container(
                 width: 100,
                 height: 150,
-                decoration: const BoxDecoration(
-                    color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(15))),
+                decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(model.chooseFile!.name,
-                        textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
-                    Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ",
-                        textAlign: TextAlign.center, style: const TextStyle(color: Colors.white))
+                    Text(model.chooseFile!.name, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
+                    Text("Размер: ${(model.chooseFile!.size / 1024 / 1024).roundToDouble()} МБ", textAlign: TextAlign.center, style: const TextStyle(color: Colors.white))
                   ],
                 ),
               ),
               Positioned(
+                  bottom: 110,
+                  left: 60,
                   child: ElevatedButton(
                     onPressed: () {
                       model.chooseFile = null;
                       model.notifyListeners();
                     },
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.black,
-                    ),
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       backgroundColor: Colors.white, // <-- Button color
                     ),
-                  ),
-                  bottom: 110,
-                  left: 60)
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
+                  ))
             ],
           ),
         );

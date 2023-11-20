@@ -8,7 +8,7 @@ import '../../widgets.dart';
 import 'check_list_model.dart';
 
 class CheckListView extends StatelessWidget {
-  const CheckListView({Key? key}) : super(key: key);
+  const CheckListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +17,22 @@ class CheckListView extends StatelessWidget {
         viewModelBuilder: () => CheckListViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
-            child: model.circle
-                ? Container(
-              color: Theme.of(context).primaryColor,
-              child: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                  backgroundColor: Colors.white,
-                ),
-              ),
-            )
-            : Scaffold(
+            value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+            child: Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
-              appBar: customAppBar(context, model, Localizable.checkListTitle),
-              body: _checkListView(context, model),
+              appBar: customAppBar(context, Localizable.checkListTitle),
+              body: model.circle
+                  ? Container(
+                      color: Theme.of(context).primaryColor,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.blue,
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                    )
+                  : _checkListView(context, model),
             ),
           );
         });
@@ -73,7 +72,7 @@ Widget getListView(List<CheckList> items) {
       final address = item.address ?? '';
       return ListTile(
           title: Text(departmentTitle),
-          subtitle: Text(groupName + '\n' + address),
+          subtitle: Text('$groupName\n$address'),
           trailing: item.debt == "Нет" ? const Icon(Icons.done, color: Colors.green) : const Icon(Icons.cancel, color: Colors.red));
     },
   );

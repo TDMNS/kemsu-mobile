@@ -10,7 +10,7 @@ class EditPgasRequestScreenRoute extends MaterialPageRoute {
 }
 
 class EditPgasRequestScreen extends StatelessWidget {
-  const EditPgasRequestScreen({Key? key}) : super(key: key);
+  const EditPgasRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +74,12 @@ class EditPgasRequestScreen extends StatelessWidget {
                       value: model.chooseFaculty,
                       items: model.facultiesList.map<DropdownMenuItem<FacultyModel>>((e) {
                         return DropdownMenuItem<FacultyModel>(
+                          value: e,
                           child: FittedBox(
                               child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.facultyShortTitle.toString()),
                           )),
-                          value: e,
                         );
                       }).toList(),
                       hint: const Center(
@@ -105,13 +105,13 @@ class EditPgasRequestScreen extends StatelessWidget {
                       value: model.chooseSemester,
                       items: model.semestersList.map<DropdownMenuItem<SemesterTypeModel>>((e) {
                         return DropdownMenuItem<SemesterTypeModel>(
+                          value: e,
                           child: FittedBox(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(e.semesterTypeTitle.toString()),
                             ),
                           ),
-                          value: e,
                         );
                       }).toList(),
                       hint: const Center(

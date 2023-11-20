@@ -142,6 +142,6 @@ class TaskListInfoOUPro {
       solutionStatus = "";
     }
     name = taskName;
-    if (optionName != "") name = name.toString() + ".\n" + optionName.toString();
+    if (optionName != "") name = "$name.\n$optionName";
   }
 }

@@ -9,7 +9,7 @@ class MainBugReportScreenRoute extends MaterialPageRoute {
 }
 
 class MainBugReportScreen extends StatelessWidget {
-  const MainBugReportScreen({Key? key}) : super(key: key);
+  const MainBugReportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,27 +17,29 @@ class MainBugReportScreen extends StatelessWidget {
         viewModelBuilder: () => BugReportViewModel(context),
         onViewModelReady: (viewModel) => viewModel.onReady(context),
         builder: (context, model, child) {
-          return model.circle
-              ? Container(
-                  color: Theme.of(context).primaryColor,
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blue,
-                      backgroundColor: Colors.white,
+          return Scaffold(
+            appBar: customAppBar(context, Localizable.bugReportTitle),
+            body: model.circle
+                ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
                     ),
-                  ),
-                )
-              : Scaffold(
-                  appBar: customAppBar(context, model, Localizable.bugReportTitle),
-                  body: _body(context, model),
-                  floatingActionButton: FloatingActionButton(
+                  )
+                : _body(context, model),
+            floatingActionButton: model.circle
+                ? Container()
+                : FloatingActionButton(
                     backgroundColor: Colors.blue,
                     child: const Icon(Icons.edit, color: Colors.white),
                     onPressed: () {
                       showDialog(context: context, builder: (_) => _newMessageDialog(context, model));
                     },
                   ),
-                );
+          );
         });
   }
 }
@@ -66,11 +68,7 @@ _errorMessagesTitle(context) {
       children: [
         Text(
           Localizable.bugReportYour,
-          style: TextStyle(
-              fontSize: 24,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColorDark),
+          style: TextStyle(fontSize: 24, fontStyle: FontStyle.normal, fontWeight: FontWeight.w500, color: Theme.of(context).primaryColorDark),
         ),
       ],
     ),
@@ -79,10 +77,7 @@ _errorMessagesTitle(context) {
 
 _reportSpace(context, BugReportViewModel model) {
   return model.reportList.isEmpty
-      ? Center(
-          child: Text(
-              Localizable.bugReportEmpty,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
+      ? Center(child: Text(Localizable.bugReportEmpty, style: const TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
       : ListView.builder(
           physics: const ScrollPhysics(),
           shrinkWrap: true,
@@ -91,8 +86,7 @@ _reportSpace(context, BugReportViewModel model) {
             final reportList = model.reportList[index].reportStatus;
             return ExpansionTile(
               title: Text(model.reportList[index].message.toString()),
-              subtitle: Text(reportList ?? Localizable.bugReportNotProcessed,
-                  style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
+              subtitle: Text(reportList ?? Localizable.bugReportNotProcessed, style: TextStyle(color: reportList == "Решено" ? Colors.green : Colors.red)),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -105,9 +99,7 @@ _reportSpace(context, BugReportViewModel model) {
                           children: <TextSpan>[
                             TextSpan(text: Localizable.bugReportDate),
                             TextSpan(
-                                text: model.reportList[index].messageDate.toString(),
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
+                                text: model.reportList[index].messageDate.toString(), style: TextStyle(color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),

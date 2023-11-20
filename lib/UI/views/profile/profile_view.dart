@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kemsu_app/Configurations/hex.dart';
 import 'package:kemsu_app/UI/common_views/capitalize_first_letter.dart';
+import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
@@ -13,7 +15,7 @@ import '../../common_views/profile_tiles.dart';
 import '../../widgets.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -48,7 +50,7 @@ class _ProfileViewState extends State<ProfileView> {
                 : Scaffold(
                     extendBody: true,
                     extendBodyBehindAppBar: true,
-                    appBar: customAppBar(context, model, Localizable.mainTitle),
+                    appBar: customAppBar(context, Localizable.mainTitle),
                     body: _profileView(context, model),
                   ),
           ),
@@ -124,16 +126,19 @@ class _ProfileViewState extends State<ProfileView> {
     List<Widget> tiles = [];
     tiles = [
       profileTiles(context, onPressed: () {
-        model.navigateRosView(context, model);
-      }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
-      profileTiles(context, onPressed: () {
-        model.navigateInfoView(context);
-      }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+        model.navigateMoodleWebView(context, model);
+      }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
     ];
     if (model.userType == EnumUserType.student) {
       tiles += [
         profileTiles(context, onPressed: () {
-          model.navigatePgasScreen(context, model);
+          model.navigateRosScreen(context);
+        }, title: Localizable.mainRos, imageSource: 'images/icons/search.png'),
+        profileTiles(context, onPressed: () {
+          model.navigateInfoView(context);
+        }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
+        profileTiles(context, onPressed: () {
+          model.navigatePgasScreen(context);
         }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
         profileTiles(context, onPressed: () {
           model.navigateDebtsView(context);
@@ -148,18 +153,116 @@ class _ProfileViewState extends State<ProfileView> {
     }
     tiles += [
       profileTiles(context, onPressed: () {
-        model.navigateWebView(context, model);
+        model.navigatePaymentWebView(context, model);
       }, title: Localizable.mainPayment, imageSource: 'images/icons/money.png'),
       profileTiles(context, onPressed: () {
-        model.navigateMainBugReportScreen(context, model);
+        model.navigateMainBugReportScreen(context);
       }, title: Localizable.mainSupport, imageSource: 'images/icons/shield.png')
+    ];
+
+    List<Widget> moreViews = [];
+
+    moreViews += [
+      Text(Localizable.mainDetails,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+          textAlign: TextAlign.center),
+      const SizedBox(height: 5),
+    ];
+    if (model.userType == EnumUserType.student) {
+      moreViews += [
+        Text(model.speciality,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 5),
+        Text(model.faculty,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center),
+        const SizedBox(height: 5),
+      ];
+    }
+    moreViews += [
+      if (model.learnForm.isNotEmpty)
+        Text(
+          '${model.learnForm} форма обучения',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      const SizedBox(height: 5),
+      if (model.finForm.isNotEmpty)
+        Text(
+          '${capitalizeFirstLetter(model.finForm)} форма финансирования',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      if (model.department.isNotEmpty)
+        SizedBox(
+          width: 300,
+          child: Text(
+            model.department,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      const SizedBox(height: 5),
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.email.isNotEmpty ? userProfileProvider.email : "Почта не указана",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
+      ),
+      const SizedBox(height: 5),
+      Consumer<UserProfileProvider>(
+        builder: (context, userProfileProvider, child) {
+          return Text(
+            userProfileProvider.phone.isNotEmpty ? userProfileProvider.phone : "Номер телефона не указан",
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          );
+        },
+      )
     ];
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            height: model.isExpanded ? 525 : 325,
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: model.isExpanded ? 600 : 400,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -178,109 +281,54 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Column(
                     children: [
                       const SizedBox(height: 75),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: InkWell(
-                          onTap: () {
-                            avatarChoice(context, model);
-                          },
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                            child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 80, height: 80) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                      Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 55,
+                            child: InkWell(
+                              onTap: () {
+                                // avatarChoice(context, model);
+                                model.navigateEditScreen(context);
+                              },
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(55.0)),
+                                child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                              ),
+                            ),
                           ),
-                        ),
+                          InkWell(
+                            onTap: () {
+                              // avatarChoice(context, model);
+                              model.navigateEditScreen(context);
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 14,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.blue,
+                                size: 14,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        '${model.lastName} ${model.firstName} ${model.middleName}',
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
-                      ),
+                      Text('${model.lastName} ${model.firstName} ${model.middleName}',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22), textAlign: TextAlign.center),
                       const SizedBox(height: 5),
-                      Text(
-                        model.userType == EnumUserType.student ? Localizable.mainStudent : Localizable.mainTeacher,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
+                      Text(model.userType == EnumUserType.student ? Localizable.mainStudent : Localizable.mainTeacher,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
                       const SizedBox(height: 5),
-                      Text(
-                        model.userType == EnumUserType.student ? model.group : model.faculty,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                      const SizedBox(height: 50),
+                      Text(model.userType == EnumUserType.student ? model.group : model.faculty,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center),
+                      const SizedBox(height: 30),
                       Visibility(
                         visible: model.isExpanded,
                         child: Column(
-                          children: [
-                            Text(
-                              Localizable.mainDetails,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.speciality,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            if (model.learnForm.isNotEmpty)
-                              Text(
-                                '${model.learnForm} форма обучения',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            const SizedBox(height: 5),
-                            if (model.finForm.isNotEmpty)
-                              Text(
-                                '${capitalizeFirstLetter(model.finForm)} форма финансирования',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            if (model.department.isNotEmpty)
-                              Text(
-                                model.department,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.email,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              model.phone,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                          children: moreViews,
                         ),
                       )
                     ],
@@ -289,24 +337,33 @@ class _ProfileViewState extends State<ProfileView> {
                 Positioned(
                   right: 10,
                   bottom: 20,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            model.isExpanded = !model.isExpanded;
-                          });
-                        },
-                        child: Icon(model.isExpanded ? Icons.expand_less : Icons.expand_more, color: Colors.white, size: 24.0),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        Localizable.mainMore,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
-                      ),
-                    ],
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        model.isExpanded = !model.isExpanded;
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(24.0),
+                    child: Column(
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            model.isExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: Colors.white,
+                            size: 24.0,
+                            key: ValueKey<bool>(model.isExpanded),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          Localizable.mainMore,
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.normal, fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),

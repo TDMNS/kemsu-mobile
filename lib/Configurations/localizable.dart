@@ -1,3 +1,5 @@
+import 'package:flutter_pw_validator/Resource/Strings.dart';
+
 class Localizable {
   /// Pages
   static String pageNews = 'Новости';
@@ -43,6 +45,15 @@ class Localizable {
   static String educationLevel = 'Уровень образования';
   static String groupName = 'Группа';
   static String basic = 'Форма обучения';
+  static String close = 'Закрыть';
+  static String photo = 'Фото';
+  static String video = 'Видео';
+  static String institute = 'Институт';
+  static String semester = 'Семестр';
+  static String send = 'Отправить';
+
+  /// Notifications
+  static String notificationsTitle = 'Уведомления';
 
   /// Main
   static String mainTitle = 'Главная';
@@ -57,6 +68,7 @@ class Localizable {
   static String mainDetails = 'ПОДРОБНОСТИ';
   static String mainMore = 'Подробнее';
   static String mainWarning = 'Вы действительно хотите выйти из мобильного приложения?';
+  static String mainMoodle = "Moodle";
   static String mainRos = "БРС";
   static String mainPgas = 'ПГАС';
   static String mainInfo = 'ИнфОУПро';
@@ -64,20 +76,53 @@ class Localizable {
   static String mainOrderingInformation = 'Заказ справок';
   static String mainCheckList = 'Обходной лист';
   static String mainPayment = 'Оплата услуг';
+  static String mainThanks = 'Спасибо';
+  static String mainHappyNewYearTitle = 'С новым годом!';
+  static String mainHappyNewYearBody =
+      'Наша команда разработчиков желает вам крепкого здоровья, удачи, благополучия, добра, радости, любви, счастья, хорошего настроения, улыбок, ярких впечатлений. '
+      'Пусть тепло и уют всегда наполняют ваш дом, пусть солнечный свет согревает в любую погоду, а желания исполняются при одной мысли о них.';
+  static String mainUpdateTitle = 'Обновите приложение!';
+  static String mainUpdateContent = 'Вам необходимо обновить приложение для того, чтобы дальше использовать его без ошибок.';
+  static String mainUpdateButtonTitle = 'Скачать';
+
+  /// Edit info
+  static String editTitle = 'Редактировать';
+  static String editEmail = 'Email';
+  static String editPhoneNumber = 'Номер телефона';
+  static String editChangePasswordTitle = 'Сменить пароль';
+  static String editChangePasswordDescription = 'Пароль должен содержать только символы латинского алфавита';
+  static String editOldPassword = 'Старый пароль';
+  static String editNewPassword = 'Новый пароль';
+  static String editConfirmNewPassword = 'Подтвердите новый пароль';
+  static String editPasswordChangedSuccessfully = 'Ваш пароль успешно изменен!';
+  static String editOldPasswordError = 'Старый пароль введен не верно';
+  static String editNewPasswordError = 'Введенный пароль соответствует старому паролю';
+  static String editConfirmPasswordError = 'Пароли не совпадают';
+
+  /// Payment
+  static String paymentTitle = 'Оплата услуг';
 
   /// Schedule
   static String scheduleChooseInstitute = 'Выбрать институт';
   static String scheduleChooseGroup = 'Выбрать группу';
+  static String groupSchedule = 'Расписание групп';
+  static String facultySearch = 'Поиск института';
+  static String groupSearch = 'Поиск группы';
 
   /// Prep Schedule
   static String prepScheduleTitle = 'Расписание преподавателей';
   static String prepScheduleChooseTeacher = 'Выбор преподавателя';
+  static String prepScheduleSearch = 'Поиск преподавателя';
+
+  ///Auditor Schedule
+  static String auditorScheduleTitle = 'Расписание аудиторий';
+  static String auditorScheduleChooseAuditor = 'Выбор аудитории';
+  static String auditorScheduleSearch = 'Поиск аудитории';
 
   /// Check list
   static String checkListTitle = 'Обходной лист';
   static String checkListDivisions = 'Список подразделений';
-  static String checkListDescription =
-      'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
+  static String checkListDescription = 'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
 
   /// Bug report
   static String bugReportTitle = 'Сообщения об ошибках';
@@ -100,9 +145,104 @@ class Localizable {
   static String orderingInformationDateStart = 'Дата начала: ';
   static String orderingInformationDateEnd = 'Дата окончания: ';
   static String orderingInformationNewCall = 'Заказать новую справку';
-  static String orderingInformationListReferencesAboutTraining = 'Список справок об обучении';
+  static String orderingInformationListReferencesAboutTraining = 'Список справок о доходах';
   static String orderingInformationCall = 'Справка';
   static String orderingInformationPeriod = 'Период';
   static String orderingInformationCountReferences = 'Количество справок';
   static String orderingInformationRequestDate = 'Дата запроса';
+
+  /// Ordering information main
+  static String orderingInformationMainChooseStudyCard = 'Выбрать учебную карту';
+  static String orderingInformationMainStudyBasis = 'Выбрать основу обучения';
+  static String orderingInformationMainReferencePeriod = 'Период за который требуется справка';
+  static String orderingInformationMainChooseStartDate = 'Выбрать начальную дату';
+  static String orderingInformationMainStartDate = 'Начальная дата:';
+  static String orderingInformationMainAmountCerts = 'Количество справок (по умолчанию 1)';
+  static String orderingInformationMainSendRequest = 'Подать заявку';
+  static String orderingInformationMainChooseEndDate = 'Выбрать конечную дату';
+  static String orderingInformationMainEndDate = 'Конечная дата:';
+  static String orderingInformationMainRequestSuccessCreated = 'Заявка успешно создана!';
+  static String orderingInformationMainInfo = 'Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+      ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
+      'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
+      'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.';
+
+  /// New cert
+  static String newCertName = 'Справка-вызов';
+  static String newCertBossName = 'Полное наименование организации-работодателя/ фамилия, имя, отчество работодателя - физического лица:';
+  static String newCertSignature = 'ФГБОУ ВО "КемГУ" или ИП Иванов И. И.';
+  static String newCertStudentName = 'Полное Ф.И.О. обучающегося в дательном падеже:';
+  static String newCertPlaceholder = 'Иванову Ивану Ивановичу';
+  static String newCertDownload = 'Скачать';
+  static String newCertLoaded = 'Загрузка завершена';
+  static String newCertSaveOnDeviceDescription = 'Справка-вызов была сохранена в загрузках устройства';
+
+  /// News
+  static String newsTitle = 'Новости';
+
+  /// New request
+  static String newRequestTitle = 'Новая заявка';
+  static String newRequestInstitute = 'Новая заявка';
+  static String newRequestPhoneFormat = 'Номер телефона в любом формате';
+  static String newRequestGroupName = 'Название группы (пример: М-185)';
+  static String newRequestStudyYear = 'Учебный год';
+  static String newRequestCourseNumber = 'Номер курса';
+
+  /// ROS
+  static String rosTitle = 'БРС';
+  static String rosRating = 'Рейтинг: ';
+
+  /// ROS detail
+  static String rosDetailInterimCertificationForm = 'Форма промежуточной аттестации: ';
+  static String rosDetailCurrentScore = 'Текущий балл: ';
+  static String rosDetailCertScore = 'Аттестационный балл: ';
+  static String rosDetailCommonScore = 'Общий балл: ';
+  static String rosDetailMark = 'Оценка: ';
+  static String rosDetailNoMark = 'нет оценки';
+
+  /// ROS detail item
+  static String rosDetailItemAmount = 'Количество: ';
+  static String rosDetailItemMaxScore = 'Максимальный балл: ';
+  static String rosDetailItemYourScore = 'Ваш балл: ';
+
+  /// Info
+  static String infoTitle = 'ИнфОУПро';
+  static String infoShowAll = 'Показать все ';
+  static String infoWithoutDisciplines = 'У вас нет прикрепленных дисциплин';
+  static String infoDiscipline = 'Дисциплина: ';
+  static String infoTeacher = 'Преподаватель: ';
+
+  /// Info task block
+  static String infoTaskBlockSolution = 'Решение: ';
+  static String infoTaskBlockKeyDate = 'Контрольная дата: ';
+  static String infoTaskBlockResult = 'Результат: ';
+  static String infoTaskBlockMaxScore = 'Максимальный балл: ';
+  static String infoTaskBlockState = 'Состояние: : ';
+
+  /// Info disc
+  static String infoDiscDiscipline = 'Дисциплина: ';
+  static String infoDiscReport = 'Отчётность: ';
+  static String infoDiscHours = 'Часы: ';
+  static String infoDiscPeriod = 'Период проведения: ';
+  static String infoDiscTeacher = 'Преподаватель: ';
+  static String infoDiscAmountScores = 'Количество балов: ';
+  static String infoDiscKeyDate = 'Контрольная дата: ';
+  static String infoDiscMaxScore = 'Максимальный балл: ';
+  static String infoDiscResult = 'Результат: ';
+}
+
+/// Strings for edit password validator
+class RussianStrings implements FlutterPwValidatorStrings {
+  @override
+  final String atLeast = "Не менее - символов";
+  @override
+  final String uppercaseLetters = "- символ верх. регистр";
+  @override
+  final String normalLetters = "- символ";
+  @override
+  final String lowercaseLetters = "- символ ниж. регистр";
+  @override
+  final String numericCharacters = "- цифра";
+  @override
+  final String specialCharacters = "- спец. символ";
 }

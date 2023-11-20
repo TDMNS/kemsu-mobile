@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kemsu_app/Configurations/localizable.dart';
+import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../widgets.dart';
@@ -11,7 +13,7 @@ class NewPgasRequestScreenRoute extends MaterialPageRoute {
 }
 
 class NewPgasRequestScreen extends StatelessWidget {
-  const NewPgasRequestScreen({Key? key}) : super(key: key);
+  const NewPgasRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +22,18 @@ class NewPgasRequestScreen extends StatelessWidget {
         onViewModelReady: (viewModel) => viewModel.onReady(),
         builder: (context, model, child) {
           return Scaffold(
-            appBar: customAppBar(context, model, "Новая заявка"),
-            body: _body(context, model),
+            appBar: customAppBar(context, Localizable.newRequestTitle),
+            body: model.circle
+                ? Container(
+                    color: Theme.of(context).primaryColor,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.blue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                  )
+                : _body(context, model),
           );
         });
   }
@@ -38,9 +50,8 @@ _body(context, NewPgasRequestViewModel model) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
-              width: 156,
+              decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+              width: MediaQuery.of(context).size.width * 0.43,
               height: 30,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<FacultyModel>(
@@ -49,19 +60,19 @@ _body(context, NewPgasRequestViewModel model) {
                     value: model.chooseFaculty,
                     items: model.facultiesList.map<DropdownMenuItem<FacultyModel>>((e) {
                       return DropdownMenuItem<FacultyModel>(
+                        value: e,
                         child: FittedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.facultyShortTitle.toString()),
                           ),
                         ),
-                        value: e,
                       );
                     }).toList(),
-                    hint: const Center(
+                    hint: Center(
                         child: Text(
-                      "Институт",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
+                      Localizable.institute,
+                      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
                     )),
                     onChanged: (value) {
                       model.chooseFaculty = value!;
@@ -70,9 +81,8 @@ _body(context, NewPgasRequestViewModel model) {
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
-              width: 156,
+              decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+              width: MediaQuery.of(context).size.width * 0.43,
               height: 30,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<SemesterTypeModel>(
@@ -81,19 +91,19 @@ _body(context, NewPgasRequestViewModel model) {
                     value: model.chooseSemester,
                     items: model.semestersList.map<DropdownMenuItem<SemesterTypeModel>>((e) {
                       return DropdownMenuItem<SemesterTypeModel>(
+                        value: e,
                         child: FittedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(e.semesterTypeTitle.toString()),
                           ),
                         ),
-                        value: e,
                       );
                     }).toList(),
-                    hint: const Center(
+                    hint: Center(
                       child: Text(
-                        "Семестр",
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
+                        Localizable.semester,
+                        style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14, fontStyle: FontStyle.normal),
                       ),
                     ),
                     onChanged: (value) {
@@ -107,23 +117,23 @@ _body(context, NewPgasRequestViewModel model) {
         const SizedBox(
           height: 20,
         ),
-        _textField(context, "Фамилия", model.surnameController),
+        _textField(context, Localizable.lastName, model.surnameController),
         const SizedBox(
           height: 10,
         ),
-        _textField(context, "Имя", model.firstNameController),
+        _textField(context, Localizable.firstName, model.firstNameController),
         const SizedBox(
           height: 10,
         ),
-        _textField(context, "Отчество", model.middleNameController),
+        _textField(context, Localizable.patronymic, model.middleNameController),
         const SizedBox(
           height: 10,
         ),
-        _textField(context, "Номер телефона в любом формате", model.phoneController),
+        _textField(context, Localizable.newRequestPhoneFormat, model.phoneController),
         const SizedBox(
           height: 10,
         ),
-        _textField(context, "Название группы (пример: М-185)", model.groupController),
+        _textField(context, Localizable.newRequestGroupName, model.groupController),
         const SizedBox(
           height: 10,
         ),
@@ -135,7 +145,11 @@ _body(context, NewPgasRequestViewModel model) {
         const SizedBox(
           height: 20,
         ),
-        _sendButton(context, model)
+        SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: mainButton(context, onPressed: () {
+              model.sendButtonAction(context);
+            }, title: Localizable.send, isPrimary: true))
       ],
     ),
   );
@@ -146,20 +160,16 @@ _textField(context, String label, TextEditingController controller) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
         height: 40,
-        width: 334,
         child: TextField(
             textCapitalization: TextCapitalization.words,
             autofocus: false,
             controller: controller,
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(8),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFFC4C4C4), width: 1)),
                 hintText: label,
                 hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14))),
       ),
@@ -169,9 +179,8 @@ _textField(context, String label, TextEditingController controller) {
 
 _yearDropdownButton(context, NewPgasRequestViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
-    width: 334,
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    width: MediaQuery.of(context).size.width * 0.9,
     height: 40,
     child: DropdownButtonHideUnderline(
       child: DropdownButton<String>(
@@ -191,11 +200,11 @@ _yearDropdownButton(context, NewPgasRequestViewModel model) {
             model.chosenYear = value!;
             model.notifyListeners();
           },
-          hint: const Padding(
-            padding: EdgeInsets.all(8.0),
+          hint: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Учебный год",
-              style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
+              Localizable.newRequestStudyYear,
+              style: const TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
             ),
           )),
     ),
@@ -204,9 +213,8 @@ _yearDropdownButton(context, NewPgasRequestViewModel model) {
 
 _courseDropdownButton(context, NewPgasRequestViewModel model) {
   return Container(
-    decoration:
-        BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
-    width: 334,
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF00C2FF)), borderRadius: BorderRadius.circular(10)),
+    width: MediaQuery.of(context).size.width * 0.9,
     height: 40,
     child: DropdownButtonHideUnderline(
       child: DropdownButton<String>(
@@ -226,48 +234,13 @@ _courseDropdownButton(context, NewPgasRequestViewModel model) {
             model.chosenCourse = value!;
             model.notifyListeners();
           },
-          hint: const Padding(
-            padding: EdgeInsets.all(8.0),
+          hint: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Номер курса",
-              style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
+              Localizable.newRequestCourseNumber,
+              style: const TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 14),
             ),
           )),
     ),
-  );
-}
-
-_sendButton(context, NewPgasRequestViewModel model) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 22),
-    child: Container(
-        width: double.maxFinite,
-        height: 46,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).primaryColorLight, offset: const Offset(0, 6), spreadRadius: -1, blurRadius: 5)
-          ],
-          borderRadius: BorderRadius.circular(10),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF00C2FF), Colors.blueAccent],
-          ),
-        ),
-        child: TextButton(
-          onPressed: () async {
-            model.sendButtonAction(context);
-          },
-          child: const Text(
-            "Отправить",
-            style: TextStyle(
-              fontStyle: FontStyle.normal,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
-        )),
   );
 }

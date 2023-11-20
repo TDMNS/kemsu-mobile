@@ -30,9 +30,10 @@ class NewPgasRequestViewModel extends BaseViewModel {
   TextEditingController middleNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController groupController = TextEditingController();
+  TextEditingController courseController = TextEditingController();
   String? chosenYear;
   String? chosenCourse;
-  TextEditingController courseController = TextEditingController();
+  bool circle = true;
 
   onReady() async {
     await fetchInstitutesList();
@@ -48,6 +49,7 @@ class NewPgasRequestViewModel extends BaseViewModel {
     middleNameController.text = middleName!;
     phone != null ? phoneController.text = phone : phoneController.text = '';
     groupController.text = group!;
+    circle = false;
     appMetricaTest();
     notifyListeners();
   }
