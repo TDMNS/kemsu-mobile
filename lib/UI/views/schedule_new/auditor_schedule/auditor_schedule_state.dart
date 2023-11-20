@@ -3,6 +3,7 @@ part of 'auditor_schedule_bloc.dart';
 class AuditorScheduleState extends Equatable {
   final AuditorList? auditorList;
   final AuditorSchedule? auditorSchedule;
+  final CurrentDayModel? currentDayData;
   final WeekType weekType;
   final bool isLoading;
   final String searchQuery;
@@ -16,6 +17,7 @@ class AuditorScheduleState extends Equatable {
   const AuditorScheduleState({
     this.auditorList,
     this.auditorSchedule,
+    this.currentDayData,
     this.weekType = WeekType.even,
     this.isLoading = true,
     this.searchQuery = '',
@@ -26,6 +28,7 @@ class AuditorScheduleState extends Equatable {
   AuditorScheduleState copyWith({
     AuditorList? auditorList,
     WeekType? weekType,
+    CurrentDayModel? currentDayData,
     bool? isLoading,
     String? searchQuery,
     AuditorListElement? selectedAuditor,
@@ -35,6 +38,7 @@ class AuditorScheduleState extends Equatable {
     return AuditorScheduleState(
       auditorList: auditorList ?? this.auditorList,
       weekType: weekType ?? this.weekType,
+      currentDayData: currentDayData ?? this.currentDayData,
       isLoading: isLoading ?? this.isLoading,
       searchQuery: searchQuery ?? this.searchQuery,
       selectedAuditor: selectedAuditor ?? this.selectedAuditor,
@@ -44,5 +48,5 @@ class AuditorScheduleState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [auditorList, weekType, isLoading, searchQuery, selectedAuditor, auditorSchedule, isSelected];
+  List<Object?> get props => [auditorList, weekType, isLoading, searchQuery, selectedAuditor, auditorSchedule, isSelected, currentDayData];
 }

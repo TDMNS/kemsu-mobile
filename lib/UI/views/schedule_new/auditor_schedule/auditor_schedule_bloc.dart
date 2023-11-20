@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_schedule_model.dart';
+import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
 part 'auditor_schedule_state.dart';
@@ -40,8 +41,13 @@ class AuditorScheduleBloc extends Bloc<AuditorScheduleEvent, AuditorScheduleStat
   Future<void> _auditorChoice(AuditorChoice event, Emitter<AuditorScheduleState> emit) async {
     emit(state.copyWith(isLoading: true, selectedAuditor: event.auditor));
     final auditorSchedule = await scheduleRepository.getAuditorSchedule(auditoryId: event.auditor.auditoryId);
-    log('TEST BLOC :: ${auditorSchedule.table![0][0].evenAllCouple}');
-    emit(state.copyWith(auditorSchedule: auditorSchedule, isLoading: false, isSelected: true));
+    final currentDay = scheduleRepository.currentDayData;
+    emit(state.copyWith(
+        auditorSchedule: auditorSchedule,
+        currentDayData: currentDay.value,
+        weekType: currentDay.value.currentDay?.weekType == 'нечетная' ? WeekType.odd : WeekType.even,
+        isLoading: false,
+        isSelected: true));
   }
 
   Future<void> _teacherUnselect(AuditorUnselect event, Emitter<AuditorScheduleState> emit) async {

@@ -7,6 +7,7 @@ class GroupSelectScheduleState extends Equatable {
   final GroupListModel? groupList;
   final FacultyResult? selectedFaculty;
   final GroupResult? selectedGroup;
+  final CurrentDayModel? currentDayData;
   final String searchQuery;
   final WeekType weekType;
   final bool isLoading;
@@ -25,6 +26,7 @@ class GroupSelectScheduleState extends Equatable {
     this.scheduleTable,
     this.facultyList,
     this.searchQuery = '',
+    this.currentDayData,
     this.selectedFaculty,
     this.groupList,
     this.selectedGroup,
@@ -40,6 +42,7 @@ class GroupSelectScheduleState extends Equatable {
     WeekType? weekType,
     String? searchQuery,
     FacultyResult? selectedFaculty,
+    CurrentDayModel? currentDayData,
     bool? isLoading,
     bool? isFacultySelected,
     GroupListModel? groupList,
@@ -53,6 +56,7 @@ class GroupSelectScheduleState extends Equatable {
       searchQuery: searchQuery ?? this.searchQuery,
       selectedFaculty: selectedFaculty ?? this.selectedFaculty,
       isLoading: isLoading ?? this.isLoading,
+      currentDayData: currentDayData ?? this.currentDayData,
       isFacultySelected: isFacultySelected ?? this.isFacultySelected,
       groupList: groupList ?? this.groupList,
       selectedGroup: selectedGroup ?? this.selectedGroup,
@@ -61,5 +65,17 @@ class GroupSelectScheduleState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [scheduleTable, weekType, isLoading, isFacultySelected, facultyList, searchQuery, selectedFaculty, groupList, selectedGroup, isGroupSelected];
+  List<Object?> get props => [
+        scheduleTable,
+        weekType,
+        isLoading,
+        isFacultySelected,
+        facultyList,
+        searchQuery,
+        selectedFaculty,
+        groupList,
+        selectedGroup,
+        isGroupSelected,
+        currentDayData,
+      ];
 }

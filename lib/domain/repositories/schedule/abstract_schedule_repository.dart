@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_schedule_model.dart';
+import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/models/schedule/current_group_model.dart';
 import 'package:kemsu_app/domain/models/schedule/faculty_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/group_list_model.dart';
@@ -17,4 +18,6 @@ abstract class AbstractScheduleRepository {
   Future<TeacherScheduleModel> getTeacherSchedule({required int prepId});
   Future<AuditorList> getAuditorList();
   Future<AuditorSchedule> getAuditorSchedule({required int auditoryId});
+  Future<CurrentDayModel> getCurrentDayInfo();
+  ValueListenable<CurrentDayModel> get currentDayData;
 }

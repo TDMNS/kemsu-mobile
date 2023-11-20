@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
+import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/models/schedule/faculty_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/group_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/schedule_model.dart';
@@ -47,7 +48,12 @@ class GroupSelectScheduleBloc extends Bloc<GroupSelectScheduleEvent, GroupSelect
   Future<void> _groupChoice(GroupChoice event, Emitter<GroupSelectScheduleState> emit) async {
     emit(state.copyWith(selectedGroup: event.group, isLoading: true, isGroupSelected: true));
     final scheduleTable = await scheduleRepository.getSchedule(groupId: event.group.id);
-    emit(state.copyWith(scheduleTable: scheduleTable, isLoading: false));
+    final currentDay = scheduleRepository.currentDayData;
+    emit(state.copyWith(
+        scheduleTable: scheduleTable,
+        currentDayData: currentDay.value,
+        weekType: currentDay.value.currentDay?.weekType == 'нечетная' ? WeekType.odd : WeekType.even,
+        isLoading: false));
   }
 
   Future<void> _facultyUnselect(FacultyUnselect event, Emitter<GroupSelectScheduleState> emit) async {

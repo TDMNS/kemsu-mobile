@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
+import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/models/schedule/schedule_teacher_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
@@ -39,7 +40,15 @@ class TeacherScheduleBloc extends Bloc<TeacherScheduleEvent, TeacherScheduleStat
     emit(state.copyWith(isLoading: true));
     emit(state.copyWith(selectedTeacher: event.teacher));
     final selectedTeacherSchedule = await scheduleRepository.getTeacherSchedule(prepId: event.teacher.prepId);
-    emit(state.copyWith(teacherSchedule: selectedTeacherSchedule, isLoading: false, isSelected: true));
+    final currentDay = scheduleRepository.currentDayData;
+
+    emit(state.copyWith(
+      teacherSchedule: selectedTeacherSchedule,
+      currentDayData: currentDay.value,
+      weekType: currentDay.value.currentDay?.weekType == 'нечетная' ? WeekType.odd : WeekType.even,
+      isLoading: false,
+      isSelected: true,
+    ));
   }
 
   Future<void> _teacherUnselect(TeacherUnselect event, Emitter<TeacherScheduleState> emit) async {

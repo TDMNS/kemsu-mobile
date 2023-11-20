@@ -3,6 +3,8 @@ part of 'teacher_schedule_bloc.dart';
 class TeacherScheduleState extends Equatable {
   final ScheduleTeacherModel? teacherList;
   final TeacherScheduleModel? teacherSchedule;
+  final CurrentDayModel? currentDayData;
+
   final WeekType weekType;
   final bool isLoading;
   final String searchQuery;
@@ -16,6 +18,7 @@ class TeacherScheduleState extends Equatable {
   const TeacherScheduleState({
     this.teacherList,
     this.teacherSchedule,
+    this.currentDayData,
     this.weekType = WeekType.even,
     this.isLoading = true,
     this.searchQuery = '',
@@ -26,6 +29,7 @@ class TeacherScheduleState extends Equatable {
   TeacherScheduleState copyWith({
     ScheduleTeacherModel? teacherList,
     WeekType? weekType,
+    CurrentDayModel? currentDayData,
     bool? isLoading,
     String? searchQuery,
     TeacherList? selectedTeacher,
@@ -35,6 +39,7 @@ class TeacherScheduleState extends Equatable {
     return TeacherScheduleState(
       teacherList: teacherList ?? this.teacherList,
       weekType: weekType ?? this.weekType,
+      currentDayData: currentDayData ?? this.currentDayData,
       isLoading: isLoading ?? this.isLoading,
       searchQuery: searchQuery ?? this.searchQuery,
       selectedTeacher: selectedTeacher ?? this.selectedTeacher,
@@ -44,7 +49,16 @@ class TeacherScheduleState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [teacherList, weekType, isLoading, searchQuery, selectedTeacher, teacherSchedule, isSelected];
+  List<Object?> get props => [
+        teacherList,
+        weekType,
+        isLoading,
+        searchQuery,
+        selectedTeacher,
+        teacherSchedule,
+        isSelected,
+        currentDayData,
+      ];
 }
 
 // class ScheduleInitial extends ScheduleState {

@@ -1,9 +1,10 @@
-
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_schedule_model.dart';
+import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/models/schedule/current_group_model.dart';
 import 'package:kemsu_app/domain/models/schedule/faculty_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/group_list_model.dart';
@@ -22,6 +23,10 @@ class ScheduleRepository implements AbstractScheduleRepository {
   final ValueNotifier<CurrentGroupModel> _currentGroupData = ValueNotifier(const CurrentGroupModel(success: true, currentGroupList: []));
   @override
   ValueListenable<CurrentGroupModel> get currentGroupData => _currentGroupData;
+
+  final ValueNotifier<CurrentDayModel> _currentDayData = ValueNotifier(CurrentDayModel());
+  @override
+  ValueListenable<CurrentDayModel> get currentDayData => _currentDayData;
 
   @override
   Future<CurrentGroupModel> getCurrentGroup() async {
@@ -128,8 +133,21 @@ class ScheduleRepository implements AbstractScheduleRepository {
         "auditoryId": auditoryId,
       },
     );
-    final auditorScheduleDate = auditorScheduleResponse.data as Map<String, dynamic>;
-    final auditorSchedule = AuditorSchedule.fromJson(auditorScheduleDate);
+    final auditorScheduleData = auditorScheduleResponse.data as Map<String, dynamic>;
+    final auditorSchedule = AuditorSchedule.fromJson(auditorScheduleData);
     return auditorSchedule;
+  }
+
+  @override
+  Future<CurrentDayModel> getCurrentDayInfo() async {
+    String? token = await storage.read(key: "tokenKey");
+    final currentDayInfoResponse = await dio.get(Config.getWeekNum, queryParameters: {
+      "accessToken": token,
+    });
+    final currentDayInfoData = currentDayInfoResponse.data as Map<String, dynamic>;
+    final currentDayInfo = CurrentDayModel.fromJson(currentDayInfoData);
+    _currentDayData.value = currentDayInfo;
+
+    return currentDayInfo;
   }
 }

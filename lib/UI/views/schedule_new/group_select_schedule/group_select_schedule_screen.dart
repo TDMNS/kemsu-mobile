@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +6,7 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/schedule_new/group_select_schedule/group_select_schedule_bloc.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/search_bar.dart';
+import 'package:kemsu_app/UI/views/schedule_new/widgets/week_num_title.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_type_radio.dart';
 import 'package:kemsu_app/UI/widgets.dart';
 import 'package:kemsu_app/domain/models/schedule/faculty_list_model.dart';
@@ -88,6 +88,12 @@ class _ScheduleScreenState extends State<GroupSelectScheduleScreen> {
                   height: 12.0,
                 ),
                 if (state.isGroupSelected) ...[
+                  WeekNum(
+                    title: '${state.currentDayData?.currentDay?.weekNum}',
+                  ),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

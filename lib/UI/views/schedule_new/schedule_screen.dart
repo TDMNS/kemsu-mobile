@@ -10,6 +10,7 @@ import 'package:kemsu_app/UI/views/schedule_new/group_select_schedule/group_sele
 import 'package:kemsu_app/UI/views/schedule_new/schedule_bloc.dart';
 import 'package:kemsu_app/UI/views/schedule_new/teacher_schedule/teacher_schedule_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
+import 'package:kemsu_app/UI/views/schedule_new/widgets/week_num_title.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_type_radio.dart';
 import 'package:kemsu_app/UI/widgets.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
@@ -109,8 +110,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       const SizedBox(
                         height: 32.0,
                       ),
+                      WeekNum(
+                        title: '${state.currentDayData?.currentDay?.weekNum}',
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           WeekTypeRadio(
                             title: 'Четная',
