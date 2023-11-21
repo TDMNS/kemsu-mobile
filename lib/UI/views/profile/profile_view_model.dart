@@ -34,6 +34,11 @@ class EnumUserType {
   static String get employee => "сотрудник";
 }
 
+enum UserType {
+  student,
+  employee,
+}
+
 class ProfileViewModel extends BaseViewModel {
   ProfileViewModel(BuildContext context);
 

@@ -5,6 +5,7 @@ class AuditorScheduleState extends Equatable {
   final AuditorSchedule? auditorSchedule;
   final CurrentDayModel? currentDayData;
   final WeekType weekType;
+  final UserType userType;
   final bool isLoading;
   final String searchQuery;
   final AuditorListElement? selectedAuditor;
@@ -23,6 +24,7 @@ class AuditorScheduleState extends Equatable {
     this.searchQuery = '',
     this.selectedAuditor,
     this.isSelected = false,
+    this.userType = UserType.student,
   });
 
   AuditorScheduleState copyWith({
@@ -34,6 +36,7 @@ class AuditorScheduleState extends Equatable {
     AuditorListElement? selectedAuditor,
     AuditorSchedule? auditorSchedule,
     bool? isSelected,
+    UserType? userType,
   }) {
     return AuditorScheduleState(
       auditorList: auditorList ?? this.auditorList,
@@ -44,9 +47,10 @@ class AuditorScheduleState extends Equatable {
       selectedAuditor: selectedAuditor ?? this.selectedAuditor,
       auditorSchedule: auditorSchedule ?? this.auditorSchedule,
       isSelected: isSelected ?? this.isSelected,
+      userType: userType ?? this.userType,
     );
   }
 
   @override
-  List<Object?> get props => [auditorList, weekType, isLoading, searchQuery, selectedAuditor, auditorSchedule, isSelected, currentDayData];
+  List<Object?> get props => [auditorList, weekType, isLoading, searchQuery, selectedAuditor, auditorSchedule, isSelected, currentDayData, userType];
 }
