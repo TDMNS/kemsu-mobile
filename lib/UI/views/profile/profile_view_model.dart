@@ -4,6 +4,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -121,7 +122,17 @@ class ProfileViewModel extends BaseViewModel {
     if (!status.isGranted) {
       status = await Permission.notification.request();
     }
+    await _inAppReview();
     notifyListeners();
+  }
+
+  Future<void> _inAppReview() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    if (await inAppReview.isAvailable()) {
+      Future.delayed(const Duration(seconds: 2), () {
+        inAppReview.requestReview();
+      });
+    }
   }
 
   Future<void> _prolongToken(context) async {
