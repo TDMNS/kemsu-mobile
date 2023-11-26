@@ -12,10 +12,7 @@ class AuthRepository implements AbstractAuthRepository {
   static const storage = FlutterSecureStorage();
 
   @override
-  Future<AuthModel> postAuth() async {
-    String? login = await storage.read(key: "login");
-    String? password = await storage.read(key: "password");
-
+  Future<AuthModel> postAuth(String login, String password) async {
     final authResponse = await dio.post(Config.apiHost, data: {"login": login, "password": password});
     final authData = authResponse.data as Map<String, dynamic>;
     final authModel = AuthModel.fromJson(authData);

@@ -5,6 +5,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
+import 'package:kemsu_app/UI/views/auth/new_auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/pgas/pgas_detail/pgas_detail_screen.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
@@ -65,7 +66,7 @@ class PgasViewModel extends BaseViewModel {
       notifyListeners();
     } else if (response.statusCode == 401) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const AuthView()),
+          MaterialPageRoute(builder: (context) => const AuthScreen()),
           (Route<dynamic> route) => false);
       await storage.delete(key: "tokenKey");
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/views/auth/auth_view.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/UI/views/auth/new_auth/auth_screen.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({super.key});
@@ -44,7 +45,7 @@ getUserType(context) async {
           const Duration(milliseconds: 2800),
           () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AuthView()),
+                MaterialPageRoute(builder: (context) => const AuthScreen()),
               ))
       : Timer(
           const Duration(milliseconds: 2800),
