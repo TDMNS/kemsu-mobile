@@ -1,9 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kemsu.kemsu_app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
         android:label="КемГУ"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true" >
         <activity

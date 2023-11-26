@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_schedule_model.dart';
@@ -22,6 +24,7 @@ class AuditorScheduleBloc extends Bloc<AuditorScheduleEvent, AuditorScheduleStat
   }
 
   final AbstractScheduleRepository scheduleRepository;
+  static const storage = FlutterSecureStorage();
 
   Future<void> _changeWeekType(ChangeTypeWeek event, Emitter<AuditorScheduleState> emit) async {
     try {
@@ -31,7 +34,13 @@ class AuditorScheduleBloc extends Bloc<AuditorScheduleEvent, AuditorScheduleStat
 
   Future<void> _getAuditorList(GetAuditorList event, Emitter<AuditorScheduleState> emit) async {
     final auditorList = await scheduleRepository.getAuditorList();
-    emit(state.copyWith(auditorList: auditorList, isLoading: false));
+    String? userTypeTemp = await storage.read(key: "userType");
+
+    emit(state.copyWith(
+      auditorList: auditorList,
+      userType: userTypeTemp == 'обучающийся' ? UserType.student : UserType.employee,
+      isLoading: false,
+    ));
   }
 
   Future<void> _filterTeacherList(AuditorSearchQuery event, Emitter<AuditorScheduleState> emit) async {
