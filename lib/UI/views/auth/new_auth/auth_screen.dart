@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 
 import '../../../../Configurations/hex.dart';
 import '../../../../Configurations/localizable.dart';
@@ -64,23 +63,7 @@ class _ProfileScreenState extends State<AuthScreen> {
                   TextField(controller: loginController),
                   TextField(controller: passwordController),
                   mainButton(context, onPressed: () {
-                    _authBloc.add(PostAuthEvents(loginController.text, passwordController.text));
-
-                    final isAuthSuccess = state.authData?.success ?? false;
-                    final userType = state.authData?.userInfo.userType == EnumUserType.employee ? 1 : 0;
-
-                    /// Исправить isAuthSuccess!
-
-                    if (isAuthSuccess) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainMenu(
-                            type: userType,
-                          ),
-                        ),
-                      );
-                    }
+                    _authBloc.add(PostAuthEvents(loginController.text, passwordController.text, context));
                   }, title: 'Войти', isPrimary: true),
                   const SizedBox(height: 20),
                   mainButton(context, onPressed: () {
