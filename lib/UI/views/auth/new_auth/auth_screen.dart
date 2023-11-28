@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 
 import '../../../../Configurations/hex.dart';
 import '../../../../Configurations/localizable.dart';
@@ -27,11 +29,11 @@ class _ProfileScreenState extends State<AuthScreen> {
     authRepository: GetIt.I<AbstractAuthRepository>(),
   );
 
-  @override
-  void initState() {
-    // _authBloc.add(PostAuthEvents());
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // _authBloc.add(PostAuthEvents());
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +52,13 @@ class _ProfileScreenState extends State<AuthScreen> {
                   const SizedBox(height: 30),
                   Theme.of(context).primaryColor == Colors.grey.shade900
                       ? Image.asset(
-                    'images/logo_dark.png',
-                    height: 120,
-                  )
+                          'images/logo_dark.png',
+                          height: 120,
+                        )
                       : Image.asset(
-                    'images/logo_light.png',
-                    height: 120,
-                  ),
+                          'images/logo_light.png',
+                          height: 120,
+                        ),
                   const SizedBox(height: 30),
                   Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
@@ -67,17 +69,17 @@ class _ProfileScreenState extends State<AuthScreen> {
 
                     _authBloc.stream.listen((state) {
                       if (state.isAuthSuccess) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainMenu(
-                              type: state.userType,
-                            ),
-                          ),
-                        );
+                        AppRouting.toMenu();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => MainMenu(
+                        //       type: state.userType,
+                        //     ),
+                        //   ),
+                        // );
                       }
                     });
-
                   }, title: 'Войти', isPrimary: true),
                   const SizedBox(height: 20),
                   mainButton(context, onPressed: () {

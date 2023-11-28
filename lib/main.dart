@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 import 'package:kemsu_app/domain/di_initial.dart';
@@ -31,17 +32,12 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
+    return MaterialApp.router(
       themeMode: ThemeMode.system,
       theme: CustomThemes.lightTheme,
       darkTheme: CustomThemes.darkTheme,
-      routes: {
-        '/first': (context) => const NewsView(),
-        '/second': (context) => const ProfileView(),
-        '/third': (context) => const ScheduleScreen(),
-      },
       debugShowCheckedModeBanner: false,
-      home: const LoadingView(),
+      routerConfig: appRouter,
     );
   }
 }
