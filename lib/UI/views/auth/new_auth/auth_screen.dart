@@ -64,6 +64,20 @@ class _ProfileScreenState extends State<AuthScreen> {
                   TextField(controller: passwordController),
                   mainButton(context, onPressed: () {
                     _authBloc.add(PostAuthEvents(loginController.text, passwordController.text, context));
+
+                    _authBloc.stream.listen((state) {
+                      if (state.isAuthSuccess) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainMenu(
+                              type: state.userType,
+                            ),
+                          ),
+                        );
+                      }
+                    });
+
                   }, title: 'Войти', isPrimary: true),
                   const SizedBox(height: 20),
                   mainButton(context, onPressed: () {

@@ -27,17 +27,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       await storage.write(key: "password", value: event.password);
       await storage.write(key: "userType", value: authData.userInfo.userType);
       await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
+
       emit(state.copyWith(authData: authData, isLoading: false, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0));
-      if (state.isAuthSuccess) {
-        Navigator.push(
-          event.context,
-          MaterialPageRoute(
-            builder: (context) => MainMenu(
-              type: state.userType,
-            ),
-          ),
-        );
-      }
     } catch (e) {}
   }
 }
