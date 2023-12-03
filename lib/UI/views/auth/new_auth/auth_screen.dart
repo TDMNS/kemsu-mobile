@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<AuthScreen> {
                     _customTextField(
                         context: context,
                         focusNode: _loginFocus,
-                        suffixIcon: (_loginController.text.isNotEmpty && _loginFocus.hasFocus
+                        suffixIcon: (_loginController.text.isNotEmpty && (_loginFocus.hasFocus || _passwordFocus.hasFocus)
                             ? IconButton(
                                 icon: const Icon(Icons.cancel),
                                 onPressed: () {
@@ -91,16 +91,13 @@ class _ProfileScreenState extends State<AuthScreen> {
                         textInputAction: TextInputAction.next,
                         onChanged: (changedLogin) {
                           _authBloc.add(UpdateLoginTextFieldEvent(login: changedLogin));
-                          _loginController.text = changedLogin;
                         },
                         onTap: () {
                           _authBloc.add(UpdateLoginTextFieldEvent(login: state.login));
-                          _loginController.text = state.login;
                         },
                         onFieldSubmitted: (finalLogin) {
                           FocusScope.of(context).requestFocus(_passwordFocus);
                           _authBloc.add(UpdateLoginTextFieldEvent(login: finalLogin));
-                          _loginController.text = finalLogin;
                         }),
                     _customTextField(
                         context: context,
@@ -125,15 +122,12 @@ class _ProfileScreenState extends State<AuthScreen> {
                         textInputAction: TextInputAction.done,
                         onChanged: (changedPassword) {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: changedPassword));
-                          _passwordController.text = changedPassword;
                         },
                         onTap: () {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: state.password));
-                          _passwordController.text = state.password;
                         },
                         onFieldSubmitted: (finalPassword) {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: finalPassword));
-                          _passwordController.text = finalPassword;
                           _passwordFocus.unfocus();
                         }),
                     _profileCheckBox(state: state, bloc: _authBloc),
