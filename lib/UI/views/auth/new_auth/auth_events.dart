@@ -21,3 +21,10 @@ class ChangeRememberMeEvent extends AuthEvents {
   @override
   List<Object?> get props => [isRememberMe];
 }
+
+class GetUserDataEvent extends AuthEvents {
+  GetUserDataEvent();
+
+  @override
+  List<Object?> get props => [];
+}

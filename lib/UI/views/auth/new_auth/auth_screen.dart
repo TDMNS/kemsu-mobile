@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kemsu_app/Configurations/navigation.dart';
-
 import '../../../../Configurations/hex.dart';
 import '../../../../Configurations/localizable.dart';
 import '../../../../domain/repositories/authorization/abstract_auth_repository.dart';
 import '../../../common_views/main_button.dart';
+import '../../../menu.dart';
 import 'auth_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -26,6 +25,12 @@ class _ProfileScreenState extends State<AuthScreen> {
     const AuthState(),
     authRepository: GetIt.I<AbstractAuthRepository>(),
   );
+
+  @override
+  void initState() {
+    _authBloc.add(GetUserDataEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +61,20 @@ class _ProfileScreenState extends State<AuthScreen> {
                   const SizedBox(height: 8),
                   TextField(controller: loginController),
                   TextField(controller: passwordController),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3, bottom: 8),
-                    child: Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: state.isRememberMe,
-                          activeColor: Colors.blue,
-                          onChanged: (bool? value) {
-                            _authBloc.add(ChangeRememberMeEvent(isRememberMe: value));
-                          },
-                        ),
-                        Text(
-                          Localizable.authRememberMe,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _profileCheckBox(state: state, bloc: _authBloc),
                   mainButton(context, onPressed: () {
                     _authBloc.add(PostAuthEvents(loginController.text, passwordController.text, context));
 
                     _authBloc.stream.listen((state) {
                       if (state.isAuthSuccess) {
-                        AppRouting.toMenu();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainMenu(
+                              type: state.userType,
+                            ),
+                          ),
+                        );
                       }
                     });
                   }, title: 'Войти', isPrimary: true),
@@ -95,6 +90,27 @@ class _ProfileScreenState extends State<AuthScreen> {
       ),
     );
   }
+}
+
+_profileCheckBox({required state, required bloc}) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 3, bottom: 8),
+    child: Row(
+      children: <Widget>[
+        Checkbox(
+          value: state.isRememberMe,
+          activeColor: Colors.blue,
+          onChanged: (bool? value) {
+            bloc.add(ChangeRememberMeEvent(isRememberMe: value));
+          },
+        ),
+        Text(
+          Localizable.authRememberMe,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ],
+    ),
+  );
 }
 
 _customTextField(BuildContext context, FocusNode focusNode, Widget suffixIcon, String hintText, TextEditingController textEditingController, bool isObscure,

@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   AuthBloc(super.initialState, {required this.authRepository}) {
     on<PostAuthEvents>(_postAuth);
     on<ChangeRememberMeEvent>(_changeRememberMe);
+    on<GetUserDataEvent>(_getUserData);
   }
 
   final AbstractAuthRepository authRepository;
@@ -35,9 +36,19 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _changeRememberMe(ChangeRememberMeEvent event, Emitter<AuthState> emit) async {
     try {
       final isRememberMe = event.isRememberMe ?? false;
-      await storage.write(key: "rememberCheck", value: "$isRememberMe");
+      await storage.write(key: "isRememberMe", value: "$isRememberMe");
 
       emit(state.copyWith(isRememberMe: isRememberMe));
     } catch (e) {}
   }
+
+  Future<void> _getUserData(GetUserDataEvent event, Emitter<AuthState> emit) async {
+    try {
+      final isRememberMe = await storage.read(key: "isRememberMe");
+
+      emit(state.copyWith(isLoading: false, isRememberMe: isRememberMe == 'true'));
+    } catch (e) {}
+  }
+
+
 }
