@@ -7,9 +7,7 @@ import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_reposi
 
 import '../../../../Configurations/localizable.dart';
 import '../../../../domain/models/authorization/auth_model.dart';
-import '../../../menu.dart';
 import '../../../splash_screen.dart';
-import '../../../widgets.dart';
 import '../../profile/profile_view_model.dart';
 
 part 'auth_events.dart';
@@ -47,16 +45,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
         final statusCode = error.response?.statusCode;
         switch (statusCode) {
           case 400:
-            errorDialog(event.context, Localizable.authError400);
+            AppRouting.toAlert(Localizable.authError400);
             break;
           case 401:
-            errorDialog(event.context, Localizable.authError401);
+            AppRouting.toAlert(Localizable.authError401);
             break;
           case 500:
-            errorDialog(event.context, Localizable.authError500);
+            AppRouting.toAlert(Localizable.authError500);
             break;
           default:
-            errorDialog(event.context, Localizable.authErrorDefault);
+            AppRouting.toAlert(Localizable.authErrorDefault);
             break;
         }
       }
