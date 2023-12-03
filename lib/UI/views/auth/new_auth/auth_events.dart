@@ -12,3 +12,12 @@ class PostAuthEvents extends AuthEvents {
   @override
   List<Object?> get props => [login, password, context];
 }
+
+class ChangeRememberMeEvent extends AuthEvents {
+  ChangeRememberMeEvent({required this.isRememberMe});
+
+  final bool? isRememberMe;
+
+  @override
+  List<Object?> get props => [isRememberMe];
+}
