@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/views/auth/new_auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
@@ -315,8 +316,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void exit(context) async {
-    await storage.write(key: "tokenKey", value: "");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthScreen()));
+    await storage.write(key: "tokenKey", value: '');
+    AppRouting.toAuth();
     notifyListeners();
   }
 

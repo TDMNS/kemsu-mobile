@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 
 import '../../../../Configurations/localizable.dart';
@@ -39,14 +40,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0, isLoading: false));
 
       if (state.isAuthSuccess) {
-        Navigator.push(
-          event.context,
-          MaterialPageRoute(
-            builder: (context) => MainMenu(
-              type: state.userType,
-            ),
-          ),
-        );
+        AppRouting.toMenu();
       }
     } catch (error) {
       if (error is DioException) {

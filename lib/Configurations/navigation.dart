@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
+import 'package:kemsu_app/UI/views/auth/new_auth/auth_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -11,11 +12,14 @@ final appRouter = GoRouter(
       builder: (context, state) => const LoadingView(),
     ),
     GoRoute(
+      name: 'auth',
+      path: '/auth',
+      builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
       name: 'menu',
       path: '/menu',
-      builder: (context, state) => const MainMenu(
-        type: 0,
-      ),
+      builder: (context, state) => const MainMenu(type: 0),
     ),
   ],
 );
@@ -24,4 +28,5 @@ class AppRouting {
   AppRouting._();
 
   static void toMenu() => appRouter.go('/menu');
+  static void toAuth() => appRouter.go('/auth');
 }
