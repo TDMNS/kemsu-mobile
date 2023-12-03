@@ -59,8 +59,8 @@ class _ProfileScreenState extends State<AuthScreen> {
                   const SizedBox(height: 30),
                   Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  TextField(controller: loginController),
-                  TextField(controller: passwordController),
+                  TextField(controller: loginController..text = state.login),
+                  TextField(controller: passwordController..text = state.password),
                   _profileCheckBox(state: state, bloc: _authBloc),
                   mainButton(context, onPressed: () {
                     _authBloc.add(PostAuthEvents(loginController.text, passwordController.text, context));

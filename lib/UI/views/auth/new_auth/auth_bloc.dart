@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       await storage.write(key: "userType", value: authData.userInfo.userType);
       await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
 
-      emit(state.copyWith(authData: authData, isLoading: false, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0));
+      emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0, isLoading: false));
     } catch (e) {}
   }
 
@@ -44,9 +44,14 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
   Future<void> _getUserData(GetUserDataEvent event, Emitter<AuthState> emit) async {
     try {
-      final isRememberMe = await storage.read(key: "isRememberMe");
+      var login = await storage.read(key: "login");
+      var password = await storage.read(key: "password");
+      final isRememberMe = await storage.read(key: "isRememberMe") == true.toString();
 
-      emit(state.copyWith(isLoading: false, isRememberMe: isRememberMe == 'true'));
+      isRememberMe ? login : login = '';
+      isRememberMe ? password : password = '';
+
+      emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password, isLoading: false));
     } catch (e) {}
   }
 
