@@ -7,6 +7,7 @@ import '../../../../Configurations/localizable.dart';
 import '../../../../domain/repositories/authorization/abstract_auth_repository.dart';
 import '../../../common_views/main_button.dart';
 import '../../../menu.dart';
+import '../../../widgets.dart';
 import 'auth_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -133,19 +134,6 @@ class _ProfileScreenState extends State<AuthScreen> {
                     _profileCheckBox(state: state, bloc: _authBloc),
                     mainButton(context, onPressed: () {
                       _authBloc.add(PostAuthEvents(_loginController.text, _passwordController.text, context));
-
-                      _authBloc.stream.listen((state) {
-                        if (state.isAuthSuccess) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainMenu(
-                                type: state.userType,
-                              ),
-                            ),
-                          );
-                        }
-                      });
                     }, title: Localizable.authButtonTitle, isPrimary: true),
                     const SizedBox(height: 20),
                     mainButton(context, onPressed: () {
