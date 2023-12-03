@@ -15,6 +15,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
     on<PostAuthEvents>(_postAuth);
     on<ChangeRememberMeEvent>(_changeRememberMe);
     on<GetUserDataEvent>(_getUserData);
+    on<ChangePasswordObscureEvent>(_changePasswordObscure);
+    on<UpdateLoginTextFieldEvent>(_updateLoginTextField);
+    on<UpdatePasswordTextFieldEvent>(_updatePasswordTextField);
   }
 
   final AbstractAuthRepository authRepository;
@@ -39,6 +42,27 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       await storage.write(key: "isRememberMe", value: "$isRememberMe");
 
       emit(state.copyWith(isRememberMe: isRememberMe));
+    } catch (e) {}
+  }
+
+  Future<void> _changePasswordObscure(ChangePasswordObscureEvent event, Emitter<AuthState> emit) async {
+    try {
+      final isObscure = event.isObscure ?? true;
+      emit(state.copyWith(isObscure: !isObscure));
+    } catch (e) {}
+  }
+
+  Future<void> _updateLoginTextField(UpdateLoginTextFieldEvent event, Emitter<AuthState> emit) async {
+    try {
+      await storage.write(key: "login", value: event.login);
+      emit(state.copyWith(login: event.login));
+    } catch (e) {}
+  }
+
+  Future<void> _updatePasswordTextField(UpdatePasswordTextFieldEvent event, Emitter<AuthState> emit) async {
+    try {
+      await storage.write(key: "password", value: event.password);
+      emit(state.copyWith(password: event.password));
     } catch (e) {}
   }
 

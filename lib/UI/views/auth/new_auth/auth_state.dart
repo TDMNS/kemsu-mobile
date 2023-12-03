@@ -8,6 +8,7 @@ class AuthState extends Equatable {
   final bool isRememberMe;
   final String login;
   final String password;
+  final bool isObscure;
 
   const AuthState({
     this.authData,
@@ -17,6 +18,7 @@ class AuthState extends Equatable {
     this.isRememberMe = false,
     this.login = '',
     this.password = '',
+    this.isObscure = true,
   });
 
   AuthState copyWith({
@@ -27,6 +29,7 @@ class AuthState extends Equatable {
     bool? isRememberMe,
     String? login,
     String? password,
+    bool? isObscure,
   }) {
     return AuthState(
       authData: authData ?? this.authData,
@@ -36,9 +39,10 @@ class AuthState extends Equatable {
       isRememberMe: isRememberMe ?? this.isRememberMe,
       login: login ?? this.login,
       password: password ?? this.password,
+      isObscure: isObscure ?? this.isObscure,
     );
   }
 
   @override
-  List<Object?> get props => [authData, isLoading, isAuthSuccess, userType, isRememberMe, login, password];
+  List<Object?> get props => [authData, isLoading, isAuthSuccess, userType, isRememberMe, login, password, isObscure];
 }

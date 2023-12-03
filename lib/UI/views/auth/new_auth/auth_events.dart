@@ -22,6 +22,33 @@ class ChangeRememberMeEvent extends AuthEvents {
   List<Object?> get props => [isRememberMe];
 }
 
+class ChangePasswordObscureEvent extends AuthEvents {
+  ChangePasswordObscureEvent({required this.isObscure});
+
+  final bool? isObscure;
+
+  @override
+  List<Object?> get props => [isObscure];
+}
+
+class UpdateLoginTextFieldEvent extends AuthEvents {
+  UpdateLoginTextFieldEvent({required this.login});
+
+  final String? login;
+
+  @override
+  List<Object?> get props => [login];
+}
+
+class UpdatePasswordTextFieldEvent extends AuthEvents {
+  UpdatePasswordTextFieldEvent({required this.password});
+
+  final String? password;
+
+  @override
+  List<Object?> get props => [password];
+}
+
 class GetUserDataEvent extends AuthEvents {
   GetUserDataEvent();
 
