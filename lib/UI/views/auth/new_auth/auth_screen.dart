@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,10 +17,10 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<AuthScreen> {
-  final loginController = TextEditingController();
-  final passwordController = TextEditingController();
-  final loginFocus = FocusNode();
-  final passwordFocus = FocusNode();
+  final _loginController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _loginFocus = FocusNode();
+  final _passwordFocus = FocusNode();
 
   final _authBloc = AuthBloc(
     const AuthState(),
@@ -45,8 +44,6 @@ class _ProfileScreenState extends State<AuthScreen> {
         body: BlocBuilder<AuthBloc, AuthState>(
           bloc: _authBloc,
           builder: (context, state) {
-            // loginController.text = state.login;
-            // passwordController.text = state.password;
             return GestureDetector(
               onTap: () {
                 if (!currentFocus.hasPrimaryFocus) {
@@ -70,46 +67,42 @@ class _ProfileScreenState extends State<AuthScreen> {
                     const SizedBox(height: 30),
                     Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
-                    // TextField(controller: loginController..text = state.login),
-                    // TextField(controller: passwordController..text = state.password),
                     _customTextField(
                         context: context,
-                        focusNode: loginFocus,
-                        suffixIcon: (loginController.text.isNotEmpty && loginFocus.hasFocus
+                        focusNode: _loginFocus,
+                        suffixIcon: (_loginController.text.isNotEmpty && _loginFocus.hasFocus
                             ? IconButton(
                                 icon: const Icon(Icons.cancel),
                                 onPressed: () {
                                   _authBloc.add(UpdateLoginTextFieldEvent(login: ''));
-                                  loginController.clear();
+                                  _loginController.clear();
                                 })
                             : const SizedBox()),
                         hintText: Localizable.authLogin,
-                        textEditingController: state.login.isNotEmpty ? (loginController..text = state.login) : loginController,
+                        textEditingController: state.login.isNotEmpty ? (_loginController..text = state.login) : _loginController,
                         isObscure: false,
                         textInputAction: TextInputAction.next,
                         onChanged: (changedLogin) {
-                          print("$changedLogin");
                           _authBloc.add(UpdateLoginTextFieldEvent(login: changedLogin));
-                          loginController.text = changedLogin;
+                          _loginController.text = changedLogin;
                         },
                         onTap: () {
-                          /// Тут проблема, текст филд не обновляется если фокус был на пароле
                           _authBloc.add(UpdateLoginTextFieldEvent(login: state.login));
-                          loginController.text = state.login;
+                          _loginController.text = state.login;
                         },
                         onFieldSubmitted: (finalLogin) {
-                          FocusScope.of(context).requestFocus(passwordFocus);
+                          FocusScope.of(context).requestFocus(_passwordFocus);
                           _authBloc.add(UpdateLoginTextFieldEvent(login: finalLogin));
-                          loginController.text = finalLogin;
+                          _loginController.text = finalLogin;
                         }),
                     _customTextField(
                         context: context,
-                        focusNode: passwordFocus,
+                        focusNode: _passwordFocus,
                         suffixIcon: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            passwordController.text.isNotEmpty
+                            _passwordController.text.isNotEmpty
                                 ? IconButton(
                                     onPressed: () {
                                       _authBloc.add(ChangePasswordObscureEvent(isObscure: state.isObscure));
@@ -120,26 +113,25 @@ class _ProfileScreenState extends State<AuthScreen> {
                           ],
                         ),
                         hintText: Localizable.authEnterPassword,
-                        textEditingController: state.password.isNotEmpty ? (passwordController..text = state.password) : passwordController,
+                        textEditingController: state.password.isNotEmpty ? (_passwordController..text = state.password) : _passwordController,
                         isObscure: state.isObscure,
                         textInputAction: TextInputAction.done,
                         onChanged: (changedPassword) {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: changedPassword));
-                          passwordController.text = changedPassword;
+                          _passwordController.text = changedPassword;
                         },
                         onTap: () {
-                          /// Тут проблема, текст филд не обновляется если фокус был на логине
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: state.password));
-                          passwordController.text = state.password;
+                          _passwordController.text = state.password;
                         },
                         onFieldSubmitted: (finalPassword) {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: finalPassword));
-                          passwordController.text = finalPassword;
-                          passwordFocus.unfocus();
+                          _passwordController.text = finalPassword;
+                          _passwordFocus.unfocus();
                         }),
                     _profileCheckBox(state: state, bloc: _authBloc),
                     mainButton(context, onPressed: () {
-                      _authBloc.add(PostAuthEvents(loginController.text, passwordController.text, context));
+                      _authBloc.add(PostAuthEvents(_loginController.text, _passwordController.text, context));
 
                       _authBloc.stream.listen((state) {
                         if (state.isAuthSuccess) {
@@ -153,7 +145,7 @@ class _ProfileScreenState extends State<AuthScreen> {
                           );
                         }
                       });
-                    }, title: 'Войти', isPrimary: true),
+                    }, title: Localizable.authButtonTitle, isPrimary: true),
                     const SizedBox(height: 20),
                     mainButton(context, onPressed: () {
                       _customAlert(context);
@@ -226,6 +218,9 @@ _customTextField(
               borderRadius: BorderRadius.circular(12.0),
               borderSide: const BorderSide(color: Colors.blue),
             )),
+        inputFormatters: [
+          FilteringTextInputFormatter.deny(RegExp(r'\s')),
+        ],
         style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
         controller: textEditingController,
         obscureText: isObscure,
@@ -240,7 +235,7 @@ _customTextField(
   );
 }
 
-void _customAlert(BuildContext context) {
+_customAlert(BuildContext context) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(

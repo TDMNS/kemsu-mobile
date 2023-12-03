@@ -14,6 +14,7 @@ class Localizable {
   static String authTroubleLoggingInHeader = 'Проблемы с входом?';
   static String authTroubleLoggingInBody =
       'Если у вас наблюдаются проблемы с входом попробуйте использовать Wi-Fi КемГУ, изменить сотового оператора, либо использовать VPN. Мы уже исправляем эту проблему. В данный момент не работают сотовые операторы "Мегафон" и "Yota"';
+  static String authButtonTitle = 'Войти';
 
   /// Auth errors
   static String authError400 = 'Требуется логин/пароль пользователя!';

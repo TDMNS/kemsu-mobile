@@ -78,6 +78,4 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password, isLoading: false));
     } catch (e) {}
   }
-
-
 }
