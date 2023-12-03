@@ -34,6 +34,13 @@ class _ProfileScreenState extends State<AuthScreen> {
   }
 
   @override
+  void dispose() {
+    _loginFocus.dispose();
+    _passwordFocus.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
