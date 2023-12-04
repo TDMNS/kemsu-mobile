@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 
-import '../../../../Configurations/localizable.dart';
-import '../../../../domain/models/authorization/auth_model.dart';
-import '../../../splash_screen.dart';
-import '../../profile/profile_view_model.dart';
+import '../../../Configurations/localizable.dart';
+import '../../../domain/models/authorization/auth_model.dart';
+import '../../splash_screen.dart';
+import '../profile/profile_view_model.dart';
 
 part 'auth_events.dart';
 part 'auth_state.dart';
@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
     on<ChangePasswordObscureEvent>(_changePasswordObscure);
     on<UpdateLoginTextFieldEvent>(_updateLoginTextField);
     on<UpdatePasswordTextFieldEvent>(_updatePasswordTextField);
+    on<ProblemsEvent>(_problems);
   }
 
   final AbstractAuthRepository authRepository;
@@ -41,25 +42,25 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
         AppRouting.toMenu();
       }
     } catch (error) {
-      _navigateToAuthAlert(error);
+      _processStatusCode(error);
     }
   }
 
-  void _navigateToAuthAlert(Object error) {
+  void _processStatusCode(Object error) {
     if (error is DioException) {
       final statusCode = error.response?.statusCode;
       switch (statusCode) {
         case 400:
-          AppRouting.toAlert(Localizable.authError400);
+          AppRouting.toAuthAlert(body: Localizable.authError400);
           break;
         case 401:
-          AppRouting.toAlert(Localizable.authError401);
+          AppRouting.toAuthAlert(body: Localizable.authError401);
           break;
         case 500:
-          AppRouting.toAlert(Localizable.authError500);
+          AppRouting.toAuthAlert(body: Localizable.authError500);
           break;
         default:
-          AppRouting.toAlert(Localizable.authErrorDefault);
+          AppRouting.toAuthAlert(body: Localizable.authErrorDefault);
           break;
       }
     }
@@ -71,28 +72,45 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       await storage.write(key: "isRememberMe", value: "$isRememberMe");
 
       emit(state.copyWith(isRememberMe: isRememberMe));
-    } catch (e) {}
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
   }
 
   Future<void> _changePasswordObscure(ChangePasswordObscureEvent event, Emitter<AuthState> emit) async {
     try {
       final isObscure = event.isObscure ?? true;
       emit(state.copyWith(isObscure: !isObscure));
-    } catch (e) {}
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
   }
 
   Future<void> _updateLoginTextField(UpdateLoginTextFieldEvent event, Emitter<AuthState> emit) async {
     try {
       await storage.write(key: "login", value: event.login);
       emit(state.copyWith(login: event.login));
-    } catch (e) {}
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
   }
 
   Future<void> _updatePasswordTextField(UpdatePasswordTextFieldEvent event, Emitter<AuthState> emit) async {
     try {
       await storage.write(key: "password", value: event.password);
       emit(state.copyWith(password: event.password));
-    } catch (e) {}
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
+  }
+
+  Future<void> _problems(ProblemsEvent event, Emitter<AuthState> emit) async {
+    try {
+      AppRouting.toAuthAlert(title: Localizable.authTroubleLoggingInHeader, body: Localizable.authTroubleLoggingInBody);
+      emit(state.copyWith(isLoading: false));
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
   }
 
   Future<void> _getUserData(GetUserDataEvent event, Emitter<AuthState> emit) async {
@@ -105,6 +123,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       isRememberMe ? password : password = '';
 
       emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password, isLoading: false));
-    } catch (e) {}
+    } catch (e) {
+      AppRouting.toAuthAlert(body: e.toString());
+    }
   }
 }

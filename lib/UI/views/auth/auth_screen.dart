@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import '../../../../Configurations/hex.dart';
-import '../../../../Configurations/localizable.dart';
-import '../../../../domain/repositories/authorization/abstract_auth_repository.dart';
-import '../../../common_views/main_button.dart';
-import '../../../menu.dart';
-import '../../../common_widgets.dart';
+import 'package:kemsu_app/UI/views/auth/widgets/checkbox.dart';
+import 'package:kemsu_app/UI/views/auth/widgets/text_field.dart';
+import '../../../Configurations/localizable.dart';
+import '../../../domain/repositories/authorization/abstract_auth_repository.dart';
+import '../../common_views/main_button.dart';
 import 'auth_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class _ProfileScreenState extends State<AuthScreen> {
                     const SizedBox(height: 30),
                     Text(Localizable.authApplicationLogin, style: TextStyle(fontFamily: "Ubuntu", color: Theme.of(context).primaryColorDark, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
-                    _customTextField(
+                    AuthTextField(
                         context: context,
                         focusNode: _loginFocus,
                         suffixIcon: (_loginController.text.isNotEmpty && (_loginFocus.hasFocus || _passwordFocus.hasFocus)
@@ -100,7 +99,7 @@ class _ProfileScreenState extends State<AuthScreen> {
                           FocusScope.of(context).requestFocus(_passwordFocus);
                           _authBloc.add(UpdateLoginTextFieldEvent(login: finalLogin));
                         }),
-                    _customTextField(
+                    AuthTextField(
                         context: context,
                         focusNode: _passwordFocus,
                         suffixIcon: Row(
@@ -131,13 +130,13 @@ class _ProfileScreenState extends State<AuthScreen> {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: finalPassword));
                           _passwordFocus.unfocus();
                         }),
-                    _profileCheckBox(state: state, bloc: _authBloc),
+                    AuthCheckbox(state: state, bloc: _authBloc),
                     mainButton(context, onPressed: () {
                       _authBloc.add(PostAuthEvents(_loginController.text, _passwordController.text, context));
                     }, title: Localizable.authButtonTitle, isPrimary: true),
                     const SizedBox(height: 20),
                     mainButton(context, onPressed: () {
-                      _customAlert(context);
+                      _authBloc.add(ProblemsEvent());
                     }, title: Localizable.authTroubleLoggingInHeader, isPrimary: false)
                   ],
                 ),
@@ -148,99 +147,4 @@ class _ProfileScreenState extends State<AuthScreen> {
       ),
     );
   }
-}
-
-_profileCheckBox({required state, required bloc}) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 3, bottom: 8),
-    child: Row(
-      children: <Widget>[
-        Checkbox(
-          value: state.isRememberMe,
-          activeColor: Colors.blue,
-          onChanged: (bool? value) {
-            bloc.add(ChangeRememberMeEvent(isRememberMe: value));
-          },
-        ),
-        Text(
-          Localizable.authRememberMe,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ],
-    ),
-  );
-}
-
-_customTextField(
-    {required BuildContext context,
-    required FocusNode focusNode,
-    required Widget suffixIcon,
-    required String hintText,
-    required TextEditingController textEditingController,
-    required bool isObscure,
-    required TextInputAction textInputAction,
-    required onChanged,
-    required onTap,
-    required onFieldSubmitted}) {
-  return Container(
-    margin: const EdgeInsets.only(right: 15, left: 15, bottom: 8, top: 8),
-    child: TextFormField(
-        focusNode: focusNode,
-        onChanged: (value) {
-          onChanged(value);
-        },
-        onTap: () {
-          onTap();
-        },
-        decoration: InputDecoration(
-            fillColor: MediaQuery.of(context).platformBrightness == Brightness.dark ? HexColor('#232325') : HexColor('#f2f3f5'),
-            filled: true,
-            suffixIcon: suffixIcon,
-            contentPadding: const EdgeInsets.only(left: 15, top: 15),
-            hintText: hintText,
-            hintStyle: const TextStyle(fontFamily: "Ubuntu", color: Colors.grey, fontWeight: FontWeight.bold),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: const BorderSide(color: Colors.blue),
-            )),
-        inputFormatters: [
-          FilteringTextInputFormatter.deny(RegExp(r'\s')),
-        ],
-        style: const TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.bold),
-        controller: textEditingController,
-        obscureText: isObscure,
-        autocorrect: false,
-        enableSuggestions: false,
-        keyboardType: TextInputType.visiblePassword,
-        textInputAction: textInputAction,
-        onFieldSubmitted: (value) {
-          onFieldSubmitted(value);
-        },
-        textCapitalization: TextCapitalization.none),
-  );
-}
-
-_customAlert(BuildContext context) {
-  showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: Text(Localizable.authTroubleLoggingInHeader),
-      content: Text(
-        Localizable.authTroubleLoggingInBody,
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.blue,
-          ),
-          child: Text(Localizable.ok),
-        )
-      ],
-    ),
-  );
 }

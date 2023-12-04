@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
-import 'package:kemsu_app/UI/views/auth/new_auth/auth_screen.dart';
+import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import '../UI/common_widgets.dart';
+import 'localizable.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -24,8 +25,9 @@ final appRouter = GoRouter(
           path: 'alert',
           pageBuilder: (BuildContext context, GoRouterState state) {
             return DialogPage(builder: (_) {
-              final textContent = (state.extra as Map<String, dynamic>?)?['content'] ?? 'Default error message';
-              return ErrorDialog(context: context, textContent: textContent);
+              final title = (state.extra as Map<String, dynamic>?)?['title'] ?? Localizable.authError;
+              final body = (state.extra as Map<String, dynamic>?)?['body'] ?? Localizable.someErrorBodyDescription;
+              return ErrorDialog(context: context, title: title, body: body);
             });
           },
         ),
@@ -43,6 +45,6 @@ class AppRouting {
   AppRouting._();
 
   static void toAuth() => appRouter.go('/auth');
-  static void toAlert(String textContent) => appRouter.go('/auth/alert', extra: {'content': textContent});
+  static void toAuthAlert({String? title, required String body}) => appRouter.go('/auth/alert', extra: {'title': title ?? Localizable.authError, 'body': body});
   static void toMenu() => appRouter.go('/menu');
 }

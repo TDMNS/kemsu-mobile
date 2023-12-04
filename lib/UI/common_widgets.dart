@@ -14,15 +14,16 @@ class EnumScreensWithoutPopArrow {
 
 class ErrorDialog extends StatelessWidget {
   final BuildContext context;
-  final String textContent;
+  final String title;
+  final String body;
 
-  const ErrorDialog({super.key, required this.context, required this.textContent});
+  const ErrorDialog({super.key, required this.context, required this.title, required this.body});
 
   @override
   Widget build(context) {
     return AlertDialog(
-      title: const Text('Ошибка'),
-      content: Text(textContent),
+      title: Text(title),
+      content: Text(body),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, 'OK'),
