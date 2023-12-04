@@ -118,6 +118,7 @@ class Localizable {
   static String auditorScheduleTitle = 'Расписание аудиторий';
   static String auditorScheduleChooseAuditor = 'Выбор аудитории';
   static String auditorScheduleSearch = 'Поиск аудитории';
+  static String auditorSchedulePlaceholder = 'Уточнять в бюро расписаний';
 
   /// Check list
   static String checkListTitle = 'Обходной лист';
