@@ -41,22 +41,26 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
         AppRouting.toMenu();
       }
     } catch (error) {
-      if (error is DioException) {
-        final statusCode = error.response?.statusCode;
-        switch (statusCode) {
-          case 400:
-            AppRouting.toAlert(Localizable.authError400);
-            break;
-          case 401:
-            AppRouting.toAlert(Localizable.authError401);
-            break;
-          case 500:
-            AppRouting.toAlert(Localizable.authError500);
-            break;
-          default:
-            AppRouting.toAlert(Localizable.authErrorDefault);
-            break;
-        }
+      _navigateToAuthAlert(error);
+    }
+  }
+
+  void _navigateToAuthAlert(Object error) {
+    if (error is DioException) {
+      final statusCode = error.response?.statusCode;
+      switch (statusCode) {
+        case 400:
+          AppRouting.toAlert(Localizable.authError400);
+          break;
+        case 401:
+          AppRouting.toAlert(Localizable.authError401);
+          break;
+        case 500:
+          AppRouting.toAlert(Localizable.authError500);
+          break;
+        default:
+          AppRouting.toAlert(Localizable.authErrorDefault);
+          break;
       }
     }
   }

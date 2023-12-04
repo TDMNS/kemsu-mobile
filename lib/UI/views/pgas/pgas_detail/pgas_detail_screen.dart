@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/views/pgas/new_achieve_pgas/new_achieve_pgas_screen
 import 'package:kemsu_app/UI/views/pgas/pgas_detail/pgas_detail_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 
 class PgasDetailScreenRoute extends MaterialPageRoute {

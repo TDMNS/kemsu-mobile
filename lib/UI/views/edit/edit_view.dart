@@ -6,7 +6,7 @@ import 'package:kemsu_app/UI/common_views/snack_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import 'edit_view_model.dart';
 
 class EditView extends StatefulWidget {

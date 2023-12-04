@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
 import '../../common_views/main_button.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 
 List<DropdownMenuItem<String>> dropdownItems = [];
 

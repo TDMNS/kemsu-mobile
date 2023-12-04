@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../Configurations/localizable.dart';
 import '../../menu.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 
 class AuthViewModel extends BaseViewModel {
   AuthViewModel(BuildContext context);

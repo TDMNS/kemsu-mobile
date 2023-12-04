@@ -11,7 +11,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 
 class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleViewModel(BuildContext context);

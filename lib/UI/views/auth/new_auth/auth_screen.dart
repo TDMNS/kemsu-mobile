@@ -7,7 +7,7 @@ import '../../../../Configurations/localizable.dart';
 import '../../../../domain/repositories/authorization/abstract_auth_repository.dart';
 import '../../../common_views/main_button.dart';
 import '../../../menu.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import 'auth_bloc.dart';
 
 class AuthScreen extends StatefulWidget {

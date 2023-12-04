@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../Configurations/localizable.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import 'ordering_information_new_certificates_view_model.dart';
 
 class OrderingInformationNewCertificatesView extends StatefulWidget {

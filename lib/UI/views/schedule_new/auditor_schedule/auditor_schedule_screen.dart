@@ -8,7 +8,7 @@ import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart
 import 'package:kemsu_app/UI/views/schedule_new/widgets/search_bar.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_num_title.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_type_radio.dart';
-import 'package:kemsu_app/UI/widgets.dart';
+import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
