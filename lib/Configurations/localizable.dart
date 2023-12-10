@@ -118,6 +118,7 @@ class Localizable {
   static String auditorScheduleTitle = 'Расписание аудиторий';
   static String auditorScheduleChooseAuditor = 'Выбор аудитории';
   static String auditorScheduleSearch = 'Поиск аудитории';
+  static String auditorSchedulePlaceholder = 'Уточнять в бюро расписаний';
 
   /// Check list
   static String checkListTitle = 'Обходной лист';
@@ -133,6 +134,8 @@ class Localizable {
   static String bugReportCreate = 'Создать обращение';
   static String bugReportEnterMessage = 'Введите сообщение';
   static String bugReportSend = 'Отправить';
+  static String bugReportWarningMessage = 'Пожалуйста, обратите внимание: мы не можем предоставить ответы на вопросы напрямую. Наша команда занимается только исправлением '
+      'ошибок, связанных с техническими проблемами мобильного приложения. Благодарим за понимание!';
 
   /// Ordering information
   static String orderingInformationTitle = 'Заказ справок';
