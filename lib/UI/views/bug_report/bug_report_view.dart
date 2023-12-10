@@ -52,8 +52,9 @@ _body(context, BugReportViewModel model) {
         height: 34,
       ),
       _errorMessagesTitle(context),
-      const SizedBox(
-        height: 34,
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Expanded(child: Text(Localizable.bugReportWarningMessage, style: const TextStyle(color: Colors.red))),
       ),
       _reportSpace(context, model),
     ],

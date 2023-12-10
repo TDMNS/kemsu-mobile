@@ -51,16 +51,19 @@ class ScheduleListPages extends StatelessWidget {
                       return WeekDayCard(
                         title: weekType == WeekType.odd ? weekDays![index].oddCouple[ceilIndex] : weekDays![index].evenCouple[ceilIndex],
                         time: times![ceilIndex].description,
+                        scheduleType: ScheduleType.current,
                       );
                     case ScheduleType.teacher:
                       return WeekDayCard(
                         title: weekType == WeekType.odd ? teacherSchedule![index].ceilList[ceilIndex].ceil.unevenCeil : teacherSchedule![index].ceilList[ceilIndex].ceil.evenCeil,
                         time: teacherSchedule![index].ceilList[ceilIndex].couple.description,
+                        scheduleType: ScheduleType.teacher,
                       );
                     case ScheduleType.auditor:
                       return WeekDayCard(
                         title: weekType == WeekType.odd ? auditorSchedule?.table![ceilIndex][index].oddAllCouple : auditorSchedule?.table![ceilIndex][index].evenAllCouple,
                         time: auditorSchedule?.coupleList![ceilIndex].description,
+                        scheduleType: ScheduleType.auditor,
                       );
                   }
                 },
