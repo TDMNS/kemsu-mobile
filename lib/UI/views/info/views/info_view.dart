@@ -6,7 +6,7 @@ import '../info_view_model.dart';
 import 'info_disc_view.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 
 class InfoOUProView extends StatelessWidget {
   const InfoOUProView({super.key});

@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/common_views/main_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import '../ordering_information_model.dart';
 import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
 import '../ordering_information_view/ordering_information_view.dart';

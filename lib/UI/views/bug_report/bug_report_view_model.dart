@@ -4,7 +4,7 @@ import 'dart:io' show Platform;
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/auth/auth_view.dart';
+import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
@@ -90,7 +90,7 @@ class BugReportViewModel extends BaseViewModel {
       notifyListeners();
     } else if (response.statusCode == 401) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const AuthView()), (Route<dynamic> route) => false);
+          MaterialPageRoute(builder: (context) => const AuthScreen()), (Route<dynamic> route) => false);
       await storage.delete(key: "tokenKey");
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));

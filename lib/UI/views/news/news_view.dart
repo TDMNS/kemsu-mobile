@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import 'news_view_model.dart';
 
 class NewsView extends StatefulWidget {

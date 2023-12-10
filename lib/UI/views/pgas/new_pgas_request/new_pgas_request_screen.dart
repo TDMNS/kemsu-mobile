@@ -3,7 +3,7 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import '../common_models/faculty_model.dart';
 import '../common_models/semester_type_model.dart';
 import 'new_pgas_request_view_model.dart';

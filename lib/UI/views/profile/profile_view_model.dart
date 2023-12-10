@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
+import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -16,7 +18,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
 import '../../../local_notification_service.dart';
-import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
 import '../info/views/info_view.dart';
 import '../debts/debts_view.dart';
@@ -138,7 +139,7 @@ class ProfileViewModel extends BaseViewModel {
   Future<void> _prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
     final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
-    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView())) : null;
+    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthScreen())) : null;
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
@@ -314,8 +315,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void exit(context) async {
-    await storage.write(key: "tokenKey", value: "");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()));
+    await storage.write(key: "tokenKey", value: '');
+    AppRouting.toAuth();
     notifyListeners();
   }
 

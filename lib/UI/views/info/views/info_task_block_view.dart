@@ -6,7 +6,7 @@ import '../info_view_model.dart';
 import '../info_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 
 class InfoOUProTaskBlockView extends StatelessWidget {
   const InfoOUProTaskBlockView({super.key, required this.repData, required this.blockName});

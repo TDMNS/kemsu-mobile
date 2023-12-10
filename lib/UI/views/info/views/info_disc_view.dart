@@ -8,7 +8,7 @@ import 'info_task_block_view.dart';
 import '../info_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 
 class InfoOUProRepView extends StatelessWidget {
   const InfoOUProRepView({super.key, required this.discData, required this.repList});

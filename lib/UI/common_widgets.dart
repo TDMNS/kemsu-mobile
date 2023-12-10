@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 import 'package:badges/badges.dart' as badges;
-
 import '../local_notification_service.dart';
 
 class EnumScreensWithoutPopArrow {
@@ -11,6 +10,31 @@ class EnumScreensWithoutPopArrow {
   static String get schedule => "Расписание";
   static String get prepScheduleEmp => "Расписание преподавателя";
   static String get prepScheduleStud => "Расписание преподавателей";
+}
+
+class ErrorDialog extends StatelessWidget {
+  final BuildContext context;
+  final String title;
+  final String body;
+
+  const ErrorDialog({super.key, required this.context, required this.title, required this.body});
+
+  @override
+  Widget build(context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(body),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'OK'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
+          child: const Text('OK'),
+        ),
+      ],
+    );
+  }
 }
 
 errorDialog(context, textContent) {
@@ -102,4 +126,40 @@ class Loader extends StatelessWidget {
       ),
     );
   }
+}
+
+class DialogPage<T> extends Page<T> {
+  final Offset? anchorPoint;
+  final Color? barrierColor;
+  final bool barrierDismissible;
+  final String? barrierLabel;
+  final bool useSafeArea;
+  final CapturedThemes? themes;
+  final WidgetBuilder builder;
+
+  const DialogPage({
+    required this.builder,
+    this.anchorPoint,
+    this.barrierColor = Colors.black54,
+    this.barrierDismissible = true,
+    this.barrierLabel,
+    this.useSafeArea = true,
+    this.themes,
+    super.key,
+    super.name,
+    super.arguments,
+    super.restorationId,
+  });
+
+  @override
+  Route<T> createRoute(BuildContext context) => DialogRoute<T>(
+      context: context,
+      settings: this,
+      builder: builder,
+      anchorPoint: anchorPoint,
+      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible,
+      barrierLabel: barrierLabel,
+      useSafeArea: useSafeArea,
+      themes: themes);
 }

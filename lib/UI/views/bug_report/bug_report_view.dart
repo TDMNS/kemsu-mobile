@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_view_model.dart';
-import 'package:kemsu_app/UI/widgets.dart';
+import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:stacked/stacked.dart';
 
 class MainBugReportScreenRoute extends MaterialPageRoute {
