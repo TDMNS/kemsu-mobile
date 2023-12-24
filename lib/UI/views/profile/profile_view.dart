@@ -137,9 +137,9 @@ class _ProfileViewState extends State<ProfileView> {
         profileTiles(context, onPressed: () {
           model.navigateInfoView(context);
         }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
-        profileTiles(context, onPressed: () {
-          model.navigatePgasScreen(context);
-        }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
+        // profileTiles(context, onPressed: () {
+        //   model.navigatePgasScreen(context);
+        // }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
         profileTiles(context, onPressed: () {
           model.navigateDebtsView(context);
         }, title: Localizable.mainDebts, imageSource: 'images/icons/exclamation_circle.png'),
