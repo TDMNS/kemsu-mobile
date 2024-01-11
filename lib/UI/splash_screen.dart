@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
@@ -14,20 +15,17 @@ class LoadingView extends StatefulWidget {
 
 class _MyHomePageState extends State<LoadingView> with SingleTickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-    getUserType(context);
-  }
-
-  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark));
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Image.asset(
-        'images/splash_logo.png',
-        scale: 2.5,
+    return AnimatedSplashScreen.withScreenRouteFunction(
+      screenRouteFunction: () async {
+        return getUserType(context);
+      },
+      splash: Transform.scale(
+        scale: 4,
+        child: Image.asset('images/splash_logo.png'),
       ),
+      splashTransition: SplashTransition.fadeTransition,
     );
   }
 }
