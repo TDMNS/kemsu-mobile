@@ -116,6 +116,7 @@ class Localizable {
   static String prepScheduleTitle = 'Расписание преподавателей';
   static String prepScheduleChooseTeacher = 'Выбор преподавателя';
   static String prepScheduleSearch = 'Поиск преподавателя';
+  static String prepScheduleEmpty = 'Пары отсутствуют';
 
   ///Auditor Schedule
   static String auditorScheduleTitle = 'Расписание аудиторий';
@@ -126,7 +127,8 @@ class Localizable {
   /// Check list
   static String checkListTitle = 'Обходной лист';
   static String checkListDivisions = 'Список подразделений';
-  static String checkListDescription = 'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
+  static String checkListDescription =
+      'Дирекцию института, бюро пропусков, отдел кадров студентов рекомендуется проходить в указанной последовательности в последнюю очередь';
 
   /// Bug report
   static String bugReportTitle = 'Сообщения об ошибках';
@@ -137,7 +139,8 @@ class Localizable {
   static String bugReportCreate = 'Создать обращение';
   static String bugReportEnterMessage = 'Введите сообщение';
   static String bugReportSend = 'Отправить';
-  static String bugReportWarningMessage = 'Пожалуйста, обратите внимание: мы не можем предоставить ответы на вопросы напрямую. Наша команда занимается только исправлением '
+  static String bugReportWarningMessage =
+      'Пожалуйста, обратите внимание: мы не можем предоставить ответы на вопросы напрямую. Наша команда занимается только исправлением '
       'ошибок, связанных с техническими проблемами мобильного приложения. Благодарим за понимание!';
 
   /// Ordering information

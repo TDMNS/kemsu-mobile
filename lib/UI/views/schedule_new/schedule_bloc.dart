@@ -32,6 +32,12 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     if (userType == EnumUserType.employee) {
       final teacherList = await scheduleRepository.getTeacherList();
       final teacherId = teacherList.teacherList.where((element) => element.fio == userFio);
+      print('TEST:: ${teacherId.toList()}');
+      if (teacherId.isEmpty) {
+        emit(
+          state.copyWith(currentDayData: currentDayData, isLoading: false, isClassAvailable: false),
+        );
+      }
       final teacherSchedule = await scheduleRepository.getTeacherSchedule(prepId: teacherId.first.prepId);
       emit(
         state.copyWith(

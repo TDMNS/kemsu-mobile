@@ -136,33 +136,40 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         ],
                       ),
                       const SizedBox(height: 32.0),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.lightBlue, Colors.blue.shade900],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16.0),
-                              topRight: Radius.circular(16.0),
-                            ),
-                          ),
-                          child: state.userType == EnumUserType.student
-                              ? ScheduleListPages(
-                                  weekDays: state.scheduleTableData.result.table.weekDays,
-                                  times: state.scheduleTableData.result.coupleList,
-                                  weekType: state.weekType,
-                                  scheduleType: ScheduleType.current,
-                                )
-                              : ScheduleListPages(
-                                  weekType: state.weekType,
-                                  teacherSchedule: state.teacherSchedule!.result.prepScheduleTable,
-                                  scheduleType: ScheduleType.teacher,
+                      state.isClassAvailable
+                          ? Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.lightBlue, Colors.blue.shade900],
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(16.0),
+                                  ),
                                 ),
-                        ),
-                      ),
+                                child: state.userType == EnumUserType.student
+                                    ? ScheduleListPages(
+                                        weekDays: state.scheduleTableData.result.table.weekDays,
+                                        times: state.scheduleTableData.result.coupleList,
+                                        weekType: state.weekType,
+                                        scheduleType: ScheduleType.current,
+                                      )
+                                    : ScheduleListPages(
+                                        weekType: state.weekType,
+                                        teacherSchedule: state.teacherSchedule!.result.prepScheduleTable,
+                                        scheduleType: ScheduleType.teacher,
+                                      ),
+                              ),
+                            )
+                          : Text(
+                              Localizable.prepScheduleEmpty,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ],
                   ),
                 )

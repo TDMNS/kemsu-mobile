@@ -15,24 +15,19 @@ final appRouter = GoRouter(
       path: '/',
       builder: (context, state) => const LoadingView(),
     ),
-    GoRoute(
-      name: 'auth',
-      path: '/auth',
-      builder: (context, state) => const AuthScreen(),
-      routes: [
-        GoRoute(
-          name: 'alert',
-          path: 'alert',
-          pageBuilder: (BuildContext context, GoRouterState state) {
-            return DialogPage(builder: (_) {
-              final title = (state.extra as Map<String, dynamic>?)?['title'] ?? Localizable.authError;
-              final body = (state.extra as Map<String, dynamic>?)?['body'] ?? Localizable.someErrorBodyDescription;
-              return ErrorDialog(context: context, title: title, body: body);
-            });
-          },
-        ),
-      ]
-    ),
+    GoRoute(name: 'auth', path: '/auth', builder: (context, state) => const AuthScreen(), routes: [
+      GoRoute(
+        name: 'alert',
+        path: 'alert',
+        pageBuilder: (BuildContext context, GoRouterState state) {
+          return DialogPage(builder: (_) {
+            final title = (state.extra as Map<String, dynamic>?)?['title'] ?? Localizable.authError;
+            final body = (state.extra as Map<String, dynamic>?)?['body'] ?? Localizable.someErrorBodyDescription;
+            return ErrorDialog(context: context, title: title, body: body);
+          });
+        },
+      ),
+    ]),
     GoRoute(
       name: 'menu',
       path: '/menu',
@@ -45,6 +40,20 @@ class AppRouting {
   AppRouting._();
 
   static void toAuth() => appRouter.go('/auth');
-  static void toAuthAlert({String? title, required String body}) => appRouter.go('/auth/alert', extra: {'title': title ?? Localizable.authError, 'body': body});
+  static void toAuthAlert({String? title, required String body}) =>
+      appRouter.go('/auth/alert', extra: {'title': title ?? Localizable.authError, 'body': body});
   static void toMenu() => appRouter.go('/menu');
+  static void toMenuPop(context) => popUtil(context, '/menu');
+}
+
+//Кажется не работает
+popUtil(context, page) {
+  final router = GoRouter.of(context);
+  final GoRouterDelegate delegate = router.routerDelegate;
+  final routes = delegate.currentConfiguration.routes;
+  for (var i = 0; i < routes.length; i++) {
+    final route = routes[i] as GoRoute;
+    if (route.name == page) break;
+    GoRouter.of(context).pop();
+  }
 }

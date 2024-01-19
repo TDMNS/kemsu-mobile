@@ -2,7 +2,7 @@ part of 'auth_bloc.dart';
 
 class AuthState extends Equatable {
   final AuthModel? authData;
-  final bool isLoading;
+  // final bool isLoading;
   final bool isAuthSuccess;
   final int userType;
   final bool isRememberMe;
@@ -12,7 +12,7 @@ class AuthState extends Equatable {
 
   const AuthState({
     this.authData,
-    this.isLoading = true,
+    // this.isLoading = true,
     this.isAuthSuccess = false,
     this.userType = 0,
     this.isRememberMe = false,
@@ -23,7 +23,7 @@ class AuthState extends Equatable {
 
   AuthState copyWith({
     AuthModel? authData,
-    bool? isLoading,
+    // bool? isLoading,
     bool? isAuthSuccess,
     int? userType,
     bool? isRememberMe,
@@ -33,7 +33,7 @@ class AuthState extends Equatable {
   }) {
     return AuthState(
       authData: authData ?? this.authData,
-      isLoading: isLoading ?? this.isLoading,
+      // isLoading: isLoading ?? this.isLoading,
       isAuthSuccess: isAuthSuccess ?? this.isAuthSuccess,
       userType: userType ?? this.userType,
       isRememberMe: isRememberMe ?? this.isRememberMe,
@@ -44,5 +44,5 @@ class AuthState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [authData, isLoading, isAuthSuccess, userType, isRememberMe, login, password, isObscure];
+  List<Object?> get props => [authData, isAuthSuccess, userType, isRememberMe, login, password, isObscure];
 }
