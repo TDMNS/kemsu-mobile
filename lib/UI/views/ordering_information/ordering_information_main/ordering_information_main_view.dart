@@ -111,6 +111,10 @@ _checkCertificatesListView(BuildContext context, OrderingInformationMainViewMode
 }
 
 Widget getCertificatesListView(List<CallCertificate> items) {
+  if (items.isEmpty) {
+    return Text(Localizable.orderingInformationYouCannotGetThisCertificate, style: const TextStyle(color: Colors.red),);
+  }
+
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
