@@ -149,7 +149,8 @@ class Localizable {
   static String orderingInformationType = 'Выбрать тип заказываемой справки';
   static String orderingInformationRequestHelpCall = 'Заказать справку-вызов';
   static String orderingInformationGroupName = 'Название группы: ';
-  static String orderingInformationYouCannotGetThisCertificate = "Вы не можете заказать эту справку";
+  static String orderingInformationYouCannotGetThisCertificate = "Вы не можете заказать эту справку!";
+  static String orderingInformationWarning = "Сформированная справка-вызов фиксируется в электронном журнале дирекции / деканате института / факультета!";
   static String orderingInformationTypeDate = 'Тип даты: ';
   static String orderingInformationStudyYear = 'Учебный год: ';
   static String orderingInformationDateStart = 'Дата начала: ';
