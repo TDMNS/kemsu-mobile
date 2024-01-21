@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/common_views/main_dropdown.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
@@ -209,7 +210,10 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
         )
       else
         const SizedBox.shrink(),
-      if (model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph && model.startDate?.day != null && model.endDate?.day != null)
+      if (model.endDate != DateTime(0, 0, 0) &&
+          model.selectedPeriod == model.lastParagraph &&
+          model.startDate?.day != null &&
+          model.endDate?.day != null)
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
           child: TextFormField(
@@ -245,7 +249,10 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
       else
         const SizedBox.shrink(),
       const SizedBox(height: 20),
-      if (model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph && model.startDate?.day != null && model.endDate?.day != null)
+      if (model.endDate != DateTime(0, 0, 0) &&
+          model.selectedPeriod == model.lastParagraph &&
+          model.startDate?.day != null &&
+          model.endDate?.day != null)
         mainButton(
           context,
           onPressed: () {
@@ -270,6 +277,8 @@ void _orderInfo(BuildContext context, OrderingInformationViewModel model) {
         TextButton(
           onPressed: () {
             model.sendReferences();
+            // MARK: here need fix some navigation
+            // AppRouting.toMenuPop(context);
             Navigator.of(context).popUntil(ModalRoute.withName("/menu"));
           },
           style: ButtonStyle(

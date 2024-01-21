@@ -125,9 +125,9 @@ class _ProfileViewState extends State<ProfileView> {
   _profileView(BuildContext context, ProfileViewModel model) {
     List<Widget> tiles = [];
     tiles = [
-      profileTiles(context, onPressed: () {
-        model.navigateMoodleWebView(context, model);
-      }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
+      // profileTiles(context, onPressed: () {
+      //   model.navigateMoodleWebView(context, model);
+      // }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
     ];
     if (model.userType == EnumUserType.student) {
       tiles += [

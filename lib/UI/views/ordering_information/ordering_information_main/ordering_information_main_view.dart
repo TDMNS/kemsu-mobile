@@ -111,6 +111,16 @@ _checkCertificatesListView(BuildContext context, OrderingInformationMainViewMode
 }
 
 Widget getCertificatesListView(List<CallCertificate> items) {
+  if (items.isEmpty) {
+    return Container(child: Column(
+      children: [
+        Text(Localizable.orderingInformationWarning, style: const TextStyle(color: Colors.red),),
+        const SizedBox(height: 100),
+        Center(child: Text(Localizable.orderingInformationYouCannotGetThisCertificate, style: const TextStyle(color: Colors.red))),
+      ],
+    ));
+  }
+
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
@@ -132,6 +142,8 @@ Widget getCertificatesListView(List<CallCertificate> items) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(Localizable.orderingInformationWarning, style: const TextStyle(color: Colors.red),),
+                    const SizedBox(height: 10),
                     richText(Localizable.orderingInformationGroupName, "${item.groupName}", context),
                     const SizedBox(height: 10),
                     richText(Localizable.orderingInformationTypeDate, "${item.sessionType}", context),

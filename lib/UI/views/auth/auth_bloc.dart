@@ -36,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       await storage.write(key: "userType", value: authData.userInfo.userType);
       await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
 
-      emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0, isLoading: false));
+      emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0));
 
       if (state.isAuthSuccess) {
         AppRouting.toMenu();
@@ -107,7 +107,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _problems(ProblemsEvent event, Emitter<AuthState> emit) async {
     try {
       AppRouting.toAuthAlert(title: Localizable.authTroubleLoggingInHeader, body: Localizable.authTroubleLoggingInBody);
-      emit(state.copyWith(isLoading: false));
+      // emit(state.copyWith(isLoading: false));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
     }
@@ -122,7 +122,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       isRememberMe ? login : login = '';
       isRememberMe ? password : password = '';
 
-      emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password, isLoading: false));
+      emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
     }
