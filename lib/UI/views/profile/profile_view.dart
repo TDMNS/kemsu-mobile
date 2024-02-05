@@ -242,19 +242,6 @@ class _ProfileViewState extends State<ProfileView> {
         },
       ),
       const SizedBox(height: 5),
-      Consumer<UserProfileProvider>(
-        builder: (context, userProfileProvider, child) {
-          return Text(
-            userProfileProvider.phone.isNotEmpty ? userProfileProvider.phone : "Номер телефона не указан",
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-          );
-        },
-      )
     ];
 
     return SingleChildScrollView(
@@ -294,7 +281,9 @@ class _ProfileViewState extends State<ProfileView> {
                               },
                               child: ClipRRect(
                                 borderRadius: const BorderRadius.all(Radius.circular(55.0)),
-                                child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                                child: model.file != null
+                                    ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120)
+                                    : const Icon(Icons.person, size: 80, color: Colors.grey),
                               ),
                             ),
                           ),

@@ -45,7 +45,13 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<FacultyListModel> getFacultyList() async {
-    final facultyListResponse = await dio.get(Config.facultyList);
+    String? token = await storage.read(key: "tokenKey");
+    final facultyListResponse = await dio.get(
+      Config.facultyList,
+      queryParameters: {
+        "accessToken": token,
+      },
+    );
     final facultyListMap = facultyListResponse.data as Map<String, dynamic>;
     final facultyList = FacultyListModel.fromJson(facultyListMap);
     return facultyList;
@@ -53,10 +59,13 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<GroupListModel> getGroupList({required int facultyId}) async {
+    String? token = await storage.read(key: "tokenKey");
+
     final groupListResponse = await dio.get(
       Config.groupList,
       queryParameters: {
         "facultyId": facultyId,
+        "accessToken": token,
       },
     );
     final groupListMap = groupListResponse.data as Map<String, dynamic>;
@@ -66,6 +75,8 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<ScheduleModel> getSchedule({required int groupId}) async {
+    String? token = await storage.read(key: "tokenKey");
+
     final weekListResponse = await dio.get(
       Config.weekList,
     );
@@ -76,6 +87,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
       queryParameters: {
         'groupId': groupId,
         'semesterWeekId': weekList.result[0].id,
+        "accessToken": token,
       },
     );
     final scheduleTableData = scheduleTableResponse.data as Map<String, dynamic>;

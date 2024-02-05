@@ -13,7 +13,7 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -26,7 +26,7 @@ class _MainMenuState extends State<MainMenu> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: const [NewsView(), ProfileView(), ScheduleScreen()],
+        children: const [ProfileView(), ScheduleScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -36,10 +36,10 @@ class _MainMenuState extends State<MainMenu> {
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.newspaper),
-            label: Localizable.pageNews,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: const Icon(Icons.newspaper),
+          //   label: Localizable.pageNews,
+          // ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
             label: Localizable.pageMain,
