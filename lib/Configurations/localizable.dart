@@ -173,7 +173,7 @@ class Localizable {
   static String orderingInformationMainChooseEndDate = 'Выбрать конечную дату';
   static String orderingInformationMainEndDate = 'Конечная дата:';
   static String orderingInformationMainRequestSuccessCreated = 'Заявка успешно создана!';
-  static String orderingInformationMainInfo = 'Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+  static String orderingInformationMainInfo = 'Готовые справки о доходах выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
       ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
       'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
       'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.';

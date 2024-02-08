@@ -366,7 +366,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.5;
+				MARKETING_VERSION = 2.6.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tdmns.kemsuapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -501,7 +501,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.5;
+				MARKETING_VERSION = 2.6.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tdmns.kemsuapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -530,7 +530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.5;
+				MARKETING_VERSION = 2.6.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tdmns.kemsuapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
