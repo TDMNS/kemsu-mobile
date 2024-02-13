@@ -40,6 +40,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
       if (state.isAuthSuccess) {
         AppRouting.toMenu();
+      } else {
+        _processStatusCode(500);
       }
     } catch (error) {
       _processStatusCode(error);
