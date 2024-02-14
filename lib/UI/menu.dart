@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
+import '../Configurations/localizable.dart';
+
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key, required this.type});
   final int type;
@@ -81,14 +83,14 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
               scale: _animations[0],
               child: const Icon(Icons.home),
             ),
-            label: 'Home',
+            label: Localizable.pageMain,
           ),
           BottomNavigationBarItem(
             icon: ScaleTransition(
               scale: _animations[1],
               child: const Icon(Icons.schedule),
             ),
-            label: 'Schedule',
+            label: Localizable.pageSchedule,
           ),
         ],
       ),

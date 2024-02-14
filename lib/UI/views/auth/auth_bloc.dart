@@ -40,6 +40,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
       if (state.isAuthSuccess) {
         AppRouting.toMenu();
+      } else {
+        final error = DioException.badResponse(statusCode: 555, requestOptions: RequestOptions(), response: Response(requestOptions: RequestOptions()));
+        _processStatusCode(error);
       }
     } catch (error) {
       _processStatusCode(error);
