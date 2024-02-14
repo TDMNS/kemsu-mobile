@@ -41,7 +41,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
       if (state.isAuthSuccess) {
         AppRouting.toMenu();
       } else {
-        _processStatusCode(500);
+        _processStatusCode(1);
       }
     } catch (error) {
       _processStatusCode(error);
@@ -62,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
           AppRouting.toAuthAlert(body: Localizable.authError500);
           break;
         default:
-          AppRouting.toAuthAlert(body: Localizable.authErrorDefault);
+          AppRouting.toAuthAlert(body: "${Localizable.authErrorDefault} $error");
           break;
       }
     }
