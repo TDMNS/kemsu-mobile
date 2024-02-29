@@ -51,6 +51,8 @@ class UserInfo extends Equatable {
   final bool twoFactorAuth;
   final bool twoFactorAuthConfirmed;
 
+  String get fullName => '$lastName $firstName $middleName';
+
   const UserInfo({
     required this.id,
     required this.login,
