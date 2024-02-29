@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
+import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
 import '../Configurations/localizable.dart';
@@ -23,15 +25,15 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
     super.initState();
     _animationControllers = List.generate(
         2,
-            (index) => AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 300),
-        ));
+        (index) => AnimationController(
+              vsync: this,
+              duration: const Duration(milliseconds: 300),
+            ));
 
     _animations = _animationControllers
         .map((controller) => Tween<double>(begin: 1.0, end: 1.2).animate(
-      CurvedAnimation(parent: controller, curve: Curves.elasticOut),
-    ))
+              CurvedAnimation(parent: controller, curve: Curves.elasticOut),
+            ))
         .toList();
 
     _animationControllers[_selectedIndex].forward();
@@ -62,7 +64,8 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
       body: IndexedStack(
         index: _selectedIndex,
         children: const [
-          ProfileView(),
+          // ProfileView(),
+          ProfileScreen(),
           ScheduleScreen(),
         ],
       ),

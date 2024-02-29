@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 import 'package:badges/badges.dart' as badges;
 import '../local_notification_service.dart';
@@ -56,10 +57,10 @@ errorDialog(context, textContent) {
   );
 }
 
-customAppBar(context, name) {
+customAppBar(BuildContext context, String? name) {
   return AppBar(
     title: Text(
-      name,
+      name ?? '',
       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
@@ -76,7 +77,7 @@ customAppBar(context, name) {
         ? Container()
         : IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              AppRouting.back();
             },
             icon: const Icon(
               Icons.arrow_back_outlined,
