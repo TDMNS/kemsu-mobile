@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 
 part 'auth_model.g.dart';
 
@@ -53,6 +54,8 @@ class UserInfo extends Equatable {
 
   String get fullName => '$lastName $firstName $middleName';
 
+  UserType get currentUserType => UserType.values.firstWhere((el) => el.typeName == userType);
+
   const UserInfo({
     required this.id,
     required this.login,
@@ -77,6 +80,30 @@ class UserInfo extends Equatable {
     required this.twoFactorAuth,
     required this.twoFactorAuthConfirmed,
   });
+
+  const UserInfo.guest()
+      : id = 0,
+        login = 'stud00001',
+        firstName = 'Владимир',
+        lastName = 'Петров',
+        middleName = 'Сергеевич',
+        email = 'petrov@gmail.com',
+        phone = '+79001001111',
+        job = null,
+        org = null,
+        sciGrad = null,
+        sciName = null,
+        town = 'Кемерово',
+        country = 'Россия',
+        homePhone = null,
+        fax = null,
+        keywords = null,
+        messages = 0,
+        address = null,
+        userType = 'обучающийся',
+        blocked = 0,
+        twoFactorAuth = false,
+        twoFactorAuthConfirmed = false;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => _$UserInfoFromJson(json);
   Map<String, dynamic> toJson() => _$UserInfoToJson(this);
