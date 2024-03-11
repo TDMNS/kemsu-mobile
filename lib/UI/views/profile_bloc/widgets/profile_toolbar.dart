@@ -3,14 +3,23 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
+import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 
 class ProfileToolbar extends StatefulWidget {
   final VoidCallback? showAddInfo;
   final AuthModel? userData;
   final StudCardModel? studCard;
+  final EmpCardModel? empCard;
   final String avatar;
-  const ProfileToolbar({super.key, required this.showAddInfo, required this.userData, required this.studCard, required this.avatar});
+  const ProfileToolbar({
+    super.key,
+    required this.showAddInfo,
+    required this.userData,
+    required this.studCard,
+    required this.avatar,
+    required this.empCard,
+  });
 
   @override
   State<ProfileToolbar> createState() => _ProfileToolbarState();
@@ -42,6 +51,12 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
         tileMode: TileMode.mirror,
       ),
     ).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

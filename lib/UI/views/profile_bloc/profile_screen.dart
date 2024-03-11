@@ -23,29 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     const ProfileState(),
     authRepository: GetIt.I<AbstractAuthRepository>(),
   );
-  final Map<String, String> menuTiles = {
-    Localizable.mainRos: 'images/icons/search.png',
-    Localizable.mainInfo: 'images/icons/book.png',
-    Localizable.mainDebts: 'images/icons/exclamation_circle.png',
-    Localizable.mainOrderingInformation: 'images/icons/group.png',
-    Localizable.mainCheckList: 'images/icons/layers.png',
-    Localizable.mainPayment: 'images/icons/money.png',
-    Localizable.mainSupport: 'images/icons/shield.png',
-  };
-
-  final List<void Function()> routes = [
-    AppRouting.toRos,
-    AppRouting.toInfOUPro,
-    AppRouting.toDebts,
-    AppRouting.toOrderInformation,
-    AppRouting.toCheckList,
-    AppRouting.toPayment,
-    AppRouting.toSupport,
-  ];
 
   @override
   void initState() {
-    _profileBloc.add(LoadStudData());
+    _profileBloc.add(OnInit());
     super.initState();
   }
 
@@ -56,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
           bloc: _profileBloc,
           builder: (context, state) {
-            if (state.studCard.isLoading) {
+            if (state.studCard.isLoading && state.empCard.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(
                   color: Colors.blue,
@@ -72,6 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       showAddInfo: () => _profileBloc.add(ShowAddInfo(isShow: true)),
                       userData: state.userData.content,
                       studCard: state.studCard.content,
+                      empCard: state.empCard.content,
                       avatar: state.avatar,
                     ),
                     const SizedBox(height: 16.0),
@@ -85,22 +67,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(8.0),
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
-                      itemCount: menuTiles.length,
+                      itemCount: state.userData.requiredContent.userInfo.currentUserType == UserType.student ? studMenuTiles.length : teacherMenuTiles.length,
                       itemBuilder: (context, index) {
-                        final entry = menuTiles.entries.toList()[index];
+                        final entry = state.userData.requiredContent.userInfo.currentUserType == UserType.student
+                            ? studMenuTiles.entries.toList()[index]
+                            : teacherMenuTiles.entries.toList()[index];
                         final title = entry.key;
                         final iconPath = entry.value;
                         return MenuTile(
                           title: title,
                           iconPath: iconPath,
-                          onTap: routes[index],
+                          onTap: state.userData.requiredContent.userInfo.currentUserType == UserType.student ? studRoutes[index] : teacherRoutes[index],
                         );
                       },
                     ),
                     const SizedBox(height: 16.0),
                     mainButton(
                       context,
-                      onPressed: () => _profileBloc.add(Logout()),
+                      onPressed: () => logoutConfirm(),
+                      // onPressed: () => _profileBloc.add(Logout()),
                       title: Localizable.mainExit,
                       isPrimary: false,
                     ),
@@ -112,11 +97,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     closeInfo: () => _profileBloc.add(ShowAddInfo(isShow: false)),
                     userData: state.userData.content,
                     studCard: state.studCard.content,
+                    empCard: state.empCard.content,
                     avatar: state.avatar,
                   ),
               ],
             );
           }),
+    );
+  }
+
+  logoutConfirm() {
+    return showDialog(
+      context: context,
+      builder: (context) => Theme(
+        data: ThemeData(useMaterial3: false),
+        child: AlertDialog(
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          ),
+          title: Text(Localizable.mainWarning, textAlign: TextAlign.center),
+          actions: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      Localizable.cancel,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextButton(
+                    onPressed: () => _profileBloc.add(Logout()),
+                    child: Text(
+                      Localizable.yes,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -24,3 +24,17 @@ class LoadStudData extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
+
+class LoadEmpData extends ProfileEvent {
+  LoadEmpData();
+
+  @override
+  List<Object> get props => [];
+}
+
+class OnInit extends ProfileEvent {
+  OnInit();
+
+  @override
+  List<Object> get props => [];
+}
