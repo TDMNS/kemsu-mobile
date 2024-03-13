@@ -7,8 +7,7 @@ import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 import '../Configurations/localizable.dart';
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({super.key, required this.type});
-  final int type;
+  const MainMenu({super.key});
 
   @override
   State<MainMenu> createState() => _MainMenuState();

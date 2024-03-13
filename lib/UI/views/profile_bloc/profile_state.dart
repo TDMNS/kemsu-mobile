@@ -47,6 +47,7 @@ final Map<String, String> studMenuTiles = {
   Localizable.mainCheckList: 'images/icons/layers.png',
   Localizable.mainPayment: 'images/icons/money.png',
   Localizable.mainSupport: 'images/icons/shield.png',
+  Localizable.pageCourses: 'images/icons/courses.png',
 };
 
 final List<void Function()> studRoutes = [
@@ -57,6 +58,7 @@ final List<void Function()> studRoutes = [
   AppRouting.toCheckList,
   AppRouting.toPayment,
   AppRouting.toSupport,
+  AppRouting.toCourses,
 ];
 
 final Map<String, String> teacherMenuTiles = {

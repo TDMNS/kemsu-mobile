@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _logout(Logout event, Emitter<ProfileState> emit) async {
     await storage.delete(key: "tokenKey");
-    AppRouting.toAuth();
+    AppRouting.toNotAuthMenu();
   }
 
   Future<void> _onInit(OnInit event, Emitter<ProfileState> emit) async {
