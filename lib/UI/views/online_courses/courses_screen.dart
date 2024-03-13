@@ -8,7 +8,8 @@ import 'package:kemsu_app/UI/views/online_courses/courses_bloc.dart';
 import 'package:kemsu_app/domain/repositories/features/abstract_features_repository.dart';
 
 class OnlineCourseScreen extends StatefulWidget {
-  const OnlineCourseScreen({super.key});
+  final bool fromAuthMenu;
+  const OnlineCourseScreen({super.key, required this.fromAuthMenu});
 
   @override
   State<OnlineCourseScreen> createState() => _OnlineCourseScreenState();
@@ -19,7 +20,6 @@ class _OnlineCourseScreenState extends State<OnlineCourseScreen> {
     const CoursesState(),
     featuresRepository: GetIt.I<AbstractFeaturesRepository>(),
   );
-  bool isFullScreen = false;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _OnlineCourseScreenState extends State<OnlineCourseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(context, Localizable.pageCourses),
+      appBar: customAppBar(context, Localizable.pageCourses, canBack: widget.fromAuthMenu ? false : true),
       resizeToAvoidBottomInset: true,
       body: BlocBuilder<CoursesBloc, CoursesState>(
         bloc: _coursesBloc,

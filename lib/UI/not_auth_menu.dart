@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
+import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
 import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
@@ -23,7 +24,7 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
   void initState() {
     super.initState();
     _animationControllers = List.generate(
-        2,
+        3,
         (index) => AnimationController(
               vsync: this,
               duration: const Duration(milliseconds: 300),
@@ -64,7 +65,8 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
         index: _selectedIndex,
         children: const [
           AuthScreen(),
-          OnlineCourseScreen(),
+          OnlineCourseScreen(fromAuthMenu: true),
+          CalculationScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -75,10 +77,6 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: [
-          // BottomNavigationBarItem(
-          //   icon: const Icon(Icons.newspaper),
-          //   label: Localizable.pageNews,
-          // ),
           BottomNavigationBarItem(
             icon: ScaleTransition(
               scale: _animations[0],
@@ -93,13 +91,13 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
             ),
             label: Localizable.pageCourses,
           ),
-          // BottomNavigationBarItem(
-          //   icon: ScaleTransition(
-          //     scale: _animations[0],
-          //     child: const Icon(Icons.calculate),
-          //   ),
-          //   label: Localizable.pageCalculation,
-          // ),
+          BottomNavigationBarItem(
+            icon: ScaleTransition(
+              scale: _animations[0],
+              child: const Icon(Icons.calculate),
+            ),
+            label: Localizable.pageCalculation,
+          ),
         ],
       ),
     );
