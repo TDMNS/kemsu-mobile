@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
+import 'package:kemsu_app/UI/not_auth_menu.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({super.key});
@@ -34,22 +35,19 @@ const storage = FlutterSecureStorage();
 
 getUserType(context) async {
   String? token = await storage.read(key: "tokenKey");
-  String? userTypeTemp = await storage.read(key: "userType");
-  int? type;
-  userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
   token == null
       ? Timer(
           const Duration(milliseconds: 2800),
           () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AuthScreen()),
+                MaterialPageRoute(builder: (context) => const NotAuthMenu()),
               ))
       : Timer(
           const Duration(milliseconds: 2800),
           () => Navigator.of(context).push(
                 MaterialPageRoute(
                   settings: const RouteSettings(name: "/menu"),
-                  builder: (context) => MainMenu(type: type!),
+                  builder: (context) => const MainMenu(),
                 ),
               ));
 }

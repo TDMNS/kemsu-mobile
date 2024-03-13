@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/UI/menu.dart';
+import 'package:kemsu_app/UI/not_auth_menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_view.dart';
@@ -10,6 +11,8 @@ import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/info/views/info_view.dart';
+import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
+import 'package:kemsu_app/UI/views/online_courses/player.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/payment_web_view/payment.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/views/ros_view.dart';
@@ -41,7 +44,7 @@ final appRouter = GoRouter(
     GoRoute(
       name: 'menu',
       path: '/menu',
-      builder: (context, state) => const MainMenu(type: 0),
+      builder: (context, state) => const MainMenu(),
     ),
     GoRoute(
       name: 'editProfile',
@@ -83,6 +86,24 @@ final appRouter = GoRouter(
       path: '/support',
       builder: (context, state) => const MainBugReportScreen(),
     ),
+    GoRoute(
+      name: 'courses',
+      path: '/courses',
+      builder: (context, state) => const OnlineCourseScreen(),
+    ),
+    GoRoute(
+      name: 'notAuthMenu',
+      path: '/notAuthMenu',
+      builder: (context, state) => const NotAuthMenu(),
+    ),
+    GoRoute(
+      name: 'player',
+      path: '/player',
+      builder: (context, state) => PlayerScreen(
+        title: (state.extra as Map<String, dynamic>?)?['title'],
+        videoUrl: (state.extra as Map<String, dynamic>?)?['videoUrl'],
+      ),
+    ),
   ],
 );
 
@@ -90,6 +111,7 @@ class AppRouting {
   AppRouting._();
   static void back() => appRouter.pop();
   static void toAuth() => appRouter.go('/auth');
+  static void toNotAuthMenu() => appRouter.go('/notAuthMenu');
   static void toAuthAlert({String? title, required String body}) => appRouter.go('/auth/alert', extra: {'title': title ?? Localizable.authError, 'body': body});
   static void toMenu() => appRouter.go('/menu');
   static void toMenuPop(context) => popUtil(context, '/menu');
@@ -101,6 +123,8 @@ class AppRouting {
   static void toCheckList() => appRouter.push('/checkList');
   static void toPayment() => appRouter.push('/payment');
   static void toSupport() => appRouter.push('/support');
+  static void toCourses() => appRouter.push('/courses');
+  static void toPlayer({required String title, required String videoUrl}) => appRouter.push('/player', extra: {"title": title, "videoUrl": videoUrl});
 }
 
 //Кажется не работает

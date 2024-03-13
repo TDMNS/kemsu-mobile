@@ -5,8 +5,7 @@ import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({super.key, required this.type});
-  final int type;
+  const MainMenu({super.key});
 
   @override
   State<MainMenu> createState() => _MainMenuState();

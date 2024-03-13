@@ -6,6 +6,11 @@ class Localizable {
   static String pageMain = 'Главная';
   static String pageSchedule = 'Расписание';
 
+  /// Not auth pages
+  static String pageAuth = 'Авторизация';
+  static String pageCourses = 'Курсы';
+  static String pageCalculation = 'Калькулятор ЕГЭ';
+
   /// Auth
   static String authApplicationLogin = 'Войти в КемГУ';
   static String authLogin = 'Логин';

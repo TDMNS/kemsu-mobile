@@ -4,30 +4,44 @@ import '../../../Configurations/localizable.dart';
 import '../../common_widgets.dart';
 import '../profile/profile_view_model.dart';
 
-moodleWebView(BuildContext context, ProfileViewModel model) {
+class MoodleWebView extends StatefulWidget {
+  const MoodleWebView({super.key});
+
+  @override
+  State<MoodleWebView> createState() => _MoodleWebViewState();
+}
+
+class _MoodleWebViewState extends State<MoodleWebView> {
+  late WebViewController webViewController;
   bool isLoading = true;
-  return Scaffold(
-    extendBody: false,
-    extendBodyBehindAppBar: false,
-    appBar: customAppBar(context, Localizable.mainMoodle),
-    body: StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Stack(children: [
-          WebView(
-              initialUrl: Uri.encodeFull('http://open.kemsu.ru/'),
-              javascriptMode: JavascriptMode.unrestricted,
-              onPageFinished: (finish) {
-                setState(() {
-                  isLoading = false;
-                });
-              }),
-          isLoading
-              ? const Center(
-            child: CircularProgressIndicator(color: Colors.blue),
-          )
-              : const Stack(),
-        ]);
-      },
-    ),
-  );
+
+  @override
+  void initState() {
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse('http://open.kemsu.ru/'))
+      ..setNavigationDelegate(
+        NavigationDelegate(onPageFinished: (finish) {
+          setState(() {
+            isLoading = false;
+          });
+        }),
+      );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: false,
+      extendBodyBehindAppBar: false,
+      appBar: customAppBar(context, Localizable.mainMoodle),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: webViewController),
+          if (isLoading) const Center(child: CircularProgressIndicator(color: Colors.blue)),
+        ],
+      ),
+    );
+  }
 }
