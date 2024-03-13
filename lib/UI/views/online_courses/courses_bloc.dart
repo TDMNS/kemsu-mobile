@@ -16,7 +16,6 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
   Future<void> _loadCourses(LoadCourses event, Emitter<CoursesState> emit) async {
     var courses = await featuresRepository.getCoursesData();
-    print('TEST BLOC:: $courses');
     emit(state.copyWith(courses: Lce.content(courses)));
   }
 }

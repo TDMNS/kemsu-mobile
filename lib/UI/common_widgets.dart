@@ -57,7 +57,7 @@ errorDialog(context, textContent) {
   );
 }
 
-customAppBar(BuildContext context, String? name) {
+customAppBar(BuildContext context, String? name, {bool canBack = true}) {
   return AppBar(
     title: Text(
       name ?? '',
@@ -73,7 +73,8 @@ customAppBar(BuildContext context, String? name) {
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||
             name == EnumScreensWithoutPopArrow.schedule ||
-            name == EnumScreensWithoutPopArrow.prepScheduleEmp
+            name == EnumScreensWithoutPopArrow.prepScheduleEmp ||
+            !canBack
         ? Container()
         : IconButton(
             onPressed: () {
