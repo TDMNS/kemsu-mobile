@@ -88,7 +88,7 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
                     child: CircleAvatar(
                       radius: 40.0,
                       backgroundColor: Colors.white.withOpacity(0.4),
-                      child: widget.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(widget.avatar)),
+                      child: widget.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(widget.avatar, width: 200,  height: 200, fit: BoxFit.cover)),
                     ),
                   ),
                   const SizedBox(width: 8.0),

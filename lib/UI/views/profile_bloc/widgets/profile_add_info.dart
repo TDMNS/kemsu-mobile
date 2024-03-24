@@ -57,7 +57,7 @@ class ProfileAdditionalInformation extends StatelessWidget {
                         CircleAvatar(
                           radius: 72.0,
                           backgroundColor: Colors.white.withOpacity(0.4),
-                          child: avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(avatar)),
+                          child: avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(avatar, width: 200,  height: 200, fit: BoxFit.cover)),
                         ),
                         const SizedBox(height: 12.0),
                         if (userType == UserType.student) ...[

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 import 'package:badges/badges.dart' as badges;
+import '../Configurations/localizable.dart';
 import '../local_notification_service.dart';
 
 class EnumScreensWithoutPopArrow {
@@ -73,17 +74,23 @@ customAppBar(BuildContext context, String? name, {bool canBack = true}) {
     leading: name == EnumScreensWithoutPopArrow.news ||
             name == EnumScreensWithoutPopArrow.profile ||
             name == EnumScreensWithoutPopArrow.schedule ||
-            name == EnumScreensWithoutPopArrow.prepScheduleEmp ||
             !canBack
-        ? Container()
+        ? IconButton(
+        onPressed: () {
+          _logoutConfirm(context);
+        },
+        icon: const Icon(
+          Icons.exit_to_app,
+          color: Colors.blue,
+        ))
         : IconButton(
-            onPressed: () {
-              AppRouting.back();
-            },
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              color: Colors.blue,
-            )),
+        onPressed: () {
+          AppRouting.back();
+        },
+        icon: const Icon(
+          Icons.arrow_back_outlined,
+          color: Colors.blue,
+        )),
     actions: [
       name == EnumScreensWithoutPopArrow.news ||
               name == EnumScreensWithoutPopArrow.profile ||
@@ -108,6 +115,57 @@ customAppBar(BuildContext context, String? name, {bool canBack = true}) {
               })
           : Container()
     ],
+  );
+}
+
+_logoutConfirm(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => Theme(
+      data: ThemeData(useMaterial3: false),
+      child: AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        ),
+        title: Text(Localizable.mainWarning, textAlign: TextAlign.center, style: TextStyle(
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        ),),
+        actions: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(
+                    width: 15,
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    Localizable.cancel,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () => AppRouting.toAuth(),
+                  child: Text(
+                    Localizable.yes,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
   );
 }
 
