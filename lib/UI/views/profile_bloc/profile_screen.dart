@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
-import 'package:kemsu_app/Configurations/navigation.dart';
-import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/widgets/menu_tile.dart';
@@ -82,14 +80,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     const SizedBox(height: 16.0),
-                    mainButton(
-                      context,
-                      onPressed: () => logoutConfirm(),
-                      // onPressed: () => _profileBloc.add(Logout()),
-                      title: Localizable.mainExit,
-                      isPrimary: false,
-                    ),
-                    const SizedBox(height: 16.0),
                   ],
                 ),
                 if (state.showAddInfo)
@@ -103,52 +93,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             );
           }),
-    );
-  }
-
-  logoutConfirm() {
-    return showDialog(
-      context: context,
-      builder: (context) => Theme(
-        data: ThemeData(useMaterial3: false),
-        child: AlertDialog(
-          backgroundColor: Colors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          ),
-          title: Text(Localizable.mainWarning, textAlign: TextAlign.center),
-          actions: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      Localizable.cancel,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  TextButton(
-                    onPressed: () => _profileBloc.add(Logout()),
-                    child: Text(
-                      Localizable.yes,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

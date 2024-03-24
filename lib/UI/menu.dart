@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
@@ -63,7 +62,6 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
       body: IndexedStack(
         index: _selectedIndex,
         children: const [
-          // ProfileView(),
           ProfileScreen(),
           ScheduleScreen(),
         ],
