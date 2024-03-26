@@ -7,11 +7,13 @@ import '../Configurations/localizable.dart';
 import '../local_notification_service.dart';
 
 class EnumScreensWithoutPopArrow {
-  static String get profile => "Главная";
-  static String get news => "Новости";
-  static String get schedule => "Расписание";
-  static String get prepScheduleEmp => "Расписание преподавателя";
-  static String get prepScheduleStud => "Расписание преподавателей";
+  static const String profile = "Главная";
+  static const String news = "Новости";
+  static const String schedule = "Расписание";
+  static const String prepScheduleEmp = "Расписание преподавателя";
+  static const String prepScheduleStud = "Расписание преподавателей";
+  static const String courses = "Курсы";
+  static const String calculator = "Калькулятор";
 }
 
 class ErrorDialog extends StatelessWidget {
@@ -59,6 +61,29 @@ errorDialog(context, textContent) {
 }
 
 customAppBar(BuildContext context, String? name, {bool canBack = true}) {
+  Widget? leadingIcon;
+
+  switch (name) {
+    case EnumScreensWithoutPopArrow.profile:
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
+      break;
+    case EnumScreensWithoutPopArrow.news:
+      leadingIcon = null;
+      break;
+    case EnumScreensWithoutPopArrow.schedule:
+      leadingIcon = null;
+      break;
+    default:
+      if (canBack) {
+        leadingIcon = IconButton(
+          icon: const Icon(Icons.arrow_back_outlined, color: Colors.blue),
+          onPressed: () {
+            AppRouting.back();
+          },
+        );
+      }
+  }
+
   return AppBar(
     title: Text(
       name ?? '',
@@ -71,26 +96,7 @@ customAppBar(BuildContext context, String? name, {bool canBack = true}) {
       statusBarIconBrightness: Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
     ),
     shadowColor: Colors.black.withOpacity(0.2),
-    leading: name == EnumScreensWithoutPopArrow.news ||
-            name == EnumScreensWithoutPopArrow.profile ||
-            name == EnumScreensWithoutPopArrow.schedule ||
-            !canBack
-        ? IconButton(
-        onPressed: () {
-          _logoutConfirm(context);
-        },
-        icon: const Icon(
-          Icons.exit_to_app,
-          color: Colors.blue,
-        ))
-        : IconButton(
-        onPressed: () {
-          AppRouting.back();
-        },
-        icon: const Icon(
-          Icons.arrow_back_outlined,
-          color: Colors.blue,
-        )),
+    leading: leadingIcon,
     actions: [
       name == EnumScreensWithoutPopArrow.news ||
               name == EnumScreensWithoutPopArrow.profile ||
@@ -115,6 +121,15 @@ customAppBar(BuildContext context, String? name, {bool canBack = true}) {
               })
           : Container()
     ],
+  );
+}
+
+_exitLeadingAction(context, leadingIcon) {
+  return leadingIcon = IconButton(
+    icon: const Icon(Icons.exit_to_app, color: Colors.blue),
+    onPressed: () {
+      _logoutConfirm(context);
+    },
   );
 }
 
@@ -151,7 +166,7 @@ _logoutConfirm(context) {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () => AppRouting.toAuth(),
+                  onPressed: () => AppRouting.toNotAuthMenu(),
                   child: Text(
                     Localizable.yes,
                     style: const TextStyle(fontSize: 16),
