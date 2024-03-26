@@ -68,10 +68,10 @@ customAppBar(BuildContext context, String? name, {bool canBack = true}) {
       leadingIcon = _exitLeadingAction(context, leadingIcon);
       break;
     case EnumScreensWithoutPopArrow.news:
-      leadingIcon = null;
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
       break;
     case EnumScreensWithoutPopArrow.schedule:
-      leadingIcon = null;
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
       break;
     default:
       if (canBack) {
