@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
@@ -13,6 +15,8 @@ abstract class AbstractAuthRepository {
   Future<EmpCardModel> getEmpCardData();
 
   Future<String> getUserAvatar();
+
+  Future<void> refreshToken();
 
   ValueListenable<Lce<AuthModel>> get userData;
 

@@ -68,4 +68,19 @@ class AuthRepository implements AbstractAuthRepository {
     final String avatar = '$imageUrl?accessToken=$token';
     return imageUrl.isEmpty ? '' : avatar;
   }
+
+  @override
+  Future<void> refreshToken() async {
+    try {
+      String? token = await storage.read(key: 'tokenKey');
+      await dio.post(Config.proLongToken, queryParameters: {
+        "accessToken": token,
+      });
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        var newToken = e.response?.data['accessToken'];
+        await storage.write(key: "tokenKey", value: newToken);
+      }
+    }
+  }
 }

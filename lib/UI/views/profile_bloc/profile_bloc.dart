@@ -33,6 +33,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onInit(OnInit event, Emitter<ProfileState> emit) async {
+    await authRepository.refreshToken();
+
     var login = await storage.read(key: "login");
     var password = await storage.read(key: "password");
     await authRepository.postAuth(login: login ?? '', password: password ?? '');
