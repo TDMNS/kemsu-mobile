@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
@@ -26,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _profileBloc.add(OnInit());
+    _inAppReview();
     super.initState();
   }
 
@@ -130,5 +132,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           );
         });
+  }
+
+  Future<void> _inAppReview() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    if (await inAppReview.isAvailable()) {
+      Future.delayed(const Duration(seconds: 2), () {
+        inAppReview.requestReview();
+      });
+    }
   }
 }
