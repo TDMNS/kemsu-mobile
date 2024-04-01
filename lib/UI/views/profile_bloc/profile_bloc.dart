@@ -35,10 +35,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var needUpdate = await authRepository.checkUpdate(version: packageInfo.version);
     if (needUpdate == 0) {
-      if (Platform.isIOS) {
-        emit(state.copyWith(updateDownloadLink: 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769'));
-      }
-      emit(state.copyWith(updateDownloadLink: 'https://www.kemsu.ru/education/app-kemsu/'));
+      emit(state.copyWith(needUpdate: true));
     }
   }
 
