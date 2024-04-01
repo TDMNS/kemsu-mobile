@@ -73,11 +73,13 @@ class AuthRepository implements AbstractAuthRepository {
   Future<void> refreshToken() async {
     try {
       String? token = await storage.read(key: 'tokenKey');
-      await dio.post(Config.proLongToken, queryParameters: {
+      final response = await dio.post(Config.proLongToken, queryParameters: {
         "accessToken": token,
       });
+      var newToken = response.data['accessToken'];
+      await storage.write(key: "tokenKey", value: newToken);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401 || e.response?.statusCode == 200) {
+      if (e.response?.statusCode == 401) {
         var newToken = e.response?.data['accessToken'];
         await storage.write(key: "tokenKey", value: newToken);
       }
