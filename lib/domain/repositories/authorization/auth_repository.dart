@@ -77,7 +77,7 @@ class AuthRepository implements AbstractAuthRepository {
         "accessToken": token,
       });
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
+      if (e.response?.statusCode == 401 || e.response?.statusCode == 200) {
         var newToken = e.response?.data['accessToken'];
         await storage.write(key: "tokenKey", value: newToken);
       }
