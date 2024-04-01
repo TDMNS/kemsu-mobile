@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
@@ -44,6 +45,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onInit(OnInit event, Emitter<ProfileState> emit) async {
     await authRepository.refreshToken();
     add(CheckUpdate());
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.reportEvent('Main screen (profile) event');
     var login = await storage.read(key: "login");
     var password = await storage.read(key: "password");
     await authRepository.postAuth(login: login ?? '', password: password ?? '');
