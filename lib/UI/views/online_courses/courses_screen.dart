@@ -1,10 +1,8 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
-import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_bloc.dart';
 import 'package:kemsu_app/domain/repositories/features/abstract_features_repository.dart';

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/not_auth_menu.dart';
 
 class LoadingView extends StatefulWidget {

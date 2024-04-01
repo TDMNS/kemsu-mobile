@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';

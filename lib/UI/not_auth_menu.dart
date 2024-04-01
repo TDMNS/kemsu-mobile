@@ -3,9 +3,6 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view.dart';
-import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
-import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
 
 class NotAuthMenu extends StatefulWidget {
   const NotAuthMenu({super.key});

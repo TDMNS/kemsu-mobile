@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/localizable.dart';
 import '../../common_widgets.dart';
-import '../profile/profile_view_model.dart';
 
 class PaymentWebView extends StatefulWidget {
   // String fio = model.fio;

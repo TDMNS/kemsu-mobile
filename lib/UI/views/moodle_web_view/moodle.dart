@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../Configurations/localizable.dart';
 import '../../common_widgets.dart';
-import '../profile/profile_view_model.dart';
 
 class MoodleWebView extends StatefulWidget {
   const MoodleWebView({super.key});
