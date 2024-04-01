@@ -8,6 +8,7 @@ import 'package:kemsu_app/UI/views/profile_bloc/widgets/menu_tile.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/widgets/profile_add_info.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/widgets/profile_toolbar.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -42,6 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               );
             }
+
+            if (state.updateDownloadLink.isNotEmpty) {
+              Future.delayed(Duration.zero, () async {
+                _showUpdateAlert(link: state.updateDownloadLink);
+              });
+            }
+
             return Stack(
               children: [
                 ListView(
@@ -94,5 +102,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }),
     );
+  }
+
+  void _showUpdateAlert({required String link}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            ),
+            title: Text(Localizable.mainUpdateTitle),
+            content: Text(Localizable.mainUpdateContent),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  try {
+                    await launchUrl(Uri.parse(link));
+                  } catch (e) {
+                    throw 'Could not launch ${Uri.parse(link)}';
+                  }
+                },
+                child: Text(Localizable.mainUpdateButtonTitle),
+              )
+            ],
+          );
+        });
   }
 }

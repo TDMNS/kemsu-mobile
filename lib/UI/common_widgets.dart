@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
+import 'package:kemsu_app/UI/splash_screen.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 import 'package:badges/badges.dart' as badges;
 import '../Configurations/localizable.dart';
@@ -143,9 +144,13 @@ _logoutConfirm(context) {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
-        title: Text(Localizable.mainWarning, textAlign: TextAlign.center, style: TextStyle(
-          color: Theme.of(context).textTheme.bodyLarge?.color,
-        ),),
+        title: Text(
+          Localizable.mainWarning,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
@@ -155,7 +160,7 @@ _logoutConfirm(context) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(
-                    width: 15,
+                  width: 15,
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
@@ -166,7 +171,10 @@ _logoutConfirm(context) {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () => AppRouting.toNotAuthMenu(),
+                  onPressed: () async {
+                    await storage.delete(key: "tokenKey");
+                    AppRouting.toNotAuthMenu();
+                  },
                   child: Text(
                     Localizable.yes,
                     style: const TextStyle(fontSize: 16),

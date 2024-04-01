@@ -7,6 +7,7 @@ class ProfileState extends Equatable {
   final Lce<StudCardModel> studCard;
   final Lce<EmpCardModel> empCard;
   final String avatar;
+  final String updateDownloadLink;
 
   const ProfileState({
     this.isLoading = true,
@@ -15,6 +16,7 @@ class ProfileState extends Equatable {
     this.studCard = const Lce.loading(),
     this.empCard = const Lce.loading(),
     this.avatar = '',
+    this.updateDownloadLink = '',
   });
 
   ProfileState copyWith({
@@ -24,6 +26,7 @@ class ProfileState extends Equatable {
     Lce<StudCardModel>? studCard,
     Lce<EmpCardModel>? empCard,
     String? avatar,
+    String? updateDownloadLink,
   }) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
@@ -32,11 +35,12 @@ class ProfileState extends Equatable {
       studCard: studCard ?? this.studCard,
       empCard: empCard ?? this.empCard,
       avatar: avatar ?? this.avatar,
+      updateDownloadLink: updateDownloadLink ?? this.updateDownloadLink,
     );
   }
 
   @override
-  List<Object?> get props => [isLoading, showAddInfo, userData, studCard, empCard, avatar];
+  List<Object?> get props => [isLoading, showAddInfo, userData, studCard, empCard, avatar, updateDownloadLink];
 }
 
 final Map<String, String> studMenuTiles = {

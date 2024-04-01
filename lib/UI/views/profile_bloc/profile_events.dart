@@ -11,13 +11,6 @@ class ShowAddInfo extends ProfileEvent {
   List<Object> get props => [isShow];
 }
 
-class Logout extends ProfileEvent {
-  Logout();
-
-  @override
-  List<Object> get props => [];
-}
-
 class LoadStudData extends ProfileEvent {
   LoadStudData();
 
@@ -27,6 +20,13 @@ class LoadStudData extends ProfileEvent {
 
 class LoadEmpData extends ProfileEvent {
   LoadEmpData();
+
+  @override
+  List<Object> get props => [];
+}
+
+class CheckUpdate extends ProfileEvent {
+  CheckUpdate();
 
   @override
   List<Object> get props => [];

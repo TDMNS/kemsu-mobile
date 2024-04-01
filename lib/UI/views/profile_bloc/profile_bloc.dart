@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
@@ -8,6 +10,7 @@ import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'profile_events.dart';
 part 'profile_state.dart';
@@ -15,9 +18,9 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(super.initialState, {required this.authRepository}) {
     on<ShowAddInfo>(_showAddInfo);
-    on<Logout>(_logout);
     on<LoadStudData>(_loadStudData);
     on<LoadEmpData>(_loadEmpData);
+    on<CheckUpdate>(_checkUpdate);
     on<OnInit>(_onInit);
   }
 
@@ -27,14 +30,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(state.copyWith(showAddInfo: event.isShow));
   }
 
-  Future<void> _logout(Logout event, Emitter<ProfileState> emit) async {
-    await storage.delete(key: "tokenKey");
-    AppRouting.toNotAuthMenu();
+  Future<void> _checkUpdate(CheckUpdate event, Emitter<ProfileState> emit) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    var needUpdate = await authRepository.checkUpdate(version: packageInfo.version);
+    if (needUpdate == 0) {
+      if (Platform.isIOS) {
+        emit(state.copyWith(updateDownloadLink: 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769'));
+      }
+      emit(state.copyWith(updateDownloadLink: 'https://www.kemsu.ru/education/app-kemsu/'));
+    }
   }
 
   Future<void> _onInit(OnInit event, Emitter<ProfileState> emit) async {
     await authRepository.refreshToken();
-
+    add(CheckUpdate());
     var login = await storage.read(key: "login");
     var password = await storage.read(key: "password");
     await authRepository.postAuth(login: login ?? '', password: password ?? '');

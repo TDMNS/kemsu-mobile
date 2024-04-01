@@ -83,4 +83,12 @@ class AuthRepository implements AbstractAuthRepository {
       }
     }
   }
+
+  @override
+  Future<int> checkUpdate({required String version}) async {
+    String? token = await storage.read(key: 'tokenKey');
+    final response = await dio.post(Config.checkMobileAppVersion, queryParameters: {"accessToken": token}, data: {"clientVersion": version});
+    var result = response.data['versionEqualFlag'];
+    return result;
+  }
 }

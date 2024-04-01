@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
@@ -15,6 +14,8 @@ abstract class AbstractAuthRepository {
   Future<String> getUserAvatar();
 
   Future<void> refreshToken();
+
+  Future<int> checkUpdate({required String version});
 
   ValueListenable<Lce<AuthModel>> get userData;
 
