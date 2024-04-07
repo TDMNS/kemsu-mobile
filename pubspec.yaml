@@ -2,7 +2,7 @@ name: kemsu_app
 description: A new Flutter project.
 
 publish_to: 'none'
-version: 2.6.8+19
+version: 2.6.9+21
 
 environment:
   sdk: ">=2.17.0-69.2.beta <3.18.0"
