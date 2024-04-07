@@ -73,10 +73,6 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
         type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
         items: [
-          // BottomNavigationBarItem(
-          //   icon: const Icon(Icons.newspaper),
-          //   label: Localizable.pageNews,
-          // ),
           BottomNavigationBarItem(
             icon: ScaleTransition(
               scale: _animations[0],

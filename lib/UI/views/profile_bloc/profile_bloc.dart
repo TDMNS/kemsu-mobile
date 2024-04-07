@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
+import 'package:kemsu_app/UI/not_auth_menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
@@ -46,7 +48,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     AppMetrica.reportEvent('Main screen (profile) event');
     var login = await storage.read(key: "login");
     var password = await storage.read(key: "password");
-    await authRepository.postAuth(login: login ?? '', password: password ?? '');
+    try {
+      await authRepository.postAuth(login: login ?? '', password: password ?? '');
+    } catch(error) {
+      appRouter.pop();
+    }
     var userType = authRepository.userData.value.content?.userInfo.userType;
     UserType currentType = UserType.values.firstWhere((element) => element.typeName == userType);
     currentType == UserType.student ? add(LoadStudData()) : add(LoadEmpData());

@@ -78,6 +78,9 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
     final weekListResponse = await dio.get(
       Config.weekList,
+      queryParameters: {
+        "accessToken": token,
+      },
     );
     final weekListData = weekListResponse.data as Map<String, dynamic>;
     final weekList = WeekListModel.fromJson(weekListData);
