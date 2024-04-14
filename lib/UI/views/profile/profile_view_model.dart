@@ -313,7 +313,7 @@ class ProfileViewModel extends BaseViewModel {
 
   void exit(context) async {
     await storage.write(key: "tokenKey", value: '');
-    AppRouting.toAuth();
+    AppRouting.toNotAuthMenu();
     notifyListeners();
   }
 
