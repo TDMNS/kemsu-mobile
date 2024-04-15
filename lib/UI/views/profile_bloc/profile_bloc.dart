@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
@@ -50,9 +51,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var password = await storage.read(key: "password");
     try {
       await authRepository.postAuth(login: login ?? '', password: password ?? '');
-    } finally {
-      print("token ${await storage.read(key: "tokenKey")}");
-      await storage.write(key: "tokenKey", value: '');
+    } catch (e) {
+      log('error: $e');
+      storage.delete(key: "tokenKey");
       AppRouting.toNotAuthMenu();
     }
     var userType = authRepository.userData.value.content?.userInfo.userType;

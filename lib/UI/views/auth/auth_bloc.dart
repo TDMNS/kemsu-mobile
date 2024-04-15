@@ -30,7 +30,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
     try {
       final authData = await authRepository.postAuth(login: event.login, password: event.password);
       print("authData = $authData");
-      await storage.write(key: "tokenKey", value: authData.accessToken);
       await storage.write(key: "login", value: event.login);
       await storage.write(key: "password", value: event.password);
       await storage.write(key: "userType", value: authData.userInfo.userType);

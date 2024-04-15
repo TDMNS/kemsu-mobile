@@ -31,6 +31,7 @@ class AuthRepository implements AbstractAuthRepository {
     final authModel =
         testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
     userData.value = authModel.asContent;
+    await storage.write(key: "tokenKey", value: authModel.accessToken);
     return authModel;
   }
 
