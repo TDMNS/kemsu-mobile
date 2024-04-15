@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
+import 'package:kemsu_app/UI/splash_screen.dart';
 import 'package:kemsu_app/UI/views/notifications/notifications_view.dart';
 import 'package:badges/badges.dart' as badges;
+import '../Configurations/localizable.dart';
 import '../local_notification_service.dart';
 
 class EnumScreensWithoutPopArrow {
-  static String get profile => "Главная";
-  static String get news => "Новости";
-  static String get schedule => "Расписание";
-  static String get prepScheduleEmp => "Расписание преподавателя";
-  static String get prepScheduleStud => "Расписание преподавателей";
+  static const String profile = "Главная";
+  static const String news = "Новости";
+  static const String schedule = "Расписание";
+  static const String prepScheduleEmp = "Расписание преподавателя";
+  static const String prepScheduleStud = "Расписание преподавателей";
+  static const String courses = "Курсы";
+  static const String calculator = "Калькулятор";
 }
 
 class ErrorDialog extends StatelessWidget {
@@ -56,10 +61,33 @@ errorDialog(context, textContent) {
   );
 }
 
-customAppBar(context, name) {
+customAppBar(BuildContext context, String? name, {bool canBack = true}) {
+  Widget? leadingIcon;
+
+  switch (name) {
+    case EnumScreensWithoutPopArrow.profile:
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
+      break;
+    case EnumScreensWithoutPopArrow.news:
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
+      break;
+    case EnumScreensWithoutPopArrow.schedule:
+      leadingIcon = _exitLeadingAction(context, leadingIcon);
+      break;
+    default:
+      if (canBack) {
+        leadingIcon = IconButton(
+          icon: const Icon(Icons.arrow_back_outlined, color: Colors.blue),
+          onPressed: () {
+            AppRouting.back();
+          },
+        );
+      }
+  }
+
   return AppBar(
     title: Text(
-      name,
+      name ?? '',
       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ),
     centerTitle: true,
@@ -69,19 +97,7 @@ customAppBar(context, name) {
       statusBarIconBrightness: Theme.of(context).primaryColor == Colors.grey.shade900 ? Brightness.light : Brightness.dark,
     ),
     shadowColor: Colors.black.withOpacity(0.2),
-    leading: name == EnumScreensWithoutPopArrow.news ||
-            name == EnumScreensWithoutPopArrow.profile ||
-            name == EnumScreensWithoutPopArrow.schedule ||
-            name == EnumScreensWithoutPopArrow.prepScheduleEmp
-        ? Container()
-        : IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-              color: Colors.blue,
-            )),
+    leading: leadingIcon,
     actions: [
       name == EnumScreensWithoutPopArrow.news ||
               name == EnumScreensWithoutPopArrow.profile ||
@@ -106,6 +122,73 @@ customAppBar(context, name) {
               })
           : Container()
     ],
+  );
+}
+
+_exitLeadingAction(context, leadingIcon) {
+  return leadingIcon = IconButton(
+    icon: const Icon(Icons.exit_to_app, color: Colors.blue),
+    onPressed: () {
+      _logoutConfirm(context);
+    },
+  );
+}
+
+_logoutConfirm(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => Theme(
+      data: ThemeData(useMaterial3: false),
+      child: AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        ),
+        title: Text(
+          Localizable.mainWarning,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+          ),
+        ),
+        actions: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(
+                  width: 15,
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    Localizable.cancel,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () async {
+                    await storage.write(key: "tokenKey", value: '');
+                    AppRouting.toNotAuthMenu();
+                  },
+                  child: Text(
+                    Localizable.yes,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
   );
 }
 

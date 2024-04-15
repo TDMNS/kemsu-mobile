@@ -4,11 +4,11 @@ import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart
 
 class WeekDayCard extends StatelessWidget {
   const WeekDayCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.time,
     required this.scheduleType,
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? time;

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
@@ -24,7 +23,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
   @override
   ValueListenable<CurrentGroupModel> get currentGroupData => _currentGroupData;
 
-  final ValueNotifier<CurrentDayModel> _currentDayData = ValueNotifier(CurrentDayModel());
+  final ValueNotifier<CurrentDayModel> _currentDayData = ValueNotifier(const CurrentDayModel());
   @override
   ValueListenable<CurrentDayModel> get currentDayData => _currentDayData;
 
@@ -79,6 +78,9 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
     final weekListResponse = await dio.get(
       Config.weekList,
+      queryParameters: {
+        "accessToken": token,
+      },
     );
     final weekListData = weekListResponse.data as Map<String, dynamic>;
     final weekList = WeekListModel.fromJson(weekListData);

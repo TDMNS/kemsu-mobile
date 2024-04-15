@@ -46,3 +46,6 @@ pubspec.lock
 /ios/Podfile
 /ios/Podfile.lock
 /ios/Runner.xcodeproj/project.pbxproj
+/windows
+/linux
+/macos

@@ -4,11 +4,13 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
+import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,11 +36,6 @@ import '../rating_of_students/views/ros_view.dart';
 class EnumUserType {
   static String get student => "обучающийся";
   static String get employee => "сотрудник";
-}
-
-enum UserType {
-  student,
-  employee,
 }
 
 class ProfileViewModel extends BaseViewModel {
@@ -316,7 +313,7 @@ class ProfileViewModel extends BaseViewModel {
 
   void exit(context) async {
     await storage.write(key: "tokenKey", value: '');
-    AppRouting.toAuth();
+    AppRouting.toNotAuthMenu();
     notifyListeners();
   }
 
@@ -341,12 +338,12 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void navigatePaymentWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => paymentWebView(context, model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentWebView(authRepository: GetIt.I<AbstractAuthRepository>())));
     notifyListeners();
   }
 
   void navigateMoodleWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => moodleWebView(context, model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const MoodleWebView()));
     notifyListeners();
   }
 
