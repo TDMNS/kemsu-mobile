@@ -28,8 +28,10 @@ class AuthRepository implements AbstractAuthRepository {
   Future<AuthModel> postAuth({required String login, required String password}) async {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
     final authResponse = !testUser ? await dio.post(Config.apiHost, data: {"login": login, "password": password}) : null;
+    print("auth response = $authResponse");
     final authModel =
         testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
+    print("auth model = $authModel");
     userData.value = authModel.asContent;
     return authModel;
   }

@@ -32,7 +32,7 @@ dependencies:
   shared_preferences: ^2.2.2
   audioplayers: ^6.0.0
   video_player: ^2.8.5
-  appmetrica_plugin: ^2.0.0
+  appmetrica_plugin: ^1.4.0
   photo_view: ^0.14.0
   socket_io_client: ^2.0.3+1
   flutter_bloc: ^8.1.5

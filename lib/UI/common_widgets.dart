@@ -172,7 +172,7 @@ _logoutConfirm(context) {
                 const Spacer(),
                 TextButton(
                   onPressed: () async {
-                    await storage.delete(key: "tokenKey");
+                    await storage.write(key: "tokenKey", value: '');
                     AppRouting.toNotAuthMenu();
                   },
                   child: Text(
