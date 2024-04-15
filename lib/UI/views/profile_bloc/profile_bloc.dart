@@ -50,8 +50,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var password = await storage.read(key: "password");
     try {
       await authRepository.postAuth(login: login ?? '', password: password ?? '');
-    } catch(error) {
-      appRouter.pop();
+    } finally {
+      print("token ${await storage.read(key: "tokenKey")}");
+      await storage.write(key: "tokenKey", value: '');
+      AppRouting.toNotAuthMenu();
     }
     var userType = authRepository.userData.value.content?.userInfo.userType;
     UserType currentType = UserType.values.firstWhere((element) => element.typeName == userType);
