@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import 'models/achieve_category_model.dart';
 import 'models/activity_tree_model.dart';
 import 'year_model.dart';

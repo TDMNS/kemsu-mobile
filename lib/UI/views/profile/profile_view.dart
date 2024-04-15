@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import '../../../Configurations/localizable.dart';
 import '../../common_views/main_button.dart';
 import '../../common_views/profile_tiles.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -125,9 +125,9 @@ class _ProfileViewState extends State<ProfileView> {
   _profileView(BuildContext context, ProfileViewModel model) {
     List<Widget> tiles = [];
     tiles = [
-      profileTiles(context, onPressed: () {
-        model.navigateMoodleWebView(context, model);
-      }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
+      // profileTiles(context, onPressed: () {
+      //   model.navigateMoodleWebView(context, model);
+      // }, title: Localizable.mainMoodle, imageSource: 'images/icons/moodle.png'),
     ];
     if (model.userType == EnumUserType.student) {
       tiles += [
@@ -137,9 +137,9 @@ class _ProfileViewState extends State<ProfileView> {
         profileTiles(context, onPressed: () {
           model.navigateInfoView(context);
         }, title: Localizable.mainInfo, imageSource: 'images/icons/book.png'),
-        profileTiles(context, onPressed: () {
-          model.navigatePgasScreen(context);
-        }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
+        // profileTiles(context, onPressed: () {
+        //   model.navigatePgasScreen(context);
+        // }, title: Localizable.mainPgas, imageSource: 'images/icons/invoice.png'),
         profileTiles(context, onPressed: () {
           model.navigateDebtsView(context);
         }, title: Localizable.mainDebts, imageSource: 'images/icons/exclamation_circle.png'),
@@ -242,19 +242,6 @@ class _ProfileViewState extends State<ProfileView> {
         },
       ),
       const SizedBox(height: 5),
-      Consumer<UserProfileProvider>(
-        builder: (context, userProfileProvider, child) {
-          return Text(
-            userProfileProvider.phone.isNotEmpty ? userProfileProvider.phone : "Номер телефона не указан",
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.normal,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-          );
-        },
-      )
     ];
 
     return SingleChildScrollView(
@@ -294,7 +281,9 @@ class _ProfileViewState extends State<ProfileView> {
                               },
                               child: ClipRRect(
                                 borderRadius: const BorderRadius.all(Radius.circular(55.0)),
-                                child: model.file != null ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120) : const Icon(Icons.person, size: 80, color: Colors.grey),
+                                child: model.file != null
+                                    ? Image.file(model.file!, fit: BoxFit.cover, width: 120, height: 120)
+                                    : const Icon(Icons.person, size: 80, color: Colors.grey),
                               ),
                             ),
                           ),

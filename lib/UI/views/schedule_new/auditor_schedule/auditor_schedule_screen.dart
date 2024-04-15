@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
+import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/UI/views/schedule_new/auditor_schedule/auditor_schedule_bloc.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/search_bar.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_num_title.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_type_radio.dart';
-import 'package:kemsu_app/UI/widgets.dart';
+import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 
@@ -53,6 +54,18 @@ class _TeacherScheduleScreenState extends State<AuditorScheduleScreen> {
               const SizedBox(
                 height: 12.0,
               ),
+              if (state.userType == UserType.teacher) ...[
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Text(
+                    'Внимание! Преподаватель должен проводить пару в той аудитории, которая стоит в расписании! Изменение аудитории только по согласованию с УМУ!',
+                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+              ],
               state.isSelected
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),

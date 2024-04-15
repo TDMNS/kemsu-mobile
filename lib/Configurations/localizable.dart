@@ -6,6 +6,11 @@ class Localizable {
   static String pageMain = 'Главная';
   static String pageSchedule = 'Расписание';
 
+  /// Not auth pages
+  static String pageAuth = 'Авторизация';
+  static String pageCourses = 'Курсы';
+  static String pageCalculation = 'Калькулятор ЕГЭ';
+
   /// Auth
   static String authApplicationLogin = 'Войти в КемГУ';
   static String authLogin = 'Логин';
@@ -14,6 +19,9 @@ class Localizable {
   static String authTroubleLoggingInHeader = 'Проблемы с входом?';
   static String authTroubleLoggingInBody =
       'Если у вас наблюдаются проблемы с входом попробуйте использовать Wi-Fi КемГУ, изменить сотового оператора, либо использовать VPN. Мы уже исправляем эту проблему. В данный момент не работают сотовые операторы "Мегафон" и "Yota"';
+  static String authButtonTitle = 'Войти';
+  static String authError = 'Ошибка';
+  static String someErrorBodyDescription = 'Непредвиденная ошибка! Свяжитесь с нами любым удобным для вас способом.';
 
   /// Auth errors
   static String authError400 = 'Требуется логин/пароль пользователя!';
@@ -113,11 +121,13 @@ class Localizable {
   static String prepScheduleTitle = 'Расписание преподавателей';
   static String prepScheduleChooseTeacher = 'Выбор преподавателя';
   static String prepScheduleSearch = 'Поиск преподавателя';
+  static String prepScheduleEmpty = 'Пары отсутствуют';
 
   ///Auditor Schedule
   static String auditorScheduleTitle = 'Расписание аудиторий';
   static String auditorScheduleChooseAuditor = 'Выбор аудитории';
   static String auditorScheduleSearch = 'Поиск аудитории';
+  static String auditorSchedulePlaceholder = 'Уточнять в бюро расписаний';
 
   /// Check list
   static String checkListTitle = 'Обходной лист';
@@ -133,6 +143,8 @@ class Localizable {
   static String bugReportCreate = 'Создать обращение';
   static String bugReportEnterMessage = 'Введите сообщение';
   static String bugReportSend = 'Отправить';
+  static String bugReportWarningMessage = 'Пожалуйста, обратите внимание: мы не можем предоставить ответы на вопросы напрямую. Наша команда занимается только исправлением '
+      'ошибок, связанных с техническими проблемами мобильного приложения. Благодарим за понимание!';
 
   /// Ordering information
   static String orderingInformationTitle = 'Заказ справок';
@@ -140,6 +152,8 @@ class Localizable {
   static String orderingInformationType = 'Выбрать тип заказываемой справки';
   static String orderingInformationRequestHelpCall = 'Заказать справку-вызов';
   static String orderingInformationGroupName = 'Название группы: ';
+  static String orderingInformationYouCannotGetThisCertificate = "Вы не можете заказать эту справку!";
+  static String orderingInformationWarning = "Сформированная справка-вызов фиксируется в электронном журнале дирекции / деканате института / факультета!";
   static String orderingInformationTypeDate = 'Тип даты: ';
   static String orderingInformationStudyYear = 'Учебный год: ';
   static String orderingInformationDateStart = 'Дата начала: ';
@@ -162,7 +176,7 @@ class Localizable {
   static String orderingInformationMainChooseEndDate = 'Выбрать конечную дату';
   static String orderingInformationMainEndDate = 'Конечная дата:';
   static String orderingInformationMainRequestSuccessCreated = 'Заявка успешно создана!';
-  static String orderingInformationMainInfo = 'Готовые справки выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
+  static String orderingInformationMainInfo = 'Готовые справки о доходах выдаются на следующий (и все последующие) рабочий день с 13:00 до 17:00 лично в руки'
       ' (при предъявлении паспорта) по адресу: ул. Красная, 6 (главный корпус),каб. 1205, тел. (3842) 58-02-99\n'
       'Внимание: справку, включающую текущий месяц, необходимо заказать после окончания месяца!\n'
       'К примеру: справку, содержащую информацию о доходах, выплаченных в ноябре, необходимо заказать после 1 декабря.';

@@ -4,7 +4,7 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'check_list_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import 'check_list_model.dart';
 
 class CheckListView extends StatelessWidget {

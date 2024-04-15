@@ -6,7 +6,7 @@ import 'package:kemsu_app/UI/views/ordering_information/ordering_information_mod
 import 'package:stacked/stacked.dart';
 
 import '../../../../Configurations/localizable.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import '../../rating_of_students/ros_model.dart';
 import 'ordering_information_view_model.dart';
 
@@ -209,7 +209,10 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
         )
       else
         const SizedBox.shrink(),
-      if (model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph && model.startDate?.day != null && model.endDate?.day != null)
+      if (model.endDate != DateTime(0, 0, 0) &&
+          model.selectedPeriod == model.lastParagraph &&
+          model.startDate?.day != null &&
+          model.endDate?.day != null)
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
           child: TextFormField(
@@ -245,7 +248,10 @@ Widget _orderingInformationView(BuildContext context, OrderingInformationViewMod
       else
         const SizedBox.shrink(),
       const SizedBox(height: 20),
-      if (model.endDate != DateTime(0, 0, 0) && model.selectedPeriod == model.lastParagraph && model.startDate?.day != null && model.endDate?.day != null)
+      if (model.endDate != DateTime(0, 0, 0) &&
+          model.selectedPeriod == model.lastParagraph &&
+          model.startDate?.day != null &&
+          model.endDate?.day != null)
         mainButton(
           context,
           onPressed: () {
@@ -270,6 +276,8 @@ void _orderInfo(BuildContext context, OrderingInformationViewModel model) {
         TextButton(
           onPressed: () {
             model.sendReferences();
+            // MARK: here need fix some navigation
+            // AppRouting.toMenuPop(context);
             Navigator.of(context).popUntil(ModalRoute.withName("/menu"));
           },
           style: ButtonStyle(

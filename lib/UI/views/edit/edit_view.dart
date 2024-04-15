@@ -6,7 +6,7 @@ import 'package:kemsu_app/UI/common_views/snack_bar.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import 'edit_view_model.dart';
 
 class EditView extends StatefulWidget {
@@ -104,17 +104,6 @@ Widget _editView(BuildContext context, EditViewModel model) {
             },
           ),
           const SizedBox(height: 16),
-          TextField(
-            decoration: InputDecoration(labelText: Localizable.editPhoneNumber),
-            controller: model.phoneController,
-            onSubmitted: (newPhoneNumber) {
-              model.updatePhoneNumber(context, newPhoneNumber);
-            },
-            onTapOutside: (newPhoneNumber) {
-              model.updatePhoneNumber(context, newPhoneNumber);
-            },
-          ),
-          const SizedBox(height: 32),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [

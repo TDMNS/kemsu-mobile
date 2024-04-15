@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import '../ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import 'notifications_view_model.dart';
 

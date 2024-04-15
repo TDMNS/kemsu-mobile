@@ -8,6 +8,7 @@ class ScheduleState extends Equatable {
   final String userType;
   final WeekType weekType;
   final bool isLoading;
+  final bool isClassAvailable;
 
   const ScheduleState({
     this.scheduleTable,
@@ -17,6 +18,7 @@ class ScheduleState extends Equatable {
     this.userType = '',
     this.weekType = WeekType.even,
     this.isLoading = true,
+    this.isClassAvailable = true,
   });
 
   ScheduleModel get scheduleTableData => scheduleTable!;
@@ -29,6 +31,7 @@ class ScheduleState extends Equatable {
     String? userType,
     WeekType? weekType,
     bool? isLoading,
+    bool? isClassAvailable,
   }) {
     return ScheduleState(
       scheduleTable: scheduleTable ?? this.scheduleTable,
@@ -38,9 +41,10 @@ class ScheduleState extends Equatable {
       userType: userType ?? this.userType,
       weekType: weekType ?? this.weekType,
       isLoading: isLoading ?? this.isLoading,
+      isClassAvailable: isClassAvailable ?? this.isClassAvailable,
     );
   }
 
   @override
-  List<Object?> get props => [scheduleTable, currentGroupData, weekType, isLoading, teacherSchedule, userType, currentDayData];
+  List<Object?> get props => [scheduleTable, currentGroupData, weekType, isLoading, isClassAvailable, teacherSchedule, userType, currentDayData];
 }

@@ -4,8 +4,13 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
+import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/profile/profile_provider.dart';
+import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +20,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
 import '../../../local_notification_service.dart';
-import '../auth/auth_view.dart';
 import '../bug_report/bug_report_view.dart';
 import '../info/views/info_view.dart';
 import '../debts/debts_view.dart';
@@ -116,13 +120,23 @@ class ProfileViewModel extends BaseViewModel {
     if (!status.isGranted) {
       status = await Permission.notification.request();
     }
+    await _inAppReview();
     notifyListeners();
+  }
+
+  Future<void> _inAppReview() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    if (await inAppReview.isAvailable()) {
+      Future.delayed(const Duration(seconds: 2), () {
+        inAppReview.requestReview();
+      });
+    }
   }
 
   Future<void> _prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
     final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
-    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView())) : null;
+    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthScreen())) : null;
     var newToken = json.decode(responseToken.body)['accessToken'];
     await storage.write(key: "tokenKey", value: newToken);
   }
@@ -298,8 +312,8 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void exit(context) async {
-    await storage.write(key: "tokenKey", value: "");
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthView()));
+    await storage.write(key: "tokenKey", value: '');
+    AppRouting.toNotAuthMenu();
     notifyListeners();
   }
 
@@ -324,12 +338,12 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   void navigatePaymentWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => paymentWebView(context, model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentWebView(authRepository: GetIt.I<AbstractAuthRepository>())));
     notifyListeners();
   }
 
   void navigateMoodleWebView(context, model) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => moodleWebView(context, model)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const MoodleWebView()));
     notifyListeners();
   }
 

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/domain/models/schedule/auditor_list_model.dart';
@@ -24,7 +23,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
   @override
   ValueListenable<CurrentGroupModel> get currentGroupData => _currentGroupData;
 
-  final ValueNotifier<CurrentDayModel> _currentDayData = ValueNotifier(CurrentDayModel());
+  final ValueNotifier<CurrentDayModel> _currentDayData = ValueNotifier(const CurrentDayModel());
   @override
   ValueListenable<CurrentDayModel> get currentDayData => _currentDayData;
 
@@ -45,7 +44,13 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<FacultyListModel> getFacultyList() async {
-    final facultyListResponse = await dio.get(Config.facultyList);
+    String? token = await storage.read(key: "tokenKey");
+    final facultyListResponse = await dio.get(
+      Config.facultyList,
+      queryParameters: {
+        "accessToken": token,
+      },
+    );
     final facultyListMap = facultyListResponse.data as Map<String, dynamic>;
     final facultyList = FacultyListModel.fromJson(facultyListMap);
     return facultyList;
@@ -53,10 +58,13 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<GroupListModel> getGroupList({required int facultyId}) async {
+    String? token = await storage.read(key: "tokenKey");
+
     final groupListResponse = await dio.get(
       Config.groupList,
       queryParameters: {
         "facultyId": facultyId,
+        "accessToken": token,
       },
     );
     final groupListMap = groupListResponse.data as Map<String, dynamic>;
@@ -66,8 +74,13 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
   @override
   Future<ScheduleModel> getSchedule({required int groupId}) async {
+    String? token = await storage.read(key: "tokenKey");
+
     final weekListResponse = await dio.get(
       Config.weekList,
+      queryParameters: {
+        "accessToken": token,
+      },
     );
     final weekListData = weekListResponse.data as Map<String, dynamic>;
     final weekList = WeekListModel.fromJson(weekListData);
@@ -76,6 +89,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
       queryParameters: {
         'groupId': groupId,
         'semesterWeekId': weekList.result[0].id,
+        "accessToken": token,
       },
     );
     final scheduleTableData = scheduleTableResponse.data as Map<String, dynamic>;

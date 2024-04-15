@@ -27,11 +27,15 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   Future<void> _getCurrentSchedule(GetCurrentSchedule event, Emitter<ScheduleState> emit) async {
     String? userType = await storage.read(key: "userType");
     String? userFio = await storage.read(key: "FIO");
-    final currentGroup = await scheduleRepository.getCurrentGroup();
     final currentDayData = await scheduleRepository.getCurrentDayInfo();
     if (userType == EnumUserType.employee) {
       final teacherList = await scheduleRepository.getTeacherList();
       final teacherId = teacherList.teacherList.where((element) => element.fio == userFio);
+      if (teacherId.isEmpty) {
+        emit(
+          state.copyWith(currentDayData: currentDayData, isLoading: false, isClassAvailable: false),
+        );
+      }
       final teacherSchedule = await scheduleRepository.getTeacherSchedule(prepId: teacherId.first.prepId);
       emit(
         state.copyWith(
@@ -44,6 +48,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     }
 
     if (userType == EnumUserType.student) {
+      final currentGroup = await scheduleRepository.getCurrentGroup();
       try {
         final scheduleTable = await scheduleRepository.getSchedule(groupId: currentGroup.currentGroupList[0].groupId);
         emit(

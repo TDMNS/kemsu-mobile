@@ -7,12 +7,12 @@ import 'package:stacked/stacked.dart';
 
 import '../../../Configurations/localizable.dart';
 import '../../common_views/main_button.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 
 List<DropdownMenuItem<String>> dropdownItems = [];
 
 class PrepScheduleView extends StatefulWidget {
-  const PrepScheduleView({Key? key}) : super(key: key);
+  const PrepScheduleView({super.key});
 
   @override
   State<PrepScheduleView> createState() => _ScheduleViewState();

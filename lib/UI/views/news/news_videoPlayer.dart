@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:video_player/video_player.dart';
 import '../../../Configurations/localizable.dart';
-import '../../widgets.dart';
+import '../../common_widgets.dart';
 import 'news_view_model.dart';
 
 class VideoApp extends StatefulWidget {

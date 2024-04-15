@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
@@ -12,7 +11,7 @@ import 'package:kemsu_app/UI/views/schedule_new/teacher_schedule/teacher_schedul
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_num_title.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/week_type_radio.dart';
-import 'package:kemsu_app/UI/widgets.dart';
+import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kemsu_app/generated/assets.dart';
@@ -136,33 +135,40 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         ],
                       ),
                       const SizedBox(height: 32.0),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.lightBlue, Colors.blue.shade900],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16.0),
-                              topRight: Radius.circular(16.0),
-                            ),
-                          ),
-                          child: state.userType == EnumUserType.student
-                              ? ScheduleListPages(
-                                  weekDays: state.scheduleTableData.result.table.weekDays,
-                                  times: state.scheduleTableData.result.coupleList,
-                                  weekType: state.weekType,
-                                  scheduleType: ScheduleType.current,
-                                )
-                              : ScheduleListPages(
-                                  weekType: state.weekType,
-                                  teacherSchedule: state.teacherSchedule!.result.prepScheduleTable,
-                                  scheduleType: ScheduleType.teacher,
+                      state.isClassAvailable
+                          ? Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.lightBlue, Colors.blue.shade900],
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(16.0),
+                                  ),
                                 ),
-                        ),
-                      ),
+                                child: state.userType == EnumUserType.student
+                                    ? ScheduleListPages(
+                                        weekDays: state.scheduleTableData.result.table.weekDays,
+                                        times: state.scheduleTableData.result.coupleList,
+                                        weekType: state.weekType,
+                                        scheduleType: ScheduleType.current,
+                                      )
+                                    : ScheduleListPages(
+                                        weekType: state.weekType,
+                                        teacherSchedule: state.teacherSchedule!.result.prepScheduleTable,
+                                        scheduleType: ScheduleType.teacher,
+                                      ),
+                              ),
+                            )
+                          : Text(
+                              Localizable.prepScheduleEmpty,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ],
                   ),
                 )

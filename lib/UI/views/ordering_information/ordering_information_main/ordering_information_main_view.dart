@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/common_views/main_button.dart';
 import 'package:kemsu_app/UI/common_views/main_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/localizable.dart';
-import '../../../widgets.dart';
+import '../../../common_widgets.dart';
 import '../ordering_information_model.dart';
 import '../ordering_information_new_certificates/ordering_information_new_certificates_view.dart';
 import '../ordering_information_view/ordering_information_view.dart';
@@ -111,6 +111,16 @@ _checkCertificatesListView(BuildContext context, OrderingInformationMainViewMode
 }
 
 Widget getCertificatesListView(List<CallCertificate> items) {
+  if (items.isEmpty) {
+    return Container(child: Column(
+      children: [
+        Text(Localizable.orderingInformationWarning, style: const TextStyle(color: Colors.red),),
+        const SizedBox(height: 100),
+        Center(child: Text(Localizable.orderingInformationYouCannotGetThisCertificate, style: const TextStyle(color: Colors.red))),
+      ],
+    ));
+  }
+
   return ListView.builder(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
@@ -132,6 +142,8 @@ Widget getCertificatesListView(List<CallCertificate> items) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Text(Localizable.orderingInformationWarning, style: const TextStyle(color: Colors.red),),
+                    const SizedBox(height: 10),
                     richText(Localizable.orderingInformationGroupName, "${item.groupName}", context),
                     const SizedBox(height: 10),
                     richText(Localizable.orderingInformationTypeDate, "${item.sessionType}", context),
