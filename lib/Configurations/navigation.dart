@@ -29,7 +29,7 @@ final appRouter = GoRouter(
       path: '/',
       builder: (context, state) => const LoadingView(),
     ),
-    GoRoute(name: 'auth', path: '/auth', builder: (context, state) => const AuthScreen(), routes: [
+    GoRoute(name: 'auth', path: '/auth', builder: (context, state) => const NotAuthMenu(), routes: [
       GoRoute(
         name: 'alert',
         path: 'alert',

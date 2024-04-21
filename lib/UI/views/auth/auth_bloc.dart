@@ -109,7 +109,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _problems(ProblemsEvent event, Emitter<AuthState> emit) async {
     try {
       AppRouting.toAuthAlert(title: Localizable.authTroubleLoggingInHeader, body: Localizable.authTroubleLoggingInBody);
-      // emit(state.copyWith(isLoading: false));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
     }
