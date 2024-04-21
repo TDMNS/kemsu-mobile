@@ -1,14 +1,11 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
-import 'package:kemsu_app/UI/not_auth_menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';

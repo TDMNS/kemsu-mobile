@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
-import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
 
 class NotAuthMenu extends StatefulWidget {

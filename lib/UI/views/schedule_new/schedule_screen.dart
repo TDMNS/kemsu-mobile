@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +33,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   void initState() {
-    _scheduleBloc.add(GetCurrentSchedule());
+    Timer(const Duration(seconds: 1), () => _scheduleBloc.add(GetCurrentSchedule()));
+
     super.initState();
   }
 

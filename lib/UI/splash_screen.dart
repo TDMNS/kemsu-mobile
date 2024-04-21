@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/menu.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:flutter/services.dart';
-import 'package:kemsu_app/UI/not_auth_menu.dart';
 
 class LoadingView extends StatefulWidget {
   const LoadingView({super.key});
@@ -13,40 +11,50 @@ class LoadingView extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<LoadingView> {
+class _MyHomePageState extends State<LoadingView> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _animationController.forward();
+    getUserType();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark));
-    return AnimatedSplashScreen.withScreenRouteFunction(
-      screenRouteFunction: () async {
-        return getUserType(context);
-      },
-      splash: Transform.scale(
-        scale: 4,
-        child: Image.asset('images/splash_logo.png'),
+    return Scaffold(
+      body: Center(
+        child: FadeTransition(
+          opacity: _animation,
+          child: Image.asset('images/splash_logo.png'),
+        ),
       ),
-      splashTransition: SplashTransition.fadeTransition,
     );
   }
 }
 
 const storage = FlutterSecureStorage();
 
-getUserType(context) async {
+Future<void> getUserType() async {
   String? token = await storage.read(key: "tokenKey");
-  token == null
-      ? Timer(
-          const Duration(milliseconds: 2800),
-          () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NotAuthMenu()),
-              ))
-      : Timer(
-          const Duration(milliseconds: 2800),
-          () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  settings: const RouteSettings(name: "/menu"),
-                  builder: (context) => const MainMenu(),
-                ),
-              ));
+  Timer(
+    const Duration(milliseconds: 2800),
+    () {
+      if (token == null) {
+        AppRouting.toNotAuthMenu();
+      } else {
+        AppRouting.toMenu();
+      }
+    },
+  );
 }
