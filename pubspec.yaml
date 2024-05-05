@@ -50,6 +50,8 @@ dependencies:
   go_router: ^13.2.3
   youtube_player_flutter: ^9.0.0
   device_info_plus:
+  firebase_core: ^2.30.1
+  firebase_messaging: ^14.9.1
 
 dev_dependencies :
   flutter_test:

@@ -13,6 +13,8 @@ import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../local_notification_service.dart';
+
 part 'profile_events.dart';
 part 'profile_state.dart';
 
@@ -56,6 +58,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     var userType = authRepository.userData.value.content?.userInfo.userType;
     UserType currentType = UserType.values.firstWhere((element) => element.typeName == userType);
     currentType == UserType.student ? add(LoadStudData()) : add(LoadEmpData());
+    await localNotificationService.setup();
   }
 
   Future<void> _loadStudData(LoadStudData event, Emitter<ProfileState> emit) async {
