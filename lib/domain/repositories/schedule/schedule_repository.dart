@@ -32,9 +32,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
     String? token = await storage.read(key: "tokenKey");
     final currentGroupResponse = await dio.get(
       Config.currentGroupList,
-      queryParameters: {
-        "accessToken": token,
-      },
+      options: Options(headers: {'x-access-token': token}),
     );
     final currentGroupMap = currentGroupResponse.data as Map<String, dynamic>;
     final currentGroup = CurrentGroupModel.fromJson(currentGroupMap);
@@ -47,9 +45,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
     String? token = await storage.read(key: "tokenKey");
     final facultyListResponse = await dio.get(
       Config.facultyList,
-      queryParameters: {
-        "accessToken": token,
-      },
+      options: Options(headers: {'x-access-token': token}),
     );
     final facultyListMap = facultyListResponse.data as Map<String, dynamic>;
     final facultyList = FacultyListModel.fromJson(facultyListMap);
@@ -64,8 +60,8 @@ class ScheduleRepository implements AbstractScheduleRepository {
       Config.groupList,
       queryParameters: {
         "facultyId": facultyId,
-        "accessToken": token,
       },
+      options: Options(headers: {'x-access-token': token}),
     );
     final groupListMap = groupListResponse.data as Map<String, dynamic>;
     final groupList = GroupListModel.fromJson(groupListMap);
@@ -78,9 +74,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
 
     final weekListResponse = await dio.get(
       Config.weekList,
-      queryParameters: {
-        "accessToken": token,
-      },
+      options: Options(headers: {'x-access-token': token}),
     );
     final weekListData = weekListResponse.data as Map<String, dynamic>;
     final weekList = WeekListModel.fromJson(weekListData);
@@ -89,8 +83,8 @@ class ScheduleRepository implements AbstractScheduleRepository {
       queryParameters: {
         'groupId': groupId,
         'semesterWeekId': weekList.result[0].id,
-        "accessToken": token,
       },
+      options: Options(headers: {'x-access-token': token}),
     );
     final scheduleTableData = scheduleTableResponse.data as Map<String, dynamic>;
     final scheduleTable = ScheduleModel.fromJson(scheduleTableData);
@@ -102,9 +96,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
     String? token = await storage.read(key: "tokenKey");
     final teacherListResponse = await dio.get(
       Config.teacherList,
-      queryParameters: {
-        "accessToken": token,
-      },
+      options: Options(headers: {'x-access-token': token}),
     );
     final teacherListData = teacherListResponse.data as Map<String, dynamic>;
     final teacherList = ScheduleTeacherModel.fromJson(teacherListData);
@@ -115,9 +107,8 @@ class ScheduleRepository implements AbstractScheduleRepository {
   Future<TeacherScheduleModel> getTeacherSchedule({required int prepId}) async {
     String? token = await storage.read(key: "tokenKey");
     final teacherScheduleResponse = await dio.get(Config.prepSchedule, queryParameters: {
-      "accessToken": token,
       "prepId": prepId,
-    });
+    }, options: Options(headers: {'x-access-token': token}));
     final teacherScheduleDate = teacherScheduleResponse.data as Map<String, dynamic>;
     final teacherSchedule = TeacherScheduleModel.fromJson(teacherScheduleDate);
     return teacherSchedule;
@@ -128,9 +119,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
     String? token = await storage.read(key: "tokenKey");
     final auditorListResponse = await dio.get(
       Config.auditorList,
-      queryParameters: {
-        "accessToken": token,
-      },
+      options: Options(headers: {'x-access-token': token}),
     );
     final auditorListDate = auditorListResponse.data as Map<String, dynamic>;
     final auditorList = AuditorList.fromJson(auditorListDate);
@@ -143,9 +132,9 @@ class ScheduleRepository implements AbstractScheduleRepository {
     final auditorScheduleResponse = await dio.get(
       Config.auditorSchedule,
       queryParameters: {
-        "accessToken": token,
         "auditoryId": auditoryId,
       },
+      options: Options(headers: {'x-access-token': token}),
     );
     final auditorScheduleData = auditorScheduleResponse.data as Map<String, dynamic>;
     final auditorSchedule = AuditorSchedule.fromJson(auditorScheduleData);
@@ -155,9 +144,7 @@ class ScheduleRepository implements AbstractScheduleRepository {
   @override
   Future<CurrentDayModel> getCurrentDayInfo() async {
     String? token = await storage.read(key: "tokenKey");
-    final currentDayInfoResponse = await dio.get(Config.getWeekNum, queryParameters: {
-      "accessToken": token,
-    });
+    final currentDayInfoResponse = await dio.get(Config.getWeekNum, options: Options(headers: {'x-access-token': token}));
     final currentDayInfoData = currentDayInfoResponse.data as Map<String, dynamic>;
     final currentDayInfo = CurrentDayModel.fromJson(currentDayInfoData);
     _currentDayData.value = currentDayInfo;

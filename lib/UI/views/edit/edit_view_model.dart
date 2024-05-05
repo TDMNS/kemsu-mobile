@@ -44,7 +44,7 @@ class EditViewModel extends BaseViewModel {
   Future<void> _getUserImage() async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    final imageResponse = await dio.get(Config.userInfo, queryParameters: {"accessToken": token});
+    final imageResponse = await dio.get(Config.userInfo, options: Options(headers: {'x-access-token': token}));
     if (imageResponse.data['success'] == true) {
       var imageUrl = imageResponse.data['userInfo']['PHOTO_URL'];
       final String fileName = '${const Uuid().v1()}.jpg';
@@ -52,7 +52,7 @@ class EditViewModel extends BaseViewModel {
         final Directory appDocDir = await getApplicationDocumentsDirectory();
         final String appDocPath = appDocDir.path;
         if (imageUrl != null) {
-          final Response response = await dio.get(imageUrl, queryParameters: {"accessToken": token}, options: Options(responseType: ResponseType.bytes));
+          final Response response = await dio.get(imageUrl, options: Options(headers: {'x-access-token': token}, responseType: ResponseType.bytes));
           file = File('$appDocPath/$fileName');
           await file?.writeAsBytes(response.data);
         } else {
@@ -76,7 +76,7 @@ class EditViewModel extends BaseViewModel {
   Future<void> updateEmail(context, newEmail) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController.text});
+    await dio.post(Config.updateEmail, options: Options(headers: {'x-access-token': token}), data: {"email": emailController.text});
     await storage.write(key: "email", value: emailController.text);
     final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
     userProfileProvider.updateEmail(emailController.text);
@@ -85,7 +85,7 @@ class EditViewModel extends BaseViewModel {
   Future<void> updatePhoneNumber(context, newPhoneNumber) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController.text});
+    await dio.post(Config.updatePhone, options: Options(headers: {'x-access-token': token}), data: {"phone": phoneController.text});
     await storage.write(key: "phone", value: phoneController.text);
     final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
     userProfileProvider.updatePhone(phoneController.text);
@@ -99,7 +99,8 @@ class EditViewModel extends BaseViewModel {
   Future<void> changePassword() async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.changePassword, queryParameters: {"accessToken": token}, data: {"newPassword": newPasswordController.text, "oldPassword": oldPasswordController.text});
+    await dio.post(Config.changePassword,
+        options: Options(headers: {'x-access-token': token}), data: {"newPassword": newPasswordController.text, "oldPassword": oldPasswordController.text});
     await storage.write(key: "password", value: newPasswordController.text);
   }
 

@@ -142,7 +142,7 @@ class PrepScheduleViewModel extends BaseViewModel {
     int? type;
     String? userTypeTemp = await storage.read(key: "userType");
     userTypeTemp == 'обучающийся' ? type = 0 : type = 1;
-    var getWeek = await dio.get(Config.getWeekNum, queryParameters: {"accessToken": token});
+    var getWeek = await dio.get(Config.getWeekNum, options: Options(headers: {'x-access-token': token}));
     weekNumApi = getWeek.data['currentDay']['weekNum'];
     weekTypeApi = getWeek.data['currentDay']['weekType'];
     currentDateApi = getWeek.data['currentDay']['currentDate'];

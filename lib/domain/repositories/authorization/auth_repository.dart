@@ -29,7 +29,7 @@ class AuthRepository implements AbstractAuthRepository {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
     final authResponse = !testUser ? await dio.post(Config.apiHost, data: {"login": login, "password": password}) : null;
     final authModel =
-        testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
+    testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
     userData.value = authModel.asContent;
     await storage.write(key: "tokenKey", value: authModel.accessToken);
     return authModel;
@@ -38,9 +38,7 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<StudCardModel> getStudCardData() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(Config.studCardHost, queryParameters: {
-      "accessToken": token,
-    });
+    final response = await dio.get(Config.studCardHost, options: Options(headers: {'x-access-token': token}));
     final studCardData = response.data[0];
     final studCardModel = StudCardModel.fromJson(studCardData);
     studCard.value = studCardModel.asContent;
@@ -50,9 +48,7 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<EmpCardModel> getEmpCardData() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(Config.empCardHost, queryParameters: {
-      "accessToken": token,
-    });
+    final response = await dio.get(Config.empCardHost, options: Options(headers: {'x-access-token': token}));
     final empCardData = response.data;
     final empCardModel = EmpCardModel.fromJson(empCardData);
     empCard.value = empCardModel.asContent;
@@ -62,9 +58,7 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<String> getUserAvatar() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(Config.userInfo, queryParameters: {
-      "accessToken": token,
-    });
+    final response = await dio.get(Config.userInfo, options: Options(headers: {'x-access-token': token}));
     final String imageUrl = response.data['userInfo']['PHOTO_URL'] ?? '';
     final String avatar = '$imageUrl?accessToken=$token';
     return imageUrl.isEmpty ? '' : avatar;
@@ -74,9 +68,7 @@ class AuthRepository implements AbstractAuthRepository {
   Future<void> refreshToken() async {
     try {
       String? token = await storage.read(key: 'tokenKey');
-      final response = await dio.post(Config.proLongToken, queryParameters: {
-        "accessToken": token,
-      });
+      final response = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));
       var newToken = response.data['accessToken'];
       await storage.write(key: "tokenKey", value: newToken);
     } on DioException catch (e) {
@@ -90,7 +82,7 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<int> checkUpdate({required String version}) async {
     String? token = await storage.read(key: 'tokenKey');
-    final response = await dio.post(Config.checkMobileAppVersion, queryParameters: {"accessToken": token}, data: {"clientVersion": version});
+    final response = await dio.post(Config.checkMobileAppVersion, data: {"clientVersion": version}, options: Options(headers: {'x-access-token': token}));
     var result = response.data['versionEqualFlag'];
     return result;
   }

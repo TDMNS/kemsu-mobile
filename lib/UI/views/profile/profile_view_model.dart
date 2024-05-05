@@ -158,7 +158,7 @@ class ProfileViewModel extends BaseViewModel {
     String? password = await storage.read(key: "password");
 
     var dio = Dio();
-    final responseProlongToken = await dio.post(Config.proLongToken, queryParameters: {"accessToken": token});
+    final responseProlongToken = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));
     token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
     String? recordedToken = await storage.read(key: "tokenKey");
@@ -205,7 +205,7 @@ class ProfileViewModel extends BaseViewModel {
     firstName = userData["firstName"] ?? '';
     lastName = userData["lastName"] ?? '';
     middleName = userData["middleName"] ?? '';
-    final responseStudent = await dio.get(Config.studCardHost, queryParameters: {"accessToken": recordedToken});
+    final responseStudent = await dio.get(Config.studCardHost, options: Options(headers: {'x-access-token': token}));
 
     var studentCard = responseStudent.data.isNotEmpty ? responseStudent.data[0] : {};
     group = studentCard["GROUP_NAME"] ?? '';
@@ -223,7 +223,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future<void> _writeEmployeeData(Dio dio, String? recordedToken) async {
-    final responseEmployee = await dio.get(Config.empCardHost, queryParameters: {"accessToken": recordedToken});
+    final responseEmployee = await dio.get(Config.empCardHost, options: Options(headers: {'x-access-token': token}));
 
     var employeeCard = responseEmployee.data["empList"].isNotEmpty ? responseEmployee.data["empList"][0] : {};
     firstName = employeeCard["FIRST_NAME"] ?? '';
@@ -243,7 +243,8 @@ class ProfileViewModel extends BaseViewModel {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     var dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    final responseMobileAppVersion = await dio.post(Config.checkMobileAppVersion, queryParameters: {"accessToken": token}, data: {"clientVersion": packageInfo.version});
+    final responseMobileAppVersion =
+        await dio.post(Config.checkMobileAppVersion, options: Options(headers: {'x-access-token': token}), data: {"clientVersion": packageInfo.version});
     var valueForShowUpdateAlert = responseMobileAppVersion.data['versionEqualFlag'];
     if (valueForShowUpdateAlert == 0) {
       String downloadLink = 'https://www.kemsu.ru/education/app-kemsu/';
@@ -263,7 +264,7 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future<void> _getUserImage(Dio dio, String? recordedToken) async {
-    final imageResponse = await dio.get(Config.userInfo, queryParameters: {"accessToken": recordedToken});
+    final imageResponse = await dio.get(Config.userInfo, options: Options(headers: {'x-access-token': token}));
     if (imageResponse.data['success'] == true) {
       var imageUrl = imageResponse.data['userInfo']['PHOTO_URL'];
       final String fileName = '${const Uuid().v1()}.jpg';
@@ -272,7 +273,7 @@ class ProfileViewModel extends BaseViewModel {
         final Directory appDocDir = await getApplicationDocumentsDirectory();
         final String appDocPath = appDocDir.path;
         if (imageUrl != null) {
-          final Response response = await dio.get(imageUrl, queryParameters: {"accessToken": recordedToken}, options: Options(responseType: ResponseType.bytes));
+          final Response response = await dio.get(imageUrl, options: Options(headers: {'x-access-token': token}, responseType: ResponseType.bytes));
           file = File('$appDocPath/$fileName');
           await file?.writeAsBytes(response.data);
         } else {
@@ -304,8 +305,8 @@ class ProfileViewModel extends BaseViewModel {
   void updateProfile() async {
     var dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.updateEmail, queryParameters: {"accessToken": token}, data: {"email": emailController?.text});
-    await dio.post(Config.updatePhone, queryParameters: {"accessToken": token}, data: {"phone": phoneController?.text});
+    await dio.post(Config.updateEmail, options: Options(headers: {'x-access-token': token}), data: {"email": emailController?.text});
+    await dio.post(Config.updatePhone, options: Options(headers: {'x-access-token': token}), data: {"phone": phoneController?.text});
     email = emailController!.text;
     phone = phoneController!.text;
     notifyListeners();

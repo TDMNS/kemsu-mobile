@@ -78,6 +78,6 @@ class NotificationViewModel extends BaseViewModel {
   Future<void> setUserVote(int notificationId, int? voteId) async {
     final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.setUserVote, queryParameters: {"accessToken": token}, data: {"notificationId": notificationId, "voteId": voteId});
+    await dio.post(Config.setUserVote, options: Options(headers: {'x-access-token': token}), data: {"notificationId": notificationId, "voteId": voteId});
   }
 }
