@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart'; // Импорт для Material App, если нужен
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'package:http/http.dart' as http;
@@ -8,6 +10,7 @@ import 'dart:convert';
 
 import 'UI/splash_screen.dart';
 import 'UI/views/notifications/notifications_view_model.dart';
+import 'firebase_options.dart';
 
 final localNotificationService = LocalNotificationService();
 
@@ -18,8 +21,9 @@ class LocalNotificationService {
 
   Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     const androidInitializationSetting = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInitializationSetting = DarwinInitializationSettings();
     const initSettings = InitializationSettings(android: androidInitializationSetting, iOS: iosInitializationSetting);
@@ -36,13 +40,15 @@ class LocalNotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        await FirebaseMessaging.instance.getAPNSToken();
+      }
 
       String? fcmToken = await FirebaseMessaging.instance.getToken();
+      print("Firebase Messaging Token: $fcmToken");
 
       if (fcmToken != null) {
         subscribeToNotifications(fcmToken);
-        print(fcmToken);
       }
 
       FirebaseMessaging.instance.onTokenRefresh.listen(subscribeToNotifications);
@@ -58,7 +64,7 @@ class LocalNotificationService {
 
   Future<void> subscribeToNotifications(String fcmToken) async {
     String? accessToken = await storage.read(key: "tokenKey");
-    var response = await http.post(
+    await http.post(
       Uri.parse('$apiUrl/subscribe'),
       headers: <String, String>{
         'Content-Type': 'application/json',
@@ -86,20 +92,14 @@ class LocalNotificationService {
         unreadMessages.value += notification.newNotificationFlag ?? 0;
       }
       if (unreadMessages.value > 0) {
-        showLocalNotification(
-            userNotification[0].title ?? "Уведомление",
-            userNotification[0].message ?? "У вас есть непросмотренные оповещения!"
-        );
+        showLocalNotification(userNotification[0].title ?? "Уведомление", userNotification[0].message ?? "У вас есть непросмотренные оповещения!");
       }
     });
 
     socket.on("notification", (data) async {
       var userNotification = await NotificationViewModel.getUserNotificationsFromAny();
       unreadMessages.value += userNotification[0].newNotificationFlag ?? 0;
-      showLocalNotification(
-          userNotification[0].title ?? "Уведомление",
-          userNotification[0].message ?? "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу."
-      );
+      showLocalNotification(userNotification[0].title ?? "Уведомление", userNotification[0].message ?? "Узнайте, что вам пришло, нажав на колокольчик в правом верхнем углу.");
     });
 
     socket.connect();
