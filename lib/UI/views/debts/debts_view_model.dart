@@ -27,11 +27,14 @@ class DebtsViewModel extends BaseViewModel {
 
   int selectedIndex = 2;
 
+  bool circle = true;
+
   Future onReady() async {
-    getAcademyDebts();
-    getLibraryDebts();
-    getPayDebts();
+    await getAcademyDebts();
+    await getLibraryDebts();
+    await getPayDebts();
     appMetricTest();
+    circle = false;
   }
 
   getAcademyDebts() async {
@@ -94,13 +97,13 @@ class DebtsViewModel extends BaseViewModel {
     var response = await http.get(
       Uri.parse(Config.studMoneyDebt),
       headers: {
-        "x-access-token": token!,
+        "x-access-token": '$token',
       },
     );
 
     final moneyDebt = json.decode(response.body)["debtInfo"];
     if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
-      payDebts = parsePayDebtsList(json.decode(response.body)["debtInfo"]);
+      payDebts = [PayDebts.fromJson(moneyDebt)];
     }
 
     notifyListeners();

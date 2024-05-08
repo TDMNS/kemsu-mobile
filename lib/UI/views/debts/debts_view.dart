@@ -19,7 +19,7 @@ class _DebtsViewState extends State<DebtsView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DebtsViewModel>.reactive(
-        onModelReady: (viewModel) => viewModel.onReady(),
+        onViewModelReady: (viewModel) => viewModel.onReady(),
         viewModelBuilder: () => DebtsViewModel(context),
         builder: (context, model, child) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -28,12 +28,22 @@ class _DebtsViewState extends State<DebtsView> {
                 extendBody: true,
                 extendBodyBehindAppBar: true,
                 appBar: customAppBar(context, 'Долги'),
-                body: RefreshIndicator(
-                  backgroundColor: Colors.blue,
-                  color: Colors.white,
-                  onRefresh: () => _pullRefresh(model),
-                  child: _debtsView(context, model),
-                )),
+                body: model.circle
+                    ? Container(
+                        color: Theme.of(context).primaryColor,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.blue,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      )
+                    : RefreshIndicator(
+                        backgroundColor: Colors.blue,
+                        color: Colors.white,
+                        onRefresh: () => _pullRefresh(model),
+                        child: _debtsView(context, model),
+                      )),
           );
         });
   }
