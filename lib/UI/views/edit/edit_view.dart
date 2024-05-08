@@ -104,6 +104,8 @@ Widget _editView(BuildContext context, EditViewModel model) {
             },
           ),
           const SizedBox(height: 16),
+          Text(Localizable.editWarning, style: const TextStyle(color: Colors.red)),
+          const SizedBox(height: 16),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [

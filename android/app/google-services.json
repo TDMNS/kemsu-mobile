@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "919169528300",
+    "project_id": "kemsuapp-eac7a",
+    "storage_bucket": "kemsuapp-eac7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919169528300:android:8b724ee11461442ba4d0c9",
+        "android_client_info": {
+          "package_name": "com.kemsu.kemsu_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpSJzuzg4Iw4cW9-Cwgv2laAcKbS7tlfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919169528300:android:7a5064de3961e5f6a4d0c9",
+        "android_client_info": {
+          "package_name": "com.kemsu.messagingstudy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpSJzuzg4Iw4cW9-Cwgv2laAcKbS7tlfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
