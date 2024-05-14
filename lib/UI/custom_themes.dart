@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 
 class CustomThemes {
   static final darkTheme = ThemeData(
+      useMaterial3: true,
+      dialogBackgroundColor: Colors.white,
+      dialogTheme: const DialogTheme(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
       brightness: Brightness.dark,
       scaffoldBackgroundColor: Colors.black54,
       radioTheme: RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
@@ -32,6 +38,12 @@ class CustomThemes {
       cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: Colors.blue));
 
   static final lightTheme = ThemeData(
+      useMaterial3: true,
+      dialogBackgroundColor: Colors.white,
+      dialogTheme: const DialogTheme(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
       brightness: Brightness.light,
       scaffoldBackgroundColor: Colors.white,
       radioTheme: RadioThemeData(fillColor: MaterialStateProperty.all(Colors.blue)),
@@ -57,7 +69,6 @@ class CustomThemes {
         iconColor: Colors.blue,
       ),
       colorScheme: const ColorScheme.light().copyWith(secondary: Colors.white),
-      textSelectionTheme: TextSelectionThemeData(
-          selectionColor: Colors.lightBlueAccent.withOpacity(0.5), cursorColor: Colors.blue, selectionHandleColor: Colors.blue),
+      textSelectionTheme: TextSelectionThemeData(selectionColor: Colors.lightBlueAccent.withOpacity(0.5), cursorColor: Colors.blue, selectionHandleColor: Colors.blue),
       cupertinoOverrideTheme: const CupertinoThemeData(primaryColor: Colors.blue));
 }

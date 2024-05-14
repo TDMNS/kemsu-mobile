@@ -107,6 +107,7 @@ class Localizable {
   static String editNewPasswordError = 'Введенный пароль соответствует старому паролю';
   static String editConfirmPasswordError = 'Пароли не совпадают';
   static String editWarning = 'Рекомендуется использовать электронные ящики на Российских почтовых серверах (.ru)';
+  static String twoFactorAuth = 'Двухфакторная аутентификация';
 
   /// Payment
   static String paymentTitle = 'Оплата услуг';

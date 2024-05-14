@@ -35,6 +35,8 @@ class UserInfo extends Equatable {
   final String? email;
   final String? phone;
   final String? userType;
+  final bool? twoFactorAuth;
+  final bool? twoFactorAuthConfirmed;
 
   String get fullName => '$lastName $firstName $middleName';
 
@@ -47,6 +49,8 @@ class UserInfo extends Equatable {
     this.email,
     this.phone,
     this.userType,
+    this.twoFactorAuth,
+    this.twoFactorAuthConfirmed,
   });
 
   const UserInfo.guest()
@@ -55,7 +59,9 @@ class UserInfo extends Equatable {
         middleName = 'Сергеевич',
         email = 'petrov@gmail.com',
         phone = '+79001001111',
-        userType = 'обучающийся';
+        userType = 'обучающийся',
+        twoFactorAuth = false,
+        twoFactorAuthConfirmed = false;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => _$UserInfoFromJson(json);
   Map<String, dynamic> toJson() => _$UserInfoToJson(this);
@@ -68,5 +74,7 @@ class UserInfo extends Equatable {
         email,
         phone,
         userType,
+        twoFactorAuth,
+        twoFactorAuthConfirmed,
       ];
 }

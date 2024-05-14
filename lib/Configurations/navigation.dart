@@ -16,6 +16,7 @@ import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/widgets/player.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_main/ordering_information_main_view.dart';
 import 'package:kemsu_app/UI/views/payment_web_view/payment.dart';
+import 'package:kemsu_app/UI/views/profile_bloc/edit/edit_screen.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/views/ros_view.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import '../UI/common_widgets.dart';
@@ -50,7 +51,7 @@ final appRouter = GoRouter(
     GoRoute(
       name: 'editProfile',
       path: '/editProfile',
-      builder: (context, state) => const EditView(),
+      builder: (context, state) => const EditScreen(),
     ),
     GoRoute(
       name: 'ros',
