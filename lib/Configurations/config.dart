@@ -1,5 +1,6 @@
 class Config {
   static String apiHost = 'https://api-next.kemsu.ru/api/auth';
+  static String userInfoToken = 'https://api-next.kemsu.ru/api/security/users';
   static String studCardHost = 'https://api.kemsu.ru/api/dekanat/students/study-cards';
   static String empCardHost = "https://api-next.kemsu.ru/api/personal-office/integration/empInfo";
   static String brsSemesterList = "https://api-next.kemsu.ru/api/personal-office/integration/brsSemesterList";

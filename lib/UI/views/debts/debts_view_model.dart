@@ -14,7 +14,7 @@ import 'dart:convert';
 class EnumDebts {
   static String get academyDebtsTitle => "Академическая задолженность";
   static String get libraryDebtsTitle => "Задолженность по книгам в библиотеке";
-  static String get payDebtsTitle => "Задолженность за платные услуги";
+  static String get payDebtsTitle => "Задолженность за обучение";
 }
 
 class DebtsViewModel extends BaseViewModel {
@@ -52,9 +52,7 @@ class DebtsViewModel extends BaseViewModel {
   }
 
   List<AcademyDebts> parseAcademyDebtsList(List response) {
-    return response
-        .map<AcademyDebts>((json) => AcademyDebts.fromJson(json))
-        .toList();
+    return response.map<AcademyDebts>((json) => AcademyDebts.fromJson(json)).toList();
   }
 
   getLibraryDebts() async {
@@ -71,9 +69,7 @@ class DebtsViewModel extends BaseViewModel {
   }
 
   List<LibraryDebts> parseLibraryDebtsList(List response) {
-    return response
-        .map<LibraryDebts>((json) => LibraryDebts.fromJson(json))
-        .toList();
+    return response.map<LibraryDebts>((json) => LibraryDebts.fromJson(json)).toList();
   }
 
   updateDebts() async {
@@ -110,14 +106,11 @@ class DebtsViewModel extends BaseViewModel {
   }
 
   List<PayDebts> parsePayDebtsList(List response) {
-    return response
-        .map<PayDebts>((json) => PayDebts.fromJson(json))
-        .toList();
+    return response.map<PayDebts>((json) => PayDebts.fromJson(json)).toList();
   }
 
   void appMetricTest() {
-    AppMetrica.activate(
-        const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
+    AppMetrica.activate(const AppMetricaConfig("21985624-7a51-4a70-8a98-83b918e490d8"));
     AppMetrica.reportEvent('Debts event');
   }
 }

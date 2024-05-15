@@ -30,8 +30,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
     try {
       final authData = await authRepository.postAuth(login: event.login, password: event.password);
       print("authData = $authData");
-      await storage.write(key: "login", value: event.login);
-      await storage.write(key: "password", value: event.password);
       await storage.write(key: "userType", value: authData.userInfo.userType);
       await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
 
@@ -90,7 +88,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
   Future<void> _updateLoginTextField(UpdateLoginTextFieldEvent event, Emitter<AuthState> emit) async {
     try {
-      await storage.write(key: "login", value: event.login);
       emit(state.copyWith(login: event.login));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
@@ -99,7 +96,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
   Future<void> _updatePasswordTextField(UpdatePasswordTextFieldEvent event, Emitter<AuthState> emit) async {
     try {
-      await storage.write(key: "password", value: event.password);
       emit(state.copyWith(password: event.password));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
@@ -116,14 +112,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
 
   Future<void> _getUserData(GetUserDataEvent event, Emitter<AuthState> emit) async {
     try {
-      var login = await storage.read(key: "login");
-      var password = await storage.read(key: "password");
       final isRememberMe = await storage.read(key: "isRememberMe") == true.toString();
 
-      isRememberMe ? login : login = '';
-      isRememberMe ? password : password = '';
-
-      emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password));
+      // emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
     }

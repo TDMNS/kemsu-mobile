@@ -130,7 +130,10 @@ class _ProfileScreenState extends State<AuthScreen> {
                           _authBloc.add(UpdatePasswordTextFieldEvent(password: finalPassword));
                           _passwordFocus.unfocus();
                         }),
-                    AuthCheckbox(state: state, bloc: _authBloc),
+                    // AuthCheckbox(state: state, bloc: _authBloc),
+                    const SizedBox(
+                      height: 24.0,
+                    ),
                     mainButton(context, onPressed: () {
                       _authBloc.add(PostAuthEvents(_loginController.text, _passwordController.text, context));
                     }, title: Localizable.authButtonTitle, isPrimary: true),

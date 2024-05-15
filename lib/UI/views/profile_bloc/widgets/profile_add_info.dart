@@ -8,7 +8,7 @@ import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 
 class ProfileAdditionalInformation extends StatelessWidget {
   final VoidCallback? closeInfo;
-  final AuthModel? userData;
+  final UserInfo? userData;
   final StudCardModel? studCard;
   final EmpCardModel? empCard;
   final String avatar;
@@ -23,7 +23,7 @@ class ProfileAdditionalInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserType userType = userData?.userInfo.currentUserType ?? UserType.student;
+    UserType userType = userData?.currentUserType ?? UserType.student;
     return Stack(
       children: [
         GestureDetector(
@@ -61,8 +61,8 @@ class ProfileAdditionalInformation extends StatelessWidget {
                         ),
                         const SizedBox(height: 12.0),
                         if (userType == UserType.student) ...[
-                          Text(userData?.userInfo.fullName ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-                          Text(userData?.userInfo.userType ?? '', style: const TextStyle(fontSize: 16.0)),
+                          Text(userData?.fullName ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+                          Text(userData?.userType ?? '', style: const TextStyle(fontSize: 16.0)),
                           Text(studCard?.groupName ?? '', style: const TextStyle(fontSize: 16.0)),
                           Divider(height: 14.0, color: Colors.grey.withOpacity(.5)),
                           Text(studCard?.speciality ?? '', style: const TextStyle(fontSize: 16.0)),
@@ -74,7 +74,7 @@ class ProfileAdditionalInformation extends StatelessWidget {
                           Text(empCard?.empList?[0].dep ?? '', style: const TextStyle(fontSize: 16.0)),
                           const SizedBox(height: 12.0),
                         ],
-                        Text(userData?.userInfo.email ?? '', style: const TextStyle(fontSize: 16.0))
+                        Text(userData?.email ?? '', style: const TextStyle(fontSize: 16.0))
                       ],
                     ),
                   ),

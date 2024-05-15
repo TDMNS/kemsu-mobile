@@ -19,6 +19,9 @@ class AuthRepository implements AbstractAuthRepository {
   final ValueNotifier<Lce<AuthModel>> userData = ValueNotifier(const Lce.idle());
 
   @override
+  final ValueNotifier<Lce<UserInfo>> userInfo = ValueNotifier(const Lce.idle());
+
+  @override
   final ValueNotifier<Lce<StudCardModel>> studCard = ValueNotifier(const Lce.idle());
 
   @override
@@ -27,12 +30,21 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<AuthModel> postAuth({required String login, required String password}) async {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
-    final authResponse = !testUser ? await dio.post(Config.apiHost, data: {"login": login, "password": password}) : null;
+    final authResponse = !testUser ? await dio.post(Config.apiHost, data: {"login": login, "password": password, "lifetime": "1d"}) : null;
     final authModel =
-    testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
+        testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
     userData.value = authModel.asContent;
     await storage.write(key: "tokenKey", value: authModel.accessToken);
     return authModel;
+  }
+
+  @override
+  Future<UserInfo> getUserInfo() async {
+    String? token = await storage.read(key: "tokenKey");
+    final userResponse = token != 'accessToken' ? await dio.get(Config.userInfoToken, options: Options(headers: {'x-access-token': token})) : null;
+    final userModel = token == 'accessToken' ? const UserInfo.guest() : UserInfo.fromJson(userResponse!.data as Map<String, dynamic>);
+    userInfo.value = userModel.asContent;
+    return userModel;
   }
 
   @override
@@ -66,6 +78,7 @@ class AuthRepository implements AbstractAuthRepository {
 
   @override
   Future<void> refreshToken() async {
+    print('TEST REFRESH WORK');
     try {
       String? token = await storage.read(key: 'tokenKey');
       final response = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));

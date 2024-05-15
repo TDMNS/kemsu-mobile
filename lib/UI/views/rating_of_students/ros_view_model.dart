@@ -45,9 +45,12 @@ class RosViewModel extends BaseViewModel {
   }
 
   getStudCard() async {
+    print('PRS TEST 1');
     String? token = await storage.read(key: "tokenKey");
     var response = await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
+    print('PRS TEST 2:  ${response.body}');
     receivedStudyCard = parseCard(json.decode(response.body));
+    print('PRS TEST 3');
     notifyListeners();
   }
 
@@ -78,8 +81,7 @@ class RosViewModel extends BaseViewModel {
 
   getReitList(startDate, endDate, semester) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse(
-        '${Config.reitList}?studentId=${studyCard?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
+    var response = await http.get(Uri.parse('${Config.reitList}?studentId=${studyCard?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
     reitList = parseReitList(json.decode(response.body)["reitList"]);
     notifyListeners();
   }

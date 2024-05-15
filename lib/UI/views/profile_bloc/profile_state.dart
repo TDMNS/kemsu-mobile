@@ -3,7 +3,7 @@ part of 'profile_bloc.dart';
 class ProfileState extends Equatable {
   final bool isLoading;
   final bool showAddInfo;
-  final Lce<AuthModel> userData;
+  final Lce<UserInfo> userData;
   final Lce<StudCardModel> studCard;
   final Lce<EmpCardModel> empCard;
   final String avatar;
@@ -22,7 +22,7 @@ class ProfileState extends Equatable {
   ProfileState copyWith({
     bool? isLoading,
     bool? showAddInfo,
-    Lce<AuthModel>? userData,
+    Lce<UserInfo>? userData,
     Lce<StudCardModel>? studCard,
     Lce<EmpCardModel>? empCard,
     String? avatar,
