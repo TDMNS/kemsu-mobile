@@ -27,6 +27,8 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) => UserInfo(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       userType: json['userType'] as String?,
+      twoFactorAuth: json['twoFactorAuth'] as bool?,
+      twoFactorAuthConfirmed: json['twoFactorAuthConfirmed'] as bool?,
     );
 
 Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
@@ -36,4 +38,6 @@ Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,
       'userType': instance.userType,
+      'twoFactorAuth': instance.twoFactorAuth,
+      'twoFactorAuthConfirmed': instance.twoFactorAuthConfirmed,
     };
