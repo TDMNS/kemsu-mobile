@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,12 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:http/http.dart' as http;
 import '../../../../Configurations/config.dart';
+import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 
 class OrderingInformationViewModel extends BaseViewModel {
   OrderingInformationViewModel(BuildContext context);
 
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   List<BasisOfEducation> receivedBasicList = [];
@@ -63,37 +65,46 @@ class OrderingInformationViewModel extends BaseViewModel {
     return response.map<PeriodList>((json) => PeriodList.fromJson(json)).toList();
   }
 
-  getStudCard() async {
+  Future<void> getStudCard() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
-    receivedStudyCard = parseCard(json.decode(response.body));
+    final response = await dio.get(
+      Config.studCardHost,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    receivedStudyCard = parseCard(response.data);
     notifyListeners();
   }
 
-  getBasicList() async {
+  Future<void> getBasicList() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.basicList}?accessToken=$token'));
-    receivedBasicList = parseBasicList(json.decode(response.body)["basicList"]);
+    final response = await dio.get(
+      Config.basicList,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    receivedBasicList = parseBasicList(response.data["basicList"]);
     notifyListeners();
   }
 
-  changeCard(value) async {
+  void changeCard(value) {
     studyCard = value;
     notifyListeners();
   }
 
-  changeBasic(value) async {
+  Future<void> changeBasic(value) async {
     selectedPeriod = null;
     selectedBasic = value;
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.periodList}?accessToken=$token'));
-    periodList = parsePeriodList(json.decode(response.body)["periodList"]);
+    final response = await dio.get(
+      Config.periodList,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    periodList = parsePeriodList(response.data["periodList"]);
     lastParagraph.period = "задать произвольный период, за который требуется справка";
     periodList.add(lastParagraph);
     notifyListeners();
   }
 
-  changePeriod(value) async {
+  void changePeriod(value) {
     selectedPeriod = value;
     isSelected = true;
     notifyListeners();
@@ -103,14 +114,14 @@ class OrderingInformationViewModel extends BaseViewModel {
     return response.map<RequestReference>((json) => RequestReference.fromJson(json)).toList();
   }
 
-  void sendReferences() async {
+  Future<void> sendReferences() async {
     String? token = await storage.read(key: "tokenKey");
     String? safeToken = token ?? "Error";
 
     int basicId = selectedBasic?.basicId ?? 0;
     int periodId = selectedPeriod?.periodId ?? -1;
 
-    if (count.text == "") {
+    if (count.text.isEmpty) {
       count.text = "1";
     }
 
@@ -121,27 +132,35 @@ class OrderingInformationViewModel extends BaseViewModel {
     String formattedEndDate = DateFormat('dd.MM.yyyy').format(safeEndDate);
     int studentId = studyCard?.id ?? 0;
 
-    final _ = await http.post(Uri.parse('${Config.addRequest}?accessToken=$safeToken'),
+    await dio.post(
+      Config.addRequest,
+      options: Options(
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'x-access-token': safeToken,
         },
-        body: jsonEncode(<String, dynamic>{
-          "basicId": basicId,
-          "periodId": periodId,
-          "cnt": numberReferences,
-          "startPeriodDate": periodId == -1 ? formattedStartDate : null,
-          "endPeriodDate": periodId == -1 ? formattedEndDate : null,
-          "studentId": studentId
-        }));
+      ),
+      data: jsonEncode(<String, dynamic>{
+        "basicId": basicId,
+        "periodId": periodId,
+        "cnt": numberReferences,
+        "startPeriodDate": periodId == -1 ? formattedStartDate : null,
+        "endPeriodDate": periodId == -1 ? formattedEndDate : null,
+        "studentId": studentId
+      }),
+    );
 
     getRequestList();
     notifyListeners();
   }
 
-  getRequestList() async {
+  Future<void> getRequestList() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
-    receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
+    final response = await dio.get(
+      Config.requestListReferences,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    receivedReferences = parseReferences(response.data["requestList"]);
     notifyListeners();
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/schedule_new/auditor_schedule/auditor_schedule_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/group_select_schedule/group_select_schedule_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_bloc.dart';
@@ -211,7 +210,10 @@ class ScheduleTypeButton extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 icon,
-                color: Theme.of(context).primaryColorDark,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).primaryColorDark,
+                  BlendMode.srcIn,
+                ),
               ),
               const SizedBox(
                 width: 4.0,

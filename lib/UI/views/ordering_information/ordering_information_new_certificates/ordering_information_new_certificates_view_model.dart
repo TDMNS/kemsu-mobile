@@ -1,14 +1,16 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/config.dart';
-import 'package:http/http.dart' as http;
 
 class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
   OrderingInformationNewCertificatesViewModel(BuildContext context);
 
+  final DioClient dio = DioClient(Dio());
   TextEditingController companyName = TextEditingController();
   TextEditingController studentName = TextEditingController();
   final storage = const FlutterSecureStorage();
@@ -43,15 +45,18 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
 
       String url = '${Config.refCallPDF}/$groupTermId?employer=${companyName.text}&employeeFio=${studentName.text}';
 
-      var response = await http.get(
-        Uri.parse(url),
-        headers: {
-          "x-access-token": token,
-        },
+      final response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            "x-access-token": token,
+          },
+          responseType: ResponseType.bytes,
+        ),
       );
 
       if (response.statusCode == 200) {
-        await file.writeAsBytes(response.bodyBytes);
+        await file.writeAsBytes(response.data);
         return file;
       } else {
         return null;

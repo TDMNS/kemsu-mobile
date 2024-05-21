@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:kemsu_app/local_notification_service.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_interceptor/dio_client.dart';
 import '../../splash_screen.dart';
-import 'package:http/http.dart' as http;
 import 'notifications_model.dart';
 
 class NotificationViewModel extends BaseViewModel {
   NotificationViewModel(BuildContext context);
 
+  final DioClient dio = DioClient(Dio());
   bool circle = true;
   List<UserNotifications> userNotifications = [];
 
@@ -22,16 +23,22 @@ class NotificationViewModel extends BaseViewModel {
     circle = false;
   }
 
-  _getUserNotifications() async {
+  Future<void> _getUserNotifications() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
-    userNotifications = parseUserNotifications(json.decode(response.body)["userNotificationList"]);
+    final response = await dio.get(
+      Config.notifications,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    userNotifications = parseUserNotifications(response.data["userNotificationList"]);
     notifyListeners();
   }
 
-  _setReadStatusUserNotification() async {
+  Future<void> _setReadStatusUserNotification() async {
     String? token = await storage.read(key: "tokenKey");
-    await http.post(Uri.parse('${Config.setReadStatusUserNotification}?accessToken=$token'));
+    await dio.post(
+      Config.setReadStatusUserNotification,
+      options: Options(headers: {'x-access-token': token}),
+    );
     LocalNotificationService.unreadMessages.value = 0;
     notifyListeners();
   }
@@ -55,9 +62,13 @@ class NotificationViewModel extends BaseViewModel {
   }
 
   static Future<List<UserNotifications>> getUserNotificationsFromAny() async {
+    final dio = DioClient(Dio());
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.notifications}?accessToken=$token'));
-    return parseUserNotifications(json.decode(response.body)["userNotificationList"]);
+    final response = await dio.get(
+      Config.notifications,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    return parseUserNotifications(response.data["userNotificationList"]);
   }
 
   bool isLink(String text) {
@@ -76,8 +87,11 @@ class NotificationViewModel extends BaseViewModel {
   }
 
   Future<void> setUserVote(int notificationId, int? voteId) async {
-    final Dio dio = Dio();
     String? token = await storage.read(key: "tokenKey");
-    await dio.post(Config.setUserVote, options: Options(headers: {'x-access-token': token}), data: {"notificationId": notificationId, "voteId": voteId});
+    await dio.post(
+      Config.setUserVote,
+      options: Options(headers: {'x-access-token': token}),
+      data: {"notificationId": notificationId, "voteId": voteId},
+    );
   }
 }

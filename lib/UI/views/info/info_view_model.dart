@@ -1,22 +1,21 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
-
-import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_interceptor/dio_client.dart';
 import '../info/info_model.dart';
-import 'dart:convert';
 
 class InfoOUProViewModel extends BaseViewModel {
   InfoOUProViewModel(BuildContext context);
+
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   List<CourseInfoOUPro> course = [];
-
   List<ReportInfoOUPro> report = [];
-
   List<TaskListInfoOUPro> task = [];
 
   int selectedIndex = 2;
@@ -31,7 +30,7 @@ class InfoOUProViewModel extends BaseViewModel {
   }
 
   Future onReady() async {
-    getDiscs(0);
+    await getDiscs(0);
     appMetricaTest();
   }
 
@@ -40,41 +39,26 @@ class InfoOUProViewModel extends BaseViewModel {
     AppMetrica.reportEvent('InfoOUPro event');
   }
 
-  getDiscs(allFlag) async {
+  Future<void> getDiscs(int allFlag) async {
     String? token = await storage.read(key: "tokenKey");
-    http.Response response;
-    if (allFlag == 1) {
-      response = await http.get(
-        Uri.parse('${Config.studCourseList}?allCourseFlag=1'),
-        headers: {
-          "x-access-token": token!,
-        },
-      );
-    } else {
-      response = await http.get(
-        Uri.parse('${Config.studCourseList}?allCourseFlag=0'),
-        headers: {
-          "x-access-token": token!,
-        },
-      );
-    }
+    final response = await dio.get(
+      Config.studCourseList,
+      queryParameters: {'allCourseFlag': allFlag},
+      options: Options(headers: {'x-access-token': token!}),
+    );
 
-    course = parseCourseList(json.decode(response.body)['studentCourseList']);
-
+    course = parseCourseList(response.data['studentCourseList']);
     notifyListeners();
   }
 
-  getDiscReports(courseId) async {
+  Future<void> getDiscReports(int? courseId) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse('${Config.studRepList}/$courseId'),
-      headers: {
-        "x-access-token": token!,
-      },
+    final response = await dio.get(
+      '${Config.studRepList}/$courseId',
+      options: Options(headers: {'x-access-token': token!}),
     );
 
-    report = parseReportList(json.decode(response.body)['studentReportList']);
-
+    report = parseReportList(response.data['studentReportList']);
     notifyListeners();
   }
 }

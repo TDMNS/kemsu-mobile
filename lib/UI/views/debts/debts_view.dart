@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_academy_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
@@ -183,6 +184,8 @@ Widget _getPayDebtsView(List<PayDebts> items) {
     itemBuilder: (context, index) {
       final item = items[index];
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
@@ -202,12 +205,14 @@ Widget _getPayDebtsView(List<PayDebts> items) {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Column(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         richText("Сумма: ", "${item.amount}", context),
                         const SizedBox(height: 10),
-                        richText("На дату: ", "${item.date}", context),
+                        richText("На дату: ", DateFormat('dd-MM-yy').format(item.date ?? DateTime.now()), context),
                         const SizedBox(height: 10)
                       ],
                     ),

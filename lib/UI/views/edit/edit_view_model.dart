@@ -4,13 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
-import '../profile/profile_provider.dart';
 
 enum EditTextFieldType { oldPassword, newPassword, confirmPassword }
 
@@ -42,7 +41,7 @@ class EditViewModel extends BaseViewModel {
   }
 
   Future<void> _getUserImage() async {
-    final Dio dio = Dio();
+    final dio = DioClient(Dio());
     String? token = await storage.read(key: "tokenKey");
     final imageResponse = await dio.get(Config.userInfo, options: Options(headers: {'x-access-token': token}));
     if (imageResponse.data['success'] == true) {
@@ -66,29 +65,33 @@ class EditViewModel extends BaseViewModel {
   }
 
   Future<dynamic> _getUserData() async {
-    final Dio dio = Dio();
-    final responseAuth = await dio.post(Config.apiHost, data: {"login": await storage.read(key: "login") ?? '', "password": await storage.read(key: "password") ?? ''});
+    final dio = DioClient(Dio());
+    final responseAuth = await dio.post(Config.apiHost, data: {
+      "login": await storage.read(key: "login") ?? '',
+      "password": await storage.read(key: "password") ?? '',
+      "lifetime": "5m",
+    });
     var userData = responseAuth.data['userInfo'];
     emailController.text = userData["email"] ?? '';
     phoneController.text = userData["phone"] ?? '';
   }
 
   Future<void> updateEmail(context, newEmail) async {
-    final Dio dio = Dio();
+    final dio = DioClient(Dio());
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updateEmail, options: Options(headers: {'x-access-token': token}), data: {"email": emailController.text});
     await storage.write(key: "email", value: emailController.text);
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
-    userProfileProvider.updateEmail(emailController.text);
+    // final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    // userProfileProvider.updateEmail(emailController.text);
   }
 
   Future<void> updatePhoneNumber(context, newPhoneNumber) async {
-    final Dio dio = Dio();
+    final dio = DioClient(Dio());
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updatePhone, options: Options(headers: {'x-access-token': token}), data: {"phone": phoneController.text});
     await storage.write(key: "phone", value: phoneController.text);
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
-    userProfileProvider.updatePhone(phoneController.text);
+    // final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    // userProfileProvider.updatePhone(phoneController.text);
   }
 
   Future<void> validateOldPassword() async {
@@ -97,7 +100,7 @@ class EditViewModel extends BaseViewModel {
   }
 
   Future<void> changePassword() async {
-    final Dio dio = Dio();
+    final dio = DioClient(Dio());
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.changePassword,
         options: Options(headers: {'x-access-token': token}), data: {"newPassword": newPasswordController.text, "oldPassword": oldPasswordController.text});

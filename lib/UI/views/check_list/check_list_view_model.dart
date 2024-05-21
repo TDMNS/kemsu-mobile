@@ -1,22 +1,21 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
-
-import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_interceptor/dio_client.dart';
 import 'check_list_model.dart';
-import 'dart:convert';
 
 class CheckListViewModel extends BaseViewModel {
   CheckListViewModel(BuildContext context);
+
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   List<CheckList> checkList = [];
-
   int selectedIndex = 2;
-
   bool circle = true;
 
   List<CheckList> parseCheckList(List response) {
@@ -25,13 +24,11 @@ class CheckListViewModel extends BaseViewModel {
 
   Future onReady() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse(Config.studCheckList),
-      headers: {
-        "x-access-token": token!,
-      },
+    final response = await dio.get(
+      Config.studCheckList,
+      options: Options(headers: {'x-access-token': token!}),
     );
-    checkList = parseCheckList(json.decode(response.body)['checkList']);
+    checkList = parseCheckList(response.data['checkList']);
     appMetricaTest();
     notifyListeners();
     circle = false;

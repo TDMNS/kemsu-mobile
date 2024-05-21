@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,12 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // Импорт для Material App, если нужен
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'UI/splash_screen.dart';
 import 'UI/views/notifications/notifications_view_model.dart';
 import 'firebase_options.dart';
+import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart'; // Импортируйте DioClient
 
 final localNotificationService = LocalNotificationService();
 
@@ -18,6 +19,7 @@ class LocalNotificationService {
   static ValueNotifier<int> unreadMessages = ValueNotifier(0);
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final String apiUrl = 'https://api-next.kemsu.ru/api/push-notification/fcm';
+  final DioClient dio = DioClient(Dio());
 
   Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +47,6 @@ class LocalNotificationService {
       }
 
       String? fcmToken = await FirebaseMessaging.instance.getToken();
-      print("Firebase Messaging Token: $fcmToken");
 
       if (fcmToken != null) {
         subscribeToNotifications(fcmToken);
@@ -64,15 +65,17 @@ class LocalNotificationService {
 
   Future<void> subscribeToNotifications(String fcmToken) async {
     String? accessToken = await storage.read(key: "tokenKey");
-    await http.post(
-      Uri.parse('$apiUrl/subscribe'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'x-access-token': "$accessToken",
-      },
-      body: jsonEncode(<String, String>{
+    await dio.post(
+      '$apiUrl/subscribe',
+      data: jsonEncode(<String, String>{
         'token': fcmToken,
       }),
+      options: Options(
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'x-access-token': "$accessToken",
+        },
+      ),
     );
   }
 
