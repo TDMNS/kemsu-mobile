@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/schedule_new/widgets/schedule_list_pages.dart';
 import 'package:kemsu_app/domain/models/schedule/current_day_model.dart';
 import 'package:kemsu_app/domain/models/schedule/current_group_model.dart';
@@ -14,6 +13,11 @@ import '../../../domain/models/schedule/schedule_model.dart';
 
 part 'schedule_events.dart';
 part 'schedule_state.dart';
+
+class EnumUserType {
+  static String get student => "обучающийся";
+  static String get employee => "сотрудник";
+}
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc(super.initialState, {required this.scheduleRepository}) {

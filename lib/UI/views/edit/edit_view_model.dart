@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Configurations/config.dart';
 import '../../../Configurations/localizable.dart';
-import '../profile/profile_provider.dart';
 
 enum EditTextFieldType { oldPassword, newPassword, confirmPassword }
 
@@ -83,8 +81,8 @@ class EditViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updateEmail, options: Options(headers: {'x-access-token': token}), data: {"email": emailController.text});
     await storage.write(key: "email", value: emailController.text);
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
-    userProfileProvider.updateEmail(emailController.text);
+    // final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    // userProfileProvider.updateEmail(emailController.text);
   }
 
   Future<void> updatePhoneNumber(context, newPhoneNumber) async {
@@ -92,8 +90,8 @@ class EditViewModel extends BaseViewModel {
     String? token = await storage.read(key: "tokenKey");
     await dio.post(Config.updatePhone, options: Options(headers: {'x-access-token': token}), data: {"phone": phoneController.text});
     await storage.write(key: "phone", value: phoneController.text);
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
-    userProfileProvider.updatePhone(phoneController.text);
+    // final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    // userProfileProvider.updatePhone(phoneController.text);
   }
 
   Future<void> validateOldPassword() async {

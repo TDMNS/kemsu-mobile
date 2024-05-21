@@ -8,7 +8,7 @@ import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_reposi
 import '../../../Configurations/localizable.dart';
 import '../../../domain/models/authorization/auth_model.dart';
 import '../../splash_screen.dart';
-import '../profile/profile_view_model.dart';
+import '../schedule_new/schedule_bloc.dart';
 
 part 'auth_events.dart';
 part 'auth_state.dart';
@@ -17,7 +17,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   AuthBloc(super.initialState, {required this.authRepository}) {
     on<PostAuthEvents>(_postAuth);
     on<ChangeRememberMeEvent>(_changeRememberMe);
-    on<GetUserDataEvent>(_getUserData);
     on<ChangePasswordObscureEvent>(_changePasswordObscure);
     on<UpdateLoginTextFieldEvent>(_updateLoginTextField);
     on<UpdatePasswordTextFieldEvent>(_updatePasswordTextField);
@@ -104,16 +103,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _problems(ProblemsEvent event, Emitter<AuthState> emit) async {
     try {
       AppRouting.toAuthAlert(title: Localizable.authTroubleLoggingInHeader, body: Localizable.authTroubleLoggingInBody);
-    } catch (e) {
-      AppRouting.toAuthAlert(body: e.toString());
-    }
-  }
-
-  Future<void> _getUserData(GetUserDataEvent event, Emitter<AuthState> emit) async {
-    try {
-      final isRememberMe = await storage.read(key: "isRememberMe") == true.toString();
-
-      // emit(state.copyWith(isRememberMe: isRememberMe, login: login, password: password));
     } catch (e) {
       AppRouting.toAuthAlert(body: e.toString());
     }
