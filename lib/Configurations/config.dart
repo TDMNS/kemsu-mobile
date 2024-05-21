@@ -26,7 +26,7 @@ class Config {
   static String addRequest = "https://api-next.kemsu.ru/api/orders/main/addRequest";
   static String requestListReferences = "https://api-next.kemsu.ru/api/orders/main/requestList";
   static String studCheckList = 'https://api-next.kemsu.ru/api/debt/main/checkList';
-  static String proLongToken = 'https://api-next.kemsu.ru/api/security/auth/prolong';
+  static String refreshToken = 'https://api-next.kemsu.ru/api/refresh-token';
   static String updateEmail = 'https://api-next.kemsu.ru/api/personal-office/integration/updateUserEmail';
   static String updatePhone = 'https://api-next.kemsu.ru/api/personal-office/integration/updateUserPhone';
   static String newsMessagesTest = 'https://api3.kemsu.ru/api/telegram/kemsu-live/messages/test';

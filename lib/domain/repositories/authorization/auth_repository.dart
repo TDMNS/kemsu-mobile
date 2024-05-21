@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
+import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
@@ -12,7 +13,7 @@ import '../../../Configurations/config.dart';
 class AuthRepository implements AbstractAuthRepository {
   AuthRepository({required this.dio});
 
-  final Dio dio;
+  final DioClient dio;
   static const storage = FlutterSecureStorage();
 
   @override
@@ -30,11 +31,19 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<AuthModel> postAuth({required String login, required String password}) async {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
-    final authResponse = !testUser ? await dio.post(Config.apiHost, data: {"login": login, "password": password, "lifetime": "1d"}) : null;
-    final authModel =
-        testUser ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken') : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
+    final authResponse = !testUser
+        ? await dio.post(Config.apiHost, data: {
+            "login": login,
+            "password": password,
+            "lifetime": "5m",
+          })
+        : null;
+    final authModel = testUser
+        ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken', refreshToken: 'refreshToken')
+        : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
     userData.value = authModel.asContent;
     await storage.write(key: "tokenKey", value: authModel.accessToken);
+    await storage.write(key: "refreshToken", value: authModel.refreshToken);
     return authModel;
   }
 
@@ -74,22 +83,6 @@ class AuthRepository implements AbstractAuthRepository {
     final String imageUrl = response.data['userInfo']['PHOTO_URL'] ?? '';
     final String avatar = '$imageUrl?accessToken=$token';
     return imageUrl.isEmpty ? '' : avatar;
-  }
-
-  @override
-  Future<void> refreshToken() async {
-    print('TEST REFRESH WORK');
-    try {
-      String? token = await storage.read(key: 'tokenKey');
-      final response = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));
-      var newToken = response.data['accessToken'];
-      await storage.write(key: "tokenKey", value: newToken);
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        var newToken = e.response?.data['accessToken'];
-        await storage.write(key: "tokenKey", value: newToken);
-      }
-    }
   }
 
   @override

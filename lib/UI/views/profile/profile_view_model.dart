@@ -135,10 +135,10 @@ class ProfileViewModel extends BaseViewModel {
 
   Future<void> _prolongToken(context) async {
     String? token = await storage.read(key: 'tokenKey');
-    final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
-    responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthScreen())) : null;
-    var newToken = json.decode(responseToken.body)['accessToken'];
-    await storage.write(key: "tokenKey", value: newToken);
+    // final responseToken = await http.post(Uri.parse(Config.proLongToken), body: {"accessToken": token});
+    // responseToken.statusCode == 401 ? Navigator.push(context, MaterialPageRoute(builder: (context) => const AuthScreen())) : null;
+    // var newToken = json.decode(responseToken.body)['accessToken'];
+    // await storage.write(key: "tokenKey", value: newToken);
   }
 
   Future<void> _checkFileExisting() async {
@@ -158,8 +158,8 @@ class ProfileViewModel extends BaseViewModel {
     String? password = await storage.read(key: "password");
 
     var dio = Dio();
-    final responseProlongToken = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));
-    token = responseProlongToken.data['accessToken'];
+    // final responseProlongToken = await dio.post(Config.proLongToken, options: Options(headers: {'x-access-token': token}));
+    // token = responseProlongToken.data['accessToken'];
     await storage.write(key: "tokenKey", value: token);
     String? recordedToken = await storage.read(key: "tokenKey");
     var userData = await _getUserData(context, dio, login, password);
@@ -180,7 +180,14 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   Future<dynamic> _getUserData(context, Dio dio, String? login, String? password) async {
-    final responseAuth = await dio.post(Config.apiHost, data: {"login": login, "password": password});
+    final responseAuth = await dio.post(
+      Config.apiHost,
+      data: {
+        "login": login,
+        "password": password,
+        "lifetime": "5m",
+      },
+    );
 
     var userData = responseAuth.data['userInfo'];
     userType = userData["userType"];

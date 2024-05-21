@@ -1,14 +1,16 @@
-import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_interceptor/dio_client.dart';
 
 class RosViewModel extends BaseViewModel {
   RosViewModel(BuildContext context);
+
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   bool circle = true;
@@ -44,12 +46,15 @@ class RosViewModel extends BaseViewModel {
     AppMetrica.reportEvent('rating_of_students event');
   }
 
-  getStudCard() async {
+  Future<void> getStudCard() async {
     print('PRS TEST 1');
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.studCardHost}?accessToken=$token'));
-    print('PRS TEST 2:  ${response.body}');
-    receivedStudyCard = parseCard(json.decode(response.body));
+    final response = await dio.get(
+      Config.studCardHost,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    print('PRS TEST 2:  ${response.data}');
+    receivedStudyCard = parseCard(response.data);
     print('PRS TEST 3');
     notifyListeners();
   }
@@ -70,26 +75,44 @@ class RosViewModel extends BaseViewModel {
     return response.map<ReitItemList>((json) => ReitItemList.fromJson(json)).toList();
   }
 
-  changeCard(value) async {
+  Future<void> changeCard(value) async {
     studyCard = value;
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.brsSemesterList}/${studyCard?.id}?accessToken=$token'));
-    rosSemesterList = parseRosSemesterList(json.decode(response.body)["brsSemesterList"]);
+    final response = await dio.get(
+      '${Config.brsSemesterList}/${studyCard?.id}',
+      options: Options(headers: {'x-access-token': token}),
+    );
+    rosSemesterList = parseRosSemesterList(response.data["brsSemesterList"]);
     circle = false;
     notifyListeners();
   }
 
-  getReitList(startDate, endDate, semester) async {
+  Future<void> getReitList(startDate, endDate, semester) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.reitList}?studentId=${studyCard?.id}&studYearStart=$startDate&studYearEnd=$endDate&semester=$semester&accessToken=$token'));
-    reitList = parseReitList(json.decode(response.body)["reitList"]);
+    final response = await dio.get(
+      Config.reitList,
+      queryParameters: {
+        'studentId': studyCard?.id,
+        'studYearStart': startDate,
+        'studYearEnd': endDate,
+        'semester': semester,
+      },
+      options: Options(headers: {'x-access-token': token}),
+    );
+    reitList = parseReitList(response.data["reitList"]);
     notifyListeners();
   }
 
-  getReitItemList(studyId) async {
+  Future<void> getReitItemList(studyId) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.reitItemList}?studyId=$studyId&accessToken=$token'));
-    reitItemList = parseReitItemList(json.decode(response.body)["brsActivityList"]);
+    final response = await dio.get(
+      Config.reitItemList,
+      queryParameters: {
+        'studyId': studyId,
+      },
+      options: Options(headers: {'x-access-token': token}),
+    );
+    reitItemList = parseReitItemList(response.data["brsActivityList"]);
     notifyListeners();
   }
 }

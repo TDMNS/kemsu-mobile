@@ -29,7 +29,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _postAuth(PostAuthEvents event, Emitter<AuthState> emit) async {
     try {
       final authData = await authRepository.postAuth(login: event.login, password: event.password);
-      print("authData = $authData");
       await storage.write(key: "userType", value: authData.userInfo.userType);
       await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
 

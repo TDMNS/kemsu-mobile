@@ -10,12 +10,14 @@ AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => AuthModel(
       success: json['success'] as bool,
       userInfo: UserInfo.fromJson(json['userInfo'] as Map<String, dynamic>),
       accessToken: json['accessToken'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
       'success': instance.success,
       'userInfo': instance.userInfo,
       'accessToken': instance.accessToken,
+      'refreshToken': instance.refreshToken,
     };
 
 UserInfo _$UserInfoFromJson(Map<String, dynamic> json) => UserInfo(

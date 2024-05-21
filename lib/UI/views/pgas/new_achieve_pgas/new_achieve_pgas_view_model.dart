@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../Configurations/config.dart';
+import '../../../../domain/dio_interceptor/dio_client.dart';
 import 'models/achieve_category_model.dart';
 import 'models/activity_tree_model.dart';
 import 'year_model.dart';
@@ -179,12 +180,10 @@ class NewAchievePgasViewModel extends BaseViewModel {
       "totalSizeLimit": (10 * 1024 * 1024),
     });
 
-    Dio dio = Dio();
-
-    dio.options.headers["X-Access-Token"] = "$accessToken";
+    final dio = DioClient(Dio());
 
     var response = await dio
-        .put(Config.pgas, data: fd);
+        .put(Config.pgas, options: Options(headers: {'x-access-token': accessToken}), data: fd);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       fileName = json.decode(json.encode(response.data["fileNames"].first));

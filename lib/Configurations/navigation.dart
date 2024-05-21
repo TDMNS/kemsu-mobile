@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:kemsu_app/UI/menu.dart';
 import 'package:kemsu_app/UI/not_auth_menu.dart';
 import 'package:kemsu_app/UI/splash_screen.dart';
-import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_view.dart';
 import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';

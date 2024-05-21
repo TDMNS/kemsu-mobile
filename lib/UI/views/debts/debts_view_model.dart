@@ -1,15 +1,14 @@
+import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import 'package:stacked/stacked.dart';
-
-import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_interceptor/dio_client.dart';
 import 'models/debts_academy_model.dart';
-import 'dart:convert';
 
 class EnumDebts {
   static String get academyDebtsTitle => "Академическая задолженность";
@@ -19,6 +18,8 @@ class EnumDebts {
 
 class DebtsViewModel extends BaseViewModel {
   DebtsViewModel(BuildContext context);
+
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   List<AcademyDebts> academyDebts = [];
@@ -26,7 +27,6 @@ class DebtsViewModel extends BaseViewModel {
   List<PayDebts> payDebts = [];
 
   int selectedIndex = 2;
-
   bool circle = true;
 
   Future onReady() async {
@@ -37,17 +37,14 @@ class DebtsViewModel extends BaseViewModel {
     circle = false;
   }
 
-  getAcademyDebts() async {
+  Future<void> getAcademyDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse(Config.studDebt),
-      headers: {
-        "x-access-token": token!,
-      },
+    final response = await dio.get(
+      Config.studDebt,
+      options: Options(headers: {'x-access-token': token!}),
     );
 
-    academyDebts = parseAcademyDebtsList(json.decode(response.body)['studyDebtList']);
-
+    academyDebts = parseAcademyDebtsList(response.data['studyDebtList']);
     notifyListeners();
   }
 
@@ -55,16 +52,14 @@ class DebtsViewModel extends BaseViewModel {
     return response.map<AcademyDebts>((json) => AcademyDebts.fromJson(json)).toList();
   }
 
-  getLibraryDebts() async {
+  Future<void> getLibraryDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse(Config.libraryDebt),
-      headers: {
-        "x-access-token": token!,
-      },
+    final response = await dio.get(
+      Config.libraryDebt,
+      options: Options(headers: {'x-access-token': token!}),
     );
 
-    libraryDebts = parseLibraryDebtsList(json.decode(response.body)['literatureDebtList']);
+    libraryDebts = parseLibraryDebtsList(response.data['literatureDebtList']);
     notifyListeners();
   }
 
@@ -72,32 +67,26 @@ class DebtsViewModel extends BaseViewModel {
     return response.map<LibraryDebts>((json) => LibraryDebts.fromJson(json)).toList();
   }
 
-  updateDebts() async {
+  Future<void> updateDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    await http.get(
-      Uri.parse(Config.academicDebtUpdate),
-      headers: {
-        "x-access-token": token!,
-      },
+    await dio.get(
+      Config.academicDebtUpdate,
+      options: Options(headers: {'x-access-token': token!}),
     );
-    await http.get(
-      Uri.parse(Config.libraryDebtUpdate),
-      headers: {
-        "x-access-token": token,
-      },
+    await dio.get(
+      Config.libraryDebtUpdate,
+      options: Options(headers: {'x-access-token': token!}),
     );
   }
 
-  getPayDebts() async {
+  Future<void> getPayDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse(Config.studMoneyDebt),
-      headers: {
-        "x-access-token": '$token',
-      },
+    final response = await dio.get(
+      Config.studMoneyDebt,
+      options: Options(headers: {'x-access-token': '$token'}),
     );
 
-    final moneyDebt = json.decode(response.body)["debtInfo"];
+    final moneyDebt = response.data["debtInfo"];
     if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
       payDebts = [PayDebts.fromJson(moneyDebt)];
     }

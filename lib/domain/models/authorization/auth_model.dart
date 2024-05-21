@@ -9,11 +9,13 @@ class AuthModel extends Equatable {
   final bool success;
   final UserInfo userInfo;
   final String accessToken;
+  final String refreshToken;
 
   const AuthModel({
     required this.success,
     required this.userInfo,
     required this.accessToken,
+    required this.refreshToken,
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) => _$AuthModelFromJson(json);
@@ -24,6 +26,7 @@ class AuthModel extends Equatable {
         success,
         userInfo,
         accessToken,
+        refreshToken,
       ];
 }
 
