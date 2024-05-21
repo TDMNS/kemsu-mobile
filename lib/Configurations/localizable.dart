@@ -140,7 +140,7 @@ class Localizable {
   static String bugReportYour = 'Ваши обращения';
   static String bugReportEmpty = 'Нет отправленных обращений';
   static String bugReportNotProcessed = 'Заявка не обработана';
-  static String bugReportDate = 'Дата обращения';
+  static String bugReportDate = 'Дата обращения: ';
   static String bugReportCreate = 'Создать обращение';
   static String bugReportEnterMessage = 'Введите сообщение';
   static String bugReportSend = 'Отправить';

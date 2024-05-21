@@ -47,15 +47,12 @@ class RosViewModel extends BaseViewModel {
   }
 
   Future<void> getStudCard() async {
-    print('PRS TEST 1');
     String? token = await storage.read(key: "tokenKey");
     final response = await dio.get(
       Config.studCardHost,
       options: Options(headers: {'x-access-token': token}),
     );
-    print('PRS TEST 2:  ${response.data}');
     receivedStudyCard = parseCard(response.data);
-    print('PRS TEST 3');
     notifyListeners();
   }
 

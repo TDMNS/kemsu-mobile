@@ -78,14 +78,12 @@ class TokenInterceptor extends Interceptor {
   }
 
   Future<void> _refreshToken() async {
-    print("Refresh token");
     String? accessToken = await storage.read(key: "tokenKey");
     String? refreshToken = await storage.read(key: "refreshToken");
     final response = await dio.post(
         Config.refreshToken,
         data: {"accessToken": accessToken, "refreshToken": refreshToken},
     );
-    print("response = $response");
     var newToken = response.data['accessToken'];
     var newRefreshToken = response.data['refreshToken'];
     await storage.write(key: "tokenKey", value: newToken);
