@@ -55,10 +55,3 @@ class ProblemsEvent extends AuthEvents {
   @override
   List<Object?> get props => [];
 }
-
-class GetUserDataEvent extends AuthEvents {
-  GetUserDataEvent();
-
-  @override
-  List<Object?> get props => [];
-}

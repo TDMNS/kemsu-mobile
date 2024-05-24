@@ -29,6 +29,9 @@ class AuthRepository implements AbstractAuthRepository {
   final ValueNotifier<Lce<EmpCardModel>> empCard = ValueNotifier(const Lce.idle());
 
   @override
+  final ValueNotifier<String> userAvatar = ValueNotifier('');
+
+  @override
   Future<AuthModel> postAuth({required String login, required String password}) async {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
     final authResponse = !testUser
@@ -51,6 +54,7 @@ class AuthRepository implements AbstractAuthRepository {
   Future<UserInfo> getUserInfo() async {
     String? token = await storage.read(key: "tokenKey");
     final userResponse = token != 'accessToken' ? await dio.get(Config.userInfoToken, options: Options(headers: {'x-access-token': token})) : null;
+    print('USER RESPONSE:: $userResponse');
     final userModel = token == 'accessToken' ? const UserInfo.guest() : UserInfo.fromJson(userResponse!.data as Map<String, dynamic>);
     userInfo.value = userModel.asContent;
     return userModel;
@@ -82,6 +86,7 @@ class AuthRepository implements AbstractAuthRepository {
     final response = await dio.get(Config.userInfo, options: Options(headers: {'x-access-token': token}));
     final String imageUrl = response.data['userInfo']['PHOTO_URL'] ?? '';
     final String avatar = '$imageUrl?accessToken=$token';
+    userAvatar.value = avatar;
     return imageUrl.isEmpty ? '' : avatar;
   }
 
@@ -90,6 +95,41 @@ class AuthRepository implements AbstractAuthRepository {
     String? token = await storage.read(key: 'tokenKey');
     final response = await dio.post(Config.checkMobileAppVersion, data: {"clientVersion": version}, options: Options(headers: {'x-access-token': token}));
     var result = response.data['versionEqualFlag'];
+    return result;
+  }
+
+  @override
+  Future<bool> changeEmail({required String email, required String password}) async {
+    String? token = await storage.read(key: 'tokenKey');
+    var data = {
+      "email": email,
+      "pwd": password,
+    };
+    final response = await dio.post(Config.updateEmail, data: data, options: Options(headers: {'x-access-token': token}));
+    bool result = response.data['success'];
+    return result;
+  }
+
+  @override
+  Future<bool> changePassword({required String oldPassword, required String newPassword}) async {
+    String? token = await storage.read(key: 'tokenKey');
+    print('FUNC CHANGE:');
+    var data = {
+      "newPassword": newPassword,
+      "oldPassword": oldPassword,
+    };
+    final response = await dio.post(Config.changePassword, data: data, options: Options(headers: {'x-access-token': token}));
+    print('RESPONSE:: $response');
+    bool result = response.data['success'];
+    print('RESULT:: $result');
+    return result;
+  }
+
+  @override
+  Future<bool> changePhone({required String phone}) async {
+    String? token = await storage.read(key: 'tokenKey');
+    final response = await dio.post(Config.updatePhone, data: {"phone": phone}, options: Options(headers: {'x-access-token': token}));
+    bool result = response.data['success'];
     return result;
   }
 }

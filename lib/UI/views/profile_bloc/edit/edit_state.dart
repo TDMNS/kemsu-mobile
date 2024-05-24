@@ -1,26 +1,41 @@
 part of 'edit_bloc.dart';
 
+enum ErrorType {
+  emptyFields('Заполните все поля'),
+  rejectOldPass('Старый пароль введен неверно!'),
+  comparePass('Пароли не совпадают!'),
+  noError('');
+
+  final String errorText;
+
+  const ErrorType(this.errorText);
+}
+
 class EditState extends Equatable {
-  final Lce<AuthModel> userData;
+  final Lce<UserInfo> userInfo;
+  final String avatar;
   final bool twoFactorAuth;
   final bool twoFactorAuthConfirmed;
-  final String? error;
+  final ErrorType error;
 
   const EditState({
-    this.userData = const Lce.loading(),
+    this.userInfo = const Lce.loading(),
+    this.avatar = '',
     this.twoFactorAuth = false,
     this.twoFactorAuthConfirmed = false,
-    this.error,
+    this.error = ErrorType.noError,
   });
 
   EditState copyWith({
-    Lce<AuthModel>? userData,
+    Lce<UserInfo>? userInfo,
+    String? avatar,
     bool? twoFactorAuth,
     bool? twoFactorAuthConfirmed,
-    String? error,
+    ErrorType? error,
   }) {
     return EditState(
-      userData: userData ?? this.userData,
+      userInfo: userInfo ?? this.userInfo,
+      avatar: avatar ?? this.avatar,
       twoFactorAuth: twoFactorAuth ?? this.twoFactorAuth,
       twoFactorAuthConfirmed: twoFactorAuthConfirmed ?? this.twoFactorAuthConfirmed,
       error: error ?? this.error,
@@ -28,5 +43,5 @@ class EditState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [userData, twoFactorAuth, twoFactorAuthConfirmed, error];
+  List<Object?> get props => [userInfo, twoFactorAuth, twoFactorAuthConfirmed, error, avatar];
 }

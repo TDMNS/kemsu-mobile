@@ -28,12 +28,6 @@ class _ProfileScreenState extends State<AuthScreen> {
   );
 
   @override
-  void initState() {
-    _authBloc.add(GetUserDataEvent());
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _loginFocus.dispose();
     _passwordFocus.dispose();

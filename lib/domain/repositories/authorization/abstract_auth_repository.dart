@@ -17,6 +17,12 @@ abstract class AbstractAuthRepository {
 
   Future<int> checkUpdate({required String version});
 
+  Future<bool> changeEmail({required String email, required String password});
+
+  Future<bool> changePhone({required String phone});
+
+  Future<bool> changePassword({required String oldPassword, required String newPassword});
+
   ValueListenable<Lce<AuthModel>> get userData;
 
   ValueListenable<Lce<UserInfo>> get userInfo;
@@ -24,4 +30,6 @@ abstract class AbstractAuthRepository {
   ValueListenable<Lce<StudCardModel>> get studCard;
 
   ValueListenable<Lce<EmpCardModel>> get empCard;
+
+  ValueListenable<String> get userAvatar;
 }
