@@ -8,9 +8,12 @@ part of 'auth_model.dart';
 
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => AuthModel(
       success: json['success'] as bool,
-      userInfo: UserInfo.fromJson(json['userInfo'] as Map<String, dynamic>),
-      accessToken: json['accessToken'] as String,
-      refreshToken: json['refreshToken'] as String,
+      userInfo: json['userInfo'] == null
+          ? null
+          : UserInfo.fromJson(json['userInfo'] as Map<String, dynamic>),
+      accessToken: json['accessToken'] as String?,
+      refreshToken: json['refreshToken'] as String?,
+      twoFactorAuthEnabled: json['twoFactorAuthEnabled'] as bool?,
     );
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
@@ -18,6 +21,7 @@ Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
       'userInfo': instance.userInfo,
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
+      'twoFactorAuthEnabled': instance.twoFactorAuthEnabled,
     };
 
 UserInfo _$UserInfoFromJson(Map<String, dynamic> json) => UserInfo(

@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
     on<UpdateLoginTextFieldEvent>(_updateLoginTextField);
     on<UpdatePasswordTextFieldEvent>(_updatePasswordTextField);
     on<ProblemsEvent>(_problems);
+    on<AuthByCode>(_authByCode);
   }
 
   final AbstractAuthRepository authRepository;
@@ -28,19 +29,41 @@ class AuthBloc extends Bloc<AuthEvents, AuthState> {
   Future<void> _postAuth(PostAuthEvents event, Emitter<AuthState> emit) async {
     try {
       final authData = await authRepository.postAuth(login: event.login, password: event.password);
-      await storage.write(key: "userType", value: authData.userInfo.userType);
-      await storage.write(key: "FIO", value: "${authData.userInfo.lastName} ${authData.userInfo.firstName} ${authData.userInfo.middleName}");
+      await storage.write(key: "userType", value: authData.userInfo?.userType);
+      await storage.write(key: "FIO", value: "${authData.userInfo?.lastName} ${authData.userInfo?.firstName} ${authData.userInfo?.middleName}");
+      if (authData.twoFactorAuthEnabled != null && authData.twoFactorAuthEnabled!) {
+        emit(state.copyWith(isTwoFactorEnter: true));
+      } else {
+        emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo?.userType == EnumUserType.employee ? 1 : 0));
+        if (state.isAuthSuccess) {
+          AppRouting.toMenu();
+        } else {
+          print('TEST TEST');
+          final error = DioException.badResponse(statusCode: 555, requestOptions: RequestOptions(), response: Response(requestOptions: RequestOptions()));
+          _processStatusCode(error);
+        }
+      }
+    } on DioException catch (error) {
+      print('Error: ${error.response}');
+      _processStatusCode(error);
+    }
+  }
 
-      emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo.userType == EnumUserType.employee ? 1 : 0));
-
+  Future<void> _authByCode(AuthByCode event, Emitter<AuthState> emit) async {
+    try {
+      final authData = await authRepository.authByCode(login: event.login, code: event.code);
+      await storage.write(key: "userType", value: authData.userInfo?.userType);
+      await storage.write(key: "FIO", value: "${authData.userInfo?.lastName} ${authData.userInfo?.firstName} ${authData.userInfo?.middleName}");
+      emit(state.copyWith(authData: authData, isAuthSuccess: true, userType: authData.userInfo?.userType == EnumUserType.employee ? 1 : 0));
       if (state.isAuthSuccess) {
         AppRouting.toMenu();
       } else {
+        print('TEST TEST');
         final error = DioException.badResponse(statusCode: 555, requestOptions: RequestOptions(), response: Response(requestOptions: RequestOptions()));
         _processStatusCode(error);
       }
-    } catch (error) {
-      _processStatusCode(error);
+    } on DioException catch (error) {
+      print('Error: ${error.response}');
     }
   }
 

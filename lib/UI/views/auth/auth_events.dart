@@ -49,6 +49,16 @@ class UpdatePasswordTextFieldEvent extends AuthEvents {
   List<Object?> get props => [password];
 }
 
+class AuthByCode extends AuthEvents {
+  AuthByCode({required this.code, required this.login});
+
+  final String login;
+  final String code;
+
+  @override
+  List<Object?> get props => [code, login];
+}
+
 class ProblemsEvent extends AuthEvents {
   ProblemsEvent();
 

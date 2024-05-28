@@ -30,17 +30,24 @@ class ChangeEmail extends EditEvent {
   List<Object> get props => [email, password];
 }
 
-class ChangePhone extends EditEvent {
-  ChangePhone({required this.phone});
-  final String phone;
-
-  @override
-  List<Object> get props => [phone];
-}
-
 class OnInit extends EditEvent {
   OnInit();
 
   @override
   List<Object> get props => [];
+}
+
+class EnableTwoFactorAuth extends EditEvent {
+  EnableTwoFactorAuth();
+
+  @override
+  List<Object> get props => [];
+}
+
+class ConfirmTwoFactorAuth extends EditEvent {
+  ConfirmTwoFactorAuth({required this.code});
+  final String code;
+
+  @override
+  List<Object> get props => [code];
 }

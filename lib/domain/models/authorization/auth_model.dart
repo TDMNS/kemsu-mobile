@@ -7,15 +7,17 @@ part 'auth_model.g.dart';
 @JsonSerializable()
 class AuthModel extends Equatable {
   final bool success;
-  final UserInfo userInfo;
-  final String accessToken;
-  final String refreshToken;
+  final UserInfo? userInfo;
+  final String? accessToken;
+  final String? refreshToken;
+  final bool? twoFactorAuthEnabled;
 
   const AuthModel({
     required this.success,
-    required this.userInfo,
-    required this.accessToken,
-    required this.refreshToken,
+    this.userInfo,
+    this.accessToken,
+    this.refreshToken,
+    this.twoFactorAuthEnabled,
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) => _$AuthModelFromJson(json);
@@ -27,6 +29,7 @@ class AuthModel extends Equatable {
         userInfo,
         accessToken,
         refreshToken,
+        twoFactorAuthEnabled,
       ];
 }
 

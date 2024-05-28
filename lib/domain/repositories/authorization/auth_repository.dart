@@ -35,12 +35,17 @@ class AuthRepository implements AbstractAuthRepository {
   Future<AuthModel> postAuth({required String login, required String password}) async {
     bool testUser = login == 'stud00001' && password == 'cherrypie';
     final authResponse = !testUser
-        ? await dio.post(Config.apiHost, data: {
-            "login": login,
-            "password": password,
-            "lifetime": "5m",
-          })
+        ? await dio.post(
+            Config.apiHost,
+            data: {
+              "login": login,
+              "password": password,
+              "lifetime": "5m",
+            },
+          )
         : null;
+    print('RESPONSE:: $authResponse');
+
     final authModel = testUser
         ? const AuthModel(success: true, userInfo: UserInfo.guest(), accessToken: 'accessToken', refreshToken: 'refreshToken')
         : AuthModel.fromJson(authResponse?.data as Map<String, dynamic>);
@@ -51,11 +56,29 @@ class AuthRepository implements AbstractAuthRepository {
   }
 
   @override
+  Future<AuthModel> authByCode({required String login, required String code}) async {
+    print('LOGIN:: $login, CODE:: $code');
+    final response = await dio.post(
+      Config.authByCode,
+      data: {
+        "login": login,
+        "code": code,
+        "lifetime": "5m",
+      },
+    );
+    final authModel = AuthModel.fromJson(response.data as Map<String, dynamic>);
+    userData.value = authModel.asContent;
+    await storage.write(key: "tokenKey", value: authModel.accessToken);
+    await storage.write(key: "refreshToken", value: authModel.refreshToken);
+    return authModel;
+  }
+
+  @override
   Future<UserInfo> getUserInfo() async {
     String? token = await storage.read(key: "tokenKey");
     final userResponse = token != 'accessToken' ? await dio.get(Config.userInfoToken, options: Options(headers: {'x-access-token': token})) : null;
-    print('USER RESPONSE:: $userResponse');
     final userModel = token == 'accessToken' ? const UserInfo.guest() : UserInfo.fromJson(userResponse!.data as Map<String, dynamic>);
+    print('USER INFO:: $userResponse');
     userInfo.value = userModel.asContent;
     return userModel;
   }
@@ -113,23 +136,29 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<bool> changePassword({required String oldPassword, required String newPassword}) async {
     String? token = await storage.read(key: 'tokenKey');
-    print('FUNC CHANGE:');
     var data = {
       "newPassword": newPassword,
       "oldPassword": oldPassword,
     };
     final response = await dio.post(Config.changePassword, data: data, options: Options(headers: {'x-access-token': token}));
-    print('RESPONSE:: $response');
     bool result = response.data['success'];
-    print('RESULT:: $result');
     return result;
   }
 
   @override
-  Future<bool> changePhone({required String phone}) async {
+  Future<void> enableTwoFactorAuth() async {
     String? token = await storage.read(key: 'tokenKey');
-    final response = await dio.post(Config.updatePhone, data: {"phone": phone}, options: Options(headers: {'x-access-token': token}));
-    bool result = response.data['success'];
-    return result;
+    var response = await dio.post(Config.enableTwoFactorAuth, options: Options(headers: {'x-access-token': token}));
+    print('TEST:: ${response}');
+  }
+
+  @override
+  Future<void> confirmTwoFactorAuth({required String code}) async {
+    String? token = await storage.read(key: 'tokenKey');
+    var data = {
+      'code': code,
+    };
+    var response = await dio.post(Config.confirmTwoFactorAuth, data: data, options: Options(headers: {'x-access-token': token}));
+    print('RESPONSE:: $response');
   }
 }

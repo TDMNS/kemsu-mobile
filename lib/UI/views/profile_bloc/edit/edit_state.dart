@@ -4,6 +4,8 @@ enum ErrorType {
   emptyFields('Заполните все поля'),
   rejectOldPass('Старый пароль введен неверно!'),
   comparePass('Пароли не совпадают!'),
+  passRequirements(
+      'Пароль должен быть содержать 8 символов, включать только цифры и буквы английского алфавита, и обязательно содержать хотя бы одну цифру, одну строчную и одну заглавную букву.'),
   noError('');
 
   final String errorText;
@@ -17,6 +19,7 @@ class EditState extends Equatable {
   final bool twoFactorAuth;
   final bool twoFactorAuthConfirmed;
   final ErrorType error;
+  final bool isSuccess;
 
   const EditState({
     this.userInfo = const Lce.loading(),
@@ -24,6 +27,7 @@ class EditState extends Equatable {
     this.twoFactorAuth = false,
     this.twoFactorAuthConfirmed = false,
     this.error = ErrorType.noError,
+    this.isSuccess = false,
   });
 
   EditState copyWith({
@@ -32,6 +36,7 @@ class EditState extends Equatable {
     bool? twoFactorAuth,
     bool? twoFactorAuthConfirmed,
     ErrorType? error,
+    bool? isSuccess,
   }) {
     return EditState(
       userInfo: userInfo ?? this.userInfo,
@@ -39,9 +44,10 @@ class EditState extends Equatable {
       twoFactorAuth: twoFactorAuth ?? this.twoFactorAuth,
       twoFactorAuthConfirmed: twoFactorAuthConfirmed ?? this.twoFactorAuthConfirmed,
       error: error ?? this.error,
+      isSuccess: isSuccess ?? this.isSuccess,
     );
   }
 
   @override
-  List<Object?> get props => [userInfo, twoFactorAuth, twoFactorAuthConfirmed, error, avatar];
+  List<Object?> get props => [userInfo, twoFactorAuth, twoFactorAuthConfirmed, error, avatar, isSuccess];
 }

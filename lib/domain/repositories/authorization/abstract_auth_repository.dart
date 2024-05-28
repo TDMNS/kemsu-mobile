@@ -7,6 +7,8 @@ import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 abstract class AbstractAuthRepository {
   Future<AuthModel> postAuth({required String login, required String password});
 
+  Future<AuthModel> authByCode({required String login, required String code});
+
   Future<UserInfo> getUserInfo();
 
   Future<StudCardModel> getStudCardData();
@@ -19,9 +21,11 @@ abstract class AbstractAuthRepository {
 
   Future<bool> changeEmail({required String email, required String password});
 
-  Future<bool> changePhone({required String phone});
-
   Future<bool> changePassword({required String oldPassword, required String newPassword});
+
+  Future<void> enableTwoFactorAuth();
+
+  Future<void> confirmTwoFactorAuth({required String code});
 
   ValueListenable<Lce<AuthModel>> get userData;
 

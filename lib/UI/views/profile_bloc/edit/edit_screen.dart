@@ -5,14 +5,16 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/edit/edit_bloc.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-enum EditType { email, password, phone }
+enum EditType { email, password, twoFactor }
 
 TextEditingController oldPasswordController = TextEditingController();
 TextEditingController newPasswordController = TextEditingController();
 TextEditingController newRepeatPasswordController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController phoneController = TextEditingController();
+TextEditingController twoFactorCodeController = TextEditingController();
 
 void _clearControllers() {
   oldPasswordController.clear();
@@ -57,6 +59,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                 );
               }
+
               emailController.text = state.userInfo.requiredContent.email ?? '';
               phoneController.text = state.userInfo.requiredContent.phone ?? '';
               return Padding(
@@ -87,7 +90,6 @@ class _EditScreenState extends State<EditScreen> {
                       ),
                     ),
                     const SizedBox(height: 12.0),
-                    ProfileEditField(type: EditType.phone, error: state.error.errorText, onTap: () => _editBloc.add(ChangePhone(phone: phoneController.text))),
                     const SizedBox(height: 16.0),
                     ProfileEditField(
                       type: EditType.password,
@@ -104,10 +106,15 @@ class _EditScreenState extends State<EditScreen> {
                         Text(Localizable.twoFactorAuth, style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0)),
                         Switch(
                           activeColor: Colors.green,
-                          value: state.twoFactorAuth,
-                          onChanged: (bool value) => _editBloc.add(
-                            TwoFactorAuthSwitch(twoFactorValue: value),
-                          ),
+                          value: state.twoFactorAuthConfirmed,
+                          onChanged: (bool value) {
+                            _editBloc.add(EnableTwoFactorAuth());
+                            _showTwoFactorAuthAlert(context, error: '', onTap: () => _editBloc.add(ConfirmTwoFactorAuth(code: twoFactorCodeController.text)));
+
+                            // _editBloc.add(
+                            //   TwoFactorAuthSwitch(twoFactorValue: value),
+                            // );
+                          },
                         ),
                       ],
                     ),
@@ -147,9 +154,10 @@ class ProfileEditField extends StatelessWidget {
         fieldName = 'Сменить пароль';
         icon = Icons.lock;
         break;
-      case EditType.phone:
-        fieldName = 'Телефон';
-        icon = Icons.phone;
+      case EditType.twoFactor:
+        fieldName = 'Двухфакторная аутентификация';
+        icon = Icons.lock_outline;
+        break;
         break;
     }
 
@@ -157,13 +165,13 @@ class ProfileEditField extends StatelessWidget {
       onTap: () {
         switch (type) {
           case EditType.email:
-            _showChangeDataAlert(context, type: EditType.email, error: error ?? '', onTap: onTap!);
+            _showChangeEmailAlert(context, error: error ?? '', onTap: onTap!);
             break;
           case EditType.password:
-            _showChangePasswordAlert(context, error: error ?? '', onTap: onTap!);
+            _showChangePasswordAlert(context, onTap: onTap!);
             break;
-          case EditType.phone:
-            _showChangeDataAlert(context, type: EditType.phone, error: error ?? '', onTap: onTap!);
+          case EditType.twoFactor:
+            _showTwoFactorAuthAlert(context, error: error ?? '', onTap: onTap!);
             break;
         }
       },
@@ -194,33 +202,55 @@ class ProfileEditField extends StatelessWidget {
   }
 }
 
-void _showChangeDataAlert(BuildContext context, {required EditType type, required String error, required VoidCallback onTap}) {
+void _showChangeEmailAlert(BuildContext context, {required String error, required VoidCallback onTap}) {
+  final editBloc = EditBloc(
+    const EditState(),
+    authRepository: GetIt.I<AbstractAuthRepository>(),
+  );
   showDialog(
     context: context,
     builder: (context) {
-      return StatefulBuilder(builder: (context, setState) {
-        return AlertDialog(
+      return BlocProvider(
+        create: (_) => editBloc,
+        child: AlertDialog(
           content: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  type == EditType.email ? 'Смена Email' : 'Смена номера телефона',
-                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                const Text(
+                  'Смена Email',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
                 TextFormField(
-                  controller: type == EditType.email ? emailController : phoneController,
-                  decoration: InputDecoration(hintText: type == EditType.email ? 'Email' : 'Телефон', suffixIcon: Icon(type == EditType.email ? Icons.email : Icons.phone)),
+                  controller: emailController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    hintText: 'Email',
+                    suffixIcon: Icon(Icons.email),
+                  ),
                 ),
                 const SizedBox(height: 16.0),
-                if (type == EditType.email) ...[
-                  TextFormField(
-                    controller: oldPasswordController,
-                    decoration: const InputDecoration(hintText: 'Пароль', suffixIcon: Icon(Icons.password)),
+                TextFormField(
+                  controller: oldPasswordController,
+                  decoration: const InputDecoration(
+                    hintText: 'Пароль',
+                    suffixIcon: Icon(Icons.password),
                   ),
-                  const SizedBox(height: 16.0),
-                ],
+                ),
+                const SizedBox(height: 16.0),
+                BlocBuilder<EditBloc, EditState>(
+                  builder: (context, state) {
+                    if (state.isSuccess) {
+                      return const Text(
+                        'Email успешно изменён',
+                        style: TextStyle(color: Colors.green),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
                 if (error.isNotEmpty)
                   Text(
                     error,
@@ -237,13 +267,13 @@ void _showChangeDataAlert(BuildContext context, {required EditType type, require
               ],
             ),
           ),
-        );
-      });
+        ),
+      );
     },
   ).then((_) => _clearControllers());
 }
 
-void _showChangePasswordAlert(BuildContext context, {required String error, required VoidCallback onTap}) {
+void _showChangePasswordAlert(BuildContext context, {required VoidCallback onTap}) {
   bool obscureOldPass = true;
   bool obscureNewPass = true;
   bool obscureNewRepPass = true;
@@ -316,6 +346,12 @@ void _showChangePasswordAlert(BuildContext context, {required String error, requ
                   const SizedBox(height: 16.0),
                   BlocBuilder<EditBloc, EditState>(
                     builder: (context, state) {
+                      if (state.isSuccess) {
+                        return const Text(
+                          'Пароль успешно изменён',
+                          style: TextStyle(color: Colors.green),
+                        );
+                      }
                       if (state.error != ErrorType.noError) {
                         return Text(
                           state.error.errorText,
@@ -341,7 +377,7 @@ void _showChangePasswordAlert(BuildContext context, {required String error, requ
                       'Сохранить',
                       style: TextStyle(color: Colors.white),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -350,4 +386,45 @@ void _showChangePasswordAlert(BuildContext context, {required String error, requ
       );
     },
   ).then((_) => _clearControllers());
+}
+
+void _showTwoFactorAuthAlert(BuildContext context, {required String error, required VoidCallback onTap}) {
+  final editBloc = EditBloc(
+    const EditState(),
+    authRepository: GetIt.I<AbstractAuthRepository>(),
+  );
+  showDialog(
+      context: context,
+      builder: (context) {
+        return BlocProvider(
+          create: (_) => editBloc,
+          child: AlertDialog(
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'На ваш Email был отправлен проверочный код',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24.0),
+                TextField(
+                  controller: twoFactorCodeController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(hintText: 'Проверочный код'),
+                ),
+                const SizedBox(height: 24.0),
+                ElevatedButton(
+                  onPressed: onTap,
+                  child: const Text(
+                    'Продолжить',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
 }
