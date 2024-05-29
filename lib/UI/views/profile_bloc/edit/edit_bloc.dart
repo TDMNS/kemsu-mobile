@@ -20,6 +20,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     on<ChangePassword>(_onChangePassword);
     on<ChangeEmail>(_onChangeEmail);
     on<EnableTwoFactorAuth>(_enableTwoFactorAuth);
+    on<DisableTwoFactorAuth>(_disableTwoFactorAuth);
     on<ConfirmTwoFactorAuth>(_confirmTwoFactorAuth);
   }
 
@@ -74,13 +75,22 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     }
   }
 
+  Future<void> _disableTwoFactorAuth(DisableTwoFactorAuth event, Emitter<EditState> emit) async {
+    try {
+      await authRepository.disableTwoFactorAuth();
+      emit(state.copyWith(twoFactorAuthConfirmed: false));
+    } on DioException catch (e) {
+      print('Error:: ${e.response}');
+    }
+  }
+
   Future<void> _confirmTwoFactorAuth(ConfirmTwoFactorAuth event, Emitter<EditState> emit) async {
     try {
       await authRepository.confirmTwoFactorAuth(code: event.code);
-      Timer(const Duration(seconds: 1), () => AppRouting.back());
-      add(TwoFactorAuthSwitch(twoFactorValue: !state.twoFactorAuthConfirmed));
+      AppRouting.back();
+      emit(state.copyWith(twoFactorAuthConfirmed: true));
     } on DioException catch (e) {
-      print('Error:: ${e.response}');
+      emit(state.copyWith(twoFactorError: e.response?.data['error']));
     }
   }
 }

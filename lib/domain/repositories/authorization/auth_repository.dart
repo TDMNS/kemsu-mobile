@@ -148,8 +148,7 @@ class AuthRepository implements AbstractAuthRepository {
   @override
   Future<void> enableTwoFactorAuth() async {
     String? token = await storage.read(key: 'tokenKey');
-    var response = await dio.post(Config.enableTwoFactorAuth, options: Options(headers: {'x-access-token': token}));
-    print('TEST:: ${response}');
+    await dio.post(Config.enableTwoFactorAuth, options: Options(headers: {'x-access-token': token}));
   }
 
   @override
@@ -158,7 +157,12 @@ class AuthRepository implements AbstractAuthRepository {
     var data = {
       'code': code,
     };
-    var response = await dio.post(Config.confirmTwoFactorAuth, data: data, options: Options(headers: {'x-access-token': token}));
-    print('RESPONSE:: $response');
+    await dio.post(Config.confirmTwoFactorAuth, data: data, options: Options(headers: {'x-access-token': token}));
+  }
+
+  @override
+  Future<void> disableTwoFactorAuth() async {
+    String? token = await storage.read(key: 'tokenKey');
+    await dio.post(Config.disableTwoFactorAuth, options: Options(headers: {'x-access-token': token}));
   }
 }

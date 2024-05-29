@@ -25,6 +25,8 @@ abstract class AbstractAuthRepository {
 
   Future<void> enableTwoFactorAuth();
 
+  Future<void> disableTwoFactorAuth();
+
   Future<void> confirmTwoFactorAuth({required String code});
 
   ValueListenable<Lce<AuthModel>> get userData;

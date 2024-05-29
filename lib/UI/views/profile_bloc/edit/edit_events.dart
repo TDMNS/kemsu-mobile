@@ -44,6 +44,13 @@ class EnableTwoFactorAuth extends EditEvent {
   List<Object> get props => [];
 }
 
+class DisableTwoFactorAuth extends EditEvent {
+  DisableTwoFactorAuth();
+
+  @override
+  List<Object> get props => [];
+}
+
 class ConfirmTwoFactorAuth extends EditEvent {
   ConfirmTwoFactorAuth({required this.code});
   final String code;

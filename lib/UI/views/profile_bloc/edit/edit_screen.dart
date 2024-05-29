@@ -20,6 +20,7 @@ void _clearControllers() {
   oldPasswordController.clear();
   newPasswordController.clear();
   newRepeatPasswordController.clear();
+  twoFactorCodeController.clear();
 }
 
 class EditScreen extends StatefulWidget {
@@ -89,7 +90,6 @@ class _EditScreenState extends State<EditScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12.0),
                     const SizedBox(height: 16.0),
                     ProfileEditField(
                       type: EditType.password,
@@ -108,8 +108,12 @@ class _EditScreenState extends State<EditScreen> {
                           activeColor: Colors.green,
                           value: state.twoFactorAuthConfirmed,
                           onChanged: (bool value) {
-                            _editBloc.add(EnableTwoFactorAuth());
-                            _showTwoFactorAuthAlert(context, error: '', onTap: () => _editBloc.add(ConfirmTwoFactorAuth(code: twoFactorCodeController.text)));
+                            if (state.twoFactorAuthConfirmed) {
+                              _editBloc.add(DisableTwoFactorAuth());
+                            } else {
+                              _editBloc.add(EnableTwoFactorAuth());
+                              _showTwoFactorAuthAlert(context, onTap: () => _editBloc.add(ConfirmTwoFactorAuth(code: twoFactorCodeController.text)));
+                            }
 
                             // _editBloc.add(
                             //   TwoFactorAuthSwitch(twoFactorValue: value),
@@ -171,7 +175,7 @@ class ProfileEditField extends StatelessWidget {
             _showChangePasswordAlert(context, onTap: onTap!);
             break;
           case EditType.twoFactor:
-            _showTwoFactorAuthAlert(context, error: error ?? '', onTap: onTap!);
+            _showTwoFactorAuthAlert(context, onTap: onTap!);
             break;
         }
       },
@@ -388,17 +392,19 @@ void _showChangePasswordAlert(BuildContext context, {required VoidCallback onTap
   ).then((_) => _clearControllers());
 }
 
-void _showTwoFactorAuthAlert(BuildContext context, {required String error, required VoidCallback onTap}) {
+void _showTwoFactorAuthAlert(BuildContext context, {required VoidCallback onTap}) {
   final editBloc = EditBloc(
     const EditState(),
     authRepository: GetIt.I<AbstractAuthRepository>(),
   );
+
   showDialog(
-      context: context,
-      builder: (context) {
-        return BlocProvider(
-          create: (_) => editBloc,
-          child: AlertDialog(
+    context: context,
+    builder: (context) {
+      return BlocProvider(
+        create: (_) => editBloc,
+        child: StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -414,6 +420,21 @@ void _showTwoFactorAuthAlert(BuildContext context, {required String error, requi
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(hintText: 'Проверочный код'),
                 ),
+                BlocBuilder<EditBloc, EditState>(
+                  builder: (context, state) {
+                    if (state.twoFactorError.isNotEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 24.0),
+                        child: Text(
+                          state.twoFactorError,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
                 const SizedBox(height: 24.0),
                 ElevatedButton(
                   onPressed: onTap,
@@ -424,7 +445,9 @@ void _showTwoFactorAuthAlert(BuildContext context, {required String error, requi
                 ),
               ],
             ),
-          ),
-        );
-      });
+          );
+        }),
+      );
+    },
+  ).then((_) => _clearControllers());
 }

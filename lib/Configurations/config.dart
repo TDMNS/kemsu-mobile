@@ -61,6 +61,7 @@ class Config {
   static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';
   static String setUserVote = 'https://api-next.kemsu.ru/api/noty/mobile/setUserVote';
   static String enableTwoFactorAuth = 'https://api-next.kemsu.ru/api/enable-two-factor-auth';
+  static String disableTwoFactorAuth = 'https://api-next.kemsu.ru/api/disable-two-factor-auth';
   static String confirmTwoFactorAuth = 'https://api-next.kemsu.ru/api/confirm-two-factor-auth';
   static String authByCode = 'https://api-next.kemsu.ru/api/auth-by-code';
 }

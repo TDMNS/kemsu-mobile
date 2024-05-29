@@ -20,6 +20,7 @@ class EditState extends Equatable {
   final bool twoFactorAuthConfirmed;
   final ErrorType error;
   final bool isSuccess;
+  final String twoFactorError;
 
   const EditState({
     this.userInfo = const Lce.loading(),
@@ -28,6 +29,7 @@ class EditState extends Equatable {
     this.twoFactorAuthConfirmed = false,
     this.error = ErrorType.noError,
     this.isSuccess = false,
+    this.twoFactorError = '',
   });
 
   EditState copyWith({
@@ -37,6 +39,7 @@ class EditState extends Equatable {
     bool? twoFactorAuthConfirmed,
     ErrorType? error,
     bool? isSuccess,
+    String? twoFactorError,
   }) {
     return EditState(
       userInfo: userInfo ?? this.userInfo,
@@ -45,9 +48,10 @@ class EditState extends Equatable {
       twoFactorAuthConfirmed: twoFactorAuthConfirmed ?? this.twoFactorAuthConfirmed,
       error: error ?? this.error,
       isSuccess: isSuccess ?? this.isSuccess,
+      twoFactorError: twoFactorError ?? this.twoFactorError,
     );
   }
 
   @override
-  List<Object?> get props => [userInfo, twoFactorAuth, twoFactorAuthConfirmed, error, avatar, isSuccess];
+  List<Object?> get props => [userInfo, twoFactorAuth, twoFactorAuthConfirmed, error, avatar, isSuccess, twoFactorError];
 }
