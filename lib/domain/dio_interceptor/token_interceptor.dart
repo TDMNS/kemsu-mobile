@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/Configurations/config.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'dart:io' show Platform;
+
+import 'package:package_info_plus/package_info_plus.dart';
 
 class TokenInterceptor extends Interceptor {
   final Dio dio;
@@ -16,6 +20,10 @@ class TokenInterceptor extends Interceptor {
     if (token != null) {
       options.headers['x-access-token'] = token;
     }
+
+    String userAgent = await _getUserAgent();
+    options.headers['user-agent'] = userAgent;
+    
     handler.next(options);
   }
 
@@ -81,12 +89,33 @@ class TokenInterceptor extends Interceptor {
     String? accessToken = await storage.read(key: "tokenKey");
     String? refreshToken = await storage.read(key: "refreshToken");
     final response = await dio.post(
-        Config.refreshToken,
-        data: {"accessToken": accessToken, "refreshToken": refreshToken},
+      Config.refreshToken,
+      data: {"accessToken": accessToken, "refreshToken": refreshToken},
     );
     var newToken = response.data['accessToken'];
     var newRefreshToken = response.data['refreshToken'];
     await storage.write(key: "tokenKey", value: newToken);
     await storage.write(key: "refreshToken", value: newRefreshToken);
+  }
+
+  Future<String> _getUserAgent() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    String osVersion;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      osVersion = 'Android ${androidInfo.version.release}';
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      osVersion = 'iOS ${iosInfo.systemVersion}';
+    } else {
+      osVersion = 'Unknown OS';
+    }
+
+    String dartVersion = Platform.version.split(" ").first;
+    String appVersion = packageInfo.version;
+
+    return '$osVersion / Dart $dartVersion / Build version $appVersion';
   }
 }
