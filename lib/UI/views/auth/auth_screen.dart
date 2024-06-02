@@ -198,10 +198,6 @@ class _ProfileScreenState extends State<AuthScreen> {
                       mainButton(context, onPressed: () {
                         _authBloc.add(PostAuthEvents(_loginController.text, _passwordController.text, context));
                       }, title: Localizable.authButtonTitle, isPrimary: true),
-                      const SizedBox(height: 20),
-                      mainButton(context, onPressed: () {
-                        _authBloc.add(ProblemsEvent());
-                      }, title: Localizable.authTroubleLoggingInHeader, isPrimary: false)
                     ]
                   ],
                 ),
