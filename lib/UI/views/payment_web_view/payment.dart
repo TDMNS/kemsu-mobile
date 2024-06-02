@@ -28,9 +28,9 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
   @override
   void initState() {
-    fio = widget.authRepository.userData.value.requiredContent.userInfo.fullName;
-    phone = widget.authRepository.userData.value.requiredContent.userInfo.phone ?? '';
-    email = widget.authRepository.userData.value.requiredContent.userInfo.email ?? '';
+    fio = widget.authRepository.userData.value.requiredContent.userInfo?.fullName ?? '';
+    phone = widget.authRepository.userData.value.requiredContent.userInfo?.phone ?? '';
+    email = widget.authRepository.userData.value.requiredContent.userInfo?.email ?? '';
 
     webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)

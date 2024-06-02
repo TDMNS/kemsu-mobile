@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
@@ -7,14 +6,14 @@ import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 
 class ProfileToolbar extends StatefulWidget {
   final VoidCallback? showAddInfo;
-  final AuthModel? userData;
+  final UserInfo? userInfo;
   final StudCardModel? studCard;
   final EmpCardModel? empCard;
   final String avatar;
   const ProfileToolbar({
     super.key,
     required this.showAddInfo,
-    required this.userData,
+    required this.userInfo,
     required this.studCard,
     required this.avatar,
     required this.empCard,
@@ -87,7 +86,7 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
                     child: CircleAvatar(
                       radius: 40.0,
                       backgroundColor: Colors.white.withOpacity(0.4),
-                      child: widget.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(widget.avatar, width: 200,  height: 200, fit: BoxFit.cover)),
+                      child: widget.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(widget.avatar, width: 200, height: 200, fit: BoxFit.cover)),
                     ),
                   ),
                   const SizedBox(width: 8.0),
@@ -101,10 +100,10 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            widget.userData?.userInfo.fullName ?? '',
+                            widget.userInfo?.fullName ?? '',
                             style: mainText,
                           ),
-                          Text(widget.userData?.userInfo.userType ?? '', style: addText),
+                          Text(widget.userInfo?.userType ?? '', style: addText),
                           Text(widget.studCard?.groupName ?? '', style: addText),
                         ],
                       ),

@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/di_initial.dart';
-import 'package:provider/provider.dart';
 import 'UI/custom_themes.dart';
-import 'UI/views/profile/profile_provider.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
   diRegister();
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProfileProvider(),
-      child: const App(),
-    ),
-  );
+  runApp(const App());
 }
 
 class App extends StatelessWidget {

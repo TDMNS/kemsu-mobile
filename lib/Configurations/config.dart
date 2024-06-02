@@ -1,5 +1,6 @@
 class Config {
   static String apiHost = 'https://api-next.kemsu.ru/api/auth';
+  static String userInfoToken = 'https://api-next.kemsu.ru/api/security/users';
   static String studCardHost = 'https://api.kemsu.ru/api/dekanat/students/study-cards';
   static String empCardHost = "https://api-next.kemsu.ru/api/personal-office/integration/empInfo";
   static String brsSemesterList = "https://api-next.kemsu.ru/api/personal-office/integration/brsSemesterList";
@@ -25,7 +26,7 @@ class Config {
   static String addRequest = "https://api-next.kemsu.ru/api/orders/main/addRequest";
   static String requestListReferences = "https://api-next.kemsu.ru/api/orders/main/requestList";
   static String studCheckList = 'https://api-next.kemsu.ru/api/debt/main/checkList';
-  static String proLongToken = 'https://api-next.kemsu.ru/api/security/auth/prolong';
+  static String refreshToken = 'https://api-next.kemsu.ru/api/refresh-token';
   static String updateEmail = 'https://api-next.kemsu.ru/api/personal-office/integration/updateUserEmail';
   static String updatePhone = 'https://api-next.kemsu.ru/api/personal-office/integration/updateUserPhone';
   static String newsMessagesTest = 'https://api3.kemsu.ru/api/telegram/kemsu-live/messages/test';
@@ -59,4 +60,8 @@ class Config {
   static String auditorList = 'https://api-next.kemsu.ru/api/schedule/integration/scheduleAuditorList';
   static String auditorSchedule = 'https://api-next.kemsu.ru/api/schedule/integration/auditorSchedule';
   static String setUserVote = 'https://api-next.kemsu.ru/api/noty/mobile/setUserVote';
+  static String enableTwoFactorAuth = 'https://api-next.kemsu.ru/api/enable-two-factor-auth';
+  static String disableTwoFactorAuth = 'https://api-next.kemsu.ru/api/disable-two-factor-auth';
+  static String confirmTwoFactorAuth = 'https://api-next.kemsu.ru/api/confirm-two-factor-auth';
+  static String authByCode = 'https://api-next.kemsu.ru/api/auth-by-code';
 }

@@ -11,13 +11,13 @@ import 'package:kemsu_app/domain/models/schedule/schedule_model.dart';
 import 'package:kemsu_app/domain/models/schedule/schedule_teacher_model.dart';
 import 'package:kemsu_app/domain/models/schedule/week_list_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
-
 import '../../../Configurations/config.dart';
+import '../../dio_interceptor/dio_client.dart';
 
 class ScheduleRepository implements AbstractScheduleRepository {
   ScheduleRepository({required this.dio});
 
-  final Dio dio;
+  final DioClient dio;
   static const storage = FlutterSecureStorage();
   final ValueNotifier<CurrentGroupModel> _currentGroupData = ValueNotifier(const CurrentGroupModel(success: true, currentGroupList: []));
   @override
@@ -84,7 +84,6 @@ class ScheduleRepository implements AbstractScheduleRepository {
         'groupId': groupId,
         'semesterWeekId': weekList.result[0].id,
       },
-      options: Options(headers: {'x-access-token': token}),
     );
     final scheduleTableData = scheduleTableResponse.data as Map<String, dynamic>;
     final scheduleTable = ScheduleModel.fromJson(scheduleTableData);
@@ -148,7 +147,6 @@ class ScheduleRepository implements AbstractScheduleRepository {
     final currentDayInfoData = currentDayInfoResponse.data as Map<String, dynamic>;
     final currentDayInfo = CurrentDayModel.fromJson(currentDayInfoData);
     _currentDayData.value = currentDayInfo;
-
     return currentDayInfo;
   }
 }

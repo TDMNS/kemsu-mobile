@@ -7,13 +7,17 @@ part 'auth_model.g.dart';
 @JsonSerializable()
 class AuthModel extends Equatable {
   final bool success;
-  final UserInfo userInfo;
-  final String accessToken;
+  final UserInfo? userInfo;
+  final String? accessToken;
+  final String? refreshToken;
+  final bool? twoFactorAuthEnabled;
 
   const AuthModel({
     required this.success,
-    required this.userInfo,
-    required this.accessToken,
+    this.userInfo,
+    this.accessToken,
+    this.refreshToken,
+    this.twoFactorAuthEnabled,
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) => _$AuthModelFromJson(json);
@@ -24,6 +28,8 @@ class AuthModel extends Equatable {
         success,
         userInfo,
         accessToken,
+        refreshToken,
+        twoFactorAuthEnabled,
       ];
 }
 
@@ -35,6 +41,8 @@ class UserInfo extends Equatable {
   final String? email;
   final String? phone;
   final String? userType;
+  final bool? twoFactorAuth;
+  final bool? twoFactorAuthConfirmed;
 
   String get fullName => '$lastName $firstName $middleName';
 
@@ -47,6 +55,8 @@ class UserInfo extends Equatable {
     this.email,
     this.phone,
     this.userType,
+    this.twoFactorAuth,
+    this.twoFactorAuthConfirmed,
   });
 
   const UserInfo.guest()
@@ -55,7 +65,9 @@ class UserInfo extends Equatable {
         middleName = 'Сергеевич',
         email = 'petrov@gmail.com',
         phone = '+79001001111',
-        userType = 'обучающийся';
+        userType = 'обучающийся',
+        twoFactorAuth = false,
+        twoFactorAuthConfirmed = false;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => _$UserInfoFromJson(json);
   Map<String, dynamic> toJson() => _$UserInfoToJson(this);
@@ -68,5 +80,7 @@ class UserInfo extends Equatable {
         email,
         phone,
         userType,
+        twoFactorAuth,
+        twoFactorAuthConfirmed,
       ];
 }

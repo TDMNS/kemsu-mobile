@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16.0),
                       ProfileToolbar(
                         showAddInfo: () => _profileBloc.add(ShowAddInfo(isShow: true)),
-                        userData: state.userData.content,
+                        userInfo: state.userData.content,
                         studCard: state.studCard.content,
                         empCard: state.empCard.content,
                         avatar: state.avatar,
@@ -79,17 +79,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
-                        itemCount: state.userData.requiredContent.userInfo.currentUserType == UserType.student ? studMenuTiles.length : teacherMenuTiles.length,
+                        itemCount: state.userData.requiredContent.currentUserType == UserType.student ? studMenuTiles.length : teacherMenuTiles.length,
                         itemBuilder: (context, index) {
-                          final entry = state.userData.requiredContent.userInfo.currentUserType == UserType.student
-                              ? studMenuTiles.entries.toList()[index]
-                              : teacherMenuTiles.entries.toList()[index];
+                          final entry =
+                              state.userData.requiredContent.currentUserType == UserType.student ? studMenuTiles.entries.toList()[index] : teacherMenuTiles.entries.toList()[index];
                           final title = entry.key;
                           final iconPath = entry.value;
                           return MenuTile(
                             title: title,
                             iconPath: iconPath,
-                            onTap: state.userData.requiredContent.userInfo.currentUserType == UserType.student ? studRoutes[index] : teacherRoutes[index],
+                            onTap: state.userData.requiredContent.currentUserType == UserType.student ? studRoutes[index] : teacherRoutes[index],
                           );
                         },
                       ),

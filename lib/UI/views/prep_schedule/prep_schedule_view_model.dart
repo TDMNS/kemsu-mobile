@@ -4,7 +4,6 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/UI/views/profile/profile_view_model.dart';
 import 'package:kemsu_app/UI/views/prep_schedule/prep_schedule_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:stacked/stacked.dart';
@@ -12,6 +11,7 @@ import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
 import '../../splash_screen.dart';
 import '../../common_widgets.dart';
+import '../schedule_new/schedule_bloc.dart';
 
 class PrepScheduleViewModel extends BaseViewModel {
   PrepScheduleViewModel(BuildContext context);

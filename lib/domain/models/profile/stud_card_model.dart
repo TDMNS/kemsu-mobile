@@ -34,6 +34,6 @@ class StudCardModel extends Equatable {
         faculty,
         speciality,
         learnForm,
-        finform,
+        finform, 
       ];
 }
