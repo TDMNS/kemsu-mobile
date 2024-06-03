@@ -116,6 +116,6 @@ class TokenInterceptor extends Interceptor {
     String dartVersion = Platform.version.split(" ").first;
     String appVersion = packageInfo.version;
 
-    return '$osVersion / Dart $dartVersion / Build version $appVersion';
+    return '$osVersion / Dart $dartVersion / Build version $appVersion / kemsuMobile';
   }
 }
