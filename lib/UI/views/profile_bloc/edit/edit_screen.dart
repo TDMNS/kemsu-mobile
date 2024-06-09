@@ -5,7 +5,7 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/edit/edit_bloc.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import '../../../../domain/dio_interceptor/dio_image_service.dart';
 
 enum EditType { email, password, twoFactor }
 
@@ -72,9 +72,16 @@ class _EditScreenState extends State<EditScreen> {
                     const SizedBox(height: 12.0),
                     Center(
                       child: CircleAvatar(
-                        radius: 40.0,
+                        radius: 72.0,
                         backgroundColor: Colors.white.withOpacity(0.4),
-                        child: state.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(state.avatar, width: 200, height: 200, fit: BoxFit.cover)),
+                        child: state.avatar.isEmpty
+                            ? Image.asset('images/avatar1.png')
+                            : DioImageService(
+                          url: state.avatar,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12.0),
@@ -95,13 +102,16 @@ class _EditScreenState extends State<EditScreen> {
                       type: EditType.password,
                       error: state.error.errorText,
                       onTap: () => _editBloc.add(
-                        ChangePassword(oldPassword: oldPasswordController.text, newPassword: newPasswordController.text, newRepPassword: newRepeatPasswordController.text),
+                        ChangePassword(
+                          oldPassword: oldPasswordController.text,
+                          newPassword: newPasswordController.text,
+                          newRepPassword: newRepeatPasswordController.text,
+                        ),
                       ),
                     ),
-
                     const SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(Localizable.twoFactorAuth, style: TextStyle(color: Colors.grey.shade800, fontSize: 16.0)),
                         Switch(
@@ -114,15 +124,10 @@ class _EditScreenState extends State<EditScreen> {
                               _editBloc.add(EnableTwoFactorAuth());
                               _showTwoFactorAuthAlert(context, onTap: () => _editBloc.add(ConfirmTwoFactorAuth(code: twoFactorCodeController.text)));
                             }
-
-                            // _editBloc.add(
-                            //   TwoFactorAuthSwitch(twoFactorValue: value),
-                            // );
                           },
                         ),
                       ],
                     ),
-                    // CupertinoSwitch(value: state.twoFactorAuth, onChanged: (bool val) {})
                   ],
                 ),
               );
@@ -161,7 +166,6 @@ class ProfileEditField extends StatelessWidget {
       case EditType.twoFactor:
         fieldName = 'Двухфакторная аутентификация';
         icon = Icons.lock_outline;
-        break;
         break;
     }
 

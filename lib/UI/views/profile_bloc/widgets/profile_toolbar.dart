@@ -3,6 +3,7 @@ import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
+import '../../../../domain/dio_interceptor/dio_image_service.dart';
 
 class ProfileToolbar extends StatefulWidget {
   final VoidCallback? showAddInfo;
@@ -30,6 +31,7 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -86,7 +88,14 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
                     child: CircleAvatar(
                       radius: 40.0,
                       backgroundColor: Colors.white.withOpacity(0.4),
-                      child: widget.avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(widget.avatar, width: 200, height: 200, fit: BoxFit.cover)),
+                      child: widget.avatar.isEmpty
+                          ? Image.asset('images/avatar1.png')
+                          : DioImageService(
+                        url: widget.avatar,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8.0),

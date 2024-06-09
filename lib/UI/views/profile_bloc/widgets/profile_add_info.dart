@@ -1,10 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
+import '../../../../domain/dio_interceptor/dio_image_service.dart';
 
 class ProfileAdditionalInformation extends StatelessWidget {
   final VoidCallback? closeInfo;
@@ -57,7 +57,14 @@ class ProfileAdditionalInformation extends StatelessWidget {
                         CircleAvatar(
                           radius: 72.0,
                           backgroundColor: Colors.white.withOpacity(0.4),
-                          child: avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(avatar, width: 200, height: 200, fit: BoxFit.cover)),
+                          child: avatar.isEmpty
+                              ? Image.asset('images/avatar1.png')
+                              : DioImageService(
+                            url: avatar,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         const SizedBox(height: 12.0),
                         if (userType == UserType.student) ...[
