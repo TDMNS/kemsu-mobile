@@ -77,11 +77,11 @@ class _EditScreenState extends State<EditScreen> {
                         child: state.avatar.isEmpty
                             ? Image.asset('images/avatar1.png')
                             : DioImageService(
-                          url: state.avatar,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                                url: state.avatar,
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     const SizedBox(height: 12.0),
@@ -221,6 +221,7 @@ void _showChangeEmailAlert(BuildContext context, {required String error, require
       return BlocProvider(
         create: (_) => editBloc,
         child: AlertDialog(
+          backgroundColor: Theme.of(context).primaryColor,
           content: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -297,6 +298,7 @@ void _showChangePasswordAlert(BuildContext context, {required VoidCallback onTap
         create: (_) => editBloc,
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColor,
             content: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -409,6 +411,7 @@ void _showTwoFactorAuthAlert(BuildContext context, {required VoidCallback onTap}
         create: (_) => editBloc,
         child: StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColor,
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
