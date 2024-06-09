@@ -12,7 +12,7 @@ import 'package:kemsu_app/domain/models/schedule/schedule_teacher_model.dart';
 import 'package:kemsu_app/domain/models/schedule/week_list_model.dart';
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 import '../../../Configurations/config.dart';
-import '../../dio_interceptor/dio_client.dart';
+import '../../dio_wrapper/dio_client.dart';
 
 class ScheduleRepository implements AbstractScheduleRepository {
   ScheduleRepository({required this.dio});

@@ -3,7 +3,8 @@ import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
-import '../../../../domain/dio_interceptor/dio_image_service.dart';
+
+import '../../../../domain/dio_wrapper/dio_image_service.dart';
 
 class ProfileToolbar extends StatefulWidget {
   final VoidCallback? showAddInfo;

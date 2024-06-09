@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/config.dart';
+import '../../../../domain/dio_wrapper/dio_client.dart';
 
 class OrderingInformationMainViewModel extends BaseViewModel {
   OrderingInformationMainViewModel(BuildContext context);

@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/local_notification_service.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
-import '../../../domain/dio_interceptor/dio_client.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 import '../../splash_screen.dart';
 import 'notifications_model.dart';
 

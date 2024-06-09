@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +6,7 @@ import 'package:kemsu_app/UI/views/debts/models/debts_lib_model.dart';
 import 'package:kemsu_app/UI/views/debts/models/debts_pay_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
-import '../../../domain/dio_interceptor/dio_client.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 import 'models/debts_academy_model.dart';
 
 class EnumDebts {

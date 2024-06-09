@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io' show Platform;
-
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +7,8 @@ import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
 import 'package:kemsu_app/UI/views/bug_report/bug_report_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
 import '../../../Configurations/config.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 
 class BugReportViewModel extends BaseViewModel {
   BugReportViewModel(BuildContext context);

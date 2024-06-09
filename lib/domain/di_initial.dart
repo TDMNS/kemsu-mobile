@@ -7,7 +7,7 @@ import 'package:kemsu_app/domain/repositories/features/features_repositories.dar
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 import 'package:kemsu_app/domain/repositories/schedule/schedule_repository.dart';
 
-import 'dio_interceptor/dio_client.dart';
+import 'dio_wrapper/dio_client.dart';
 
 void diRegister() async {
   final dio = Dio();

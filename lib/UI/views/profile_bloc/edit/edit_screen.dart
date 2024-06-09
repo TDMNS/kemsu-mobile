@@ -5,7 +5,7 @@ import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/common_widgets.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/edit/edit_bloc.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
-import '../../../../domain/dio_interceptor/dio_image_service.dart';
+import '../../../../domain/dio_wrapper/dio_image_service.dart';
 
 enum EditType { email, password, twoFactor }
 

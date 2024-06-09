@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
-import '../../../domain/dio_interceptor/dio_client.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 
 class RosViewModel extends BaseViewModel {
   RosViewModel(BuildContext context);

@@ -2,13 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/Configurations/lce.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
-
 import '../../../Configurations/config.dart';
+import '../../dio_wrapper/dio_client.dart';
 
 class AuthRepository implements AbstractAuthRepository {
   AuthRepository({required this.dio});

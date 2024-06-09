@@ -9,7 +9,7 @@ import 'package:kemsu_app/UI/views/rating_of_students/ros_model.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/config.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
+import '../../../../domain/dio_wrapper/dio_client.dart';
 
 class OrderingInformationViewModel extends BaseViewModel {
   OrderingInformationViewModel(BuildContext context);

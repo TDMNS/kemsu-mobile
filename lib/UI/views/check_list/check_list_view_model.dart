@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
 import '../../../Configurations/config.dart';
-import '../../../domain/dio_interceptor/dio_client.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 import 'check_list_model.dart';
 
 class CheckListViewModel extends BaseViewModel {

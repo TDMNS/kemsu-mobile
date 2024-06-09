@@ -4,7 +4,7 @@ import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
-import '../../../../domain/dio_interceptor/dio_image_service.dart';
+import '../../../../domain/dio_wrapper/dio_image_service.dart';
 
 class ProfileAdditionalInformation extends StatelessWidget {
   final VoidCallback? closeInfo;

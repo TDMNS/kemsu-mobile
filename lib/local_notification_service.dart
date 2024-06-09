@@ -3,15 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart'; // Импорт для Material App, если нужен
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'dart:convert';
 
 import 'UI/splash_screen.dart';
 import 'UI/views/notifications/notifications_view_model.dart';
+import 'domain/dio_wrapper/dio_client.dart';
 import 'firebase_options.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart'; // Импортируйте DioClient
 
 final localNotificationService = LocalNotificationService();
 

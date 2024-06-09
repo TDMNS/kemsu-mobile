@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:kemsu_app/domain/dio_interceptor/dio_client.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../Configurations/config.dart';
+import '../../../../domain/dio_wrapper/dio_client.dart';
 
 class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
   OrderingInformationNewCertificatesViewModel(BuildContext context);

@@ -9,7 +9,6 @@ import 'package:kemsu_app/UI/views/bug_report/bug_report_view.dart';
 import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/check_list/check_list_view.dart';
 import 'package:kemsu_app/UI/views/debts/debts_view.dart';
-import 'package:kemsu_app/UI/views/edit/edit_view.dart';
 import 'package:kemsu_app/UI/views/info/views/info_view.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/widgets/player.dart';
