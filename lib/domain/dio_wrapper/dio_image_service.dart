@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'dio_client.dart';
 import 'token_interceptor.dart';
 
@@ -25,6 +26,7 @@ class DioImageService extends StatefulWidget {
 class DioImageServiceState extends State<DioImageService> {
   late DioClient _dioClient;
   late Future<Uint8List?> _imageFuture;
+  final DefaultCacheManager _cacheManager = DefaultCacheManager();
 
   @override
   void initState() {
@@ -32,17 +34,23 @@ class DioImageServiceState extends State<DioImageService> {
     Dio dio = Dio();
     dio.interceptors.add(TokenInterceptor(dio));
     _dioClient = DioClient(dio);
-    _imageFuture = _fetchImage(widget.url);
+    _imageFuture = _loadImage(widget.url);
   }
 
-  Future<Uint8List?> _fetchImage(String url) async {
+  Future<Uint8List?> _loadImage(String url) async {
     try {
+      final fileInfo = await _cacheManager.getFileFromCache(url);
+      if (fileInfo != null) {
+        return await fileInfo.file.readAsBytes();
+      }
+
       final response = await _dioClient.get(
         url,
         options: Options(responseType: ResponseType.bytes),
       );
 
       if (response.statusCode == 200) {
+        await _cacheManager.putFile(url, response.data);
         return response.data;
       }
     } catch (e) {

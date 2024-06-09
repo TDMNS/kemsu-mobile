@@ -27,6 +27,7 @@ class ErrorDialog extends StatelessWidget {
   @override
   Widget build(context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).primaryColor,
       title: Text(title),
       content: Text(body),
       actions: <Widget>[

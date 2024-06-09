@@ -53,6 +53,7 @@ dependencies:
   firebase_core: ^2.30.1
   firebase_messaging: ^14.9.1
   firebase_analytics: ^10.10.4
+  flutter_cache_manager: ^3.3.2
 
 dev_dependencies :
   flutter_test:
