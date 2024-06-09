@@ -90,32 +90,34 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
                     ),
                   ),
                   const SizedBox(width: 8.0),
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    fit: StackFit.passthrough,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            widget.userInfo?.fullName ?? '',
-                            style: mainText,
-                          ),
-                          Text(widget.userInfo?.userType ?? '', style: addText),
-                          Text(widget.studCard?.groupName ?? '', style: addText),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: widget.showAddInfo,
-                        child: const Icon(
-                          Icons.info_rounded,
-                          color: Colors.white,
-                          size: 24.0,
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.userInfo?.fullName ?? '',
+                              style: mainText,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(widget.userInfo?.userType ?? '', style: addText),
+                            Text(widget.studCard?.groupName ?? '', style: addText),
+                          ],
                         ),
-                      ),
-                    ],
+                        InkWell(
+                          onTap: widget.showAddInfo,
+                          child: const Icon(
+                            Icons.info_rounded,
+                            color: Colors.white,
+                            size: 24.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

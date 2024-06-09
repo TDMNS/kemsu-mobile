@@ -23,6 +23,8 @@ class TokenInterceptor extends Interceptor {
 
     String userAgent = await _getUserAgent();
     options.headers['user-agent'] = userAgent;
+
+    print("user-agent = $userAgent");
     
     handler.next(options);
   }

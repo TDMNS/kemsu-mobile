@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
