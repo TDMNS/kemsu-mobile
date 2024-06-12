@@ -65,6 +65,7 @@ class LocalNotificationService {
 
   Future<void> subscribeToNotifications(String fcmToken) async {
     String? accessToken = await storage.read(key: "tokenKey");
+    print("fcmToken = $fcmToken");
     await dio.post(
       '$apiUrl/subscribe',
       data: jsonEncode(<String, String>{

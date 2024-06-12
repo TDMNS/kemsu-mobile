@@ -59,10 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCP-wZ3zcTmgSYlznApf9dDxrTan340hFM',
-    appId: '1:919169528300:ios:f9ab5e72109e4b15a4d0c9',
+    appId: '1:919169528300:ios:db891d00247eb8b1a4d0c9',
     messagingSenderId: '919169528300',
     projectId: 'kemsuapp-eac7a',
     storageBucket: 'kemsuapp-eac7a.appspot.com',
-    iosBundleId: 'com.tdmns.kemsuapp',
+    iosBundleId: 'ru.tdmns.kemsu',
   );
+
 }

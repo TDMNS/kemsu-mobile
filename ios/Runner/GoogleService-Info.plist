@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.tdmns.kemsuapp</string>
+	<string>ru.tdmns.kemsu</string>
 	<key>PROJECT_ID</key>
 	<string>kemsuapp-eac7a</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:919169528300:ios:f9ab5e72109e4b15a4d0c9</string>
+	<string>1:919169528300:ios:db891d00247eb8b1a4d0c9</string>
 </dict>
 </plist>

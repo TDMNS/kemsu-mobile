@@ -1,4 +1,4 @@
-app_identifier("com.tdmns.kemsuapp") # The bundle identifier of your app
+app_identifier("ru.tdmns.kemsu") # The bundle identifier of your app
 apple_id("773o@mail.ru") # Your Apple Developer Portal username
 
 itc_team_id("125725960") # App Store Connect Team ID
