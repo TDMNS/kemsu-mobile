@@ -34,16 +34,22 @@ class DebtsViewModel extends BaseViewModel {
     await getPayDebts();
     appMetricTest();
     circle = false;
+    notifyListeners();
   }
 
   Future<void> getAcademyDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.studDebt,
-      options: Options(headers: {'x-access-token': token!}),
-    );
+    bool isTestUser = token == 'accessToken';
 
-    academyDebts = parseAcademyDebtsList(response.data['studyDebtList']);
+    if (isTestUser) {
+      academyDebts = [];
+    } else {
+      final response = await dio.get(
+        Config.studDebt,
+        options: Options(headers: {'x-access-token': token!}),
+      );
+      academyDebts = parseAcademyDebtsList(response.data['studyDebtList']);
+    }
     notifyListeners();
   }
 
@@ -53,12 +59,17 @@ class DebtsViewModel extends BaseViewModel {
 
   Future<void> getLibraryDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.libraryDebt,
-      options: Options(headers: {'x-access-token': token!}),
-    );
+    bool isTestUser = token == 'accessToken';
 
-    libraryDebts = parseLibraryDebtsList(response.data['literatureDebtList']);
+    if (isTestUser) {
+      libraryDebts = [];
+    } else {
+      final response = await dio.get(
+        Config.libraryDebt,
+        options: Options(headers: {'x-access-token': token!}),
+      );
+      libraryDebts = parseLibraryDebtsList(response.data['literatureDebtList']);
+    }
     notifyListeners();
   }
 
@@ -66,35 +77,42 @@ class DebtsViewModel extends BaseViewModel {
     return response.map<LibraryDebts>((json) => LibraryDebts.fromJson(json)).toList();
   }
 
-  Future<void> updateDebts() async {
-    String? token = await storage.read(key: "tokenKey");
-    await dio.get(
-      Config.academicDebtUpdate,
-      options: Options(headers: {'x-access-token': token!}),
-    );
-    await dio.get(
-      Config.libraryDebtUpdate,
-      options: Options(headers: {'x-access-token': token!}),
-    );
-  }
-
   Future<void> getPayDebts() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.studMoneyDebt,
-      options: Options(headers: {'x-access-token': '$token'}),
-    );
+    bool isTestUser = token == 'accessToken';
 
-    final moneyDebt = response.data["debtInfo"];
-    if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
-      payDebts = [PayDebts.fromJson(moneyDebt)];
+    if (isTestUser) {
+      payDebts = [];
+    } else {
+      final response = await dio.get(
+        Config.studMoneyDebt,
+        options: Options(headers: {'x-access-token': '$token'}),
+      );
+
+      final moneyDebt = response.data["debtInfo"];
+      if (moneyDebt["DEBT_AMOUNT"] != null && moneyDebt["DEBT_DATE"] != null) {
+        payDebts = [PayDebts.fromJson(moneyDebt)];
+      } else {
+        payDebts = [];
+      }
     }
-
     notifyListeners();
   }
 
   List<PayDebts> parsePayDebtsList(List response) {
     return response.map<PayDebts>((json) => PayDebts.fromJson(json)).toList();
+  }
+
+  Future<void> updateDebts() async {
+    String? token = await storage.read(key: "tokenKey");
+    await dio.get(
+      Config.academicDebtUpdate,
+      options: Options(headers: {'x-access-token': token}),
+    );
+    await dio.get(
+      Config.libraryDebtUpdate,
+      options: Options(headers: {'x-access-token': token}),
+    );
   }
 
   void appMetricTest() {

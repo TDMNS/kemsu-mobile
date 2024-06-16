@@ -49,23 +49,59 @@ class OrderingInformationMainViewModel extends BaseViewModel {
 
   Future<void> getRequestList() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.requestListReferences,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedReferences = parseReferences(response.data["requestList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedReferences = [
+        RequestReference(
+          lastName: "Test",
+          firstName: "User",
+          patronymic: "Patronymic",
+          instituteName: "Test Institute",
+          courseNumber: 1,
+          educationLevel: "Test Level",
+          groupName: "Test Group",
+          basic: "Test Basic",
+          period: "Test Period",
+          countReferences: 1,
+          requestDate: "2024-06-15",
+        ),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.requestListReferences,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedReferences = parseReferences(response.data["requestList"]);
+    }
     notifyListeners();
   }
 
   Future<void> getCallCertificates() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.callCertificate,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedCallCertificate = parseCertificates(response.data["groupTermList"]);
-    if (receivedCallCertificate.isNotEmpty) {
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedCallCertificate = [
+        CallCertificate(
+          groupTermId: 1,
+          groupName: "Test Group",
+          studyYear: "2023-2024",
+          startDate: "2023-09-01",
+          endDate: "2024-06-30",
+          sessionType: "Test Session",
+        ),
+      ];
       await storage.write(key: 'groupTermId', value: "${receivedCallCertificate.first.groupTermId}");
+    } else {
+      final response = await dio.get(
+        Config.callCertificate,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedCallCertificate = parseCertificates(response.data["groupTermList"]);
+      if (receivedCallCertificate.isNotEmpty) {
+        await storage.write(key: 'groupTermId', value: "${receivedCallCertificate.first.groupTermId}");
+      }
     }
     notifyListeners();
   }

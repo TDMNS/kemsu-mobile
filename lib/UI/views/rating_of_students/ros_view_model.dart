@@ -25,7 +25,7 @@ class RosViewModel extends BaseViewModel {
   /// third request
   List<ReitList> reitList = [];
 
-  /// four request
+  /// fourth request
   List<ReitItemList> reitItemList = [];
 
   int selectedIndex = 2;
@@ -48,11 +48,21 @@ class RosViewModel extends BaseViewModel {
 
   Future<void> getStudCard() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.studCardHost,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedStudyCard = parseCard(response.data);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      // Mock data for testing
+      receivedStudyCard = [
+        StudyCard(speciality: "Speciality 1", id: 1),
+        StudyCard(speciality: "Speciality 2", id: 2),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.studCardHost,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedStudyCard = parseCard(response.data);
+    }
     notifyListeners();
   }
 
@@ -75,41 +85,82 @@ class RosViewModel extends BaseViewModel {
   Future<void> changeCard(value) async {
     studyCard = value;
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      '${Config.brsSemesterList}/${studyCard?.id}',
-      options: Options(headers: {'x-access-token': token}),
-    );
-    rosSemesterList = parseRosSemesterList(response.data["brsSemesterList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      rosSemesterList = [
+        RosSemesterList(semester: 1, startDate: 202101, endDate: 202107, commonScore: 85),
+        RosSemesterList(semester: 2, startDate: 202108, endDate: 202201, commonScore: 90),
+      ];
+    } else {
+      final response = await dio.get(
+        '${Config.brsSemesterList}/${studyCard?.id}',
+        options: Options(headers: {'x-access-token': token}),
+      );
+      rosSemesterList = parseRosSemesterList(response.data["brsSemesterList"]);
+    }
     circle = false;
     notifyListeners();
   }
 
   Future<void> getReitList(startDate, endDate, semester) async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.reitList,
-      queryParameters: {
-        'studentId': studyCard?.id,
-        'studYearStart': startDate,
-        'studYearEnd': endDate,
-        'semester': semester,
-      },
-      options: Options(headers: {'x-access-token': token}),
-    );
-    reitList = parseReitList(response.data["reitList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      reitList = [
+        ReitList(
+            discipline: "Mathematics",
+            intermediateAttestationForm: "Exam",
+            currentScore: 40,
+            frontScore: 45,
+            commonScore: 85,
+            mark: "A",
+            studyId: 1),
+        ReitList(
+            discipline: "Physics",
+            intermediateAttestationForm: "Test",
+            currentScore: 35,
+            frontScore: 40,
+            commonScore: 75,
+            mark: "B",
+            studyId: 2),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.reitList,
+        queryParameters: {
+          'studentId': studyCard?.id,
+          'studYearStart': startDate,
+          'studYearEnd': endDate,
+          'semester': semester,
+        },
+        options: Options(headers: {'x-access-token': token}),
+      );
+      reitList = parseReitList(response.data["reitList"]);
+    }
     notifyListeners();
   }
 
   Future<void> getReitItemList(studyId) async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.reitItemList,
-      queryParameters: {
-        'studyId': studyId,
-      },
-      options: Options(headers: {'x-access-token': token}),
-    );
-    reitItemList = parseReitItemList(response.data["brsActivityList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      reitItemList = [
+        ReitItemList(activityName: "Homework", comment: "Well done", count: 10, maxBall: 10, ball: 8),
+        ReitItemList(activityName: "Project", comment: "Good effort", count: 5, maxBall: 20, ball: 15),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.reitItemList,
+        queryParameters: {
+          'studyId': studyId,
+        },
+        options: Options(headers: {'x-access-token': token}),
+      );
+      reitItemList = parseReitItemList(response.data["brsActivityList"]);
+    }
     notifyListeners();
   }
 }

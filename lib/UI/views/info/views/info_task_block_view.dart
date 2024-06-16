@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../Configurations/localizable.dart';
 import '../../ordering_information/ordering_information_main/ordering_information_main_view.dart';
-import '../info_view_model.dart';
 import '../info_model.dart';
+import '../info_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common_widgets.dart';
@@ -34,9 +34,16 @@ class InfoOUProTaskBlockView extends StatelessWidget {
 
 _infoOUProTaskBlockView(BuildContext context, InfoOUProViewModel model, repData) {
   return ListView(
-      shrinkWrap: true,
-      physics: const ScrollPhysics(),
-      children: <Widget>[const SizedBox(height: 12), Padding(padding: const EdgeInsets.only(left: 5, right: 5), child: _getTaskBlockView(repData))]);
+    shrinkWrap: true,
+    physics: const ScrollPhysics(),
+    children: <Widget>[
+      const SizedBox(height: 12),
+      Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5),
+        child: _getTaskBlockView(repData),
+      )
+    ],
+  );
 }
 
 Widget _getTaskBlockView(repData) {
@@ -52,9 +59,17 @@ Widget _getTaskBlockView(repData) {
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.only(left: 10, bottom: 15, right: 10),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).primaryColor,
-                boxShadow: [BoxShadow(color: Theme.of(context).primaryColorLight, blurRadius: 15, offset: const Offset(0, 15), spreadRadius: -15)]),
+              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).primaryColorLight,
+                  blurRadius: 15,
+                  offset: const Offset(0, 15),
+                  spreadRadius: -15,
+                ),
+              ],
+            ),
             child: Theme(
               data: ThemeData(dividerColor: Colors.transparent),
               child: Column(
@@ -67,17 +82,17 @@ Widget _getTaskBlockView(repData) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(item.name, style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold)),
+                          Text(item.name ?? "", style: TextStyle(color: Theme.of(context).primaryColorDark, fontFamily: "Ubuntu", fontSize: 17, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          richText(Localizable.infoTaskBlockSolution, "${item.solveFlag}", context),
+                          richText(Localizable.infoTaskBlockSolution, item.solveFlag ?? "", context),
                           const SizedBox(height: 10),
-                          richText(Localizable.infoTaskBlockKeyDate, "${item.taskControlDate}", context),
+                          richText(Localizable.infoTaskBlockKeyDate, item.taskControlDate ?? "", context),
                           const SizedBox(height: 10),
-                          richText(Localizable.infoTaskBlockMaxScore, "${item.maxBall}", context),
+                          richText(Localizable.infoTaskBlockMaxScore, item.maxBall?.toString() ?? "", context),
                           const SizedBox(height: 10),
-                          richText(Localizable.infoTaskBlockResult, "${item.sumBall}", context),
+                          richText(Localizable.infoTaskBlockResult, item.sumBall ?? "", context),
                           const SizedBox(height: 10),
-                          richText(Localizable.infoTaskBlockState, "${item.solutionStatus}", context)
+                          richText(Localizable.infoTaskBlockState, item.solutionStatus ?? "", context),
                         ],
                       ),
                     ),

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -12,6 +11,7 @@ import 'package:kemsu_app/UI/views/profile_bloc/widgets/profile_add_info.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/widgets/profile_toolbar.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../Configurations/navigation.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -56,6 +56,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               }
 
+              final studMenuTilesFiltered = Map.of(studMenuTiles);
+              final studRoutesFiltered = List.of(studRoutes);
+
+              if (state.isTestUser) {
+                studMenuTilesFiltered.remove(Localizable.mainPayment);
+                studRoutesFiltered.remove(AppRouting.toPayment);
+              }
+
               return Stack(
                 children: [
                   ListView(
@@ -79,16 +87,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
-                        itemCount: state.userData.requiredContent.currentUserType == UserType.student ? studMenuTiles.length : teacherMenuTiles.length,
+                        itemCount: state.userData.requiredContent.currentUserType == UserType.student
+                            ? studMenuTilesFiltered.length
+                            : teacherMenuTiles.length,
                         itemBuilder: (context, index) {
-                          final entry =
-                              state.userData.requiredContent.currentUserType == UserType.student ? studMenuTiles.entries.toList()[index] : teacherMenuTiles.entries.toList()[index];
+                          final entry = state.userData.requiredContent.currentUserType == UserType.student
+                              ? studMenuTilesFiltered.entries.toList()[index]
+                              : teacherMenuTiles.entries.toList()[index];
                           final title = entry.key;
                           final iconPath = entry.value;
                           return MenuTile(
                             title: title,
                             iconPath: iconPath,
-                            onTap: state.userData.requiredContent.currentUserType == UserType.student ? studRoutes[index] : teacherRoutes[index],
+                            onTap: state.userData.requiredContent.currentUserType == UserType.student
+                                ? studRoutesFiltered[index]
+                                : teacherRoutes[index],
                           );
                         },
                       ),
@@ -111,7 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showUpdateAlert() {
-    String link = Platform.isIOS ? 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769' : 'https://www.kemsu.ru/education/app-kemsu/';
+    String link = Platform.isIOS
+        ? 'https://apps.apple.com/ru/app/%D0%BA%D0%B5%D0%BC%D0%B3%D1%83/id6444271769'
+        : 'https://www.kemsu.ru/education/app-kemsu/';
     showDialog(
         context: context,
         builder: (context) {

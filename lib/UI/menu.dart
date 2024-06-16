@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_screen.dart';
 import 'package:kemsu_app/UI/views/schedule_new/schedule_screen.dart';
-
 
 class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
@@ -13,6 +13,7 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
   int _selectedIndex = 0;
+  bool isTestUser = false;
 
   late List<AnimationController> _animationControllers;
   late List<Animation<double>> _animations;
@@ -20,20 +21,38 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationControllers = List.generate(
-        2,
-        (index) => AnimationController(
-              vsync: this,
-              duration: const Duration(milliseconds: 300),
-            ));
+    _checkTestUser();
+  }
 
-    _animations = _animationControllers
-        .map((controller) => Tween<double>(begin: 1.0, end: 1.2).animate(
-              CurvedAnimation(parent: controller, curve: Curves.elasticOut),
-            ))
-        .toList();
+  Future<void> _checkTestUser() async {
+    const storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "tokenKey");
+    setState(() {
+      isTestUser = token == 'accessToken';
+      _initializeAnimations();
+    });
+  }
 
-    _animationControllers[_selectedIndex].forward();
+  void _initializeAnimations() {
+    if (isTestUser) {
+      _animationControllers = [];
+      _animations = [];
+    } else {
+      _animationControllers = List.generate(
+          2,
+          (index) => AnimationController(
+                vsync: this,
+                duration: const Duration(milliseconds: 300),
+              ));
+
+      _animations = _animationControllers
+          .map((controller) => Tween<double>(begin: 1.0, end: 1.2).animate(
+                CurvedAnimation(parent: controller, curve: Curves.elasticOut),
+              ))
+          .toList();
+
+      _animationControllers[_selectedIndex].forward();
+    }
   }
 
   @override
@@ -65,30 +84,32 @@ class _MainMenuState extends State<MainMenu> with TickerProviderStateMixin {
           ScheduleScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Theme.of(context).canvasColor,
-        type: BottomNavigationBarType.fixed,
-        onTap: _onItemTapped,
-        items: [
-          BottomNavigationBarItem(
-            icon: ScaleTransition(
-              scale: _animations[0],
-              child: const Icon(Icons.home),
+      bottomNavigationBar: isTestUser
+          ? null
+          : BottomNavigationBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.blue,
+              unselectedItemColor: Theme.of(context).canvasColor,
+              type: BottomNavigationBarType.fixed,
+              onTap: _onItemTapped,
+              items: [
+                BottomNavigationBarItem(
+                  icon: ScaleTransition(
+                    scale: _animations[0],
+                    child: const Icon(Icons.home),
+                  ),
+                  label: Localizable.pageMain,
+                ),
+                BottomNavigationBarItem(
+                  icon: ScaleTransition(
+                    scale: _animations[1],
+                    child: const Icon(Icons.schedule),
+                  ),
+                  label: Localizable.pageSchedule,
+                ),
+              ],
             ),
-            label: Localizable.pageMain,
-          ),
-          BottomNavigationBarItem(
-            icon: ScaleTransition(
-              scale: _animations[1],
-              child: const Icon(Icons.schedule),
-            ),
-            label: Localizable.pageSchedule,
-          ),
-        ],
-      ),
     );
   }
 }

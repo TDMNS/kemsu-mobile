@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kemsu_app/Configurations/navigation.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../Configurations/localizable.dart';
@@ -114,9 +115,9 @@ _downloadFinish(context) {
       content: Text(Localizable.newCertSaveOnDeviceDescription),
       actions: <Widget>[
         TextButton(
-          onPressed: () => Navigator.of(context).popUntil(ModalRoute.withName("/menu")),
+          onPressed: () => AppRouting.toMenu(),
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            foregroundColor: WidgetStateProperty.all<Color>(Colors.blue),
           ),
           child: Text(Localizable.ok),
         ),

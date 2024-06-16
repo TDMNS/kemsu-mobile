@@ -78,7 +78,7 @@ class _ProfileToolbarState extends State<ProfileToolbar> with SingleTickerProvid
               borderRadius: BorderRadius.circular(32.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
