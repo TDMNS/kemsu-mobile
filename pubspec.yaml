@@ -54,6 +54,8 @@ dependencies:
   firebase_messaging: ^14.9.1
   firebase_analytics: ^10.10.4
   flutter_cache_manager: ^3.3.2
+  pdf: ^3.3.0
+  path_provider: ^2.0.11
 
 dev_dependencies :
   flutter_test:

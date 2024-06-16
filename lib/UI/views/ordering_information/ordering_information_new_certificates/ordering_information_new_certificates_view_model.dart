@@ -17,10 +17,11 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
 
   Future onReady() async {}
 
-  Future<File?> sendCallCertificates(context) async {
+  Future<File?> sendCallCertificates(BuildContext context) async {
     try {
       String? groupTermId = await storage.read(key: 'groupTermId');
       String? token = await storage.read(key: "tokenKey") ?? '';
+      bool isTestUser = token == 'accessToken';
       String dir = '';
 
       if (Platform.isAndroid) {
@@ -43,23 +44,28 @@ class OrderingInformationNewCertificatesViewModel extends BaseViewModel {
         }
       }
 
-      String url = '${Config.refCallPDF}/$groupTermId?employer=${companyName.text}&employeeFio=${studentName.text}';
-
-      final response = await dio.get(
-        url,
-        options: Options(
-          headers: {
-            "x-access-token": token,
-          },
-          responseType: ResponseType.bytes,
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        await file.writeAsBytes(response.data);
+      if (isTestUser) {
+        await file.writeAsString('This is a mock PDF content for testing purposes.');
         return file;
       } else {
-        return null;
+        String url = '${Config.refCallPDF}/$groupTermId?employer=${companyName.text}&employeeFio=${studentName.text}';
+
+        final response = await dio.get(
+          url,
+          options: Options(
+            headers: {
+              "x-access-token": token,
+            },
+            responseType: ResponseType.bytes,
+          ),
+        );
+
+        if (response.statusCode == 200) {
+          await file.writeAsBytes(response.data);
+          return file;
+        } else {
+          return null;
+        }
       }
     } catch (err) {
       return null;

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,9 +11,7 @@ import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
 import 'package:kemsu_app/domain/repositories/authorization/abstract_auth_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import '../../../local_notification_service.dart';
-
 part 'profile_events.dart';
 part 'profile_state.dart';
 
@@ -61,14 +58,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _loadStudData(LoadStudData event, Emitter<ProfileState> emit) async {
     var token = await storage.read(key: "tokenKey");
-    if (token == 'accessToken') {
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
       final userInfo = await authRepository.getUserInfo();
-      emit(state.copyWith(userData: userInfo.asContent, studCard: const Lce(isLoading: false)));
+      emit(state.copyWith(userData: userInfo.asContent, studCard: const Lce(isLoading: false), isTestUser: true));
     } else {
       final avatar = await authRepository.getUserAvatar();
       final studCard = await authRepository.getStudCardData();
       final userInfo = await authRepository.getUserInfo();
-      emit(state.copyWith(studCard: studCard.asContent, userData: userInfo.asContent, avatar: avatar));
+      emit(state.copyWith(studCard: studCard.asContent, userData: userInfo.asContent, avatar: avatar, isTestUser: false));
     }
   }
 

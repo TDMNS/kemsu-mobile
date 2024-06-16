@@ -67,21 +67,41 @@ class OrderingInformationViewModel extends BaseViewModel {
 
   Future<void> getStudCard() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.studCardHost,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedStudyCard = parseCard(response.data);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedStudyCard = [
+        StudyCard(
+          id: 1,
+          speciality: 'Test Speciality'
+        ),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.studCardHost,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedStudyCard = parseCard(response.data);
+    }
     notifyListeners();
   }
 
   Future<void> getBasicList() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.basicList,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedBasicList = parseBasicList(response.data["basicList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedBasicList = [
+        BasisOfEducation(basic: 'Test Basic 1', basicId: 1, selectedBasic: 0),
+        BasisOfEducation(basic: 'Test Basic 2', basicId: 2, selectedBasic: 1),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.basicList,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedBasicList = parseBasicList(response.data["basicList"]);
+    }
     notifyListeners();
   }
 
@@ -94,13 +114,22 @@ class OrderingInformationViewModel extends BaseViewModel {
     selectedPeriod = null;
     selectedBasic = value;
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.periodList,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    periodList = parsePeriodList(response.data["periodList"]);
-    lastParagraph.period = "задать произвольный период, за который требуется справка";
-    periodList.add(lastParagraph);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      periodList = [
+        PeriodList(periodId: 1, period: "Test Period 1", selectedPeriod: 0),
+        PeriodList(periodId: 2, period: "Test Period 2", selectedPeriod: 1),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.periodList,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      periodList = parsePeriodList(response.data["periodList"]);
+      lastParagraph.period = "задать произвольный период, за который требуется справка";
+      periodList.add(lastParagraph);
+    }
     notifyListeners();
   }
 
@@ -156,11 +185,31 @@ class OrderingInformationViewModel extends BaseViewModel {
 
   Future<void> getRequestList() async {
     String? token = await storage.read(key: "tokenKey");
-    final response = await dio.get(
-      Config.requestListReferences,
-      options: Options(headers: {'x-access-token': token}),
-    );
-    receivedReferences = parseReferences(response.data["requestList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedReferences = [
+        RequestReference(
+          lastName: "Test",
+          firstName: "User",
+          patronymic: "Patronymic",
+          instituteName: "Test Institute",
+          courseNumber: 1,
+          educationLevel: "Test Level",
+          groupName: "Test Group",
+          basic: "Test Basic",
+          period: "Test Period",
+          countReferences: 1,
+          requestDate: "2024-06-15",
+        ),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.requestListReferences,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedReferences = parseReferences(response.data["requestList"]);
+    }
     notifyListeners();
   }
 }

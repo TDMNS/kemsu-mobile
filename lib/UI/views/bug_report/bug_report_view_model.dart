@@ -53,26 +53,38 @@ class BugReportViewModel extends BaseViewModel {
 
   Future<void> sendAction(context) async {
     String? accessToken = await storage.read(key: "tokenKey");
+    bool isTestUser = accessToken == 'accessToken';
+
     if (errorMsgController.text.isNotEmpty) {
       notifyListeners();
-      Map<String, dynamic> body = {
-        "message": errorMsgController.text,
-        "deviceInfo": deviceInfoParam
-      };
+      Map<String, dynamic> body = {"message": errorMsgController.text, "deviceInfo": deviceInfoParam};
 
       try {
-        final response = await dio.post(
-          Config.addReport,
-          options: Options(headers: {'x-access-token': accessToken}),
-          data: body,
-        );
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          await fetchReports(context);
+        if (isTestUser) {
+          reportList.add(
+            ReportModel(
+              reportId: 0,
+              message: errorMsgController.text,
+              messageDate: "15.06.2024",
+              reportStatus: "Заявка не обработана",
+            ),
+          );
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено.")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено (мок).")));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.data["message"])));
+          final response = await dio.post(
+            Config.addReport,
+            options: Options(headers: {'x-access-token': accessToken}),
+            data: body,
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            await fetchReports(context);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ваше обращение успешно отправлено.")));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.data["message"])));
+          }
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Произошла ошибка при отправке обращения.")));
@@ -89,24 +101,36 @@ class BugReportViewModel extends BaseViewModel {
 
   Future<void> fetchReports(context) async {
     String? accessToken = await storage.read(key: "tokenKey");
+    bool isTestUser = accessToken == 'accessToken';
 
     try {
-      final response = await dio.get(
-        Config.bugReport,
-        options: Options(headers: {'x-access-token': accessToken}),
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        reportList = parseReports(response.data["result"]);
+      if (isTestUser) {
+        reportList = [
+          ReportModel(
+            reportId: 0,
+            message: "Тестовый отчет",
+            messageDate: "15.06.2024",
+            reportStatus: "Решено",
+          )
+        ];
         notifyListeners();
-      } else if (response.statusCode == 401) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const AuthScreen()),
-              (Route<dynamic> route) => false,
+      } else {
+        final response = await dio.get(
+          Config.bugReport,
+          options: Options(headers: {'x-access-token': accessToken}),
         );
-        await storage.delete(key: "tokenKey");
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          reportList = parseReports(response.data["result"]);
+          notifyListeners();
+        } else if (response.statusCode == 401) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const AuthScreen()),
+            (Route<dynamic> route) => false,
+          );
+          await storage.delete(key: "tokenKey");
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Сессия ЭИОС истекла. Пожалуйста, авторизуйтесь повторно")));
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Произошла ошибка при получении обращений.")));
