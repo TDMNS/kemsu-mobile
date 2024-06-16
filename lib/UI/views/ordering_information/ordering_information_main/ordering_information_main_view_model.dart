@@ -1,16 +1,17 @@
-import 'dart:convert';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kemsu_app/UI/views/ordering_information/ordering_information_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:http/http.dart' as http;
 import '../../../../Configurations/config.dart';
+import '../../../../domain/dio_wrapper/dio_client.dart';
 
 class OrderingInformationMainViewModel extends BaseViewModel {
   OrderingInformationMainViewModel(BuildContext context);
 
+  final DioClient dio = DioClient(Dio());
   bool circle = true;
 
   final storage = const FlutterSecureStorage();
@@ -46,18 +47,62 @@ class OrderingInformationMainViewModel extends BaseViewModel {
     AppMetrica.reportEvent('Ordering info main event');
   }
 
-  getRequestList() async {
+  Future<void> getRequestList() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.requestListReferences}?accessToken=$token'));
-    receivedReferences = parseReferences(json.decode(response.body)["requestList"]);
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedReferences = [
+        RequestReference(
+          lastName: "Test",
+          firstName: "User",
+          patronymic: "Patronymic",
+          instituteName: "Test Institute",
+          courseNumber: 1,
+          educationLevel: "Test Level",
+          groupName: "Test Group",
+          basic: "Test Basic",
+          period: "Test Period",
+          countReferences: 1,
+          requestDate: "2024-06-15",
+        ),
+      ];
+    } else {
+      final response = await dio.get(
+        Config.requestListReferences,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedReferences = parseReferences(response.data["requestList"]);
+    }
     notifyListeners();
   }
 
-  getCallCertificates() async {
+  Future<void> getCallCertificates() async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(Uri.parse('${Config.callCertificate}?accessToken=$token'));
-    receivedCallCertificate = parseCertificates(json.decode(response.body)["groupTermList"]);
-    if (receivedCallCertificate.isNotEmpty) await storage.write(key: 'groupTermId', value: "${receivedCallCertificate.first.groupTermId}");
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      receivedCallCertificate = [
+        CallCertificate(
+          groupTermId: 1,
+          groupName: "Test Group",
+          studyYear: "2023-2024",
+          startDate: "2023-09-01",
+          endDate: "2024-06-30",
+          sessionType: "Test Session",
+        ),
+      ];
+      await storage.write(key: 'groupTermId', value: "${receivedCallCertificate.first.groupTermId}");
+    } else {
+      final response = await dio.get(
+        Config.callCertificate,
+        options: Options(headers: {'x-access-token': token}),
+      );
+      receivedCallCertificate = parseCertificates(response.data["groupTermList"]);
+      if (receivedCallCertificate.isNotEmpty) {
+        await storage.write(key: 'groupTermId', value: "${receivedCallCertificate.first.groupTermId}");
+      }
+    }
     notifyListeners();
   }
 }

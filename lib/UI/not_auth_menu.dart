@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/Configurations/localizable.dart';
 import 'package:kemsu_app/UI/views/auth/auth_screen.dart';
-import 'package:kemsu_app/UI/views/calculation/calculation_screen.dart';
 import 'package:kemsu_app/UI/views/online_courses/courses_screen.dart';
 
 class NotAuthMenu extends StatefulWidget {
@@ -63,7 +62,6 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
         children: const [
           AuthScreen(),
           OnlineCourseScreen(fromAuthMenu: true),
-          CalculationScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -87,13 +85,6 @@ class _NotAuthMenuState extends State<NotAuthMenu> with TickerProviderStateMixin
               child: const Icon(Icons.video_collection),
             ),
             label: Localizable.pageCourses,
-          ),
-          BottomNavigationBarItem(
-            icon: ScaleTransition(
-              scale: _animations[0],
-              child: const Icon(Icons.calculate),
-            ),
-            label: Localizable.pageCalculation,
           ),
         ],
       ),

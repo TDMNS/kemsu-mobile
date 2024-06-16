@@ -7,18 +7,21 @@ import 'package:kemsu_app/domain/repositories/features/features_repositories.dar
 import 'package:kemsu_app/domain/repositories/schedule/abstract_schedule_repository.dart';
 import 'package:kemsu_app/domain/repositories/schedule/schedule_repository.dart';
 
+import 'dio_wrapper/dio_client.dart';
+
 void diRegister() async {
-  Dio dio = Dio();
+  final dio = Dio();
+  final dioClient = DioClient(dio);
 
   GetIt.I.registerLazySingleton<AbstractScheduleRepository>(
     () => ScheduleRepository(
-      dio: dio,
+      dio: dioClient,
     ),
   );
 
   GetIt.I.registerLazySingleton<AbstractAuthRepository>(
     () => AuthRepository(
-      dio: dio,
+      dio: dioClient,
     ),
   );
 

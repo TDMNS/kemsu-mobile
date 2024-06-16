@@ -48,11 +48,11 @@ _infoOUProView(BuildContext context, InfoOUProViewModel model) {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(2.0),
               ),
-              side: MaterialStateBorderSide.resolveWith(
-                (states) => BorderSide(width: 1.2, color: Color(Theme.of(context).primaryColorDark.value)),
+              side: WidgetStateBorderSide.resolveWith(
+                    (states) => BorderSide(width: 1.2, color: Color(Theme.of(context).primaryColorDark.value)),
               ),
               checkColor: Colors.white,
-              fillColor: MaterialStateProperty.all(Colors.blue),
+              fillColor: WidgetStateProperty.all(Colors.blue),
               value: model.isChecked,
               onChanged: (e) {
                 model.isChecked = !model.isChecked;
@@ -105,9 +105,9 @@ Widget _getInfoOUProView(InfoOUProViewModel model) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        richText(Localizable.infoDiscipline, "${item.discName}", context, isWhite: true),
+                        richText(Localizable.infoDiscipline, item.discName ?? "", context, isWhite: true),
                         const SizedBox(height: 10),
-                        richText(Localizable.infoTeacher, "${item.fio}", context, isWhite: true),
+                        richText(Localizable.infoTeacher, item.fio ?? "", context, isWhite: true),
                       ],
                     ),
                   )),

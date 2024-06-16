@@ -1,22 +1,20 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:stacked/stacked.dart';
-
-import 'package:http/http.dart' as http;
 import '../../../Configurations/config.dart';
+import '../../../domain/dio_wrapper/dio_client.dart';
 import '../info/info_model.dart';
-import 'dart:convert';
 
 class InfoOUProViewModel extends BaseViewModel {
   InfoOUProViewModel(BuildContext context);
+
+  final DioClient dio = DioClient(Dio());
   final storage = const FlutterSecureStorage();
 
   List<CourseInfoOUPro> course = [];
-
   List<ReportInfoOUPro> report = [];
-
   List<TaskListInfoOUPro> task = [];
 
   int selectedIndex = 2;
@@ -31,7 +29,7 @@ class InfoOUProViewModel extends BaseViewModel {
   }
 
   Future onReady() async {
-    getDiscs(0);
+    await getDiscs(0);
     appMetricaTest();
   }
 
@@ -40,41 +38,110 @@ class InfoOUProViewModel extends BaseViewModel {
     AppMetrica.reportEvent('InfoOUPro event');
   }
 
-  getDiscs(allFlag) async {
+  Future<void> getDiscs(int allFlag) async {
     String? token = await storage.read(key: "tokenKey");
-    http.Response response;
-    if (allFlag == 1) {
-      response = await http.get(
-        Uri.parse('${Config.studCourseList}?allCourseFlag=1'),
-        headers: {
-          "x-access-token": token!,
-        },
-      );
+    bool isTestUser = token == 'accessToken';
+
+    if (isTestUser) {
+      course = [
+        CourseInfoOUPro(
+          courseId: 1,
+          discName: "Test Course 1",
+          discRep: "Test Report 1",
+          discHours: "30",
+          fio: "Test Teacher 1",
+          discFirstDate: "2024-01-01",
+          discLastDate: "2024-06-01",
+          discMark: 5,
+        ),
+        CourseInfoOUPro(
+          courseId: 2,
+          discName: "Test Course 2",
+          discRep: "Test Report 2",
+          discHours: "40",
+          fio: "Test Teacher 2",
+          discFirstDate: "2024-02-01",
+          discLastDate: "2024-07-01",
+          discMark: 4,
+        ),
+      ];
     } else {
-      response = await http.get(
-        Uri.parse('${Config.studCourseList}?allCourseFlag=0'),
-        headers: {
-          "x-access-token": token!,
-        },
+      final response = await dio.get(
+        Config.studCourseList,
+        queryParameters: {'allCourseFlag': allFlag},
+        options: Options(headers: {'x-access-token': token!}),
       );
+      course = parseCourseList(response.data['studentCourseList']);
     }
-
-    course = parseCourseList(json.decode(response.body)['studentCourseList']);
-
     notifyListeners();
   }
 
-  getDiscReports(courseId) async {
+  Future<void> getDiscReports(int? courseId) async {
     String? token = await storage.read(key: "tokenKey");
-    var response = await http.get(
-      Uri.parse('${Config.studRepList}/$courseId'),
-      headers: {
-        "x-access-token": token!,
-      },
-    );
+    bool isTestUser = token == 'accessToken';
 
-    report = parseReportList(json.decode(response.body)['studentReportList']);
-
+    if (isTestUser) {
+      report = [
+        ReportInfoOUPro(
+          repId: 1,
+          name: "Test Report 1",
+          solveFlag: 1,
+          comments: "Good work",
+          repControlDate: "2024-05-01",
+          maxBall: 100,
+          sumBall: "95",
+          studentTaskList: [
+            TaskListInfoOUPro(
+              taskId: 1,
+              taskName: "Test Task 1",
+              solveFlag: "Да",
+              comments: "Well done",
+              taskControlDate: "2024-04-01",
+              maxBall: 50,
+              sumBall: "48",
+              solutionStatus: "Completed",
+              solutionStatusShort: "C",
+              optionId: 0,
+              optionName: "",
+              optionComments: "",
+              optionSolutionStatus: "",
+            ),
+          ],
+        ),
+        ReportInfoOUPro(
+          repId: 2,
+          name: "Test Report 2",
+          solveFlag: 0,
+          comments: "Needs improvement",
+          repControlDate: "2024-06-01",
+          maxBall: 100,
+          sumBall: "70",
+          studentTaskList: [
+            TaskListInfoOUPro(
+              taskId: 2,
+              taskName: "Test Task 2",
+              solveFlag: "Нет",
+              comments: "Incomplete",
+              taskControlDate: "2024-05-01",
+              maxBall: 50,
+              sumBall: "35",
+              solutionStatus: "Incomplete",
+              solutionStatusShort: "I",
+              optionId: 0,
+              optionName: "",
+              optionComments: "",
+              optionSolutionStatus: "",
+            ),
+          ],
+        ),
+      ];
+    } else {
+      final response = await dio.get(
+        '${Config.studRepList}/$courseId',
+        options: Options(headers: {'x-access-token': token!}),
+      );
+      report = parseReportList(response.data['studentReportList']);
+    }
     notifyListeners();
   }
 }

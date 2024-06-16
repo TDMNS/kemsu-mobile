@@ -27,6 +27,7 @@ class ErrorDialog extends StatelessWidget {
   @override
   Widget build(context) {
     return AlertDialog(
+      backgroundColor: Theme.of(context).primaryColor,
       title: Text(title),
       content: Text(body),
       actions: <Widget>[
@@ -172,7 +173,7 @@ _logoutConfirm(context) {
                 const Spacer(),
                 TextButton(
                   onPressed: () async {
-                    await storage.write(key: "tokenKey", value: '');
+                    await storage.delete(key: "tokenKey");
                     AppRouting.toNotAuthMenu();
                   },
                   child: Text(

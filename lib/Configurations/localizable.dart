@@ -22,6 +22,7 @@ class Localizable {
   static String authButtonTitle = 'Войти';
   static String authError = 'Ошибка';
   static String someErrorBodyDescription = 'Непредвиденная ошибка! Свяжитесь с нами любым удобным для вас способом.';
+  static String twoFactorDescription = 'Введите проверочный код, отправленный на Email';
 
   /// Auth errors
   static String authError400 = 'Требуется логин/пароль пользователя!';
@@ -106,6 +107,10 @@ class Localizable {
   static String editOldPasswordError = 'Старый пароль введен не верно';
   static String editNewPasswordError = 'Введенный пароль соответствует старому паролю';
   static String editConfirmPasswordError = 'Пароли не совпадают';
+  static String editWarning = 'Рекомендуется использовать электронные ящики на Российских почтовых серверах (.ru)';
+  static String twoFactorAuth = 'Двухфакторная аутентификация';
+  static String passRequirements =
+      'Пароль должен быть содержать 8 символов, включать только цифры и буквы английского алфавита, и обязательно содержать хотя бы одну цифру, одну строчную и одну заглавную букву.';
 
   /// Payment
   static String paymentTitle = 'Оплата услуг';
@@ -139,7 +144,7 @@ class Localizable {
   static String bugReportYour = 'Ваши обращения';
   static String bugReportEmpty = 'Нет отправленных обращений';
   static String bugReportNotProcessed = 'Заявка не обработана';
-  static String bugReportDate = 'Дата обращения';
+  static String bugReportDate = 'Дата обращения: ';
   static String bugReportCreate = 'Создать обращение';
   static String bugReportEnterMessage = 'Введите сообщение';
   static String bugReportSend = 'Отправить';

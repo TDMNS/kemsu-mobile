@@ -87,7 +87,7 @@ Widget _notView(context, NotificationViewModel model) {
                                       const SizedBox(height: 10),
                                       Text("${item.message}", style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.normal)),
                                       const SizedBox(height: 10),
-                                      item.fileSrc != "" && item.fileSize != 0 ? _pictureView(context, urls[index]) : const SizedBox.shrink(),
+                                      item.fileSrc != "" && item.fileSize != 0 && item.fileSrc != null ? _pictureView(context, urls[index]) : const SizedBox.shrink(),
                                       const SizedBox(height: 10),
                                       Align(
                                           alignment: Alignment.bottomRight,

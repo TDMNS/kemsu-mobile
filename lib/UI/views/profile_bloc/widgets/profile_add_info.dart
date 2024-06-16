@@ -1,14 +1,14 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:kemsu_app/UI/views/profile_bloc/profile_bloc.dart';
 import 'package:kemsu_app/domain/models/authorization/auth_model.dart';
 import 'package:kemsu_app/domain/models/profile/emp_card_model.dart';
 import 'package:kemsu_app/domain/models/profile/stud_card_model.dart';
+import '../../../../domain/dio_wrapper/dio_image_service.dart';
 
 class ProfileAdditionalInformation extends StatelessWidget {
   final VoidCallback? closeInfo;
-  final AuthModel? userData;
+  final UserInfo? userData;
   final StudCardModel? studCard;
   final EmpCardModel? empCard;
   final String avatar;
@@ -23,7 +23,7 @@ class ProfileAdditionalInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserType userType = userData?.userInfo.currentUserType ?? UserType.student;
+    UserType userType = userData?.currentUserType ?? UserType.student;
     return Stack(
       children: [
         GestureDetector(
@@ -57,12 +57,19 @@ class ProfileAdditionalInformation extends StatelessWidget {
                         CircleAvatar(
                           radius: 72.0,
                           backgroundColor: Colors.white.withOpacity(0.4),
-                          child: avatar.isEmpty ? Image.asset('images/avatar1.png') : ClipOval(child: Image.network(avatar, width: 200,  height: 200, fit: BoxFit.cover)),
+                          child: avatar.isEmpty
+                              ? Image.asset('images/avatar1.png')
+                              : DioImageService(
+                            url: avatar,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         const SizedBox(height: 12.0),
                         if (userType == UserType.student) ...[
-                          Text(userData?.userInfo.fullName ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
-                          Text(userData?.userInfo.userType ?? '', style: const TextStyle(fontSize: 16.0)),
+                          Text(userData?.fullName ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0)),
+                          Text(userData?.userType ?? '', style: const TextStyle(fontSize: 16.0)),
                           Text(studCard?.groupName ?? '', style: const TextStyle(fontSize: 16.0)),
                           Divider(height: 14.0, color: Colors.grey.withOpacity(.5)),
                           Text(studCard?.speciality ?? '', style: const TextStyle(fontSize: 16.0)),
@@ -71,10 +78,10 @@ class ProfileAdditionalInformation extends StatelessWidget {
                           Text('${studCard?.finform ?? ''} форма финансирования', style: const TextStyle(fontSize: 16.0)),
                         ],
                         if (userType == UserType.teacher) ...[
-                          Text(empCard?.empList[0].dep ?? '', style: const TextStyle(fontSize: 16.0)),
+                          Text(empCard?.empList?[0].dep ?? '', style: const TextStyle(fontSize: 16.0)),
                           const SizedBox(height: 12.0),
                         ],
-                        Text(userData?.userInfo.email ?? '', style: const TextStyle(fontSize: 16.0))
+                        Text(userData?.email ?? '', style: const TextStyle(fontSize: 16.0))
                       ],
                     ),
                   ),

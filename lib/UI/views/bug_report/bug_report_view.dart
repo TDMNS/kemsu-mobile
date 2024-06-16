@@ -44,7 +44,7 @@ class MainBugReportScreen extends StatelessWidget {
   }
 }
 
-_body(context, BugReportViewModel model) {
+Widget _body(BuildContext context, BugReportViewModel model) {
   return ListView(
     physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
     children: [
@@ -54,14 +54,14 @@ _body(context, BugReportViewModel model) {
       _errorMessagesTitle(context),
       Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Expanded(child: Text(Localizable.bugReportWarningMessage, style: const TextStyle(color: Colors.red))),
+        child: Text(Localizable.bugReportWarningMessage, style: const TextStyle(color: Colors.red)),
       ),
       _reportSpace(context, model),
     ],
   );
 }
 
-_errorMessagesTitle(context) {
+Widget _errorMessagesTitle(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(right: 15),
     child: Row(
@@ -76,7 +76,7 @@ _errorMessagesTitle(context) {
   );
 }
 
-_reportSpace(context, BugReportViewModel model) {
+Widget _reportSpace(BuildContext context, BugReportViewModel model) {
   return model.reportList.isEmpty
       ? Center(child: Text(Localizable.bugReportEmpty, style: const TextStyle(fontSize: 12, color: Color(0xFF757575), fontWeight: FontWeight.w500)))
       : ListView.builder(
@@ -112,9 +112,10 @@ _reportSpace(context, BugReportViewModel model) {
           });
 }
 
-_newMessageDialog(context, BugReportViewModel model) {
+Widget _newMessageDialog(BuildContext context, BugReportViewModel model) {
   return AlertDialog(
     title: Text(Localizable.bugReportCreate),
+    backgroundColor: Theme.of(context).primaryColor,
     content: TextField(
       cursorColor: Colors.blue,
       controller: model.errorMsgController,
