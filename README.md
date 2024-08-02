@@ -17,15 +17,14 @@ Our application is written with:
 
 This is a mobile application for Kemerovo State University.
 Our application has:
-1. news
-2. timetable for students
-3. view the score system
-4. viewing the information support system of the educational process
-5. applying for an increased government academic scholarship
-6. debt review (academic, library, etc.)
-7. ordering various references
-8. electronic bypass sheet
-9. payment for services
+1. timetable for students;
+2. view the score system;
+3. viewing the information support system of the educational process;
+4. debt review (academic, library, etc.);
+5. ordering various references;
+6. electronic bypass sheet;
+7. payment for services;
+8. free cources;
 
 ## Screenshots
 
